@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart'; 
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  
   runApp(const MyApp());
 }
 
