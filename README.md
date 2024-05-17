@@ -5,6 +5,13 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 **Our Functional Requirements Document:** *Still working on this* <br>
 **Our github project board can be found [here](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
 <br>
+# 🎮Badges: #
+![Codecov](https://img.shields.io/codecov/c/github/codecov/COS301-SE-2024%2FGameOnConnect?labelColor=darkgreen)
+
+
+
+
+
 # 🎮Team members description #
 <div align="center" > <strong>Franco Dreyer </strong> </div><br>
 
