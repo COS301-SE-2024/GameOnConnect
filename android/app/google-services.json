@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "811940849881",
+    "project_id": "gameonconnect-cf66d",
+    "storage_bucket": "gameonconnect-cf66d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811940849881:android:0815a7c6184daab64f36c8",
+        "android_client_info": {
+          "package_name": "com.example.gameonconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqewZ2QTztlb4oqiszEYrfpVXGn2KjNk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
