@@ -8,7 +8,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 # 🎮Badges: #
 ![Codecov](https://img.shields.io/codecov/c/github/codecov/COS301-SE-2024%2FGameOnConnect?labelColor=darkgreen)
 [![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
-
+[![Flutter](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml/badge.svg?branch=Develop)](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml)
 
 
 
