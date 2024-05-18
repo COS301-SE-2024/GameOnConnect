@@ -1,0 +1,36 @@
+name: Flutter
+
+on:
+  push:
+    branches: 
+      - "main"
+      - "Develop"
+  pull_request:
+    branches: 
+      - "main"
+      - "Develop"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: checkout the branch
+      - uses: actions/checkout@v4
+      
+      # Step 2: setup the Flutter environment
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0' 
+
+      # Step 3: install all the dependencies
+      - name: Install dependencies
+        run: flutter pub get
+      
+      # Step 5: analyze the project source
+      - name: Analyze project source
+        run: flutter analyze
+
+      # Step 6: run the tests
+      - name: Run tests
+        run: flutter test
