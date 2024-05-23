@@ -17,7 +17,9 @@ jobs:
     steps:
       # Step 1: Checkout the branch
       - uses: actions/checkout@v4
-      
+        with:
+          persist-credentials: false
+
       # Step 2: Set up the Flutter environment
       - uses: subosito/flutter-action@v2
         with:
@@ -49,4 +51,14 @@ jobs:
 
       # Step 6: Run the tests
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage
+
+      # Step 7: Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        if: always()  
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
