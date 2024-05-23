@@ -17,7 +17,9 @@ jobs:
     steps:
       # Step 1: Checkout the branch
       - uses: actions/checkout@v4
-      
+        with:
+          persist-credentials: false
+
       # Step 2: Set up the Flutter environment
       - uses: subosito/flutter-action@v2
         with:
@@ -57,6 +59,8 @@ jobs:
     steps:
       # Step 1: Checkout the branch
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       # Step 2: Upload coverage to Codecov
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
