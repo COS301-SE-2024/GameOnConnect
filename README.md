@@ -6,9 +6,10 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 **Our github project board can be found [here](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
 <br>
 # 🎮Badges: #
-![Codecov](https://img.shields.io/codecov/c/github/codecov/COS301-SE-2024%2FGameOnConnect?labelColor=darkgreen)
+[![codecov](https://codecov.io/github/COS301-SE-2024/GameOnConnect/graph/badge.svg?token=Wer3BjZWpE)](https://codecov.io/github/COS301-SE-2024/GameOnConnect)
 [![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
 [![Flutter](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml)
+
 
 
 

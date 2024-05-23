@@ -15,22 +15,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: checkout the branch
+      # Step 1: Checkout the branch
       - uses: actions/checkout@v4
-      
-      # Step 2: setup the Flutter environment
+        with:
+          persist-credentials: false
+
+      # Step 2: Set up the Flutter environment
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0' 
+      
+      # Step 3: Create .env file with secrets
+      - name: Create .env file
+        run: |
+          echo "WEB_API_KEY=${{ secrets.WEB_API_KEY }}" >> .env
+          echo "WEB_APP_ID=${{ secrets.WEB_APP_ID }}" >> .env
+          echo "ANDROID_API_KEY=${{ secrets.ANDROID_API_KEY }}" >> .env
+          echo "ANDROID_APP_ID=${{ secrets.ANDROID_APP_ID }}" >> .env
+          echo "IOS_API_KEY=${{ secrets.IOS_API_KEY }}" >> .env
+          echo "IOS_APP_ID=${{ secrets.IOS_APP_ID }}" >> .env
+          echo "MESSAGE_SENDER_ID=${{ secrets.MESSAGE_SENDER_ID }}" >> .env
+          echo "PROJECT_ID=${{ secrets.PROJECT_ID }}" >> .env
+          echo "STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }}" >> .env
+          echo "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" >> .env
+          echo "IOS_BUNDLE_ID=${{ secrets.IOS_BUNDLE_ID }}" >> .env
+        shell: bash
 
-      # Step 3: install all the dependencies
+      # Step 4: Install all the dependencies
       - name: Install dependencies
         run: flutter pub get
       
-      # Step 5: analyze the project source
+      # Step 5: Analyze the project source
       - name: Analyze project source
         run: flutter analyze
 
-      # Step 6: run the tests
+      # Step 6: Run the tests
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage
+
+      # Step 7: Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        if: always()  
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
