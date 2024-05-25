@@ -19,7 +19,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  // ignore: use_super_parameters
+  const MyApp({Key? key}) : super(key: key);
 
   // This is the root of our application.
   @override
