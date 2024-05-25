@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
+  // ignore: use_super_parameters
   const Login({Key? key}) : super (key : key);
 
   @override
@@ -8,6 +11,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  //Controllers to control text
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future signIn()  async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(), 
+      password: passwordController.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +71,10 @@ class _LoginState extends State<Login> {
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20)
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
@@ -71,9 +93,10 @@ class _LoginState extends State<Login> {
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(20)
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -87,19 +110,22 @@ class _LoginState extends State<Login> {
                 //The Login button 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[600],
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                  child: GestureDetector(
+                    onTap: signIn,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[600],
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
