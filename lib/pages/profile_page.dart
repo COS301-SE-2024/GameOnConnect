@@ -5,6 +5,16 @@ class Profile extends StatelessWidget {
 
    Widget build(BuildContext context)
    {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        leading:IconButton(
+            icon: const Icon(Icons.keyboard_backspace),
+            onPressed: () {
+              // Edit profile logic
+            },
+          ) 
+      )
+    );
    }
 }
