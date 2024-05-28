@@ -65,6 +65,7 @@ class Profile extends StatelessWidget {
             child: Text('Username', style: TextStyle(fontSize: 20)),
             ),
           ),
+          SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -92,6 +93,7 @@ class Profile extends StatelessWidget {
                 ),
               ],
             ),
+            Text('Game Name', style: TextStyle(fontSize: 24)),
         ]
         )
     );
