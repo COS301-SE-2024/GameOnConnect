@@ -94,6 +94,49 @@ class Profile extends StatelessWidget {
               ],
             ),
             Text('Game Name', style: TextStyle(fontSize: 24)),
+            SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300], // Background color of the rectangle
+                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
+                      ),
+                      child: Text('Action',),
+                    ),
+                  ],
+                ),
+                Column(
+                 children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300], // Background color of the rectangle
+                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
+                      ),
+                      child: Text('Sept 2022',),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300], // Background color of the rectangle
+                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
+                      ),
+                      child: Text('MOBA',),
+                    ),
+                  ],
+                ),
+              ],
+            ),
         ]
         )
     );
