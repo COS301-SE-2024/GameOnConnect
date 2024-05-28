@@ -65,6 +65,17 @@ class Profile extends StatelessWidget {
             child: Text('Username', style: TextStyle(fontSize: 20)),
             ),
           ),
+          Row(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Icon(Icons.people),
+                    Text('5 Friends'),
+                  ],
+                ),
+                
+              ],
+            ),
         ]
         )
     );
