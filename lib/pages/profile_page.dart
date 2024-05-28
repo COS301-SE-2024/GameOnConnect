@@ -171,6 +171,24 @@ class Profile extends StatelessWidget {
                 ),
               ],
             ),
+          SizedBox(height: 30),
+            Align(
+            alignment: Alignment.centerLeft,
+            child:    Padding(
+              padding: EdgeInsets.only(left: 5), // Adjust the value to your preference
+              child: Text('Game Description', style: TextStyle(fontSize: 18)),
+              ),
+            ),
+            
+            SizedBox(height: 10),
+            Align(
+            alignment: Alignment.centerLeft,
+            child:    Padding(
+              padding: EdgeInsets.only(left: 5), // Adjust the value to your preference
+              child: Text('Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...', style: TextStyle(fontSize: 14)),
+              ),
+            ),
+
         ]
         )
     );
