@@ -13,7 +13,21 @@ class Profile extends StatelessWidget {
             onPressed: () {
               // Edit profile logic
             },
-          ) 
+          ),
+          actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              // Edit profile logic
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // Customize profile logic
+            },
+          ),
+        ], 
       )
     );
    }
