@@ -66,6 +66,7 @@ class Profile extends StatelessWidget {
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Column(
                   children: <Widget>[
@@ -84,6 +85,10 @@ class Profile extends StatelessWidget {
                     Icon(Icons.event),
                     Text('Events'),
                   ],
+                ),
+                Divider(
+                  color: Colors.grey, // Customize the color of the line
+                  thickness: 1.0, // Set the thickness of the line
                 ),
               ],
             ),
