@@ -107,7 +107,19 @@ class Profile extends StatelessWidget {
                         color: Colors.grey[300], // Background color of the rectangle
                         borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
                       ),
-                      child: Text('Action',),
+                      child:Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                        children: <Widget>[
+                          Icon(
+                            Icons.circle, // This is the dot icon
+                            size: 8.0, // You can adjust the size to fit your design
+                            color: Colors.black, // The color of the dot
+                          ),
+                          SizedBox(width: 8), // Space between the icon and the text
+                          Text('Action'),
+                        ],
+                      ),
+  
                     ),
                   ],
                 ),
@@ -119,7 +131,18 @@ class Profile extends StatelessWidget {
                         color: Colors.grey[300], // Background color of the rectangle
                         borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
                       ),
-                      child: Text('Sept 2022',),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                        children: <Widget>[
+                          Icon(
+                            Icons.circle, // This is the dot icon
+                            size: 8.0, // You can adjust the size to fit your design
+                            color: Colors.black, // The color of the dot
+                          ),
+                          SizedBox(width: 8), // Space between the icon and the text
+                          Text('Sept 2022',),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -131,7 +154,18 @@ class Profile extends StatelessWidget {
                         color: Colors.grey[300], // Background color of the rectangle
                         borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
                       ),
-                      child: Text('MOBA',),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                        children: <Widget>[
+                          Icon(
+                            Icons.circle, // This is the dot icon
+                            size: 8.0, // You can adjust the size to fit your design
+                            color: Colors.black, // The color of the dot
+                          ),
+                          SizedBox(width: 8), // Space between the icon and the text
+                          Text('MOBA',),
+                        ],
+                      ),
                     ),
                   ],
                 ),
