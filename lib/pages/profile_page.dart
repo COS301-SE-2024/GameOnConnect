@@ -79,6 +79,12 @@ class Profile extends StatelessWidget {
                     Text('Games'),
                   ],
                 ),
+                Column(
+                  children: <Widget>[
+                    Icon(Icons.event),
+                    Text('Events'),
+                  ],
+                ),
               ],
             ),
         ]
