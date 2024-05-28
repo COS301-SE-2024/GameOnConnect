@@ -49,6 +49,22 @@ class Profile extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 50),
+          SizedBox(height: 8),
+          Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), // Adjust the value to your preference
+            child: Text('Profile Name', style: TextStyle(fontSize: 24)),
+            ),
+          ),
+          Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), // Adjust the value to your preference
+            child: Text('Username', style: TextStyle(fontSize: 20)),
+            ),
+          ),
         ]
         )
     );
