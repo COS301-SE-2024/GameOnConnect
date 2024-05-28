@@ -31,13 +31,23 @@ class Profile extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            height: 170,
-            color: Colors.grey[300], // Placeholder for banner image
-          ),
-          CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey, // Placeholder for profile image
+          Stack(
+            alignment: Alignment.bottomCenter,
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              Container(
+                height: 170,
+                color: Colors.grey[300], // Placeholder for banner image
+              ),
+              Positioned(
+                bottom: -50, // Half of the CircleAvatar's radius to align it properly
+                left: 50,
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.grey, // Placeholder for profile image
+                ),
+              ),
+            ],
           ),
         ]
         )
