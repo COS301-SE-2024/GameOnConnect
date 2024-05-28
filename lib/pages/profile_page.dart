@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
-   Widget build(BuildContext context)
+   @override
+     Widget build(BuildContext context)
    {
     return Scaffold(
       appBar: AppBar(
@@ -35,13 +36,17 @@ class Profile extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             clipBehavior: Clip.none,
             children: <Widget>[
+
+              //banner
               Container(
                 height: 170,
                 color: Colors.grey[300], // Placeholder for banner image
               ),
-              Positioned(
+              
+              const Positioned(
                 bottom: -50, // Half of the CircleAvatar's radius to align it properly
                 left: 50,
+                //profile picture
                 child: CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.grey, // Placeholder for profile image
@@ -49,71 +54,89 @@ class Profile extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 50),
-          SizedBox(height: 8),
-          Align(
+
+          const SizedBox(height: 50),
+          const SizedBox(height: 8),
+
+          const Align(
           alignment: Alignment.centerLeft,
           child:    Padding(
-            padding: EdgeInsets.only(left: 30), // Adjust the value to your preference
+            padding: EdgeInsets.only(left: 30), 
             child: Text('Profile Name', style: TextStyle(fontSize: 24)),
             ),
           ),
-          Align(
+
+          const Align(
           alignment: Alignment.centerLeft,
           child:    Padding(
-            padding: EdgeInsets.only(left: 30), // Adjust the value to your preference
+            padding: EdgeInsets.only(left: 30), 
             child: Text('Username', style: TextStyle(fontSize: 20)),
             ),
           ),
-          SizedBox(height: 30),
-          Row(
+
+          const SizedBox(height: 30),
+
+          //friends, games, events
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+
                 Column(
                   children: <Widget>[
                     Icon(Icons.people),
                     Text('5 Friends'),
                   ],
                 ),
+
                 Column(
                   children: <Widget>[
                     Icon(Icons.gamepad),
                     Text('Games'),
                   ],
                 ),
+
                 Column(
                   children: <Widget>[
                     Icon(Icons.event),
                     Text('Events'),
                   ],
                 ),
-                Divider(
-                  color: Colors.grey, // Customize the color of the line
-                  thickness: 1.0, // Set the thickness of the line
-                ),
+
+                /*Divider(
+                  color: Colors.grey, 
+                  thickness: 1.0, 
+                ),*/
               ],
             ),
-            Text('Game Name', style: TextStyle(fontSize: 24)),
-            SizedBox(height: 8),
+            Divider(
+            color: Colors.black54, 
+            thickness: 1.0, 
+          ),
+
+            const Text('Game Name', style: TextStyle(fontSize: 24)),
+
+            const SizedBox(height: 8),
+
+            //game tags
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+
                 Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
                       decoration: BoxDecoration(
-                        color: Colors.grey[300], // Background color of the rectangle
+                        color: Colors.grey[300], 
                         borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
                       ),
-                      child:Row(
-                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                      child:const Row(
+                        mainAxisSize: MainAxisSize.min, 
                         children: <Widget>[
                           Icon(
-                            Icons.circle, // This is the dot icon
-                            size: 8.0, // You can adjust the size to fit your design
-                            color: Colors.black, // The color of the dot
+                            Icons.circle, // dot icon
+                            size: 8.0, 
+                            color: Colors.black, 
                           ),
                           SizedBox(width: 8), // Space between the icon and the text
                           Text('Action'),
@@ -123,46 +146,48 @@ class Profile extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 Column(
                  children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), 
                       decoration: BoxDecoration(
-                        color: Colors.grey[300], // Background color of the rectangle
-                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
+                        color: Colors.grey[300], 
+                        borderRadius: BorderRadius.circular(25), 
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min, 
                         children: <Widget>[
                           Icon(
-                            Icons.circle, // This is the dot icon
-                            size: 8.0, // You can adjust the size to fit your design
-                            color: Colors.black, // The color of the dot
+                            Icons.circle, 
+                            size: 8.0, 
+                            color: Colors.black, 
                           ),
-                          SizedBox(width: 8), // Space between the icon and the text
+                          SizedBox(width: 8), 
                           Text('Sept 2022',),
                         ],
                       ),
                     ),
                   ],
                 ),
+
                 Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), 
                       decoration: BoxDecoration(
-                        color: Colors.grey[300], // Background color of the rectangle
-                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
+                        color: Colors.grey[300], 
+                        borderRadius: BorderRadius.circular(25), 
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min, // Ensures the Row takes up only as much width as needed
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min, 
                         children: <Widget>[
                           Icon(
-                            Icons.circle, // This is the dot icon
-                            size: 8.0, // You can adjust the size to fit your design
-                            color: Colors.black, // The color of the dot
+                            Icons.circle,
+                            size: 8.0, 
+                            color: Colors.black, 
                           ),
-                          SizedBox(width: 8), // Space between the icon and the text
+                          SizedBox(width: 8), 
                           Text('MOBA',),
                         ],
                       ),
@@ -171,20 +196,24 @@ class Profile extends StatelessWidget {
                 ),
               ],
             ),
-          SizedBox(height: 30),
-            Align(
+
+          const SizedBox(height: 30),
+
+          //game discription
+            const Align(
             alignment: Alignment.centerLeft,
             child:    Padding(
-              padding: EdgeInsets.only(left: 5), // Adjust the value to your preference
+              padding: EdgeInsets.only(left: 5), 
               child: Text('Game Description', style: TextStyle(fontSize: 18)),
               ),
             ),
-            
-            SizedBox(height: 10),
-            Align(
+
+            const SizedBox(height: 10),
+
+            const Align(
             alignment: Alignment.centerLeft,
             child:    Padding(
-              padding: EdgeInsets.only(left: 5), // Adjust the value to your preference
+              padding: EdgeInsets.only(left: 5),
               child: Text('Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...', style: TextStyle(fontSize: 14)),
               ),
             ),
