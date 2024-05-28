@@ -28,7 +28,15 @@ class Profile extends StatelessWidget {
             },
           ),
         ], 
-      )
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 200,
+            color: Colors.grey[300], // Placeholder for banner image
+          ),
+        ]
+        )
     );
    }
 }
