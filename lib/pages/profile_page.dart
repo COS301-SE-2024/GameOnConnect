@@ -35,6 +35,10 @@ class Profile extends StatelessWidget {
             height: 170,
             color: Colors.grey[300], // Placeholder for banner image
           ),
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.grey, // Placeholder for profile image
+          ),
         ]
         )
     );
