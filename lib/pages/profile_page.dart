@@ -73,7 +73,12 @@ class Profile extends StatelessWidget {
                     Text('5 Friends'),
                   ],
                 ),
-                
+                Column(
+                  children: <Widget>[
+                    Icon(Icons.gamepad),
+                    Text('Games'),
+                  ],
+                ),
               ],
             ),
         ]
