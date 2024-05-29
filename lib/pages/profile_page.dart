@@ -11,9 +11,9 @@ class Profile extends StatelessWidget {
         title: const Text('Profile'),
         leading:IconButton(
             icon: const Icon(Icons.keyboard_backspace),
-            onPressed: () {
-              // Edit profile logic
-            },
+           onPressed: () {
+            Navigator.of(context).pop();
+          },
           ),
           actions: <Widget>[
           IconButton(
@@ -113,7 +113,11 @@ class Profile extends StatelessWidget {
             thickness: 1.0, 
           ),
 
-            const Text('Game Name', style: TextStyle(fontSize: 24)),
+            Container(
+
+              child: Column(
+                children: <Widget>[
+                  const Text('Game Name', style: TextStyle(fontSize: 24)),
 
             const SizedBox(height: 8),
 
@@ -218,6 +222,8 @@ class Profile extends StatelessWidget {
               ),
             ),
 
+              ],),
+            )
         ]
         )
     );
