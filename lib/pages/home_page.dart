@@ -29,9 +29,16 @@ class _HomePageState extends State<HomePage> {
 
       if(qs.exists)
         {
-          print("profile exists: ${qs.data()}");
+            setState(() {
+              _counter = "profile exists: ${qs.data()}";
+            });
+            print("profile exists: ${qs.data()}");
+
         }else
           {
+            setState(() {
+              _counter = "Profile not found for user DHfSzIoQpFMJgSuXlvi53Tp88t73";
+            });
             print("Profile not found for user DHfSzIoQpFMJgSuXlvi53Tp88t73");
           }
     } catch (e) {
@@ -61,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10,),
-              Text(_counter, style: Theme.of(context).textTheme.bodyMedium,),
+              Text(_counter, style: Theme.of(context).textTheme.bodyLarge,),
             ],
           ),
         ),
