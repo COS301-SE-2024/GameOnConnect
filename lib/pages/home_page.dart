@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -12,12 +13,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  var _counter = "";
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    databaseAccess();
+  }
+
+  Future<void> databaseAccess() async {
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      CollectionReference profileRef = db.collection("profile_data");
+      DocumentSnapshot qs = await profileRef.doc("DHfSzIoQpFMJgSuXlvi53Tp88t73").get();
+
+      if(qs.exists)
+        {
+          print("profile exists: ${qs.data()}");
+        }else
+          {
+            print("Profile not found for user DHfSzIoQpFMJgSuXlvi53Tp88t73");
+          }
+    } catch (e) {
+      setState(() {
+        _counter = "Error reading profile data"; // Update counter with error message
+      });
+      print('Error reading profile data: $e');
+    }
   }
 
   @override
@@ -28,31 +50,21 @@ class _HomePageState extends State<HomePage> {
 
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            MaterialButton(
-              onPressed: () {
-              FirebaseAuth.instance.signOut();
-              },
-              color: Colors.grey[600],
-              child: Text('Sign Out'),
-            )
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'Data:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10,),
+              Text(_counter, style: Theme.of(context).textTheme.bodyMedium,),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
