@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  // ignore: use_super_parameters
   const HomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
@@ -12,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
-  int _selectedIndex = 0;
+  // int _selectedIndex = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -20,11 +21,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +105,16 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                _onItemTapped(1);
+                // _onItemTapped(1);
+                // add link
               },
             ),
             SizedBox(width: 48.0), // The dummy child
             IconButton(
               icon: Icon(Icons.calendar_today),
               onPressed: () {
-                _onItemTapped(2);
+                // _onItemTapped(2);
+                // add link
               },
             ),
             IconButton(
