@@ -31,6 +31,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         ),
         centerTitle: true,
       ),
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          Text('Customize Profile', style: TextStyle(fontSize: 24)),
+        ]
+        ),
     );
   }
 }
