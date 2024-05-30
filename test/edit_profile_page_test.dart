@@ -57,7 +57,12 @@ void main() {
     // Verify if the Save Changes button is present
     expect(find.byKey(Key('saveButton')), findsOneWidget);
 
-    
+    // Tap the Save Changes button
+    await tester.tap(find.byKey(Key('saveButton')));
+    await tester.pump();
+
+    // Verify if the form save logic is triggered
+    // Add a mock or a print statement in the save logic to verify this
   });
 
 
