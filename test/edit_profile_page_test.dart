@@ -35,4 +35,11 @@ void main() {
     expect(find.text('test_last_name'), findsOneWidget);
     expect(find.text('test_bio'), findsOneWidget);
   });
+
+  testWidgets('Switch input is present and toggleable', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: EditProfilePage()));
+
+    
+  });
+
 }
