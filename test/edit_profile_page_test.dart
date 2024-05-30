@@ -23,6 +23,12 @@ void main() {
     expect(find.text('Last Name:'), findsOneWidget);
     expect(find.text('Bio:'), findsOneWidget);
 
+    // Enter text into the form fields
+    await tester.enterText(find.byKey(Key('usernameField')), 'test_username');
+    await tester.enterText(find.byKey(Key('firstNameField')), 'test_first_name');
+    await tester.enterText(find.byKey(Key('lastNameField')), 'test_last_name');
+    await tester.enterText(find.byKey(Key('bioField')), 'test_bio');
+
     
   });
 }
