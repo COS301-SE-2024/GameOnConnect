@@ -53,6 +53,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           ),
           const SizedBox(height: 30),
 
+        //genres
           const Align(
           alignment: Alignment.centerLeft,
           child:    Padding(
@@ -71,8 +72,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               ],
             ),
 
+              // age ratings
              const SizedBox(height: 45),
-             
              const Align(
           alignment: Alignment.centerLeft,
           child:    Padding(
@@ -84,14 +85,24 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                CustomButtons(text: 'Age rating 1'),
-                CustomButtons(text: 'Age rating 2'),
+                CustomButtons(text: 'Age rating1'),
+                CustomButtons(text: 'Age rating2'),
                 // add button 
                 AddButton(),
               ],
             ),
 
-            
+            // social interest
+             const SizedBox(height: 45),
+             const Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), 
+            child: Text('Social interests:', style: TextStyle(fontSize: 15)),
+            ),
+          ),
+           
+
 
         ]
         ),
