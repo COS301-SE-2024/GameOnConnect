@@ -101,8 +101,38 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             child: Text('Social interests:', style: TextStyle(fontSize: 15)),
             ),
           ),
-           
+           const SizedBox(height: 8),
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomButtons(text: 'interest1'),
+                CustomButtons(text: ' interest2'),
+                // add button 
+                AddButton(),
+              ],
+            ),
 
+            // DARK MODE
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomButtons(text: 'interest1'),
+                CustomButtons(text: ' interest2'),
+                // switch 
+                Switch(
+      value: isDarkMode,
+      onChanged: (newValue) {
+        setState(() {
+          isDarkMode = newValue;
+          // You can also add functionality here to change the app's theme
+        });
+      },
+      activeColor: Colors.black, // Set the color when the switch is ON
+      inactiveThumbColor: Colors.grey, // Set the color when the switch is OFF
+    ),
+              ],
+            ),
+            
 
         ]
         ),
