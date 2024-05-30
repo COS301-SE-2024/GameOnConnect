@@ -55,6 +55,21 @@ class _HomePageState extends State<HomePage> {
             ),
             MaterialButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/customize');
+              },
+              color: Colors.grey[600],
+              child: Text('Customize profile '),
+            ),
+             MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/sign_up');
+              },
+              color: Colors.grey[600],
+              child: Text('sign up page '),
+
+            ),
+           MaterialButton(
+              onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
               color: Colors.grey[600],
