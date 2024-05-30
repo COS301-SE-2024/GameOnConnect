@@ -12,7 +12,7 @@ class SignUp extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  //signup key added here
   SignUp({super.key});
 
   Future signUp() async {
