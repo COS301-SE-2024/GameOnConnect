@@ -23,7 +23,7 @@ jobs:
       # Step 2: Set up the Flutter environment
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable' 
+          flutter-version: 'latest' 
       
       # Step 3: Create .env file with secrets
       - name: Create .env file
