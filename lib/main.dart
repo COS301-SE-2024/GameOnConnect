@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:gameonconnect/pages/customize_page.dart';
-
+import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
-
 import 'package:gameonconnect/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 import 'firebase_options.dart'; 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -22,8 +21,14 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp())
+    );
 }
+
+//ThemeManager _themeManager = ThemeManager();
 
 class MyApp extends StatelessWidget {
   // ignore: use_super_parameters
@@ -34,10 +39,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GameOnConnect',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
-      ),
+      theme: Provider.of<ThemeProvider>(context).themeData,
+      //themeMode: _themeManager.themeMode,
       routes: {
         '/' : (context) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
