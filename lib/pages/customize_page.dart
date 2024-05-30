@@ -142,6 +142,25 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             ),
             
 
+            //save button
+            SizedBox(height: 40.0),
+            Center(
+              child: ElevatedButton(
+                key: Key('saveButton'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[300],
+                  foregroundColor: Colors.black54,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                onPressed: () {
+                    //  update database
+                },
+                child: Text('Save Changes'),
+              ),
+            ),
+
         ]
         ),
     );
