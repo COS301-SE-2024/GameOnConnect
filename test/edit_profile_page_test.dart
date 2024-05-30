@@ -39,7 +39,16 @@ void main() {
   testWidgets('Switch input is present and toggleable', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(home: EditProfilePage()));
 
-    
+    // Verify if the switch is present
+    // expect(find.byKey(Key('privateAccountSwitch')), findsOneWidget);
+
+    // Toggle the switch
+    // await tester.tap(find.byKey(Key('privateAccountSwitch')));
+    // await tester.pump();
+
+    // Verify if the switch is toggled
+    // Switch switchWidget = tester.widget(find.byKey(Key('privateAccountSwitch')));
+    // expect(switchWidget.value, isTrue);
   });
 
 }
