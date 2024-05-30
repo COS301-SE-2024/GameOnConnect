@@ -25,10 +25,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.black, width: 2.0),
+              border: Border.all(color: Colors.black, width: 1.0),
             ),
           ),
         ),
+        centerTitle: true,
       ),
     );
   }
