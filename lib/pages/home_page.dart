@@ -18,14 +18,51 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    createDefaultProfile();
     databaseAccess();
+
+  }
+
+  Future<void> createDefaultProfile() async
+  {
+    try{
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final defaultData = <String,dynamic>{
+        "name": "",
+        "surname":"",
+        "age_rating_tags":[],
+        "birthday": null,
+        "genre_interests_tags":[],
+        "profile_picture" :"gameonconnect-cf66d.appspot.com/default_image.jpg",
+        "social_interests_tags":[],
+        "theme" : "light",
+        "userID":"svVm2V1l9YQCqJYH0y0Jpg3iapz2",   // change this to dynamically add the user's id
+        "username": {"profile_name": "","uniwue_num":1},
+        "visibility": true
+      };
+
+      db.collection("profile_data")
+      .doc("svVm2V1l9YQCqJYH0y0Jpg3iapz2")  // change this to dynamically add the user's id
+      .set(defaultData)
+      .onError((e,_)=>
+          setState(() {
+            _counter = "Error creating profile data $e"; // Update counter with error message
+          })
+      );
+
+    }catch(e)
+    {
+      setState(() {
+        _counter = "Error creating profile $e"; // Update counter with error message
+      });
+    }
   }
 
   Future<void> databaseAccess() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       CollectionReference profileRef = db.collection("profile_data");
-      DocumentSnapshot qs = await profileRef.doc("DHfSzIoQpFMJgSuXlvi53Tp88t73").get();
+      DocumentSnapshot qs = await profileRef.doc("svVm2V1l9YQCqJYH0y0Jpg3iapz2").get();
 
       if(qs.exists)
         {
@@ -37,9 +74,9 @@ class _HomePageState extends State<HomePage> {
         }else
           {
             setState(() {
-              _counter = "Profile not found for user DHfSzIoQpFMJgSuXlvi53Tp88t73";
+              _counter = "Profile not found for user svVm2V1l9YQCqJYH0y0Jpg3iapz2";
             });
-            print("Profile not found for user DHfSzIoQpFMJgSuXlvi53Tp88t73");
+            print("Profile not found for user svVm2V1l9YQCqJYH0y0Jpg3iapz2");
           }
     } catch (e) {
       setState(() {
