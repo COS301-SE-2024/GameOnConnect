@@ -1,10 +1,62 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 const double _textFieldWidth = 300;
 const InputDecoration _inputDecoration = InputDecoration(
   border: OutlineInputBorder(),
 );
+int? _nextNum;
+Future<void> getNextNumber() async {
+
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  CollectionReference profileRef = db.collection("next_digit");
+  DocumentSnapshot qs = await profileRef.doc("current_max_digit").get();
+
+  if(qs.exists) {
+    Map<String,int> d = qs.data() as Map<String,int>;
+    _nextNum = d['digit'];
+  }
+
+
+}
+
+Future<void> createDefaultProfile() async
+{
+  try{
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+    if(currentUser != null) {
+      final defaultData = <String, dynamic>{
+        "name": "",
+        "surname": "",
+        "age_rating_tags": [],
+        "birthday": null,
+        "genre_interests_tags": [],
+        "profile_picture": "gameonconnect-cf66d.appspot.com/default_image.jpg",
+        "social_interests_tags": [],
+        "theme": "light",
+        "userID":  currentUser.uid,
+        // change this to dynamically add the user's id
+        "username": {"profile_name": _username, "unique_num": _nextNum},
+        "visibility": true
+      };
+
+      db.collection("profile_data")
+          .doc(currentUser.uid)
+          .set(defaultData);
+    }
+
+  }catch(e)
+  { // do nothing
+  }
+
+}
+String? _username ;
 
 class SignUp extends StatelessWidget {
   final _usernameController = TextEditingController();
@@ -20,6 +72,9 @@ class SignUp extends StatelessWidget {
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
     );
+    await getNextNumber();
+    print(_nextNum);
+    createDefaultProfile();
   }
 
   void dispose() {
@@ -28,7 +83,6 @@ class SignUp extends StatelessWidget {
     _usernameController.dispose();
     _confirmPasswordController.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,6 +201,7 @@ class SignUp extends StatelessWidget {
                   onPressed: () {
                     // Validate and process the form.
                     if (_formKey.currentState!.validate()) {
+                      _username = _usernameController.text;
                       signUp();
                     }
                   },
