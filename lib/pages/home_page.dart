@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -45,7 +46,14 @@ class _HomePageState extends State<HomePage> {
               },
               color: Colors.grey[600],
               child: Text('Sign Out'),
-            )
+            ),
+           MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              color: Colors.grey[600],
+              child: Text('Profile page '),
+            ),
           ],
         ),
       ),
