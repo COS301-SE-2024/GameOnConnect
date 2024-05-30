@@ -12,6 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,14 +22,33 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await db.collection('profile_data').doc(user.uid).get();
+
+      if (userDoc.exists) {
+        String theme = userDoc['theme'] as String;
+        if (theme == 'dark') {
+          themeProvider.setDarkMode();
+        } else {
+          themeProvider.setLightMode();
+        }
+      }
+    }
+  }
+
+  ThemeProvider themeProvider = ThemeProvider();
+
+  await fetchUserTheme(themeProvider);
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    ChangeNotifierProvider.value(
+      value: themeProvider,
       child: const MyApp())
     );
 }
-
-//ThemeManager _themeManager = ThemeManager();
 
 class MyApp extends StatelessWidget {
   // ignore: use_super_parameters
@@ -37,6 +57,7 @@ class MyApp extends StatelessWidget {
   // This is the root of our application.
   @override
   Widget build(BuildContext context) {
+    //_fetchUserTheme(Provider.of<ThemeProvider>(context));
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,
@@ -63,5 +84,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 

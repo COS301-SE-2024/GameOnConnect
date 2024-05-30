@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/theme/themes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ThemeProvider with ChangeNotifier{
 
@@ -12,12 +14,30 @@ class ThemeProvider with ChangeNotifier{
     _themeData = themeData;
     notifyListeners();
   }
+  
+  void setLightMode() {
+    themeData = lightTheme;
+    _saveThemePreference('light');
+  }
+
+  void setDarkMode() {
+    themeData = darkTheme;
+    _saveThemePreference('dark');
+  }
 
   void toggleTheme() {
     if (_themeData == lightTheme) {
-      themeData = darkTheme; 
+      setDarkMode();
     } else {
-      themeData = lightTheme;
+      setLightMode();
+    }
+  }
+
+  Future<void> _saveThemePreference(String theme) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      await db.collection('profile_data').doc(user.uid).update({'theme': theme});
     }
   }
 

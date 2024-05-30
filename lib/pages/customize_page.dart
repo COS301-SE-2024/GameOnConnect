@@ -12,6 +12,12 @@ class CustomizeProfilePage extends StatefulWidget {
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
+
+  @override
+   void initState() {
+    super.initState();
+    isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
+  }
   
   @override
   Widget build(BuildContext context) {
