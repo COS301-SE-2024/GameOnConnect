@@ -52,6 +52,12 @@ class _HomePageState extends State<HomePage> {
               },
               color: Colors.grey[600],
               child: Text('Customize profile '),
+           MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              color: Colors.grey[600],
+              child: Text('Profile page '),
             ),
           ],
         ),
