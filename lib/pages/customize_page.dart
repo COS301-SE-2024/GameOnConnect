@@ -69,7 +69,30 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 CustomButtons(text: 'genre2'),
                 CustomButtons(text: 'genre3'),
               ],
-            )
+            ),
+
+             const SizedBox(height: 45),
+             
+             const Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), 
+            child: Text('Age ratings:', style: TextStyle(fontSize: 15)),
+            ),
+          ),
+           const SizedBox(height: 8),
+             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomButtons(text: 'Age rating 1'),
+                CustomButtons(text: 'Age rating 2'),
+                // add button 
+                //AddButton(),
+              ],
+            ),
+
+            
+
         ]
         ),
     );
