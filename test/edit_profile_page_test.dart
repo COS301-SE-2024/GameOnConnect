@@ -54,6 +54,9 @@ void main() {
   testWidgets('Save button is present and functional', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(home: EditProfilePage()));
 
+    // Verify if the Save Changes button is present
+    expect(find.byKey(Key('saveButton')), findsOneWidget);
+
     
   });
 
