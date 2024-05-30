@@ -82,10 +82,16 @@ class _HomePageState extends State<HomePage> {
 
       if(qs.exists)
         {
+          // access all data
             setState(() {
               _counter = "profile exists: ${qs.data()}";
             });
             print("profile exists: ${qs.data()}");
+            //access specific data :
+            Map<String,dynamic> d = qs.data() as Map<String,dynamic>;
+            setState(() {
+              _counter = "profile exists: ${d['name']}";
+            });
 
         }else
           {
