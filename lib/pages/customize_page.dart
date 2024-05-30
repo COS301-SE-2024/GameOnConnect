@@ -164,8 +164,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 });
                 Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
               },
-              activeColor: Colors.black, // Set the color when the switch is ON
-              inactiveThumbColor: Colors.grey, // Set the color when the switch is OFF
             ),
           ],
         ),
