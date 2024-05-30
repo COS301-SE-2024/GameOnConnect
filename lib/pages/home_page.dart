@@ -51,7 +51,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushNamed(context, '/customize');
               },
               color: Colors.grey[600],
-              child: Text('Customize profile '),
+              child: Text('Customize profile ')
+            ),
            MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
