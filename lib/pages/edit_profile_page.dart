@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
 class EditProfilePage extends StatelessWidget {
+  // ignore: use_super_parameters
+  const EditProfilePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          key: Key('backButton'),
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: CircleAvatar(
-          key: Key('profileAvatar'),
-          radius: 25.0,
-          backgroundColor: Colors.white,
-          child: Container(
+          key: const Key('profileAvatar'),
+          radius: 25.0, // Doubled the radius
+          backgroundColor: Colors.black,
+          child: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.black, width: 2.0),
@@ -25,23 +27,22 @@ class EditProfilePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: EditProfileForm(),
+      body: const EditProfileForm(),
     );
   }
 }
 
 class EditProfileForm extends StatefulWidget {
+  // ignore: use_super_parameters
+  const EditProfileForm({Key? key}) : super(key: key);
+
   @override
-  _EditProfileFormState createState() => _EditProfileFormState();
+  EditProfileFormState createState() => EditProfileFormState();
 }
 
-class _EditProfileFormState extends State<EditProfileForm> {
+class EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String _username = '';
-  String _firstName = '';
-  String _lastName = '';
-  String _bio = '';
   DateTime _birthday = DateTime.now();
   bool _isPrivate = false;
 
@@ -53,33 +54,36 @@ class _EditProfileFormState extends State<EditProfileForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Edit Profile',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 32.0),
+            const SizedBox(height: 32.0), // Increased space between header and inputs
             Expanded(
               child: ListView(
                 children: [
-                  _buildTextInput('Username:', (value) => _username = value ?? '', key: Key('usernameField')),
-                  _buildTextInput('First Name:', (value) => _firstName = value ?? '', key: Key('firstNameField')),
-                  _buildTextInput('Last Name:', (value) => _lastName = value ?? '', key: Key('lastNameField')),
-                  _buildTextInput('Bio:', (value) => _bio = value ?? '', maxLines: 3, key: Key('bioField')),
-                  _buildDateInput('Birthday:', key: Key('birthdayField')),
-                  _buildSwitchInput('Private Account:', (value) {
-                    setState(() {
-                      _isPrivate = value;
-                    });
-                  }, key: Key('privateAccountSwitch')),
+                  _buildTextInput('Username:', key: const Key('usernameField')),
+                  _buildTextInput('First Name:', key: const Key('firstNameField')),
+                  _buildTextInput('Last Name:', key: const Key('lastNameField')),
+                  _buildTextInput('Bio:', maxLines: 3, key: const Key('bioField')),
+                  _buildDateInput('Birthday:', key: const Key('birthdayField')),
+                  _buildSwitchInput(
+                    'Private Account:',
+                    (value) {
+                      setState(() {
+                        _isPrivate = value;
+                      });
+                    },
+                    key: const Key('privateAccountSwitch'),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Center(
               child: ElevatedButton(
-                key: Key('saveButton'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[400],
                   foregroundColor: Colors.black,
@@ -93,7 +97,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     // Handle save logic here
                   }
                 },
-                child: Text('Save Changes'),
+                child: const Text('Save Changes'),
               ),
             ),
           ],
@@ -102,7 +106,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildTextInput(String label, void Function(String?)? onSaved, {int maxLines = 1, required Key key}) {
+  Widget _buildTextInput(String label, {int maxLines = 1, Key? key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -122,7 +126,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 fillColor: Colors.grey[400],
                 filled: true,
               ),
-              onSaved: onSaved,
               maxLines: maxLines,
             ),
           ),
@@ -131,7 +134,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildDateInput(String label, {required Key key}) {
+  Widget _buildDateInput(String label, {Key? key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -176,7 +179,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildSwitchInput(String label, Function(bool) onChanged, {required Key key}) {
+  Widget _buildSwitchInput(String label, Function(bool) onChanged, {Key? key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
