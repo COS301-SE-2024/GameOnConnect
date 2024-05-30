@@ -51,4 +51,11 @@ void main() {
     // expect(switchWidget.value, isTrue);
   });
 
+  testWidgets('Save button is present and functional', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: EditProfilePage()));
+
+    
+  });
+
+
 }
