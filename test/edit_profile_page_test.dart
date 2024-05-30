@@ -29,6 +29,10 @@ void main() {
     await tester.enterText(find.byKey(Key('lastNameField')), 'test_last_name');
     await tester.enterText(find.byKey(Key('bioField')), 'test_bio');
 
-    
+    // Verify if the text is entered correctly
+    expect(find.text('test_username'), findsOneWidget);
+    expect(find.text('test_first_name'), findsOneWidget);
+    expect(find.text('test_last_name'), findsOneWidget);
+    expect(find.text('test_bio'), findsOneWidget);
   });
 }
