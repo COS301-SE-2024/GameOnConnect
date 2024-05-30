@@ -85,6 +85,12 @@ class _GameLibraryState extends State<GameLibrary> {
           final game = _games[index];
           return Card(
             child: ListTile(
+              leading: Image.network(
+              game.background_image,
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+            ),
               title: Text(game.name),
               subtitle: Text(game.released),
             ),
@@ -99,14 +105,16 @@ class Game {
   final int id;
   final String name;
   final String released;
+  final String background_image;
 
-  Game({required this.id, required this.name, required this.released});
+  Game({required this.id, required this.name, required this.released, required this.background_image});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
       id: json['id'],
       name: json['name'],
       released: json['released'],
+      background_image: json['background_image'],
     );
   }
 }
