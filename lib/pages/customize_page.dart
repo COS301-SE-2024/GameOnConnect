@@ -35,6 +35,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         padding: EdgeInsets.all(16.0),
         children: [
           Text('Customize Profile', style: TextStyle(fontSize: 24)),
+          Center(
+            child: CircleAvatar(
+              radius: 60,
+               backgroundColor: Colors.grey[300],  
+            ),
+          ),
         ]
         ),
     );
