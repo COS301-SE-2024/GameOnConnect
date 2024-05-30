@@ -11,25 +11,53 @@ class GameLibrary extends StatefulWidget {
 
 class _GameLibraryState extends State<GameLibrary> {
   List<Game> _games = [];
+  int _currentPage = 1;
+  bool _isLoading = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _loadGames();
+    _loadGames(_currentPage);
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _loadGames(_currentPage);
+      }
+    });
   }
 
-  Future<void> _loadGames() async {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadGames(int page) async {
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+
     final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6&page_size=50'));
+        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6&page_size=20&page=$page'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
-      final games =
-          jsonData['results'].map<Game>((gameJson) => Game.fromJson(gameJson)).toList();
+      final games = (jsonData['results'] as List)
+          .map((gameJson) => Game.fromJson(gameJson))
+          .toList();
+
       setState(() {
-        _games = games;
+        _games.addAll(games);
+        _currentPage++;
+        _isLoading = false;
       });
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       throw Exception('Failed to load games');
     }
   }
@@ -46,13 +74,19 @@ class _GameLibraryState extends State<GameLibrary> {
         ),
       ),
       body: ListView.builder(
-        itemCount: _games.length,
+        controller: _scrollController,
+        itemCount: _games.length + 1,
         itemBuilder: (context, index) {
+          if (index == _games.length) {
+            return _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : SizedBox.shrink();
+          }
           final game = _games[index];
           return Card(
             child: ListTile(
               title: Text(game.name),
-              subtitle: Text(game.released as String),
+              subtitle: Text(game.released),
             ),
           );
         },
