@@ -44,21 +44,27 @@ jobs:
       # Step 4: Install all the dependencies
       - name: Install dependencies
         run: flutter pub get
+
+      # Step 5: Gette the newer dependancy versions
+      - name: Install dependancies newer versions
+        run: flutter pub upgrade
+
+      # Step 6: Make sure dependancies are up to date
+      - name: Make sure dependancies are up to date
+        run: flutter pub outdated
       
-      # Step 5: Analyze the project source
+      # Step 7: Analyze the project source
       - name: Analyze project source
         run: flutter analyze
 
-      # Step 6: Run the tests
+      # Step 8: Run the tests
       - name: Run tests
         run: flutter test --coverage
 
-      # Step 7: Upload coverage to Codecov
+      # Step 9: Upload coverage to Codecov
       - name: Upload coverage to Codecov
         if: always()  
         uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
