@@ -16,9 +16,11 @@ Future<void> getNextNumber() async {
   DocumentSnapshot qs = await profileRef.doc("current_max_digit").get();
 
   if(qs.exists) {
-    Map<String,int> d = qs.data() as Map<String,int>;
+    Map<String,dynamic> d = qs.data() as Map<String,dynamic>;
     _nextNum = d['digit'];
   }
+  int da = _nextNum ?? 0;
+  db.collection("next_digit").doc("current_max_digit").update({"digit":(da+1)});
 
 
 }
@@ -73,8 +75,7 @@ class SignUp extends StatelessWidget {
       password: _passwordController.text.trim(),
     );
     await getNextNumber();
-    print(_nextNum);
-    createDefaultProfile();
+    await createDefaultProfile();
   }
 
   void dispose() {
