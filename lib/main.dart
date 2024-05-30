@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'package:gameonconnect/pages/customize_page.dart';
+
 import 'package:gameonconnect/pages/sign_up.dart';
+
 import 'package:gameonconnect/pages/profile_page.dart';
 import 'pages/home_page.dart';
 import 'firebase_options.dart'; 
@@ -45,6 +49,7 @@ class MyApp extends StatelessWidget {
           },
         ),
         '/home' : (context) => HomePage(title: 'GameOnConnect',),
+       '/customize' : (context) => CustomizeProfilePage(),
         '/sign_up' : (context) => SignUp(),
         '/profile' : (context) => Profile(),
       },
