@@ -34,13 +34,26 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
-          Text('Customize Profile', style: TextStyle(fontSize: 24)),
+          //Text('Customize Profile', style: TextStyle(fontSize: 24)),
+          const Align(
+          alignment: Alignment.center,
+           child: Text('Customize Profile', style: TextStyle(fontSize: 24)),   
+          ),
+          const SizedBox(height: 30),
           Center(
             child: CircleAvatar(
               radius: 60,
                backgroundColor: Colors.grey[300],  
             ),
           ),
+
+           const Align(
+          alignment: Alignment.center,
+           child: Text('Change picture', style: TextStyle(fontSize: 18)),   
+          ),
+          const SizedBox(height: 30),
+
+          
         ]
         ),
     );
