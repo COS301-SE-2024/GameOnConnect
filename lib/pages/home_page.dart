@@ -18,9 +18,25 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    createDefaultProfile();
+    //createDefaultProfile();
     databaseAccess();
+    //editProfile();
 
+  }
+
+  Future<void> editProfile() async
+  {
+    try{
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final data =  {"name": "Monika"};
+      // do this for any fields you want to update
+      await db.collection("profile_data").doc("svVm2V1l9YQCqJYH0y0Jpg3iapz2").update(data);
+    }catch (e)
+    {
+      setState(() {
+        _counter = "Error updating profile $e"; // Update counter with error message
+      });
+    }
   }
 
   Future<void> createDefaultProfile() async
@@ -37,7 +53,7 @@ class _HomePageState extends State<HomePage> {
         "social_interests_tags":[],
         "theme" : "light",
         "userID":"svVm2V1l9YQCqJYH0y0Jpg3iapz2",   // change this to dynamically add the user's id
-        "username": {"profile_name": "","uniwue_num":1},
+        "username": {"profile_name": "","unique_num":1},
         "visibility": true
       };
 
