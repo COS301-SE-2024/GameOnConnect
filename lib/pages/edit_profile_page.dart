@@ -6,13 +6,15 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
+          key: Key('backButton'),
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         title: CircleAvatar(
-          radius: 25.0, // Doubled the radius
+          key: Key('profileAvatar'),
+          radius: 25.0,
           backgroundColor: Colors.white,
           child: Container(
             decoration: BoxDecoration(
@@ -57,26 +59,27 @@ class _EditProfileFormState extends State<EditProfileForm> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 32.0), // Increased space between header and inputs
+            SizedBox(height: 32.0),
             Expanded(
               child: ListView(
                 children: [
-                  _buildTextInput('Username:', (value) => _username = value ?? ''),
-                  _buildTextInput('First Name:', (value) => _firstName = value ?? ''),
-                  _buildTextInput('Last Name:', (value) => _lastName = value ?? ''),
-                  _buildTextInput('Bio:', (value) => _bio = value ?? '', maxLines: 3),
-                  _buildDateInput('Birthday:'),
+                  _buildTextInput('Username:', (value) => _username = value ?? '', key: Key('usernameField')),
+                  _buildTextInput('First Name:', (value) => _firstName = value ?? '', key: Key('firstNameField')),
+                  _buildTextInput('Last Name:', (value) => _lastName = value ?? '', key: Key('lastNameField')),
+                  _buildTextInput('Bio:', (value) => _bio = value ?? '', maxLines: 3, key: Key('bioField')),
+                  _buildDateInput('Birthday:', key: Key('birthdayField')),
                   _buildSwitchInput('Private Account:', (value) {
                     setState(() {
                       _isPrivate = value;
                     });
-                  }),
+                  }, key: Key('privateAccountSwitch')),
                 ],
               ),
             ),
             SizedBox(height: 20.0),
             Center(
               child: ElevatedButton(
+                key: Key('saveButton'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[400],
                   foregroundColor: Colors.black,
@@ -99,7 +102,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildTextInput(String label, void Function(String?)? onSaved, {int maxLines = 1}) {
+  Widget _buildTextInput(String label, void Function(String?)? onSaved, {int maxLines = 1, required Key key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -111,6 +114,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
           Expanded(
             flex: 4,
             child: TextFormField(
+              key: key,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
@@ -127,7 +131,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildDateInput(String label) {
+  Widget _buildDateInput(String label, {required Key key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -139,6 +143,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
           Expanded(
             flex: 4,
             child: InkWell(
+              key: key,
               onTap: () async {
                 DateTime? picked = await showDatePicker(
                   context: context,
@@ -171,7 +176,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildSwitchInput(String label, Function(bool) onChanged) {
+  Widget _buildSwitchInput(String label, Function(bool) onChanged, {required Key key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -183,6 +188,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
           Expanded(
             flex: 4,
             child: Switch(
+              key: key,
               value: _isPrivate,
               onChanged: onChanged,
               activeColor: Colors.black,
