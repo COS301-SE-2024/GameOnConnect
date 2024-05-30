@@ -53,9 +53,63 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           ),
           const SizedBox(height: 30),
 
-          
+          const Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), 
+            child: Text('Genre interests:', style: TextStyle(fontSize: 15)),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+           Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomButtons(text: 'genre1'),
+                CustomButtons(text: 'genre2'),
+                CustomButtons(text: 'genre3'),
+              ],
+            )
         ]
         ),
     );
   }
 }
+
+class CustomButtons extends StatelessWidget {
+  final String text;
+  const CustomButtons({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(text),
+              const SizedBox(width: 8), // Space between text and icon
+              GestureDetector(
+                onTap: () {
+                  // TODO: Add the action you want to perform on tap
+                },
+                child: const Icon(
+                  Icons.close, // Cross icon for close
+                  size: 16.0,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
