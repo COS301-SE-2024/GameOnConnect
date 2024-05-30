@@ -87,7 +87,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 CustomButtons(text: 'Age rating 1'),
                 CustomButtons(text: 'Age rating 2'),
                 // add button 
-                //AddButton(),
+                AddButton(),
               ],
             ),
 
@@ -135,4 +135,30 @@ class CustomButtons extends StatelessWidget {
     );
   }
 }
+
+class AddButton extends StatelessWidget {
+  const AddButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+  onTap: () {
+    // TODO: Define what happens when the button is tapped
+  },
+  child: Container(
+    padding: const EdgeInsets.all(7), // Adjust the padding to change the size
+    decoration: BoxDecoration(
+      color: Colors.grey[300], // Choose the color of the button
+      shape: BoxShape.circle, // This makes the container circular
+    ),
+    child: const Icon(
+      Icons.add, // The plus icon
+      color: Colors.black, // Choose the color of the icon
+      size: 16, // Adjust the size of the icon
+    ),
+  ),
+);
+  }
+}
+
 
