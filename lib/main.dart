@@ -12,6 +12,7 @@ import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
+import 'pages/edit_profile_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           },
         ),
         '/home' : (context) => HomePage(title: 'GameOnConnect',),
+        '/edit-profile' : (context) => EditProfilePage(),
        '/customize' : (context) => CustomizeProfilePage(),
         '/sign_up' : (context) => SignUp(),
         '/profile' : (context) => Profile(),
