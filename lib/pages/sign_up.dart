@@ -204,6 +204,8 @@ class SignUp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _username = _usernameController.text;
                       signUp();
+                      Navigator.of(context).pop();
+
                     }
                   },
                   child: const Text(
