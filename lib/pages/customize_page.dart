@@ -113,11 +113,19 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             ),
 
             // DARK MODE
+            const SizedBox(height: 40),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                CustomButtons(text: 'interest1'),
-                CustomButtons(text: ' interest2'),
+               const Align(
+          alignment: Alignment.centerLeft,
+          child:    Padding(
+            padding: EdgeInsets.only(left: 30), 
+            child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
+            ),
+          ),
+          SizedBox(width: 20),
+          //Spacer(), 
                 // switch 
                 Switch(
       value: isDarkMode,
