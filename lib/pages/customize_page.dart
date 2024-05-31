@@ -291,11 +291,13 @@ class _SelectableDialogState extends State<SelectableDialog> {
       }
     });
   }
-  
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+
+  void _cancel() {
+    Navigator.pop(context);
+  }
+
+  void _submit() {
+    Navigator.pop(context, _selectedItems);
   }
 
   
