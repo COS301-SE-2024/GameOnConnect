@@ -17,6 +17,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _selectedGenres = [];
   List<String> _selectedAge = [];
   List<String> _selectedInterests = [];
+  List<String> _Interests = [];
 
   bool isDarkMode = false;
 
@@ -29,6 +30,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
     });
   }
+
+  Future<void> _fetchTags() async {
+  var url = Uri.parse('https://api.rawg.io/api/tags?key=2a10983b69914667a056ebcf6ea48151');
+  var response = await http.get(url);
+  var decoded = json.decode(response.body);
+
+  setState(() {
+    _Interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
+  });
+}
+
 
   Future<void> _showSelectableDialog(String title, List<String> items,
       void Function(List<String>) onSelected) async {
@@ -73,6 +85,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 void initState() {
   super.initState();
   _fetchGenres(); // Call the fetch genres function here
+   _fetchTags(); 
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
 
@@ -141,15 +154,6 @@ void initState() {
             const SizedBox(width: 20),
                 // add button
                 InkWell(
-      /*onTap: () => _showSelectableDialog(
-                'Select Genre',
-                ['genre1', 'genre2', 'genre3', 'genre4'],
-                (results) {
-                  _selectedGenres = results;
-                  // Call setState to update the UI with the selected items.
-                  setState(() {});
-                },
-              ),*/
               onTap: () => _showSelectableDialog(
                 'Select Genre',
                 _genres, // Use the _genres list here
@@ -231,12 +235,20 @@ void initState() {
             const SizedBox(width: 20),
                 // add button
                 InkWell(
-      onTap: () => _showSelectableDialog(
+      /*onTap: () => _showSelectableDialog(
                 'Select Social interest',
                 ['interest1', 'interest2', 'interest3', 'interest4'],
                 (results) {
                   _selectedInterests = results;
                   // Call setState to update the UI with the selected items.
+                  setState(() {});
+                },
+              ),*/
+               onTap: () => _showSelectableDialog(
+                'Select Social interest',
+                _Interests, // Use the _genres list here
+                (results) {
+                  _selectedInterests = results;
                   setState(() {});
                 },
               ),
