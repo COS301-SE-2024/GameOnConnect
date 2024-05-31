@@ -25,7 +25,7 @@ class Profile extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Customize profile logic
+              Navigator.pushNamed(context, '/customize');
             },
           ),
         ], 
