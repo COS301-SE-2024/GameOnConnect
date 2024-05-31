@@ -9,47 +9,6 @@ class EditProfilePage extends StatelessWidget {
 
 
 
-  // will figure this out if I have time
-  /*Future<void> databaseAccess() async {
-    try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      CollectionReference profileRef = db.collection("profile_data");
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-      if (currentUser != null){
-        DocumentSnapshot qs = await profileRef.doc(currentUser.uid).get();
-        if(qs.exists)
-        {
-          // access all data
-          setState(() {
-             = ;
-          });
-          print("profile exists: ${qs.data()}");
-          //access specific data :
-          Map<String,dynamic> d = qs.data() as Map<String,dynamic>;
-         *//* setState(() {
-            _counter = "profile exists: ${d['name']}";
-          });*//*
-
-        }else
-        {
-          *//*setState(() {
-            _counter = "Profile not found for user ";
-          });*//*
-        }
-      }
-
-
-    } catch (e) {
-      *//*setState(() {
-        _counter = "Error reading profile data"; // Update counter with error message
-      });*//*
-    }
-  }*/
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,18 +45,44 @@ class EditProfileForm extends StatefulWidget {
   EditProfileFormState createState() => EditProfileFormState();
 }
 
-class EditProfileFormState extends State<EditProfileForm> {
+class  EditProfileFormState  extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
-   String _username = "";
-   String _firstName = "";
-   String _lastName = "";
-   String _bio = "";
 
+  String _username = "";
+  String _firstName = "";
+  String _lastName = "";
+  String _bio = "";
   DateTime _birthday = DateTime.now();
   bool _isPrivate = false;
 
+
+  Future<void> databaseAccess() async {
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      CollectionReference profileRef = db.collection("profile_data");
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot qs = await profileRef.doc(currentUser.uid).get();
+        if (qs.exists) {
+          //access specific data :
+          Map<String, dynamic> d = qs.data() as Map<String, dynamic>;
+          print(d['name']);
+          _username = d['username.profile_name'];
+          print(_username);
+          _firstName = d['name'];
+          _lastName = d['surname'];
+          _bio = d['bio'];
+          _birthday = d['birthday'];
+          _isPrivate = d['visibility'];
+        }
+      }
+    } catch (e) {   }
+  }
+
   @override
   Widget build(BuildContext context) {
+    //databaseAccess();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -291,4 +276,5 @@ class EditProfileFormState extends State<EditProfileForm> {
       });*/
     }
   }
+
 }
