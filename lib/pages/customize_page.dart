@@ -216,22 +216,45 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
             // social interest title
           
-              Row(
+             Row(
                 children: <Widget>[
                   const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Social interests', style: TextStyle(fontSize: 15)), 
+              child: Text('Social interests ', style: TextStyle(fontSize: 15)), 
             ),
             const SizedBox(width: 20),
-                AddButton(),
-                ],
+                // add button
+                InkWell(
+      onTap: () => _showSelectableDialog(
+                'Select Social interest',
+                ['interest1', 'interest2', 'interest3', 'interest4'],
+                (results) {
+                  _selectedTopics = results;
+                  // Call setState to update the UI with the selected items.
+                  setState(() {});
+                },
               ),
+      child: Container(
+        padding: const EdgeInsets.all(5), // Adjust the padding to change the size
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Choose the color of the button
+          shape: BoxShape.circle, // This makes the container circular
+        ),
+        child: const Icon(
+          Icons.add, // The plus icon
+          color: Colors.black, // Choose the color of the icon
+          size: 12, // Adjust the size of the icon
+        ),
+      ),
+    )
+                ],
+              ),  
                   
             
 
             const SizedBox(height: 8),
 
-           //actual social interests
+           /*//actual social interests
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -241,7 +264,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 // add button 
                 //AddButton(),
               ],
-            ),
+            ),*/
 
 
             // DARK MODE
