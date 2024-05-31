@@ -45,7 +45,36 @@ class _HomePageState extends State<HomePage> {
               },
               color: Colors.grey[600],
               child: Text('Sign Out'),
-            )
+            ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/edit-profile');
+              },
+              color: Colors.grey[600],
+              child: Text('Edit Profile'),
+            ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/customize');
+              },
+              color: Colors.grey[600],
+              child: Text('Customize profile '),
+            ),
+             MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/sign_up');
+              },
+              color: Colors.grey[600],
+              child: Text('sign up page '),
+
+            ),
+           MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              color: Colors.grey[600],
+              child: Text('Profile page '),
+            ),
           ],
         ),
       ),
