@@ -19,7 +19,7 @@ class Profile extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // Edit profile logic
+               Navigator.pushNamed(context, '/edit-profile');
             },
           ),
           IconButton(
