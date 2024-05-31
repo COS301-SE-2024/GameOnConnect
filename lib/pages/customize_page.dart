@@ -90,51 +90,12 @@ void initState() {
   super.initState();
   _fetchGenres(); // Call the fetch genres function here
    _fetchTags(); 
+   _fetchUserSelections();
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
 
  Future<void> _saveProfileData() async {
   try {
-    /*final FirebaseAuth auth = FirebaseAuth.instance;
-    final currentUser = auth.currentUser;
-
-
-    if (currentUser != null) {
-      final db = FirebaseFirestore.instance;
-      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-      final docSnapshot = await profileDocRef.get();
-      if (!docSnapshot.exists) {
-    // Document does not exist, create a new one
-    await profileDocRef.set({
-      // Your data here
-    });
-  } else {
-    // Document exists, update it
-    await profileDocRef.update({
-      // Your data here
-    });
-  }
-
-      // Check if the genres array is not empty and update
-      if (_selectedGenres.isNotEmpty) {
-        await profileDocRef.update({"genre_interests_tags": _selectedGenres});
-      }
-
-      // Check if the age ratings array is not empty and update
-      if (_selectedAge.isNotEmpty) {
-        await profileDocRef.update({"age_rating_tags": _selectedAge});
-      }
-
-      // Check if the social interests array is not empty and update
-      if (_selectedInterests.isNotEmpty) {
-        await profileDocRef.update({"social_interests_tags": _selectedInterests});
-      }
-
-      print("Profile data updated successfully!");
-    }
-  } catch (e) {
-    print("Error updating profile data: $e");
-  }*/
   final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUser = auth.currentUser;
 
@@ -158,21 +119,31 @@ void initState() {
   }
 }
 
-/**
- * // Check if the document exists
-  final docSnapshot = await profileDocRef.get();
-  if (!docSnapshot.exists) {
-    // Document does not exist, create a new one
-    await profileDocRef.set({
-      // Your data here
-    });
-  } else {
-    // Document exists, update it
-    await profileDocRef.update({
-      // Your data here
-    });
+Future<void> _fetchUserSelections() async {
+
+  try{
+    final FirebaseAuth auth = FirebaseAuth.instance;
+  final currentUser = auth.currentUser;
+
+  if (currentUser != null) {
+    final db = FirebaseFirestore.instance;
+    final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+
+    final docSnapshot = await profileDocRef.get();
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      setState(() {
+        _selectedGenres = List<String>.from(data?['genre_interests_tags'] ?? []);
+        _selectedAge = List<String>.from(data?['age_rating_tag'] ?? []);
+        _selectedInterests = List<String>.from(data?['social_interests_tags'] ?? []);
+      });
+    }
   }
- */
+  }catch (e) {
+    print("Error fetching user selections: $e");
+  }
+  
+}
 
   
   @override
@@ -392,7 +363,8 @@ void initState() {
                   ),
                 ),
                 onPressed: () {
-                    _saveProfileData(); // Call the save profile data function here
+                    _saveProfileData(); 
+                     Navigator.of(context).pop();// Call the save profile data function here
                 },
                 child: const Text('Save Changes'),
               ),
