@@ -19,7 +19,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _selectedGenres = [];
   List<String> _selectedAge = [];
   List<String> _selectedInterests = [];
-  List<String> _Interests = [];
+  List<String> _interests = [];
 
   bool isDarkMode = false;
 
@@ -39,7 +39,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   var decoded = json.decode(response.body);
 
   setState(() {
-    _Interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
+    _interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
   });
 }
 
@@ -64,13 +64,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     return Wrap(
   spacing: 8.0, // Spacing between chips.
   children: selectedItems.map((item) => Chip(
-    padding: EdgeInsets.symmetric(vertical: 2),
+    padding: const EdgeInsets.symmetric(vertical: 2),
     label: Text(item),
     backgroundColor: Colors.grey[300], // Chip background color.
-    shape: StadiumBorder(), // Rounded corners.
+    shape: const StadiumBorder(), // Rounded corners.
     side: BorderSide.none, // Remove border
     onDeleted: () => onDeleted(item), // Callback when the delete icon is tapped.
-    deleteIcon: Icon(Icons.close, size: 16), // Close icon.
+    deleteIcon: const Icon(Icons.close, size: 16), // Close icon.
   )).toList(),
 );
 
@@ -112,10 +112,10 @@ void initState() {
 
       // Use set with merge to create or update the document
       await profileDocRef.set(data, SetOptions(merge: true));
-      print("Profile data set/updated successfully!");
+      //print("Profile data set/updated successfully!");
     }
   } catch (e) {
-    print("Error setting/updating profile data: $e");
+    //print("Error setting/updating profile data: $e");
   }
 }
 
@@ -140,7 +140,7 @@ Future<void> _fetchUserSelections() async {
     }
   }
   }catch (e) {
-    print("Error fetching user selections: $e");
+    //print("Error fetching user selections: $e");
   }
   
 }
@@ -293,7 +293,7 @@ Future<void> _fetchUserSelections() async {
                 InkWell(
                onTap: () => _showSelectableDialog(
                 'Select Social interest',
-                _Interests, // Use the _genres list here
+                _interests, // Use the _genres list here
                 (results) {
                   _selectedInterests = results;
                   setState(() {});
@@ -381,15 +381,15 @@ class SelectableDialog extends StatefulWidget {
   final String title;
   final List<String> items;
 
-  const SelectableDialog({Key? key, required this.title, required this.items})
-      : super(key: key);
+  const SelectableDialog({super.key, required this.title, required this.items});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SelectableDialogState createState() => _SelectableDialogState();
 }
 
 class _SelectableDialogState extends State<SelectableDialog> {
-  List<String> _selectedItems = [];
+  final List<String> _selectedItems = [];
   
    void _itemChange(String itemValue, bool isSelected) {
     setState(() {
