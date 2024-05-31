@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.home_filled),
               onPressed: () {
                 // _onItemTapped(0);
-                Navigator.pushNamed(context, '/home');
+                // Navigator.pushNamed(context, '/home');
               },
             ),
             IconButton(
