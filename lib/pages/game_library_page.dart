@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,7 +11,7 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
-  List<Game> _games = [];
+  final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
@@ -105,8 +106,10 @@ class Game {
   final int id;
   final String name;
   final String released;
+  // ignore: non_constant_identifier_names
   final String background_image;
 
+  // ignore: non_constant_identifier_names
   Game({required this.id, required this.name, required this.released, required this.background_image});
 
   factory Game.fromJson(Map<String, dynamic> json) {
