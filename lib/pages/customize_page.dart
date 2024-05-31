@@ -166,20 +166,42 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             const SizedBox(height: 45),
 
              // age rating title
-            Row(
+             Row(
                 children: <Widget>[
                   const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Age ratings', style: TextStyle(fontSize: 15)), 
+              child: Text('Age rating ', style: TextStyle(fontSize: 15)), 
             ),
             const SizedBox(width: 20),
-                AddButton(),
+                // add button
+                InkWell(
+      onTap: () => _showSelectableDialog(
+                'Select Age rating',
+                ['rating1', 'rating2', 'rating3', 'rating4'],
+                (results) {
+                  _selectedTopics = results;
+                  // Call setState to update the UI with the selected items.
+                  setState(() {});
+                },
+              ),
+      child: Container(
+        padding: const EdgeInsets.all(5), // Adjust the padding to change the size
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Choose the color of the button
+          shape: BoxShape.circle, // This makes the container circular
+        ),
+        child: const Icon(
+          Icons.add, // The plus icon
+          color: Colors.black, // Choose the color of the icon
+          size: 12, // Adjust the size of the icon
+        ),
+      ),
+    )
                 ],
               ),
-
             const SizedBox(height: 8),
 
-            //actual age ratings
+            /*//actual age ratings
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -188,7 +210,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 // add button 
                 AddButton(),
               ],
-            ),
+            ),*/
 
             const SizedBox(height: 45),
 
