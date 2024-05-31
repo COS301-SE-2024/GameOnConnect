@@ -300,7 +300,25 @@ class _SelectableDialogState extends State<SelectableDialog> {
     Navigator.pop(context, _selectedItems);
   }
 
-  
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.items
+              .map((item) => CheckboxListTile(
+                    value: _selectedItems.contains(item),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                  ))
+              .toList(),
+        ),
+      ),
+      
+    );
+  }
 
  
 }
