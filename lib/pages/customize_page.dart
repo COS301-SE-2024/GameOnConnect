@@ -282,11 +282,23 @@ class SelectableDialog extends StatefulWidget {
 class _SelectableDialogState extends State<SelectableDialog> {
   List<String> _selectedItems = [];
   
+   void _itemChange(String itemValue, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        _selectedItems.add(itemValue);
+      } else {
+        _selectedItems.remove(itemValue);
+      }
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
   }
+
+  
 
  
 }
