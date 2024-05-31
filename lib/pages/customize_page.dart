@@ -196,7 +196,7 @@ void initState() {
                 InkWell(
       onTap: () => _showSelectableDialog(
                 'Select Age rating',
-                ['rating1', 'rating2', 'rating3', 'rating4'],
+                ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16','PEGI 18' ],
                 (results) {
                   _selectedAge = results;
                   // Call setState to update the UI with the selected items.
@@ -235,15 +235,6 @@ void initState() {
             const SizedBox(width: 20),
                 // add button
                 InkWell(
-      /*onTap: () => _showSelectableDialog(
-                'Select Social interest',
-                ['interest1', 'interest2', 'interest3', 'interest4'],
-                (results) {
-                  _selectedInterests = results;
-                  // Call setState to update the UI with the selected items.
-                  setState(() {});
-                },
-              ),*/
                onTap: () => _showSelectableDialog(
                 'Select Social interest',
                 _Interests, // Use the _genres list here
