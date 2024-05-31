@@ -121,13 +121,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             const SizedBox(height: 45),
 
             // social interest title
-            const Align(
+          
+                  const Align(
               alignment: Alignment.centerLeft,
               child:    Padding(
                 padding: EdgeInsets.only(left: 30), 
                 child: Text('Social interests:', style: TextStyle(fontSize: 15)),
               ),
             ),
+            
 
             const SizedBox(height: 8),
 
@@ -139,7 +141,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 CustomButtons(text: ' interest2'),
 
                 // add button 
-                AddButton(),
+                //AddButton(),
               ],
             ),
 
@@ -248,7 +250,7 @@ class AddButton extends StatelessWidget {
         // 
       },
       child: Container(
-        padding: const EdgeInsets.all(7), // Adjust the padding to change the size
+        padding: const EdgeInsets.all(5), // Adjust the padding to change the size
         decoration: BoxDecoration(
           color: Colors.grey[300], // Choose the color of the button
           shape: BoxShape.circle, // This makes the container circular
@@ -256,11 +258,24 @@ class AddButton extends StatelessWidget {
         child: const Icon(
           Icons.add, // The plus icon
           color: Colors.black, // Choose the color of the icon
-          size: 16, // Adjust the size of the icon
+          size: 12, // Adjust the size of the icon
         ),
       ),
     );
   }
 }
 
+
+
+// Generic SelectableDialog widget.
+class SelectableDialog extends StatefulWidget {
+  final String title;
+  final List<String> items;
+
+  const SelectableDialog({Key? key, required this.title, required this.items})
+      : super(key: key);
+
+  @override
+  _SelectableDialogState createState() => _SelectableDialogState();
+}
 
