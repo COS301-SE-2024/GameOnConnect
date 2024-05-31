@@ -88,10 +88,10 @@ class EditProfileForm extends StatefulWidget {
 
 class EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
-  late String _username;
-  late String _firstName;
-  late String _lastName;
-  late String _bio;
+   String _username = "";
+   String _firstName = "";
+   String _lastName = "";
+   String _bio = "";
 
   DateTime _birthday = DateTime.now();
   bool _isPrivate = false;
@@ -167,6 +167,7 @@ class EditProfileFormState extends State<EditProfileForm> {
             flex: 4,
             child: TextFormField(
               key: key,
+              onChanged: onSaved,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
