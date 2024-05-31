@@ -33,6 +33,22 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
+   Widget _displaySelectedItems(List<String> selectedItems, void Function(String) onDeleted) {
+    return Wrap(
+  spacing: 8.0, // Spacing between chips.
+  children: selectedItems.map((item) => Chip(
+    padding: EdgeInsets.symmetric(vertical: 2),
+    label: Text(item),
+    backgroundColor: Colors.grey[300], // Chip background color.
+    shape: StadiumBorder(), // Rounded corners.
+    side: BorderSide.none, // Remove border
+    onDeleted: () => onDeleted(item), // Callback when the delete icon is tapped.
+    deleteIcon: Icon(Icons.close, size: 16), // Close icon.
+  )).toList(),
+);
+
+  }
+
   @override
    void initState() {
     super.initState();
