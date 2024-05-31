@@ -56,7 +56,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
   bool _isPrivate = false;
 
 
-  Future<void> databaseAccess() async {
+ /* Future<void> databaseAccess() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       CollectionReference profileRef = db.collection("profile_data");
@@ -78,7 +78,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         }
       }
     } catch (e) {   }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -261,11 +261,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
           final data = { "bio" :bio};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
-        if (birthday != ""){
-          final data = { "birthday" :birthday};
-          await db.collection("profile_data").doc(currentUser.uid).update(data);
-        }
-        final data = {"visibility":privacy};
+        final data = { "birthday" :birthday,"visibility":privacy };
         await db.collection("profile_data").doc(currentUser.uid).update(data);
 
       }
