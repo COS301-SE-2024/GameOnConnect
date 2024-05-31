@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -22,18 +23,33 @@ class Profile extends StatelessWidget {
             String username = data['username.profile_name'] ?? 'username';
             String profilePicture = data['profile_picture'] ?? '';
 
+            String profilePictureUrl = ''; 
+
+            if (profilePicture.isNotEmpty) {
+              try {
+                // Use refFromURL for a full URL
+                Reference storageRef = FirebaseStorage.instance.refFromURL(profilePicture);
+                profilePictureUrl = await storageRef.getDownloadURL();
+              } catch (e) {
+                print('Error fetching profile picture: $e ' + profilePicture);
+              }
+            }
+
             return {
               'profileName': profileName,
               'username': username,
-              'profilePicture': profilePicture
+              'profilePicture': profilePictureUrl
             };
           } else {
+            print('Document does not exist.');
             return null;
           }
         } else {
+          print('No current user.');
           return null;
         }
       } catch (e) {
+        print('Error fetching profile data: $e');
         return null;
       }
     }
@@ -122,8 +138,9 @@ class Profile extends StatelessWidget {
                       //profile picture
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: NetworkImage(profilePicture),
                         backgroundColor: Colors.grey, // Placeholder for profile image
+                        backgroundImage: NetworkImage(profilePicture),
+                        child: profilePicture.isEmpty ? CircularProgressIndicator() : null,
                       ),
                     ),
                   ],
