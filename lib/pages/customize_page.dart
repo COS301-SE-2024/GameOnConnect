@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +24,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   bool isDarkMode = false;
 
   Future<void> _fetchGenres() async {
-    var url = Uri.parse('https://api.rawg.io/api/genres?key=2a10983b69914667a056ebcf6ea48151');
+    var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
     var response = await http.get(url);
     var decoded = json.decode(response.body);
 
@@ -32,7 +34,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 
   Future<void> _fetchTags() async {
-  var url = Uri.parse('https://api.rawg.io/api/tags?key=2a10983b69914667a056ebcf6ea48151');
+  var url = Uri.parse('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
   var response = await http.get(url);
   var decoded = json.decode(response.body);
 
@@ -81,6 +83,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     });
   }
 
+  
+
   @override
 void initState() {
   super.initState();
@@ -88,6 +92,87 @@ void initState() {
    _fetchTags(); 
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
+
+ Future<void> _saveProfileData() async {
+  try {
+    /*final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+      final docSnapshot = await profileDocRef.get();
+      if (!docSnapshot.exists) {
+    // Document does not exist, create a new one
+    await profileDocRef.set({
+      // Your data here
+    });
+  } else {
+    // Document exists, update it
+    await profileDocRef.update({
+      // Your data here
+    });
+  }
+
+      // Check if the genres array is not empty and update
+      if (_selectedGenres.isNotEmpty) {
+        await profileDocRef.update({"genre_interests_tags": _selectedGenres});
+      }
+
+      // Check if the age ratings array is not empty and update
+      if (_selectedAge.isNotEmpty) {
+        await profileDocRef.update({"age_rating_tags": _selectedAge});
+      }
+
+      // Check if the social interests array is not empty and update
+      if (_selectedInterests.isNotEmpty) {
+        await profileDocRef.update({"social_interests_tags": _selectedInterests});
+      }
+
+      print("Profile data updated successfully!");
+    }
+  } catch (e) {
+    print("Error updating profile data: $e");
+  }*/
+  final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+
+      // Data to be set or updated
+      final data = {
+        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
+        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
+      };
+
+      // Use set with merge to create or update the document
+      await profileDocRef.set(data, SetOptions(merge: true));
+      print("Profile data set/updated successfully!");
+    }
+  } catch (e) {
+    print("Error setting/updating profile data: $e");
+  }
+}
+
+/**
+ * // Check if the document exists
+  final docSnapshot = await profileDocRef.get();
+  if (!docSnapshot.exists) {
+    // Document does not exist, create a new one
+    await profileDocRef.set({
+      // Your data here
+    });
+  } else {
+    // Document exists, update it
+    await profileDocRef.update({
+      // Your data here
+    });
+  }
+ */
 
   
   @override
@@ -307,7 +392,7 @@ void initState() {
                   ),
                 ),
                 onPressed: () {
-                    //  update database
+                    _saveProfileData(); // Call the save profile data function here
                 },
                 child: const Text('Save Changes'),
               ),
@@ -318,68 +403,6 @@ void initState() {
     );
   }
 }
-
-
-class CustomButtons extends StatelessWidget {
-  final String text;
-  const CustomButtons({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(text),
-              const SizedBox(width: 8), // Space between text and icon
-              GestureDetector(
-                onTap: () {
-                  // 
-                },
-                child: const Icon(
-                  Icons.close, // Cross icon for close
-                  size: 16.0,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AddButton extends StatelessWidget {
-  const AddButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        padding: const EdgeInsets.all(5), // Adjust the padding to change the size
-        decoration: BoxDecoration(
-          color: Colors.grey[300], // Choose the color of the button
-          shape: BoxShape.circle, // This makes the container circular
-        ),
-        child: const Icon(
-          Icons.add, // The plus icon
-          color: Colors.black, // Choose the color of the icon
-          size: 12, // Adjust the size of the icon
-        ),
-      ),
-    );
-  }
-}
-
-
 
 // Generic SelectableDialog widget.
 class SelectableDialog extends StatefulWidget {
@@ -446,5 +469,6 @@ class _SelectableDialogState extends State<SelectableDialog> {
 
  
 }
+
 
 
