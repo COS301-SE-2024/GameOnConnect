@@ -316,7 +316,16 @@ class _SelectableDialogState extends State<SelectableDialog> {
               .toList(),
         ),
       ),
-      
+      actions: [
+        TextButton(
+          onPressed: _cancel,
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: _submit,
+          child: const Text('Submit'),
+        ),
+      ],
     );
   }
 
