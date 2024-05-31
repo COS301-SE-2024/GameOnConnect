@@ -49,6 +49,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   }
 
+  // Function to handle deletion of a selected item.
+  void _deleteSelectedItem(String item, List<String> selectedList) {
+    setState(() {
+      selectedList.remove(item);
+    });
+  }
+
   @override
    void initState() {
     super.initState();
