@@ -11,8 +11,8 @@ class CustomizeProfilePage extends StatefulWidget {
 
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
-  List<String> _selectedTopics = [];
   List<String> _selectedGenres = [];
+  List<String> _selectedAge = [];
   List<String> _selectedInterests = [];
 
   bool isDarkMode = false;
@@ -130,7 +130,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 'Select Genre',
                 ['genre1', 'genre2', 'genre3', 'genre4'],
                 (results) {
-                  _selectedTopics = results;
+                  _selectedGenres = results;
                   // Call setState to update the UI with the selected items.
                   setState(() {});
                 },
@@ -152,6 +152,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               ),
 
           const SizedBox(height: 8),
+           _displaySelectedItems(_selectedGenres, (item) => _deleteSelectedItem(item, _selectedGenres)),
+
 
           /*actual genres
            const Row(
@@ -162,8 +164,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 CustomButtons(text: 'genre3'),
               ],
             ),*/
-
-            const SizedBox(height: 45),
+            const SizedBox(height: 15),
+            //const SizedBox(height: 45),
 
              // age rating title
              Row(
@@ -179,7 +181,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 'Select Age rating',
                 ['rating1', 'rating2', 'rating3', 'rating4'],
                 (results) {
-                  _selectedTopics = results;
+                  _selectedAge = results;
                   // Call setState to update the UI with the selected items.
                   setState(() {});
                 },
@@ -196,10 +198,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           size: 12, // Adjust the size of the icon
         ),
       ),
-    )
+    ),
                 ],
               ),
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
+                  _displaySelectedItems(_selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
+
+            const SizedBox(height: 15),
 
             /*//actual age ratings
             const Row(
@@ -212,7 +217,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               ],
             ),*/
 
-            const SizedBox(height: 45),
+            //const SizedBox(height: 45),
 
             // social interest title
           
@@ -229,7 +234,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 'Select Social interest',
                 ['interest1', 'interest2', 'interest3', 'interest4'],
                 (results) {
-                  _selectedTopics = results;
+                  _selectedInterests = results;
                   // Call setState to update the UI with the selected items.
                   setState(() {});
                 },
@@ -253,6 +258,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             
 
             const SizedBox(height: 8),
+            _displaySelectedItems(_selectedInterests, (item) => _deleteSelectedItem(item, _selectedInterests)),
+
 
            /*//actual social interests
             const Row(
@@ -268,17 +275,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
 
             // DARK MODE
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
 
             Row(
               children: <Widget>[
                 // title
               const Align(
                 alignment: Alignment.centerLeft,
-                child:    Padding(
-                  padding: EdgeInsets.only(left: 30), 
-                  child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
-                ),
+                child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
               ),
 
             const SizedBox(width: 20),
