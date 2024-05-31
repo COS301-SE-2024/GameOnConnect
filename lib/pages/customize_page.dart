@@ -188,8 +188,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   ),
                 ),
                 onPressed: () {
-                    //  update database
-                },
+            Navigator.of(context).pop();
+          },
                 child: const Text('Save Changes'),
               ),
             ),

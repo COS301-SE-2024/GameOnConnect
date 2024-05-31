@@ -96,6 +96,7 @@ class EditProfileFormState extends State<EditProfileForm> {
                     _formKey.currentState?.save();
                     // Handle save logic here
                   }
+                  Navigator.of(context).pop();
                 },
                 child: const Text('Save Changes'),
               ),
