@@ -17,6 +17,22 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
 
+  Future<void> _showSelectableDialog(String title, List<String> items,
+      void Function(List<String>) onSelected) async {
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SelectableDialog(title: title, items: items);
+      },
+    );
+
+    if (results != null) {
+      setState(() {
+        onSelected(results);
+      });
+    }
+  }
+
   @override
    void initState() {
     super.initState();
