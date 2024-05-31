@@ -11,6 +11,10 @@ class CustomizeProfilePage extends StatefulWidget {
 
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
+  List<String> _selectedTopics = [];
+  List<String> _selectedGenres = [];
+  List<String> _selectedInterests = [];
+
   bool isDarkMode = false;
 
   @override
