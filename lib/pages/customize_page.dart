@@ -117,17 +117,43 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           const SizedBox(height: 30),
 
           //genre title
-          const Align(
-            alignment: Alignment.centerLeft,
-            child:    Padding(
-              padding: EdgeInsets.only(left: 30), 
-              child: Text('Genre interests:', style: TextStyle(fontSize: 15)),
+         Row(
+                children: <Widget>[
+                  const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Genre', style: TextStyle(fontSize: 15)), 
             ),
-          ),
+            const SizedBox(width: 20),
+                // add button
+                InkWell(
+      onTap: () => _showSelectableDialog(
+                'Select Genre',
+                ['genre1', 'genre2', 'genre3', 'genre4'],
+                (results) {
+                  _selectedTopics = results;
+                  // Call setState to update the UI with the selected items.
+                  setState(() {});
+                },
+              ),
+      child: Container(
+        padding: const EdgeInsets.all(5), // Adjust the padding to change the size
+        decoration: BoxDecoration(
+          color: Colors.grey[300], // Choose the color of the button
+          shape: BoxShape.circle, // This makes the container circular
+        ),
+        child: const Icon(
+          Icons.add, // The plus icon
+          color: Colors.black, // Choose the color of the icon
+          size: 12, // Adjust the size of the icon
+        ),
+      ),
+    )
+                ],
+              ),
 
           const SizedBox(height: 8),
 
-          // actual genres
+          /*actual genres
            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -135,18 +161,21 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 CustomButtons(text: 'genre2'),
                 CustomButtons(text: 'genre3'),
               ],
-            ),
+            ),*/
 
             const SizedBox(height: 45),
 
              // age rating title
-            const Align(
+            Row(
+                children: <Widget>[
+                  const Align(
               alignment: Alignment.centerLeft,
-              child:    Padding(
-                padding: EdgeInsets.only(left: 30), 
-                child: Text('Age ratings:', style: TextStyle(fontSize: 15)),
-              ),
+              child: Text('Age ratings', style: TextStyle(fontSize: 15)), 
             ),
+            const SizedBox(width: 20),
+                AddButton(),
+                ],
+              ),
 
             const SizedBox(height: 8),
 
@@ -165,13 +194,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
             // social interest title
           
+              Row(
+                children: <Widget>[
                   const Align(
               alignment: Alignment.centerLeft,
-              child:    Padding(
-                padding: EdgeInsets.only(left: 30), 
-                child: Text('Social interests:', style: TextStyle(fontSize: 15)),
-              ),
+              child: Text('Social interests', style: TextStyle(fontSize: 15)), 
             ),
+            const SizedBox(width: 20),
+                AddButton(),
+                ],
+              ),
+                  
             
 
             const SizedBox(height: 8),
@@ -289,9 +322,6 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // 
-      },
       child: Container(
         padding: const EdgeInsets.all(5), // Adjust the padding to change the size
         decoration: BoxDecoration(
@@ -341,6 +371,7 @@ class _SelectableDialogState extends State<SelectableDialog> {
 
   void _submit() {
     Navigator.pop(context, _selectedItems);
+    // seend to the database 
   }
 
   @override
