@@ -279,3 +279,16 @@ class SelectableDialog extends StatefulWidget {
   _SelectableDialogState createState() => _SelectableDialogState();
 }
 
+class _SelectableDialogState extends State<SelectableDialog> {
+  List<String> _selectedItems = [];
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+
+ 
+}
+
+
