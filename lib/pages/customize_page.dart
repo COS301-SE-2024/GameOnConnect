@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -11,11 +13,22 @@ class CustomizeProfilePage extends StatefulWidget {
 
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
+  List<String> _genres = [];
   List<String> _selectedGenres = [];
   List<String> _selectedAge = [];
   List<String> _selectedInterests = [];
 
   bool isDarkMode = false;
+
+  Future<void> _fetchGenres() async {
+    var url = Uri.parse('https://api.rawg.io/api/genres?key=2a10983b69914667a056ebcf6ea48151');
+    var response = await http.get(url);
+    var decoded = json.decode(response.body);
+
+    setState(() {
+      _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
+    });
+  }
 
   Future<void> _showSelectableDialog(String title, List<String> items,
       void Function(List<String>) onSelected) async {
@@ -57,10 +70,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 
   @override
-   void initState() {
-    super.initState();
-    isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
-  }
+void initState() {
+  super.initState();
+  _fetchGenres(); // Call the fetch genres function here
+  isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
+}
+
   
   @override
   Widget build(BuildContext context) {
@@ -126,12 +141,20 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             const SizedBox(width: 20),
                 // add button
                 InkWell(
-      onTap: () => _showSelectableDialog(
+      /*onTap: () => _showSelectableDialog(
                 'Select Genre',
                 ['genre1', 'genre2', 'genre3', 'genre4'],
                 (results) {
                   _selectedGenres = results;
                   // Call setState to update the UI with the selected items.
+                  setState(() {});
+                },
+              ),*/
+              onTap: () => _showSelectableDialog(
+                'Select Genre',
+                _genres, // Use the _genres list here
+                (results) {
+                  _selectedGenres = results;
                   setState(() {});
                 },
               ),
@@ -154,16 +177,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           const SizedBox(height: 8),
            _displaySelectedItems(_selectedGenres, (item) => _deleteSelectedItem(item, _selectedGenres)),
 
-
-          /*actual genres
-           const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CustomButtons(text: 'genre1'),
-                CustomButtons(text: 'genre2'),
-                CustomButtons(text: 'genre3'),
-              ],
-            ),*/
             const SizedBox(height: 15),
             //const SizedBox(height: 45),
 
@@ -206,18 +219,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
             const SizedBox(height: 15),
 
-            /*//actual age ratings
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CustomButtons(text: 'Age rating1'),
-                CustomButtons(text: 'Age rating2'),
-                // add button 
-                AddButton(),
-              ],
-            ),*/
-
-            //const SizedBox(height: 45),
 
             // social interest title
           
@@ -260,18 +261,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             const SizedBox(height: 8),
             _displaySelectedItems(_selectedInterests, (item) => _deleteSelectedItem(item, _selectedInterests)),
 
-
-           /*//actual social interests
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CustomButtons(text: 'interest1'),
-                CustomButtons(text: ' interest2'),
-
-                // add button 
-                //AddButton(),
-              ],
-            ),*/
 
 
             // DARK MODE
