@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -10,6 +12,12 @@ class CustomizeProfilePage extends StatefulWidget {
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
+
+  @override
+   void initState() {
+    super.initState();
+    isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -159,11 +167,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               onChanged: (newValue) {
                 setState(() {
                   isDarkMode = newValue;
-                  // You can also add functionality here to change the app's theme
                 });
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
               },
-              activeColor: Colors.black, // Set the color when the switch is ON
-              inactiveThumbColor: Colors.grey, // Set the color when the switch is OFF
             ),
           ],
         ),

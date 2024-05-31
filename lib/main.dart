@@ -1,18 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:gameonconnect/pages/customize_page.dart';
-
+import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
-
 import 'package:gameonconnect/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 import 'firebase_options.dart'; 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,32 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await db.collection('profile_data').doc(user.uid).get();
+
+      if (userDoc.exists) {
+        String theme = userDoc['theme'] as String;
+        if (theme == 'dark') {
+          themeProvider.setDarkMode();
+        } else {
+          themeProvider.setLightMode();
+        }
+      }
+    }
+  }
+
+  ThemeProvider themeProvider = ThemeProvider();
+
+  await fetchUserTheme(themeProvider);
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: themeProvider,
+      child: const MyApp())
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,12 +57,11 @@ class MyApp extends StatelessWidget {
   // This is the root of our application.
   @override
   Widget build(BuildContext context) {
+    //_fetchUserTheme(Provider.of<ThemeProvider>(context));
     return MaterialApp(
       title: 'GameOnConnect',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
-      ),
+      theme: Provider.of<ThemeProvider>(context).themeData,
+      //themeMode: _themeManager.themeMode,
       routes: {
         '/' : (context) => StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -60,5 +84,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 
