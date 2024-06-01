@@ -49,6 +49,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 |<img style="float: right; width=700;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/a19724a9-8f86-442f-adbb-ac76f4b3257f" >|Meet Lerato , experienced in front-end development, database architecture, and a range of programming languages. With familiarity in Angular and Ionic, they create user-friendly interfaces that blend creativity and functionality seamlessly. Exploring further, they find joy in the details of database design, using languages like MySQL to construct efficient data structures. Beyond front-end development and databases, their skill set extends to Python, Java,C++, and JavaScript, enabling them to tackle various challenges with ease. Committed to lifelong learning, they  continually seeks new opportunities to expand their knowledge and contribute meaningfully to projects.|
 |-------------------------------------|-------------------------------------|
 |[![My Skills](https://skillicons.dev/icons?i=linkedin)](https://skillicons.dev)| https://www.linkedin.com/in/lerato-kgomoeswana-694500256/|
+
 <br><br>
 
 # Technologies #
