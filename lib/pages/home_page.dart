@@ -25,12 +25,12 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-              FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut();
               },
               color: Colors.grey[600],
               child: Text('Sign Out'),
             ),
-           /* MaterialButton(
+            /* MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/edit-profile');
               },
@@ -44,20 +44,26 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey[600],
               child: Text('Customize profile '),
             ),*/
-             MaterialButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/sign_up');
               },
               color: Colors.grey[600],
-              child: Text('sign up page '),
-
+              child: Text('Sign Up Page '),
             ),
-           MaterialButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
               color: Colors.grey[600],
-              child: Text('Profile page '),
+              child: Text('Profile Page '),
+            ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/game_library');
+              },
+              color: Colors.grey[600],
+              child: Text('Game Library Page '),
             ),
           ],
         ),
