@@ -363,9 +363,11 @@ Future<void> _fetchUserSelections() async {
                   ),
                 ),
                 onPressed: () {
+
                     _saveProfileData(); 
                      Navigator.of(context).pop();// Call the save profile data function here
                 },
+
                 child: const Text('Save Changes'),
               ),
             ),

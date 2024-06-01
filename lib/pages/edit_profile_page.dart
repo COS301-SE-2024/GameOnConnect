@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class EditProfilePage extends StatelessWidget {
   // ignore: use_super_parameters
   const EditProfilePage({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +45,44 @@ class EditProfileForm extends StatefulWidget {
   EditProfileFormState createState() => EditProfileFormState();
 }
 
-class EditProfileFormState extends State<EditProfileForm> {
+class  EditProfileFormState  extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 
+  String _username = "";
+  String _firstName = "";
+  String _lastName = "";
+  String _bio = "";
   DateTime _birthday = DateTime.now();
   bool _isPrivate = false;
 
+
+ /* Future<void> databaseAccess() async {
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      CollectionReference profileRef = db.collection("profile_data");
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot qs = await profileRef.doc(currentUser.uid).get();
+        if (qs.exists) {
+          //access specific data :
+          Map<String, dynamic> d = qs.data() as Map<String, dynamic>;
+          print(d['name']);
+          _username = d['username.profile_name'];
+          print(_username);
+          _firstName = d['name'];
+          _lastName = d['surname'];
+          _bio = d['bio'];
+          _birthday = d['birthday'];
+          _isPrivate = d['visibility'];
+        }
+      }
+    } catch (e) {   }
+  }*/
+
   @override
   Widget build(BuildContext context) {
+    //databaseAccess();
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -64,19 +99,16 @@ class EditProfileFormState extends State<EditProfileForm> {
             Expanded(
               child: ListView(
                 children: [
-                  _buildTextInput('Username:', key: const Key('usernameField')),
-                  _buildTextInput('First Name:', key: const Key('firstNameField')),
-                  _buildTextInput('Last Name:', key: const Key('lastNameField')),
-                  _buildTextInput('Bio:', maxLines: 3, key: const Key('bioField')),
+                  _buildTextInput('Username:', (value) => _username = value ?? '', key: const Key('usernameField')),
+                  _buildTextInput('First Name:', (value) => _firstName = value ?? '', key: const Key('firstNameField')),
+                  _buildTextInput('Last Name:', (value) => _lastName = value ?? '', key: const Key('lastNameField')),
+                  _buildTextInput('Bio:', (value) => _bio = value ?? '', maxLines: 3, key: const Key('bioField')),
                   _buildDateInput('Birthday:', key: const Key('birthdayField')),
-                  _buildSwitchInput(
-                    'Private Account:',
-                    (value) {
-                      setState(() {
-                        _isPrivate = value;
-                      });
-                    },
-                    key: const Key('privateAccountSwitch'),
+                  _buildSwitchInput('Private Account:', (value) {
+                    setState(() {
+                      _isPrivate = value;
+                    });
+                  }, key: const Key('privateAccountSwitch'),
                   ),
                 ],
               ),
@@ -95,7 +127,9 @@ class EditProfileFormState extends State<EditProfileForm> {
                   if (_formKey.currentState?.validate() == true) {
                     _formKey.currentState?.save();
                     // Handle save logic here
+                    editProfile(_username,_firstName,_lastName,_bio,_birthday, _isPrivate);
                   }
+                  Navigator.of(context).pop();
                 },
                 child: const Text('Save Changes'),
               ),
@@ -106,7 +140,7 @@ class EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildTextInput(String label, {int maxLines = 1, Key? key}) {
+  Widget _buildTextInput(String label, void Function(String?)? onSaved, {int maxLines = 1, required Key key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -119,6 +153,7 @@ class EditProfileFormState extends State<EditProfileForm> {
             flex: 4,
             child: TextFormField(
               key: key,
+              onChanged: onSaved,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
@@ -203,4 +238,40 @@ class EditProfileFormState extends State<EditProfileForm> {
       ),
     );
   }
+  Future<void> editProfile(String username,String firstname, String lastName, String bio, DateTime birthday,bool privacy) async
+  {
+    try{
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        if (username != "") {
+          final data = { "username.profile_name" :username};
+          await db.collection("profile_data").doc(currentUser.uid).update(data);
+        }
+        if(firstname != "")
+        {
+            final data = { "name" :firstname};
+            await db.collection("profile_data").doc(currentUser.uid).update(data);
+        }
+        if (lastName != "") {
+          final data = { "surname" :lastName};
+          await db.collection("profile_data").doc(currentUser.uid).update(data);
+        }
+        if (bio != ""){
+          final data = { "bio" :bio};
+          await db.collection("profile_data").doc(currentUser.uid).update(data);
+        }
+        final data = { "birthday" :birthday,"visibility":privacy };
+        await db.collection("profile_data").doc(currentUser.uid).update(data);
+
+      }
+    }catch (e)
+    {
+      /*setState(() {
+        _counter = "Error updating profile $e"; // Update counter with error message
+      });*/
+    }
+  }
+
 }
