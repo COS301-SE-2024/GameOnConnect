@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,8 +21,9 @@ class Profile extends StatelessWidget {
 
           if (doc.exists) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            Map<String,dynamic> userInfo = data['username'] as Map <String, dynamic>;
             String profileName = data['name'] ?? '';
-            String username = data['username.profile_name'] ?? 'username';
+            String username = userInfo['profile_name'] ?? 'username';
             String profilePicture = data['profile_picture'] ?? '';
 
             String profilePictureUrl = ''; 
