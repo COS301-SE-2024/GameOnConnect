@@ -36,7 +36,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 <div align="center"> <strong>Shannon Venter</strong> </div><br>
 
 
-|<img style="width: 300;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522">|Shannon has experience in programming languages such as Java and C++. She enjoys working in a team environment and has experience in project management. Shannon takes a keen interest in game development and studies computer science. Shannon has also had an internship working with app development.|
+|<img style="width: 30%;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522">|Shannon has experience in programming languages such as Java and C++. She enjoys working in a team environment and has experience in project management. Shannon takes a keen interest in game development and studies computer science. Shannon has also had an internship working with app development.|
 |-------------------------------------|-------------------------------------|
 |[![My Skills](https://skillicons.dev/icons?i=linkedin)](https://skillicons.dev)| https://www.linkedin.com/in/shannon-venter-508113279/|
 
