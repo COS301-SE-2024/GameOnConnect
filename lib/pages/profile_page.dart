@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +20,7 @@ class Profile extends StatelessWidget {
           if (doc.exists) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             Map<String,dynamic> userInfo = data['username'] as Map <String, dynamic>;
-            String profileName = data['name'] ?? '';
+            String profileName = data['name'] ?? 'Profile name';
             String username = userInfo['profile_name'] ?? 'username';
             String profilePicture = data['profile_picture'] ?? '';
 
@@ -34,7 +32,7 @@ class Profile extends StatelessWidget {
                 Reference storageRef = FirebaseStorage.instance.refFromURL(profilePicture);
                 profilePictureUrl = await storageRef.getDownloadURL();
               } catch (e) {
-                print('Error fetching profile picture: $e ' + profilePicture);
+                return null;
               }
             }
 
@@ -44,15 +42,12 @@ class Profile extends StatelessWidget {
               'profilePicture': profilePictureUrl
             };
           } else {
-            print('Document does not exist.');
             return null;
           }
         } else {
-          print('No current user.');
           return null;
         }
       } catch (e) {
-        print('Error fetching profile data: $e');
         return null;
       }
     }
