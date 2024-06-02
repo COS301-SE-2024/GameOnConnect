@@ -111,6 +111,7 @@ class SignUp extends StatelessWidget {
                       child: SizedBox(
                         width: _textFieldWidth,
                         child: TextFormField(
+                          key: Key('usernameInput'),
                           controller: _usernameController,
                           decoration:
                               _inputDecoration.copyWith(labelText: 'Username'),
@@ -128,6 +129,7 @@ class SignUp extends StatelessWidget {
                       child: SizedBox(
                         width: _textFieldWidth,
                         child: TextFormField(
+                          key: Key('emailInput'),
                           controller: _emailController,
                           decoration:
                               _inputDecoration.copyWith(labelText: 'Email'),
@@ -150,6 +152,7 @@ class SignUp extends StatelessWidget {
                       child: SizedBox(
                         width: _textFieldWidth,
                         child: TextFormField(
+                          key: Key('passwordInput'),
                           controller: _passwordController,
                           obscureText: true,
                           decoration:
@@ -173,6 +176,7 @@ class SignUp extends StatelessWidget {
                       child: SizedBox(
                         width: _textFieldWidth,
                         child: TextFormField(
+                          key: Key('confirmPasswordInput'),
                           controller: _confirmPasswordController,
                           obscureText: true,
                           decoration: _inputDecoration.copyWith(
@@ -209,6 +213,7 @@ class SignUp extends StatelessWidget {
                     }
                   },
                   child: const Text(
+                    key: Key('signUpButton'),
                     "Sign Up",
                     style: TextStyle(
                       fontSize: 20,

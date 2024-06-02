@@ -2,12 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
+import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
-import 'firebase_options.dart'; 
+import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
@@ -19,14 +20,16 @@ void main() async {
 
   await dotenv.load();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore db = FirebaseFirestore.instance;
-      DocumentSnapshot userDoc = await db.collection('profile_data').doc(user.uid).get();
+      DocumentSnapshot userDoc =
+          await db.collection('profile_data').doc(user.uid).get();
 
       if (userDoc.exists) {
         String theme = userDoc['theme'] as String;
@@ -44,10 +47,7 @@ void main() async {
   await fetchUserTheme(themeProvider);
 
   runApp(
-    ChangeNotifierProvider.value(
-      value: themeProvider,
-      child: const MyApp())
-    );
+      ChangeNotifierProvider.value(value: themeProvider, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -63,27 +63,29 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeProvider>(context).themeData,
       //themeMode: _themeManager.themeMode,
       routes: {
-        '/' : (context) => StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            if (snapshot.hasData) {
-              return HomePage(title: 'GameOnConnect',);
-            } else {
-              return const Login();
-            }
-          },
-        ),
-        '/home' : (context) => HomePage(title: 'GameOnConnect',),
-        '/edit-profile' : (context) => EditProfilePage(),
-       '/customize' : (context) => CustomizeProfilePage(),
-        '/sign_up' : (context) => SignUp(),
-        '/profile' : (context) => Profile(),
+        '/': (context) => StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+                if (snapshot.hasData) {
+                  return HomePage(
+                    title: 'GameOnConnect',
+                  );
+                } else {
+                  return const Login();
+                }
+              },
+            ),
+        '/home': (context) => HomePage(
+              title: 'GameOnConnect',
+            ),
+        '/edit-profile': (context) => EditProfilePage(),
+        '/customize': (context) => CustomizeProfilePage(),
+        '/sign_up': (context) => SignUp(),
+        '/profile': (context) => Profile(),
+        '/game_library': (context) => GameLibrary(),
       },
       initialRoute: '/',
-     //home: Profile()
+      //home: Profile()
     );
   }
 }
-
-
-
