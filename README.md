@@ -58,4 +58,9 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 
 <br><br>
 
-
+# Technologies #
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=flutter,firebase,androidstudio,dart,figma,git,github,vscode,notion" />
+  </a>
+</p>
