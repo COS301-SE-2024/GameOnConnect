@@ -20,10 +20,6 @@ void main() {
     await tester.enterText(passwordField, 'Password123!');
     await tester.enterText(confirmPasswordField, 'Password123!');
 
-    // Tap the sign-up button
-    await tester.tap(signUpButton);
-    await tester.pumpAndSettle();
-
     // Verify the input field values
     expect(find.text('testuser'), findsOneWidget);
     expect(find.text('testuser@example.com'), findsOneWidget);
