@@ -1,167 +1,236 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:provider/provider.dart';
-import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
 
-import 'customize_page_test.mocks.dart';
-
-@GenerateMocks([
-  http.Client,
-  FirebaseAuth,
-  User,
-  FirebaseFirestore,
-  CollectionReference,
-  DocumentReference,
-  DocumentSnapshot,
-  ThemeProvider,
-])
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Define the mock clients
-  final mockHttpClient = MockClient();
-  final mockFirebaseAuth = MockFirebaseAuth();
-  final mockUser = MockUser();
-  final mockFirestore = MockFirebaseFirestore();
-  final mockCollectionReference = MockCollectionReference<Map<String, dynamic>>();
-  final mockDocumentReference = MockDocumentReference<Map<String, dynamic>>();
-  final mockDocumentSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
-  final mockThemeProvider = MockThemeProvider();
+   Widget createWidgetForTesting({required Widget child}) {
+    return MaterialApp(
+      home: child,
+    );
+  }
 
- /* setUp(() {
-    // Set up the mocks with default behaviors
-    when(mockFirebaseAuth.currentUser).thenReturn(mockUser);
-    when(mockFirestore.collection('profile_data')).thenReturn(mockCollectionReference);
-    when(mockCollectionReference.doc(any)).thenReturn(mockDocumentReference);
-  });*/
+group('CustomizeProfilePage Widget Tests', () {
 
-  group('CustomizeProfilePage', () {
-    testWidgets('CustomizeProfilePage has a title and message', (WidgetTester tester) async {
+testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
+      await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
+      await tester.pumpAndSettle(); // Wait for any async operations to complete
+
+      // Verify the presence of the back button
+      print('Checking for back button...');
+      expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
+
+      // Verify the presence of the logo
+      print('Checking for CircleAvatar...');
+      expect(find.byType(CircleAvatar), findsWidgets);
+
+      // Verify the title is centered
+      print('Checking AppBar properties...');
+      AppBar appBar = tester.widget(find.byType(AppBar));
+      expect(appBar.centerTitle, true);
+    });
+testWidgets('CustomizeProfilePage has a title and message', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
+     await tester.pumpAndSettle();
+
+     final circleAvatarFinder = find.byKey(const Key('profileCircleAvatar'));
+     expect(circleAvatarFinder, findsOneWidget);
+
+    // Verify that CustomizeProfilePage contains the expected Widgets.
+    expect(find.text('Customize Profile'), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
+    expect(find.byType(IconButton), findsWidgets);
+    expect(find.byType(Switch), findsOneWidget);
+    expect(find.byType(ElevatedButton), findsOneWidget);
+
+    // You can also test for specific keys if you have assigned them to your widgets.
+    expect(find.byKey(const Key('saveButton')), findsOneWidget);
+  });
+testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
+      await tester.pumpWidget(const MaterialApp(
+        home: CustomizeProfilePage(),
+      ));
+      await tester.pumpAndSettle(); // Wait for any async operations to complete
+
+      // Verify the presence of the back button
+      expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
+
+      // Verify the presence of the logo
+      expect(find.byType(CircleAvatar), findsWidgets);
+
+      // Verify the title is centered
+      AppBar appBar = tester.widget(find.byType(AppBar));
+      expect(appBar.centerTitle, true);
+    });
+  testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
+    await tester.pumpAndSettle(); // Wait for any async operations to complete
+
+     final title = find.text('Customize Profile');
+     expect(title, findsOneWidget);
+
+    // Verify the presence of the back button
+    print('Checking for back button...');
+    expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
+
+    // Verify the presence of the logo
+    print('Checking for CircleAvatar...');
+    expect(find.byType(CircleAvatar), findsWidgets);
+
+    // Verify the title is centered
+    print('Checking AppBar properties...');
+    AppBar appBar = tester.widget(find.byType(AppBar));
+    expect(appBar.centerTitle, true);
+  });
+
+  testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
+
+    // Verify the presence of the back button
+   expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
+
+    // Verify the presence of the logo
+    expect(find.byType(CircleAvatar), findsWidgets);
+
+    // Verify the title is centered
+    AppBar appBar = tester.widget(find.byType(AppBar));
+    expect(appBar.centerTitle, true);
+
+    expect(find.text('Customize Profile'), findsOneWidget);
+
+  // Verify the profile picture
+  expect(find.byType(CircleAvatar), findsNWidgets(2)); // One in AppBar and one in body
+
+  // Verify the "Change picture" text
+  expect(find.text('Change picture'), findsOneWidget);
+  });
+
+  testWidgets('Body has title, profile picture, and change picture text', (WidgetTester tester) async {
+   await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
+
+  // Verify the title
+  expect(find.text('Customize Profile'), findsOneWidget);
+
+  // Verify the profile picture
+  expect(find.byType(CircleAvatar), findsNWidgets(2)); // One in AppBar and one in body
+
+  // Verify the "Change picture" text
+  expect(find.text('Change picture'), findsOneWidget);
+});
+
+  testWidgets('CustomizeProfilePage has a title and message', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MaterialApp(
       home: CustomizeProfilePage(),
     ));
 
     // Verify that CustomizeProfilePage contains the expected Widgets.
-    expect(find.text('Customize Profile'), findsOneWidget);
-    //expect(find.byType(CircleAvatar), findsOneWidget);
-    //expect(find.byType(IconButton), findsWidgets);
-    //expect(find.byType(Switch), findsOneWidget);
-    //expect(find.byType(ElevatedButton), findsOneWidget);
+    //expect(find.text('Customize Profile'), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
+    expect(find.byType(IconButton), findsWidgets);
+    expect(find.byType(Switch), findsOneWidget);
+    expect(find.byType(ElevatedButton), findsOneWidget);
 
     // You can also test for specific keys if you have assigned them to your widgets.
-    //expect(find.byKey(const Key('saveButton')), findsOneWidget);
+    expect(find.byKey(const Key('saveButton')), findsOneWidget);
   });
 
-    /*test('_fetchGenres updates genres correctly', () async {
-      // Arrange: Create a mock HTTP client and use it to return a predefined response
-      final client = MockClient();
-      when(client.get(Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6')))
-          .thenAnswer((_) async => http.Response('{"results": [{"name": "Action"}, {"name": "Adventure"}]}', 200));
+/*testWidgets('Genre section has title and add button', (WidgetTester tester) async {
+  await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
 
-      // Act: Call _fetchGenres
-      final customizeProfilePageObject = CustomizeProfilePageObject();
-      customizeProfilePageObject.client = client; // Inject the mock client
-      await customizeProfilePageObject.fetchGenres();
+  // Verify the genre title
+  expect(find.text('Genre'), findsOneWidget);
 
-      // Assert: Check that the genres list is updated correctly
-      expect(customizeProfilePageObject.genres, equals(['Action', 'Adventure']));
-    });*/
+  // Verify the add button
+  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
+});
 
-    /*testWidgets('Fetch genres and interests', (WidgetTester tester) async {
-    final customizeProfilePage = CustomizeProfilePageObject();
-    final client = MockClient();
+testWidgets('Age rating section has title and add button', (WidgetTester tester) async {
+    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
 
-    // Define the behavior of the mock HTTP client
-    when(client.get(Uri.parse('https://api.rawg.io/api/genres?key=YOUR_API_KEY')))
-        .thenAnswer((_) async => http.Response('{"results": [{"name": "Action"}, {"name": "Adventure"}]}', 200));
-    when(client.get(Uri.parse('https://api.rawg.io/api/tags?key=YOUR_API_KEY')))
-        .thenAnswer((_) async => http.Response('{"results": [{"name": "Gaming"}, {"name": "Movies"}]}', 200));
 
-    // Inject the mock client into your CustomizeProfilePageObject
-    customizeProfilePage.client = client;
+  // Verify the age rating title
+  expect(find.text('Age rating '), findsOneWidget);
 
-    // Ensure the CustomizeProfilePageObject is in a widget tree
-    await tester.pumpWidget(const MaterialApp(home: Scaffold(body: CustomizeProfilePage)));
+  // Verify the add button
+  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
+});
 
-    // Call the methods to fetch genres and interests
-    await customizeProfilePage.fetchGenres();
-    await customizeProfilePage.fetchTags(); // Make sure this is public too
+testWidgets('Social interests section has title and add button', (WidgetTester tester) async {
+    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
 
-    // Verify that the genres and interests lists are updated correctly
-    expect(customizeProfilePage.genres, equals(['Action', 'Adventure']));
-    expect(customizeProfilePage.interests, equals(['Gaming', 'Movies'])); // Make sure this is public too
-  });
-testWidgets('Show selectable dialog', (WidgetTester tester) async {
-  final customizeProfilePage = CustomizeProfilePageObject();
-  await tester.pumpWidget(MaterialApp(home: CustomizeProfilePage));
+  // Verify the social interests title
+  expect(find.text('Social interests '), findsOneWidget);
 
-  // Trigger the dialog
-  await customizeProfilePage._showSelectableDialog(
-    'Select Genre',
-    ['Action', 'Adventure'],
-    (results) {
-      customizeProfilePage._selectedGenres = results;
-    },
-  );
+  // Verify the add button
+  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
+});
 
-  // Verify that selected genres are updated
-  expect(customizeProfilePage._selectedGenres, equals(['Action', 'Adventure']));
+testWidgets('Dark mode section has title and switch', (WidgetTester tester) async {
+    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
+
+  // Verify the dark mode title
+  expect(find.text('Dark mode:'), findsOneWidget);
+
+  // Verify the switch
+  expect(find.byType(Switch), findsOneWidget);
+});
+
+testWidgets('Page has a save button', (WidgetTester tester) async {
+     await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
+
+  // Verify the save button
+  expect(find.byKey(const Key('saveButton')), findsOneWidget);
+
+  // Verify the save button text
+  expect(find.text('Save Changes'), findsOneWidget);
 });*/
 
-    /*testWidgets('fetches and displays genres', (WidgetTester tester) async {
-      // Mock the HTTP response
-      when(mockHttpClient.get(any)).thenAnswer((_) async => http.Response(json.encode({
-        'results': [{'name': 'Action'}, {'name': 'Adventure'}]
-      }), 200));
 
-      // Build the widget
-      await tester.pumpWidget(
-        ChangeNotifierProvider<ThemeProvider>.value(
-          value: mockThemeProvider,
-          child: MaterialApp(
-            home: CustomizeProfilePage(),
-          ),
-        ),
-      );
+  testWidgets('Switch toggles dark mode', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
 
-      // Verify the HTTP request
-      verify(mockHttpClient.get(any)).called(1);
+    // Find the dark mode Switch.
+    final darkModeSwitch = find.byType(Switch);
 
-      // Rebuild the widget with the data
-      await tester.pump();
+    // Tap the switch and rebuild the widget with the new state.
+    await tester.tap(darkModeSwitch);
+    await tester.pump();
 
-      // Check if the genres are displayed
-      expect(find.text('Action'), findsOneWidget);
-      expect(find.text('Adventure'), findsOneWidget);
-    });
+    // Verify that the Switch can be tapped and is on.
+    final Switch switchWidget = tester.widget(darkModeSwitch);
+    expect(switchWidget.value, isTrue);
+  });
 
-    testWidgets('saves profile data', (WidgetTester tester) async {
-      // Build the widget
-      await tester.pumpWidget(
-        ChangeNotifierProvider<ThemeProvider>.value(
-          value: mockThemeProvider,
-          child: MaterialApp(
-            home: CustomizeProfilePage(),
-          ),
-        ),
-      );
+  testWidgets('Genres can be selected', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const MaterialApp(
+      home: CustomizeProfilePage(),
+    ));
 
-      // Interact with the widget
-      await tester.tap(find.byKey(Key('saveButton')));
-      await tester.pump();
+    // Find the genre selection button.
+    final genreButton = find.byIcon(Icons.add);
 
-      // Verify that the profile data was saved
-      verify(mockDocumentReference.set(any, SetOptions(merge: true))).called(1);
-    });
+    // Tap the button to open the selection dialog.
+    await tester.tap(genreButton);
+    await tester.pump(); // Rebuild the widget after the state has changed.
 
-    // Add more test cases as needed*/
+    // Check if the dialog is displayed.
+    expect(find.byType(SelectableDialog), findsOneWidget);
+
+    // You would continue here to simulate selecting a genre and saving it.
+  });
   });
 }

@@ -161,6 +161,7 @@ Future<void> _fetchUserSelections() async {
 
           //logo
           title: CircleAvatar(
+            key: const Key('profileCircleAvatar'),
             radius: 25.0, // Doubled the radius
             backgroundColor: Colors.white,
             child: Container(
