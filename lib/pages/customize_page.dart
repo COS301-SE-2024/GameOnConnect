@@ -14,8 +14,9 @@ class CustomizeProfilePage extends StatefulWidget {
 }
 
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
+  http.Client client = http.Client();
 
-  List<String> _genres = [];
+  List<String> genres = [];
   List<String> _selectedGenres = [];
   List<String> _selectedAge = [];
   List<String> _selectedInterests = [];
@@ -23,13 +24,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
 
-  Future<void> _fetchGenres() async {
+  Future<void> fetchGenres() async {
     var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
     var response = await http.get(url);
     var decoded = json.decode(response.body);
 
     setState(() {
-      _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
+      genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
     });
   }
 
@@ -88,7 +89,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   @override
 void initState() {
   super.initState();
-  _fetchGenres(); // Call the fetch genres function here
+  fetchGenres(); // Call the fetch genres function here
    _fetchTags(); 
    _fetchUserSelections();
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
@@ -212,7 +213,7 @@ Future<void> _fetchUserSelections() async {
                 InkWell(
               onTap: () => _showSelectableDialog(
                 'Select Genre',
-                _genres, // Use the _genres list here
+                genres, // Use the _genres list here
                 (results) {
                   _selectedGenres = results;
                   setState(() {});
