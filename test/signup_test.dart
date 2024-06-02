@@ -12,7 +12,6 @@ void main() {
     final emailField = find.byKey(const Key('emailInput'));
     final passwordField = find.byKey(const Key('passwordInput'));
     final confirmPasswordField = find.byKey(const Key('confirmPasswordInput'));
-    final signUpButton = find.byKey(const Key('signUpButton'));
 
     // Enter text into the input fields
     await tester.enterText(usernameField, 'testuser');
