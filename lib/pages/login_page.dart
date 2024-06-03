@@ -114,6 +114,7 @@ class _LoginState extends State<Login> {
                     onTap: signIn,
                     child: Container(
                       padding: EdgeInsets.all(20),
+                      key: Key('Login_Button'),
                       decoration: BoxDecoration(
                         color: Colors.grey[600],
                         borderRadius: BorderRadius.circular(40),
