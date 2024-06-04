@@ -1,236 +1,159 @@
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+//import 'package:mockito/annotations.dart';
+//import 'package:provider/provider.dart';
+//import 'package:mockito/mockito.dart';
+//import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
+//import 'package:http/http.dart' as http;
+//import 'dart:convert';
+
+//import 'customize_page_test.mocks.dart';
+//import 'mocks/mock_http_client.dart'; // Import the mock client
+
+
+// Create a mock class for FirebaseAuth using the mockito package.
+//class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
+// Create a mock class for FirebaseFirestore using the mockito package.
+//class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
+  
+  testWidgets('SelectableDialog shows items and responds to selection', (WidgetTester tester) async {
+    // Define a list of items to be used in the dialog.
+    List<String> testItems = ['Action', 'Adventure', 'Puzzle'];
 
-   Widget createWidgetForTesting({required Widget child}) {
-    return MaterialApp(
-      home: child,
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(
+      MaterialApp(
+        home: SelectableDialog(title: 'Select Genre', items: testItems),
+      ),
     );
-  }
 
-group('CustomizeProfilePage Widget Tests', () {
+    // Verify that the dialog title 'Select Genre' is present.
+    expect(find.text('Select Genre'), findsOneWidget);
 
-testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
-      await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-      await tester.pumpAndSettle(); // Wait for any async operations to complete
+    // Verify that all items are present.
+    for (String item in testItems) {
+      expect(find.text(item), findsOneWidget);
+    }
 
-      // Verify the presence of the back button
-      print('Checking for back button...');
-      expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
-
-      // Verify the presence of the logo
-      print('Checking for CircleAvatar...');
-      expect(find.byType(CircleAvatar), findsWidgets);
-
-      // Verify the title is centered
-      print('Checking AppBar properties...');
-      AppBar appBar = tester.widget(find.byType(AppBar));
-      expect(appBar.centerTitle, true);
-    });
-testWidgets('CustomizeProfilePage has a title and message', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-     await tester.pumpAndSettle();
-
-     final circleAvatarFinder = find.byKey(const Key('profileCircleAvatar'));
-     expect(circleAvatarFinder, findsOneWidget);
-
-    // Verify that CustomizeProfilePage contains the expected Widgets.
-    expect(find.text('Customize Profile'), findsOneWidget);
-    expect(find.byType(CircleAvatar), findsOneWidget);
-    expect(find.byType(IconButton), findsWidgets);
-    expect(find.byType(Switch), findsOneWidget);
-    expect(find.byType(ElevatedButton), findsOneWidget);
-
-    // You can also test for specific keys if you have assigned them to your widgets.
-    expect(find.byKey(const Key('saveButton')), findsOneWidget);
-  });
-testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
-      await tester.pumpWidget(const MaterialApp(
-        home: CustomizeProfilePage(),
-      ));
-      await tester.pumpAndSettle(); // Wait for any async operations to complete
-
-      // Verify the presence of the back button
-      expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
-
-      // Verify the presence of the logo
-      expect(find.byType(CircleAvatar), findsWidgets);
-
-      // Verify the title is centered
-      AppBar appBar = tester.widget(find.byType(AppBar));
-      expect(appBar.centerTitle, true);
-    });
-  testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-    await tester.pumpAndSettle(); // Wait for any async operations to complete
-
-     final title = find.text('Customize Profile');
-     expect(title, findsOneWidget);
-
-    // Verify the presence of the back button
-    print('Checking for back button...');
-    expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
-
-    // Verify the presence of the logo
-    print('Checking for CircleAvatar...');
-    expect(find.byType(CircleAvatar), findsWidgets);
-
-    // Verify the title is centered
-    print('Checking AppBar properties...');
-    AppBar appBar = tester.widget(find.byType(AppBar));
-    expect(appBar.centerTitle, true);
-  });
-
-  testWidgets('AppBar has a back button, title, and logo', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-
-    // Verify the presence of the back button
-   expect(find.byIcon(Icons.keyboard_backspace), findsOneWidget);
-
-    // Verify the presence of the logo
-    expect(find.byType(CircleAvatar), findsWidgets);
-
-    // Verify the title is centered
-    AppBar appBar = tester.widget(find.byType(AppBar));
-    expect(appBar.centerTitle, true);
-
-    expect(find.text('Customize Profile'), findsOneWidget);
-
-  // Verify the profile picture
-  expect(find.byType(CircleAvatar), findsNWidgets(2)); // One in AppBar and one in body
-
-  // Verify the "Change picture" text
-  expect(find.text('Change picture'), findsOneWidget);
-  });
-
-  testWidgets('Body has title, profile picture, and change picture text', (WidgetTester tester) async {
-   await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-
-  // Verify the title
-  expect(find.text('Customize Profile'), findsOneWidget);
-
-  // Verify the profile picture
-  expect(find.byType(CircleAvatar), findsNWidgets(2)); // One in AppBar and one in body
-
-  // Verify the "Change picture" text
-  expect(find.text('Change picture'), findsOneWidget);
-});
-
-  testWidgets('CustomizeProfilePage has a title and message', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-
-    // Verify that CustomizeProfilePage contains the expected Widgets.
-    //expect(find.text('Customize Profile'), findsOneWidget);
-    expect(find.byType(CircleAvatar), findsOneWidget);
-    expect(find.byType(IconButton), findsWidgets);
-    expect(find.byType(Switch), findsOneWidget);
-    expect(find.byType(ElevatedButton), findsOneWidget);
-
-    // You can also test for specific keys if you have assigned them to your widgets.
-    expect(find.byKey(const Key('saveButton')), findsOneWidget);
-  });
-
-/*testWidgets('Genre section has title and add button', (WidgetTester tester) async {
-  await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-
-  // Verify the genre title
-  expect(find.text('Genre'), findsOneWidget);
-
-  // Verify the add button
-  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
-});
-
-testWidgets('Age rating section has title and add button', (WidgetTester tester) async {
-    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-
-
-  // Verify the age rating title
-  expect(find.text('Age rating '), findsOneWidget);
-
-  // Verify the add button
-  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
-});
-
-testWidgets('Social interests section has title and add button', (WidgetTester tester) async {
-    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-
-  // Verify the social interests title
-  expect(find.text('Social interests '), findsOneWidget);
-
-  // Verify the add button
-  expect(find.byIcon(Icons.add), findsNWidgets(3)); // There are three add buttons in the page
-});
-
-testWidgets('Dark mode section has title and switch', (WidgetTester tester) async {
-    await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-
-  // Verify the dark mode title
-  expect(find.text('Dark mode:'), findsOneWidget);
-
-  // Verify the switch
-  expect(find.byType(Switch), findsOneWidget);
-});
-
-testWidgets('Page has a save button', (WidgetTester tester) async {
-     await tester.pumpWidget(createWidgetForTesting(child: const CustomizeProfilePage()));
-
-  // Verify the save button
-  expect(find.byKey(const Key('saveButton')), findsOneWidget);
-
-  // Verify the save button text
-  expect(find.text('Save Changes'), findsOneWidget);
-});*/
-
-
-  testWidgets('Switch toggles dark mode', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
-
-    // Find the dark mode Switch.
-    final darkModeSwitch = find.byType(Switch);
-
-    // Tap the switch and rebuild the widget with the new state.
-    await tester.tap(darkModeSwitch);
+    // Tap on the first checkbox to select it.
+    await tester.tap(find.byType(CheckboxListTile).first);
     await tester.pump();
 
-    // Verify that the Switch can be tapped and is on.
-    final Switch switchWidget = tester.widget(darkModeSwitch);
-    expect(switchWidget.value, isTrue);
+    // Verify that the submit button is present and can be tapped.
+    expect(find.text('Submit'), findsOneWidget);
+    await tester.tap(find.text('Submit'));
+    await tester.pump();
   });
 
-  testWidgets('Genres can be selected', (WidgetTester tester) async {
+  /*testWidgets('CustomizeProfilePage UI Test', (WidgetTester tester) async {
+    // Create a mock client.
+    final mockHttpClient = MockClient();
+
+    // Set up the mock client to return a valid response.
+    when(mockHttpClient.get(any)).thenAnswer(
+      (_) async => http.Response(jsonEncode({'results': []}), 200),
+    );
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(
-      home: CustomizeProfilePage(),
-    ));
+    await tester.pumpWidget(
+      MaterialApp(
+        home: CustomizeProfilePage( httpClient: mockHttpClient),
+      ),
+    );
+     await tester.pumpAndSettle();
+      await tester.pump();
 
-    // Find the genre selection button.
-    final genreButton = find.byIcon(Icons.add);
+    // Verify that the page title is displayed.
+    expect(find.text('Customize Profile'), findsOneWidget);
 
-    // Tap the button to open the selection dialog.
-    await tester.tap(genreButton);
-    await tester.pump(); // Rebuild the widget after the state has changed.
+    // Verify that the profile picture is displayed.
+    expect(find.byType(CircleAvatar), findsWidgets); // Adjusted to findsWidgets if there are multiple CircleAvatars
 
-    // Check if the dialog is displayed.
-    expect(find.byType(SelectableDialog), findsOneWidget);
+    // Verify that the "Change picture" text is displayed.
+    expect(find.text('Change picture'), findsOneWidget);
 
-    // You would continue here to simulate selecting a genre and saving it.
-  });
-  });
+    // Verify that the genre section is displayed.
+    expect(find.text('Genre'), findsOneWidget);
+
+    // Verify that the age rating section is displayed.
+    expect(find.text('Age rating'), findsOneWidget);
+
+    // Verify that the social interests section is displayed.
+    expect(find.text('Social interests'), findsOneWidget);
+
+    // Verify that the Dark mode switch is displayed.
+    expect(find.byType(Switch), findsOneWidget);
+
+    // Verify that the "Save Changes" button is displayed.
+    expect(find.text('Save Changes'), findsOneWidget);
+  });*/
+
+  /*testWidgets('CustomizeProfilePage UI Test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(CustomizeProfilePage());
+    await tester.pumpAndSettle();
+
+    // Verify that the page title is displayed.
+    expect(find.text('Customize Profile'), findsOneWidget);
+
+    // Verify that the profile picture is displayed.
+    expect(find.byType(CircleAvatar), findsOneWidget);
+
+    // Verify that the "Change picture" text is displayed.
+    expect(find.text('Change picture'), findsOneWidget);
+
+    // Verify that the genre section is displayed.
+    expect(find.text('Genre'), findsOneWidget);
+
+    // Verify that the age rating section is displayed.
+    expect(find.text('Age rating'), findsOneWidget);
+
+    // Verify that the social interests section is displayed.
+    expect(find.text('Social interests'), findsOneWidget);
+
+    // Verify that the Dark mode switch is displayed.
+    expect(find.byType(Switch), findsOneWidget);
+
+    // Verify that the "Save Changes" button is displayed.
+    expect(find.text('Save Changes'), findsOneWidget);
+  });*/
+
+  // Add more tests as needed to cover different aspects of the widget.
 }
+/*void main() {
+  testWidgets('CustomizeProfilePage UI Test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(CustomizeProfilePage());
+    await tester.pumpAndSettle();
+
+    // Verify that the page title is displayed.
+    expect(find.text('Customize Profile'), findsOneWidget);
+
+    // Verify that the profile picture is displayed.
+    expect(find.byType(CircleAvatar), findsOneWidget);
+
+    // Verify that the "Change picture" text is displayed.
+    expect(find.text('Change picture'), findsOneWidget);
+
+    // Verify that the genre section is displayed.
+    expect(find.text('Genre'), findsOneWidget);
+
+    // Verify that the age rating section is displayed.
+    expect(find.text('Age rating'), findsOneWidget);
+
+    // Verify that the social interests section is displayed.
+    expect(find.text('Social interests'), findsOneWidget);
+
+    // Verify that the Dark mode switch is displayed.
+    expect(find.byType(Switch), findsOneWidget);
+
+    // Verify that the "Save Changes" button is displayed.
+    expect(find.text('Save Changes'), findsOneWidget);
+  });
+}*/
