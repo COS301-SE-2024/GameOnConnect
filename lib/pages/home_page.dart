@@ -26,11 +26,12 @@ class _HomePageState extends State<HomePage> {
             MaterialButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut();
               },
               color: Colors.grey[600],
               child: Text('Sign Out'),
             ),
-           /* MaterialButton(
+            /* MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/edit-profile');
               },
@@ -53,11 +54,19 @@ class _HomePageState extends State<HomePage> {
               child: Text('sign up page '),
             ),
             MaterialButton(
+            MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
               color: Colors.grey[600],
-              child: Text('Profile page '),
+              child: Text('Profile Page '),
+            ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/game_library');
+              },
+              color: Colors.grey[600],
+              child: Text('Game Library Page '),
             ),
           ],
         ),
