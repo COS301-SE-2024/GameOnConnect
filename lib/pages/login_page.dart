@@ -59,38 +59,45 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          border: Border.all(
-                              color: Color.fromARGB(255, 190, 190, 190)),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0.0),
-                        child: TextFormField(
-                          key: Key('emailInput'),
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
-                            border: InputBorder.none,
-                            hintText: 'Email',
-                            prefixIcon: Icon(
-                              Icons.email,
-                              size: 20,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 0.0),
+                      child: TextFormField(
+                        key: Key('emailInput'),
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
+                          contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 190, 190, 190),
                             ),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter an email address';
-                            }
-                            if (!RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) {
-                              return 'Please enter a valid email address';
-                            }
-                            return null;
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 128, 216, 50),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          hintText: 'Email',
+                          prefixIcon: Icon(
+                            Icons.email,
+                            size: 20,
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an email address';
+                          }
+                          if (!RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -98,44 +105,51 @@ class _LoginState extends State<Login> {
                   //Here is the password text field
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          border: Border.all(
-                              color: Color.fromARGB(255, 190, 190, 190)),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 0.0),
-                        child: TextFormField(
-                          key: Key('passwordInput'),
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
-                            border: InputBorder.none,
-                            hintText: 'Password',
-                            prefixIcon: Icon(
-                              Icons.lock,
-                              size: 20,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 0.0),
+                      child: TextFormField(
+                        key: Key('passwordInput'),
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
+                          contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 190, 190, 190),
                             ),
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
-                            }
-                            if (!RegExp(r'^.{8,}$').hasMatch(value)) {
-                              return 'Password must be at least 8 characters';
-                            }
-                            if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
-                              return 'Password must contain an uppercase letter';
-                            }
-                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
-                                .hasMatch(value)) {
-                              return 'Password must contain a symbol';
-                            }
-                            return null;
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 128, 216, 50),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          hintText: 'Password',
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            size: 20,
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
+                            return 'Password must contain an uppercase letter';
+                          }
+                          if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
+                              .hasMatch(value)) {
+                            return 'Password must contain a symbol';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -149,7 +163,7 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 30),
                   //The Login button
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
@@ -177,7 +191,30 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  //here is the bottom text with a create now text
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Expanded(
+                        child: Divider(
+                            color: Color.fromARGB(255, 190, 190, 190),
+                            height: 50,
+                            indent: 25,
+                            endIndent: 10),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1),
+                        child: Text("or"),
+                      ),
+                      Expanded(
+                        child: Divider(
+                            color: Color.fromARGB(255, 190, 190, 190),
+                            height: 50,
+                            indent: 10,
+                            endIndent: 25),
+                      ),
+                    ],
+                  ),
+                  //here is the bottom text with a sign up text
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
