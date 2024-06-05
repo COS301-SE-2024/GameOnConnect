@@ -51,23 +51,19 @@ class _LoginState extends State<Login> {
                   //Here is the login text
                   const Text(
                     'Login',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 28.46200180053711),
                   ),
-                  const SizedBox(height: 25),
-                  //Here is the welcome text
-                  const Text(
-                    'Welcome to GameOnConnect!',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  const SizedBox(height: 25),
                   //Here is the email text field
+                  const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey[100],
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20)),
+                          border: Border.all(color: Color.fromARGB(255, 190, 190, 190)),
+                          borderRadius: BorderRadius.circular(15)),
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: TextFormField(
@@ -99,8 +95,8 @@ class _LoginState extends State<Login> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey[100],
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(20)),
+                          border: Border.all(color: Color.fromARGB(255, 190, 190, 190)),
+                          borderRadius: BorderRadius.circular(15)),
                       child: Padding(
                         padding: EdgeInsets.only(left: 20.0),
                         child: TextFormField(
@@ -121,7 +117,8 @@ class _LoginState extends State<Login> {
                             if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
                               return 'Password must contain an uppercase letter';
                             }
-                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$').hasMatch(value)) {
+                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
+                                .hasMatch(value)) {
                               return 'Password must contain a symbol';
                             }
                             return null;
@@ -130,6 +127,13 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 15),
+                  Text("Forgot password?",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: Color.fromARGB(255, 128, 216, 50),
+                      )),
                   const SizedBox(height: 30),
                   //The Login button
                   Padding(
@@ -144,16 +148,16 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.all(20),
                         key: Key('Login_Button'),
                         decoration: BoxDecoration(
-                          color: Colors.grey[600],
-                          borderRadius: BorderRadius.circular(40),
+                          color: Color.fromARGB(255, 128, 216, 50),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Center(
                           child: Text(
                             'Login',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              color: Color.fromARGB(255, 24, 24, 24),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
                             ),
                           ),
                         ),
@@ -170,9 +174,9 @@ class _LoginState extends State<Login> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        ' Create Now',
+                        ' Sign Up',
                         style: TextStyle(
-                            color: Color.fromARGB(255, 214, 193, 4),
+                            color: Color.fromARGB(255, 128, 216, 50),
                             fontWeight: FontWeight.bold),
                       )
                     ],
