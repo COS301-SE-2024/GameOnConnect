@@ -62,16 +62,22 @@ class _LoginState extends State<Login> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey[100],
-                          border: Border.all(color: Color.fromARGB(255, 190, 190, 190)),
+                          border: Border.all(
+                              color: Color.fromARGB(255, 190, 190, 190)),
                           borderRadius: BorderRadius.circular(15)),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                        padding: EdgeInsets.only(left: 0.0),
                         child: TextFormField(
                           key: Key('emailInput'),
                           controller: emailController,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                             border: InputBorder.none,
                             hintText: 'Email',
+                            prefixIcon: Icon(
+                              Icons.email,
+                              size: 20,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -95,17 +101,23 @@ class _LoginState extends State<Login> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.grey[100],
-                          border: Border.all(color: Color.fromARGB(255, 190, 190, 190)),
+                          border: Border.all(
+                              color: Color.fromARGB(255, 190, 190, 190)),
                           borderRadius: BorderRadius.circular(15)),
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.0),
+                        padding: EdgeInsets.only(left: 0.0),
                         child: TextFormField(
                           key: Key('passwordInput'),
                           controller: passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                             border: InputBorder.none,
                             hintText: 'Password',
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              size: 20,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
