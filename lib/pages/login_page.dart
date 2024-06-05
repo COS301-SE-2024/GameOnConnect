@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   // ignore: use_super_parameters
@@ -225,9 +226,11 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 25),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        AuthService().signInWithGoogle();
+                      },
                       child: Container(
                         padding: EdgeInsets.all(15),
                         key: Key('Google_Login'),
@@ -260,9 +263,11 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        AuthService().signInWithGoogle();
+                      },
                       child: Container(
                         padding: EdgeInsets.all(15),
                         key: Key('Apple_Login'),
