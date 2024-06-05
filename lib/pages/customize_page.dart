@@ -182,6 +182,29 @@ Future<void> _fetchUserSelections() async {
            child: Text('Customize Profile', style: TextStyle(fontSize: 24)),   
           ),
 
+Stack(
+  alignment: Alignment.bottomRight, // Position the edit button at the bottom right
+  children: [
+    Container(
+      height: 170,
+      width: double.infinity, // Take the full width of the screen
+      color: Colors.grey[300], // Placeholder for banner image
+      // You might want to add an image here using a BoxDecoration
+    ),
+    Positioned( // Use Positioned to place the edit button
+      bottom: 10, // Distance from the bottom of the Container
+      right: 10, // Distance from the right of the Container
+      child: FloatingActionButton(
+        onPressed: () {
+          // TODO: Implement the functionality to edit the banner picture
+        },
+        child: Icon(Icons.edit), // The edit icon
+        mini: true, // A smaller FloatingActionButton
+      ),
+    ),
+  ],
+),
+
           const SizedBox(height: 30),
 
           //profile picture
