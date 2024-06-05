@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Login extends StatefulWidget {
   // ignore: use_super_parameters
@@ -42,12 +43,14 @@ class _LoginState extends State<Login> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  //Here is the icon
-                  const Icon(
-                    Icons.logo_dev,
-                    size: 100,
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? 'assets/icons/Logo_dark.png'
+                        : 'assets/icons/Logo_light.png',
+                    width: 100,
+                    height: 100,
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 20),
                   //Here is the login text
                   const Text(
                     'Login',
@@ -56,7 +59,7 @@ class _LoginState extends State<Login> {
                         fontSize: 28.46200180053711),
                   ),
                   //Here is the email text field
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Padding(
@@ -101,7 +104,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   //Here is the password text field
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -153,14 +156,20 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  Text("Forgot password?",
+                  const SizedBox(height: 10),
+                  Container(
+                    alignment: Alignment.centerLeft, // Add this line
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Text(
+                      "Forgot password?",
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Color.fromARGB(255, 128, 216, 50),
-                      )),
-                  const SizedBox(height: 30),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 25),
                   //The Login button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -171,7 +180,7 @@ class _LoginState extends State<Login> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(15),
                         key: Key('Login_Button'),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 128, 216, 50),
@@ -190,14 +199,14 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const <Widget>[
                       Expanded(
                         child: Divider(
                             color: Color.fromARGB(255, 190, 190, 190),
-                            height: 50,
+                            height: 40,
                             indent: 25,
                             endIndent: 10),
                       ),
@@ -208,12 +217,83 @@ class _LoginState extends State<Login> {
                       Expanded(
                         child: Divider(
                             color: Color.fromARGB(255, 190, 190, 190),
-                            height: 50,
+                            height: 40,
                             indent: 10,
                             endIndent: 25),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        key: Key('Google_Login'),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 190, 190, 190),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.google,
+                                size: 20,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Continue with Google',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 24, 24, 24),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.all(15),
+                        key: Key('Apple_Login'),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 190, 190, 190),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.apple,
+                                size: 25,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Continue with Apple',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 24, 24, 24),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
