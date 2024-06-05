@@ -115,10 +115,14 @@ class _LoginState extends State<Login> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
                             }
-                            if (!RegExp(
-                                    r'^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$')
-                                .hasMatch(value)) {
-                              return 'Password must contain an uppercase letter, a symbol and at least 8 characters';
+                            if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                              return 'Password must be at least 8 characters';
+                            }
+                            if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
+                              return 'Password must contain an uppercase letter';
+                            }
+                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$').hasMatch(value)) {
+                              return 'Password must contain a symbol';
                             }
                             return null;
                           },

@@ -68,7 +68,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      //themeMode: _themeManager.themeMode,
       routes: {
         '/': (context) => StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
