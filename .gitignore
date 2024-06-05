@@ -52,4 +52,4 @@ app.*.map.json
 /windows/flutter/generated_plugins.cmake
 
 #ignore this ios file
-/ios/Runner/GooglService-Info.plist
+/ios/Runner/GoogleService-Info.plist
