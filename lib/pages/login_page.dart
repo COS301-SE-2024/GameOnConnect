@@ -131,7 +131,11 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: GestureDetector(
-                      onTap: signIn,
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {
+                          signIn();
+                        }
+                      },
                       child: Container(
                         padding: EdgeInsets.all(20),
                         key: Key('Login_Button'),
