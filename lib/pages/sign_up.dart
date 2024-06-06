@@ -2,10 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'login_page.dart';
 import 'home_page.dart';
-
 
 const double _textFieldWidth = 300;
 const InputDecoration _inputDecoration = InputDecoration(
@@ -13,29 +11,27 @@ const InputDecoration _inputDecoration = InputDecoration(
 );
 int? _nextNum;
 Future<void> getNextNumber() async {
-
   FirebaseFirestore db = FirebaseFirestore.instance;
   CollectionReference profileRef = db.collection("next_digit");
   DocumentSnapshot qs = await profileRef.doc("current_max_digit").get();
 
-  if(qs.exists) {
-    Map<String,dynamic> d = qs.data() as Map<String,dynamic>;
+  if (qs.exists) {
+    Map<String, dynamic> d = qs.data() as Map<String, dynamic>;
     _nextNum = d['digit'];
   }
   int da = _nextNum ?? 0;
-  db.collection("next_digit").doc("current_max_digit").update({"digit":(da+1)});
-
-
+  db
+      .collection("next_digit")
+      .doc("current_max_digit")
+      .update({"digit": (da + 1)});
 }
 
-Future<void> createDefaultProfile() async
-{
-  try{
-
+Future<void> createDefaultProfile() async {
+  try {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUser = auth.currentUser;
-    if(currentUser != null) {
+    if (currentUser != null) {
       final defaultData = <String, dynamic>{
         "name": "",
         "surname": "",
@@ -51,17 +47,14 @@ Future<void> createDefaultProfile() async
         "banner" : "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
       };
 
-      db.collection("profile_data")
-          .doc(currentUser.uid)
-          .set(defaultData);
+      db.collection("profile_data").doc(currentUser.uid).set(defaultData);
     }
-
-  }catch(e)
-  { // do nothing
+  }  catch (e) {
+    //do nothing
   }
-
 }
-String? _username ;
+
+String? _username;
 
 class SignUp extends StatelessWidget {
   final _usernameController = TextEditingController();
@@ -88,6 +81,7 @@ class SignUp extends StatelessWidget {
     _usernameController.dispose();
     _confirmPasswordController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +91,13 @@ class SignUp extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.logo_dev, size: 100),
+              Image.asset(
+                Theme.of(context).brightness == Brightness.dark
+                    ? 'assets/icons/Logo_dark.png'
+                    : 'assets/icons/Logo_light.png',
+                width: 100,
+                height: 100,
+              ),
               const Padding(
                 padding: EdgeInsets.all(20),
                 child: Text("Sign Up",
@@ -165,10 +165,15 @@ class SignUp extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
                             }
-                            if (!RegExp(
-                                    r'^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$')
+                            if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                              return 'Password must be at least 8 characters';
+                            }
+                            if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
+                              return 'Password must contain an uppercase letter';
+                            }
+                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
                                 .hasMatch(value)) {
-                              return 'Password must contain an uppercase letter, a symbol and at least 8 characters';
+                              return 'Password must contain a symbol';
                             }
                             return null;
                           },
@@ -212,11 +217,12 @@ class SignUp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _username = _usernameController.text;
                       signUp();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Signed Up successfully!")));
                       Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
                           builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
                             (Route<dynamic> route) => false,
                       );
-
                     }
                   },
                   child: const Text(
