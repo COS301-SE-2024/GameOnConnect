@@ -238,9 +238,8 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () async {
-                        UserCredential? user =
-                            await AuthService().signInWithGoogle();
+                      onTap:  () async {
+                        UserCredential? user = await AuthService().signInWithGoogle();
                         if (user != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -287,8 +286,7 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
-                        UserCredential? user =
-                            await AuthService().signInWithApple();
+                        UserCredential? user = await AuthService().signInWithApple();
                         if (user != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
