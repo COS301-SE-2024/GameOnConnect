@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 128, 216, 50),
+                              color: Color.fromARGB(255, 0, 255, 117),
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 128, 216, 50),
+                              color: Color.fromARGB(255, 0, 255, 117),
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -166,7 +166,7 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 128, 216, 50),
+                        color: Color.fromARGB(255, 0, 255, 117),
                       ),
                     ),
                   ),
@@ -184,7 +184,7 @@ class _LoginState extends State<Login> {
                         padding: EdgeInsets.all(15),
                         key: Key('Login_Button'),
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 128, 216, 50),
+                          color: Color.fromARGB(255, 0, 255, 117),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Center(
