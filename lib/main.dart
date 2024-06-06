@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,12 @@ void main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.debug,
   );
 
   Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
@@ -61,7 +68,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      //themeMode: _themeManager.themeMode,
       routes: {
         '/': (context) => StreamBuilder<User?>(
               stream: FirebaseAuth.instance.authStateChanges(),
