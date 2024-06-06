@@ -212,7 +212,7 @@ class SignUp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _username = _usernameController.text;
                       signUp();
-                      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+                      Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
                           builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
                             (Route<dynamic> route) => false,
                       );
@@ -237,7 +237,7 @@ class SignUp extends StatelessWidget {
                       ),
                     ),
                   InkWell(
-                    onTap: () {Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+                    onTap: () {Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
                         builder: (BuildContext context) => Login()),
                       (Route<dynamic> route) => false,
                     );  },

@@ -22,10 +22,7 @@ class _LoginState extends State<Login> {
       email: emailController.text.trim(), 
       password: passwordController.text.trim(),
     );
-    Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
-        builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
-          (Route<dynamic> route) => false,
-    );
+
   }
 
   @override
@@ -117,7 +114,11 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50.0),
                   child: GestureDetector(
-                    onTap: signIn,
+                    onTap: () {signIn();
+                    Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
+                        builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                          (Route<dynamic> route) => false,
+                    );},
                     child: Container(
                       padding: EdgeInsets.all(20),
                       key: Key('Login_Button'),
@@ -149,7 +150,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+                      onTap: () {Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
                           builder: (BuildContext context) => SignUp()),
                             (Route<dynamic> route) => false,
                       );  },
