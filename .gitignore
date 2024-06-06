@@ -53,3 +53,5 @@ app.*.map.json
 
 #ignore this ios file
 /ios/Runner/GoogleService-Info.plist
+
+/web/index.html
