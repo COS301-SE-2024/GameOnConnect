@@ -24,17 +24,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   bool isDarkMode = false;
   bool _isDataFetched = false; 
 
-  /*Future<void> _fetchGenresFromAPI() async {
-    var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
-    var response = await http.get(url);
-    var decoded = json.decode(response.body);
-
-    setState(() {
-      _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
-    });
-  }*/
   Future<void> _fetchGenresFromAPI() async {
-  print("Fetching genres started");
+  //("Fetching genres started");
   try {
     var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
     var response = await http.get(url);
@@ -43,7 +34,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       setState(() {
         _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
       });
-      print("Genres fetched successfully");
+      //print("Genres fetched successfully");
     } else {
       print("Error fetching genres: ${response.statusCode}");
     }
@@ -52,16 +43,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 }
 
-
- /* Future<void> _fetchTagsFromAPI() async {
-  var url = Uri.parse('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
-  var response = await http.get(url);
-  var decoded = json.decode(response.body);
-
-  setState(() {
-    _interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
-  });
-}*/
 Future<void> _fetchTagsFromAPI() async {
   print("Fetching tags started");
   try {
@@ -81,22 +62,6 @@ Future<void> _fetchTagsFromAPI() async {
   }
 }
 
-
-  /*Future<void> _showSelectableDialog(String title, List<String> items,
-      void Function(List<String>) onSelected) async {
-    final List<String>? results = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SelectableDialog(title: title, items: items);
-      },
-    );
-
-    if (results != null) {
-      setState(() {
-        onSelected(results);
-      });
-    }
-  }*/
 
    Widget _displaySelectedItems(List<String> selectedItems, void Function(String) onDeleted) {
     return Wrap(
@@ -137,52 +102,6 @@ void initState() {
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
 
- /*Future<void> _saveProfileData() async {
-  try {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-    final currentUser = auth.currentUser;
-
-    if (currentUser != null) {
-      final db = FirebaseFirestore.instance;
-      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-
-      // Data to be set or updated
-      final data = {
-        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
-        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
-      };
-
-      // Use set with merge to create or update the document
-      await profileDocRef.set(data, SetOptions(merge: true));
-      //print("Profile data set/updated successfully!");
-    }
-  } catch (e) {
-    //print("Error setting/updating profile data: $e");
-  }
-}*/
-
-/*Future<void> _saveProfileData() async {
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-
-        final data = {
-          "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
-          "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-          "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
-        };
-
-        await profileDocRef.set(data, SetOptions(merge: true));
-      }
-    } catch (e) {
-      print("Error setting/updating profile data: $e");
-    }
-  }*/
 
 Future<void> _fetchUserSelectionsFromDatabase() async {
     try {
@@ -204,15 +123,15 @@ Future<void> _fetchUserSelectionsFromDatabase() async {
         }
       }
     } catch (e) {
-      print("Error fetching user selections: $e");
+     // print("Error fetching user selections: $e");
     }
   }
 
 Future<void> _fetchData() async {
-   print("Fetching data started");
+   //print("Fetching data started");
     await _fetchUserSelectionsFromDatabase();
     await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
-    print("Fetching data completed");
+    //print("Fetching data completed");
 }
 
  @override
@@ -473,60 +392,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  /*Widget _buildSelectableSection(String title, List<String> items, List<String> selectedItems) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(title, style: const TextStyle(fontSize: 15)),
-            ),
-            const SizedBox(width: 20),
-            InkWell(
-              onTap: () => _showSelectableDialog(
-                'Select $title',
-                items,
-                (results) {
-                  setState(() {
-                    selectedItems.clear();
-                    selectedItems.addAll(results);
-                  });
-                },
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.black,
-                  size: 12,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Wrap(
-          spacing: 8.0,
-          children: selectedItems.map((item) {
-            return Chip(
-              label: Text(item),
-              onDeleted: () {
-                setState(() {
-                  selectedItems.remove(item);
-                });
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }*/
-
  Future<void> _showSelectableDialog(
   String title, List<String> items, Function(List<String>) onSelected, String selectionType) async {
   List<String> selectedItems = [];
@@ -597,19 +462,31 @@ Widget build(BuildContext context) {
   }
 }
 
- 
+
   void _saveProfileData() async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
+  try {
+  final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUser = auth.currentUser;
+
     if (currentUser != null) {
       final db = FirebaseFirestore.instance;
       final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
 
-      await profileDocRef.set({
-        "genre_interests_tags": _selectedGenres,
-        "age_rating_tag": _selectedAge,
-        "social_interests_tags": _selectedInterests,
-      });
+      // Data to be set or updated
+      final data = {
+        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
+        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
+      };
+
+      // Use set with merge to create or update the document
+      await profileDocRef.set(data, SetOptions(merge: true));
+      //print("Profile data set/updated successfully!");
     }
+  } catch (e) {
+    //print("Error setting/updating profile data: $e");
   }
+}
+
+
 }
