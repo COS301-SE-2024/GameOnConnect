@@ -22,8 +22,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _interests = [];
 
   bool isDarkMode = false;
+  bool _isDataFetched = false; 
 
-  Future<void> _fetchGenres() async {
+  /*Future<void> _fetchGenresFromAPI() async {
     var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
     var response = await http.get(url);
     var decoded = json.decode(response.body);
@@ -31,9 +32,28 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     setState(() {
       _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
     });
+  }*/
+  Future<void> _fetchGenresFromAPI() async {
+  print("Fetching genres started");
+  try {
+    var url = Uri.parse('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var decoded = json.decode(response.body);
+      setState(() {
+        _genres = (decoded['results'] as List).map((genre) => genre['name'].toString()).toList();
+      });
+      print("Genres fetched successfully");
+    } else {
+      print("Error fetching genres: ${response.statusCode}");
+    }
+  } catch (e) {
+    print("Error fetching genres: $e");
   }
+}
 
-  Future<void> _fetchTags() async {
+
+ /* Future<void> _fetchTagsFromAPI() async {
   var url = Uri.parse('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
   var response = await http.get(url);
   var decoded = json.decode(response.body);
@@ -41,10 +61,28 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   setState(() {
     _interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
   });
+}*/
+Future<void> _fetchTagsFromAPI() async {
+  print("Fetching tags started");
+  try {
+    var url = Uri.parse('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var decoded = json.decode(response.body);
+      setState(() {
+        _interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
+      });
+      print("Tags fetched successfully");
+    } else {
+      print("Error fetching tags: ${response.statusCode}");
+    }
+  } catch (e) {
+    print("Error fetching tags: $e");
+  }
 }
 
 
-  Future<void> _showSelectableDialog(String title, List<String> items,
+  /*Future<void> _showSelectableDialog(String title, List<String> items,
       void Function(List<String>) onSelected) async {
     final List<String>? results = await showDialog(
       context: context,
@@ -58,7 +96,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         onSelected(results);
       });
     }
-  }
+  }*/
 
    Widget _displaySelectedItems(List<String> selectedItems, void Function(String) onDeleted) {
     return Wrap(
@@ -88,13 +126,18 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   @override
 void initState() {
   super.initState();
-  _fetchGenres(); // Call the fetch genres function here
-   _fetchTags(); 
-   _fetchUserSelections();
+  //_fetchGenresFromAPI(); // Call the fetch genres function here
+   //_fetchTagsFromAPI(); 
+   //_fetchUserSelectionsFromDatabase();
+   _fetchData().then((_) {
+      setState(() {
+        _isDataFetched = true;  // Mark data as fetched
+      });
+    });
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
 
- Future<void> _saveProfileData() async {
+ /*Future<void> _saveProfileData() async {
   try {
   final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUser = auth.currentUser;
@@ -117,50 +160,75 @@ void initState() {
   } catch (e) {
     //print("Error setting/updating profile data: $e");
   }
-}
+}*/
 
-Future<void> _fetchUserSelections() async {
+/*Future<void> _saveProfileData() async {
+    try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
 
-  try{
-    final FirebaseAuth auth = FirebaseAuth.instance;
-  final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        final db = FirebaseFirestore.instance;
+        final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
 
-  if (currentUser != null) {
-    final db = FirebaseFirestore.instance;
-    final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+        final data = {
+          "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
+          "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+          "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
+        };
 
-    final docSnapshot = await profileDocRef.get();
-    if (docSnapshot.exists) {
-      final data = docSnapshot.data();
-      setState(() {
-        _selectedGenres = List<String>.from(data?['genre_interests_tags'] ?? []);
-        _selectedAge = List<String>.from(data?['age_rating_tag'] ?? []);
-        _selectedInterests = List<String>.from(data?['social_interests_tags'] ?? []);
-      });
+        await profileDocRef.set(data, SetOptions(merge: true));
+      }
+    } catch (e) {
+      print("Error setting/updating profile data: $e");
+    }
+  }*/
+
+Future<void> _fetchUserSelectionsFromDatabase() async {
+    try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+
+      if (currentUser != null) {
+        final db = FirebaseFirestore.instance;
+        final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+
+        final docSnapshot = await profileDocRef.get();
+        if (docSnapshot.exists) {
+          final data = docSnapshot.data();
+          setState(() {
+            _selectedGenres = List<String>.from(data?["genre_interests_tags"] ?? []);
+            _selectedAge = List<String>.from(data?["age_rating_tag"] ?? []);
+            _selectedInterests = List<String>.from(data?["social_interests_tags"] ?? []);
+          });
+        }
+      }
+    } catch (e) {
+      print("Error fetching user selections: $e");
     }
   }
-  }catch (e) {
-    //print("Error fetching user selections: $e");
-  }
-  
+
+Future<void> _fetchData() async {
+   print("Fetching data started");
+    await _fetchUserSelectionsFromDatabase();
+    await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
+    print("Fetching data completed");
 }
 
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      //app bar
-      appBar: AppBar(
-         leading:IconButton(
+ @override
+Widget build(BuildContext context) {
+    if (!_isDataFetched) {
+      // Show loading indicator while data is being fetched
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             icon: const Icon(Icons.keyboard_backspace),
             onPressed: () {
               Navigator.of(context).pop();
-          },
-        ),
-
-          //logo
+            },
+          ),
           title: CircleAvatar(
-            radius: 25.0, // Doubled the radius
+            radius: 25.0,
             backgroundColor: Colors.white,
             child: Container(
               decoration: BoxDecoration(
@@ -169,60 +237,77 @@ Future<void> _fetchUserSelections() async {
               ),
             ),
           ),
+          centerTitle: true,
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    } else {
+      // Show the main content once data is fetched
+      return _buildContent(context);
+    }
+  }
+
+  Widget _buildContent(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.keyboard_backspace),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: CircleAvatar(
+          radius: 25.0,
+          backgroundColor: Colors.white,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.black, width: 1.0),
+            ),
+          ),
+        ),
         centerTitle: true,
       ),
-
-      //body
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          //title
           const Align(
-          alignment: Alignment.center,
-           child: Text('Customize Profile', style: TextStyle(fontSize: 24)),   
+            alignment: Alignment.center,
+            child: Text('Customize Profile', style: TextStyle(fontSize: 24)),
           ),
-
-Stack(
-  alignment: Alignment.bottomRight, // Position the edit button at the bottom right
-  children: [
-    Container(
-      height: 170,
-      width: double.infinity, // Take the full width of the screen
-      color: Colors.grey[300], // Placeholder for banner image
-      // You might want to add an image here using a BoxDecoration
-    ),
-    Positioned( // Use Positioned to place the edit button
-      bottom: 10, // Distance from the bottom of the Container
-      right: 10, // Distance from the right of the Container
-      child: FloatingActionButton(
-        onPressed: () {
-          // TODO: Implement the functionality to edit the banner picture
-        },
-        child: Icon(Icons.edit), // The edit icon
-        mini: true, // A smaller FloatingActionButton
-      ),
-    ),
-  ],
-),
-
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Container(
+                height: 170,
+                width: double.infinity,
+                color: Colors.grey[300],
+              ),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    // TODO: Implement the functionality to edit the banner picture
+                  },
+                  child: const Icon(Icons.edit),
+                  mini: true,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 30),
-
-          //profile picture
           Center(
             child: CircleAvatar(
               radius: 60,
-               backgroundColor: Colors.grey[300],  
+              backgroundColor: Colors.grey[300],
             ),
           ),
-
-          //change profile picture
-           const Align(
+          const Align(
             alignment: Alignment.center,
-            child: Text('Change picture', style: TextStyle(fontSize: 18)),   
+            child: Text('Change picture', style: TextStyle(fontSize: 18)),
           ),
-
           const SizedBox(height: 30),
-
           //genre title
          Row(
                 children: <Widget>[
@@ -344,128 +429,170 @@ Stack(
             _displaySelectedItems(_selectedInterests, (item) => _deleteSelectedItem(item, _selectedInterests)),
 
 
-
-            // DARK MODE
-            const SizedBox(height: 20),
-
-            Row(
-              children: <Widget>[
-                // title
+          const SizedBox(height: 20),
+          Row(
+            children: <Widget>[
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
               ),
-
-            const SizedBox(width: 20),
-            //Spacer(), 
-
-            // switch 
-            Switch(
-              value: isDarkMode,
-              onChanged: (newValue) {
-                setState(() {
-                  isDarkMode = newValue;
-                });
-                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-              },
-            ),
-          ],
-        ),
-            
-
-            //save button
-            const SizedBox(height: 40.0),
-            Center(
-              child: ElevatedButton(
-                key: const Key('saveButton'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[300],
-                  foregroundColor: Colors.black54,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                onPressed: () {
-
-                    _saveProfileData(); 
-                     Navigator.of(context).pop();// Call the save profile data function here
+              const SizedBox(width: 20),
+              Switch(
+                value: isDarkMode,
+                onChanged: (newValue) {
+                  setState(() {
+                    isDarkMode = newValue;
+                  });
+                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
                 },
-
-                child: const Text('Save Changes'),
               ),
+            ],
+          ),
+          const SizedBox(height: 40.0),
+          Center(
+            child: ElevatedButton(
+              key: const Key('saveButton'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[300],
+                foregroundColor: Colors.black54,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              onPressed: () {
+                _saveProfileData();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save Changes'),
             ),
-
-        ]
+          ),
+        ],
       ),
     );
   }
-}
 
-// Generic SelectableDialog widget.
-class SelectableDialog extends StatefulWidget {
-  final String title;
-  final List<String> items;
-
-  const SelectableDialog({super.key, required this.title, required this.items});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _SelectableDialogState createState() => _SelectableDialogState();
-}
-
-class _SelectableDialogState extends State<SelectableDialog> {
-  final List<String> _selectedItems = [];
-  
-   void _itemChange(String itemValue, bool isSelected) {
-    setState(() {
-      if (isSelected) {
-        _selectedItems.add(itemValue);
-      } else {
-        _selectedItems.remove(itemValue);
-      }
-    });
-  }
-
-  void _cancel() {
-    Navigator.pop(context);
-  }
-
-  void _submit() {
-    Navigator.pop(context, _selectedItems);
-    // seend to the database 
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.title),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: widget.items
-              .map((item) => CheckboxListTile(
-                    value: _selectedItems.contains(item),
-                    title: Text(item),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) => _itemChange(item, isChecked!),
-                  ))
-              .toList(),
+  Widget _buildSelectableSection(String title, List<String> items, List<String> selectedItems) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(title, style: const TextStyle(fontSize: 15)),
+            ),
+            const SizedBox(width: 20),
+            InkWell(
+              onTap: () => _showSelectableDialog(
+                'Select $title',
+                items,
+                (results) {
+                  setState(() {
+                    selectedItems.clear();
+                    selectedItems.addAll(results);
+                  });
+                },
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.black,
+                  size: 12,
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: _cancel,
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: _submit,
-          child: const Text('Submit'),
+        Wrap(
+          spacing: 8.0,
+          children: selectedItems.map((item) {
+            return Chip(
+              label: Text(item),
+              onDeleted: () {
+                setState(() {
+                  selectedItems.remove(item);
+                });
+              },
+            );
+          }).toList(),
         ),
       ],
     );
   }
 
- 
+  Future<void> _showSelectableDialog(
+    String title, List<String> items, Function(List<String>) onSelected) async {
+  List<String> selectedItems = [];
+  
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: items.map((item) {
+                  return CheckboxListTile(
+                    value: selectedItems.contains(item),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (bool? isChecked) {
+                      setState(() {
+                        if (isChecked == true) {
+                          selectedItems.add(item);
+                        } else {
+                          selectedItems.remove(item);
+                        }
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Select'),
+                onPressed: () {
+                  Navigator.of(context).pop(selectedItems);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+
+  if (selectedItems.isNotEmpty) {
+    onSelected(selectedItems);
+  }
 }
+ 
+  void _saveProfileData() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
 
-
-
+      await profileDocRef.set({
+        "genre_interests_tags": _selectedGenres,
+        "age_rating_tag": _selectedAge,
+        "social_interests_tags": _selectedInterests,
+      });
+    }
+  }
+}
