@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/pages/home_page.dart';
 
 const double _textFieldWidth = 300;
 const InputDecoration _inputDecoration = InputDecoration(
@@ -47,8 +48,8 @@ Future<void> createDefaultProfile() async {
 
       db.collection("profile_data").doc(currentUser.uid).set(defaultData);
     }
-  } catch (e) {
-    // do nothing
+  }  catch (e) {
+    //do nothing
   }
 }
 
@@ -214,7 +215,13 @@ class SignUp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _username = _usernameController.text;
                       signUp();
-                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Signed Up successfully!")));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(title: "GameOnConnect")));
                     }
                   },
                   child: const Text(
