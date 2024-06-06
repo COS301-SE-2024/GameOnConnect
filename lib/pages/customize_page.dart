@@ -36,15 +36,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       });
       //print("Genres fetched successfully");
     } else {
-      print("Error fetching genres: ${response.statusCode}");
+      //print("Error fetching genres: ${response.statusCode}");
     }
   } catch (e) {
-    print("Error fetching genres: $e");
+    //print("Error fetching genres: $e");
   }
 }
 
 Future<void> _fetchTagsFromAPI() async {
-  print("Fetching tags started");
+  //print("Fetching tags started");
   try {
     var url = Uri.parse('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
     var response = await http.get(url);
@@ -53,12 +53,12 @@ Future<void> _fetchTagsFromAPI() async {
       setState(() {
         _interests = (decoded['results'] as List).map((tag) => tag['name'].toString()).toList();
       });
-      print("Tags fetched successfully");
+      //print("Tags fetched successfully");
     } else {
-      print("Error fetching tags: ${response.statusCode}");
+      //print("Error fetching tags: ${response.statusCode}");
     }
   } catch (e) {
-    print("Error fetching tags: $e");
+    //print("Error fetching tags: $e");
   }
 }
 
@@ -194,6 +194,7 @@ Widget build(BuildContext context) {
             alignment: Alignment.center,
             child: Text('Customize Profile', style: TextStyle(fontSize: 24)),
           ),
+          
           Stack(
             alignment: Alignment.bottomRight,
             children: [
@@ -216,16 +217,36 @@ Widget build(BuildContext context) {
             ],
           ),
           const SizedBox(height: 30),
-          Center(
-            child: CircleAvatar(
+          
+          Center( // Wrap with Center widget to align the circle in the center
+      child: InkWell(
+        //onTap: _pickImage,
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            CircleAvatar(
               radius: 60,
-              backgroundColor: Colors.grey[300],
+              backgroundColor: Colors.grey,
+              //backgroundImage: _profileImage,
             ),
-          ),
-          const Align(
-            alignment: Alignment.center,
-            child: Text('Change picture', style: TextStyle(fontSize: 18)),
-          ),
+            Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.camera_alt,
+                size: 15,
+                //color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+      
           const SizedBox(height: 30),
           //genre title
          Row(
@@ -265,7 +286,7 @@ Widget build(BuildContext context) {
           const SizedBox(height: 8),
            _displaySelectedItems(_selectedGenres, (item) => _deleteSelectedItem(item, _selectedGenres)),
 
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             //const SizedBox(height: 45),
 
              // age rating title
@@ -305,8 +326,7 @@ Widget build(BuildContext context) {
               const SizedBox(height: 8),
                   _displaySelectedItems(_selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
 
-            const SizedBox(height: 15),
-
+            const SizedBox(height: 20),
 
             // social interest title
           
