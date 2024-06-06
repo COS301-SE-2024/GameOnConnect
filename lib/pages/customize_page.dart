@@ -143,7 +143,8 @@ Widget build(BuildContext context) {
           leading: IconButton(
             icon: const Icon(Icons.keyboard_backspace),
             onPressed: () {
-              Navigator.of(context).pop();
+              //Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/profile');
             },
           ),
           title: CircleAvatar(
@@ -172,7 +173,8 @@ Widget build(BuildContext context) {
         leading: IconButton(
           icon: const Icon(Icons.keyboard_backspace),
           onPressed: () {
-            Navigator.of(context).pop();
+            //Navigator.of(context).pop();
+            Navigator.pushNamed(context, '/profile');
           },
         ),
         title: CircleAvatar(
@@ -229,27 +231,6 @@ Widget build(BuildContext context) {
   ),
 ),
           
-         /* Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Container(
-                height: 170,
-                width: double.infinity,
-                color: Colors.grey[300],
-              ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    // TODO: Implement the functionality to edit the banner picture
-                  },
-                  child: const Icon(Icons.edit),
-                  mini: true,
-                ),
-              ),
-            ],
-          ),*/
           const SizedBox(height: 30),
           
           Center( // Wrap with Center widget to align the circle in the center
@@ -436,7 +417,8 @@ Widget build(BuildContext context) {
               ),
               onPressed: () {
                 _saveProfileData();
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/profile');
               },
               child: const Text('Save Changes'),
             ),
