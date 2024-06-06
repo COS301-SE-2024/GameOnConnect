@@ -194,8 +194,42 @@ Widget build(BuildContext context) {
             alignment: Alignment.center,
             child: Text('Customize Profile', style: TextStyle(fontSize: 24)),
           ),
+         InkWell(
+  //onTap: _pickImage,
+  child: Stack(
+    alignment: Alignment.center, // Change to Alignment.center
+    children: [
+      Container(
+        width: double.infinity, // Full width of the screen
+        height: 150, // Adjust the height as needed
+        color: Colors.grey,
+        // Uncomment and use the decoration property if you want to use an image
+        /*decoration: BoxDecoration(
+          image: DecorationImage(
+            image: _bannerImage,
+            fit: BoxFit.cover,
+          ),
+        ),*/
+      ),
+      Container(
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.camera_alt,
+          size: 15,
+          // Uncomment and set a color if you want to change the icon color
+          //color: Colors.white,
+        ),
+      ),
+    ],
+  ),
+),
           
-          Stack(
+         /* Stack(
             alignment: Alignment.bottomRight,
             children: [
               Container(
@@ -215,7 +249,7 @@ Widget build(BuildContext context) {
                 ),
               ),
             ],
-          ),
+          ),*/
           const SizedBox(height: 30),
           
           Center( // Wrap with Center widget to align the circle in the center
