@@ -319,13 +319,14 @@ Widget build(BuildContext context) {
                 // add button
                 InkWell(
               onTap: () => _showSelectableDialog(
-                'Select Genre',
-                _genres, // Use the _genres list here
-                (results) {
-                  _selectedGenres = results;
-                  setState(() {});
-                },
-              ),
+                    'Select Genre',
+                    _genres,
+                    (results) {
+                      _selectedGenres = results;
+                      setState(() {});
+                    },
+                    'genre',
+                  ),
       child: Container(
         padding: const EdgeInsets.all(5), // Adjust the padding to change the size
         decoration: BoxDecoration(
@@ -359,14 +360,14 @@ Widget build(BuildContext context) {
                 // add button
                 InkWell(
       onTap: () => _showSelectableDialog(
-                'Select Age rating',
-                ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16','PEGI 18' ],
-                (results) {
-                  _selectedAge = results;
-                  // Call setState to update the UI with the selected items.
-                  setState(() {});
-                },
-              ),
+              'Select Age rating',
+              ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16','PEGI 18' ],
+              (results) {
+                _selectedAge = results;
+                setState(() {});
+              },
+              'age',
+            ),
       child: Container(
         padding: const EdgeInsets.all(5), // Adjust the padding to change the size
         decoration: BoxDecoration(
@@ -399,13 +400,14 @@ Widget build(BuildContext context) {
             const SizedBox(width: 20),
                 // add button
                 InkWell(
-               onTap: () => _showSelectableDialog(
+                onTap: () =>_showSelectableDialog(
                 'Select Social interest',
-                _interests, // Use the _genres list here
+                _interests,
                 (results) {
                   _selectedInterests = results;
                   setState(() {});
                 },
+                'interest',
               ),
       child: Container(
         padding: const EdgeInsets.all(5), // Adjust the padding to change the size
@@ -471,7 +473,7 @@ Widget build(BuildContext context) {
     );
   }
 
-  Widget _buildSelectableSection(String title, List<String> items, List<String> selectedItems) {
+  /*Widget _buildSelectableSection(String title, List<String> items, List<String> selectedItems) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -523,11 +525,25 @@ Widget build(BuildContext context) {
         ),
       ],
     );
-  }
+  }*/
 
  Future<void> _showSelectableDialog(
-  String title, List<String> items, Function(List<String>) onSelected) async {
-  List<String> selectedItems = List<String>.from(_selectedGenres); // Initialize with previously selected items
+  String title, List<String> items, Function(List<String>) onSelected, String selectionType) async {
+  List<String> selectedItems = [];
+
+  switch (selectionType) {
+    case 'genre':
+      selectedItems.addAll(_selectedGenres);
+      break;
+    case 'age':
+      selectedItems.addAll(_selectedAge);
+      break;
+    case 'interest':
+      selectedItems.addAll(_selectedInterests);
+      break;
+    default:
+      break;
+  }
   
   await showDialog(
     context: context,
