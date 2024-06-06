@@ -19,12 +19,24 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  UserCredential? _userG;
+  UserCredential? _userA;
+
+
 
   Future signIn() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
+  }
+
+  Future google() async{
+    _userG = await AuthService().signInWithGoogle();
+  }
+
+  Future apple() async{
+    _userA  = await AuthService().signInWithApple();
   }
 
   @override
@@ -238,9 +250,9 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap:  () async {
-                        UserCredential? user = await AuthService().signInWithGoogle();
-                        if (user != null) {
+                      onTap:  ()  {
+                        google();
+                        if (_userG != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -286,8 +298,8 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
-                        UserCredential? user = await AuthService().signInWithApple();
-                        if (user != null) {
+                        apple();
+                        if (_userA != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
