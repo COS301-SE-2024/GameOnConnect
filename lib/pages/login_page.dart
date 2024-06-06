@@ -16,6 +16,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   //Controllers to control text
+  final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -306,7 +307,7 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
