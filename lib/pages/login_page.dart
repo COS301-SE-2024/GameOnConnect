@@ -235,8 +235,14 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {
-                        AuthService().signInWithGoogle();
+                      onTap: () async {
+                        UserCredential? user = await AuthService().signInWithGoogle();
+                        if (user != null) {
+                        Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
@@ -272,8 +278,16 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {
-                        AuthService().signInWithApple();
+                      onTap: () async {
+                        UserCredential? user = await AuthService().signInWithApple();
+                        if (user != null) {
+                          Navigator.pushAndRemoveUntil(
+                            context,  
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                              (Route<dynamic> route) => false,
+                          );
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
