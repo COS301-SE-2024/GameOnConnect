@@ -525,9 +525,9 @@ Widget build(BuildContext context) {
     );
   }
 
-  Future<void> _showSelectableDialog(
-    String title, List<String> items, Function(List<String>) onSelected) async {
-  List<String> selectedItems = [];
+ Future<void> _showSelectableDialog(
+  String title, List<String> items, Function(List<String>) onSelected) async {
+  List<String> selectedItems = List<String>.from(_selectedGenres); // Initialize with previously selected items
   
   await showDialog(
     context: context,
@@ -580,6 +580,7 @@ Widget build(BuildContext context) {
     onSelected(selectedItems);
   }
 }
+
  
   void _saveProfileData() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
