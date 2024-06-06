@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'login_page.dart';
+import 'home_page.dart';
+
 
 const double _textFieldWidth = 300;
 const InputDecoration _inputDecoration = InputDecoration(
@@ -39,13 +42,13 @@ Future<void> createDefaultProfile() async
         "age_rating_tags": [],
         "birthday": null,
         "genre_interests_tags": [],
-        "profile_picture": "gameonconnect-cf66d.appspot.com/default_image.jpg",
+        "profile_picture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
         "social_interests_tags": [],
         "theme": "light",
         "userID":  currentUser.uid,
-        // change this to dynamically add the user's id
         "username": {"profile_name": _username, "unique_num": _nextNum},
-        "visibility": true
+        "visibility": true,
+        "banner" : "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
       };
 
       db.collection("profile_data")
@@ -76,6 +79,7 @@ class SignUp extends StatelessWidget {
     );
     await getNextNumber();
     await createDefaultProfile();
+
   }
 
   void dispose() {
@@ -161,14 +165,10 @@ class SignUp extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
                             }
-                            if (!RegExp(r'^.{8,}$').hasMatch(value)) {
-                              return 'Password must be at least 8 characters';
-                            }
-                            if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
-                              return 'Password must contain an uppercase letter';
-                            }
-                            if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$').hasMatch(value)) {
-                              return 'Password must contain a symbol';
+                            if (!RegExp(
+                                    r'^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$')
+                                .hasMatch(value)) {
+                              return 'Password must contain an uppercase letter, a symbol and at least 8 characters';
                             }
                             return null;
                           },
@@ -212,7 +212,10 @@ class SignUp extends StatelessWidget {
                     if (_formKey.currentState!.validate()) {
                       _username = _usernameController.text;
                       signUp();
-                      Navigator.of(context).pop();
+                      Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                            (Route<dynamic> route) => false,
+                      );
 
                     }
                   },
@@ -225,11 +228,32 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               ),
-              const Text("Already have an account? Login")
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an account? ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  InkWell(
+                    onTap: () {Navigator.pushAndRemoveUntil(context, new MaterialPageRoute(
+                        builder: (BuildContext context) => Login()),
+                      (Route<dynamic> route) => false,
+                    );  },
+
+                    child: Text(' Login',
+                      style: TextStyle(color: Color.fromARGB(255, 214, 193, 4),
+                          fontWeight: FontWeight.bold
+                      ),
+                    )
+                  )
+                  ],
+              )
             ],
+        )
           ),
         ),
-      ),
-    );
+      );
   }
 }
