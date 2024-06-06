@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -25,7 +26,12 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.signOut().then((value) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            });
               },
               color: Colors.grey[600],
               child: Text('Sign Out'),
