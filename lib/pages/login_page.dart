@@ -266,7 +266,7 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () {
-                        AuthService().signInWithGoogle();
+                        AuthService().signInWithApple();
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
