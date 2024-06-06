@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script>
+    function init() {
+      gapi.load('client:auth2', function() {
+        gapi.client.init({
+          apiKey: 'AIzaSyAp45MTHWlqzVEL-94fLZ-xH--pw781ucM',
+          clientId: '811940849881-cq1vesum3664rgpi822b5bnr7p9h8iur.apps.googleusercontent.com',
+          scope: 'profile email',
+          discoveryDocs: ['https://people.googleapis.com/$discovery/rest?version=v1']
+        }).then(function () {
+          // Now you can use gapi.client
+        });
+      });
+    }
+  </script>
+  <script src="https://apis.google.com/js/api.js?onload=init"></script>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -19,6 +34,10 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <meta name="google-signin-client_id" content="811940849881-cq1vesum3664rgpi822b5bnr7p9h8iur.apps.googleusercontent.com">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">

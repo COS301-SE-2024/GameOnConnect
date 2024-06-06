@@ -54,7 +54,6 @@ class _HomePageState extends State<HomePage> {
               child: Text('sign up page '),
             ),
             MaterialButton(
-            MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
