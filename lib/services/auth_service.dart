@@ -24,14 +24,21 @@ class AuthService {
   }
 
   signInWithGoogle() async {
-    //start the sign in process
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      //start the sign in process
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      signInOption: SignInOption.standard, // Use SignInOption.standard
+      // Optionally specify a hosted domain and scopes
+      // hostedDomain: 'your-domain.com',
+      // scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
+    );
 
-    //get the authentication details
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    // Start the sign in process
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-    //make a new credential with the access token and the id token
+    // Get the authentication details
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+    // Make a new credential with the access token and the id token
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
@@ -44,6 +51,8 @@ class AuthService {
         // The account has been created, call the createDefaultProfile function
         createDefaultProfile(user.uid);
       }
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
     }
 
     void createDefaultProfile(String uid) {
