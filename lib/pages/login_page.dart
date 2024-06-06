@@ -8,7 +8,7 @@ import '/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   // ignore: use_super_parameters
-  const Login({Key? key}) : super (key : key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -20,12 +20,11 @@ class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future signIn()  async {
+  Future signIn() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(), 
+      email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
-
   }
 
   @override
@@ -181,10 +180,14 @@ class _LoginState extends State<Login> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           signIn();
-                          Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
-                          (Route<dynamic> route) => false,
-                    );
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       },
                       child: Container(
@@ -236,10 +239,15 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
-                        UserCredential? user = await AuthService().signInWithGoogle();
+                        UserCredential? user =
+                            await AuthService().signInWithGoogle();
                         if (user != null) {
-                        Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                          builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
                             (Route<dynamic> route) => false,
                           );
                         }
@@ -279,13 +287,16 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
-                        UserCredential? user = await AuthService().signInWithApple();
+                        UserCredential? user =
+                            await AuthService().signInWithApple();
                         if (user != null) {
                           Navigator.pushAndRemoveUntil(
-                            context,  
+                            context,
                             MaterialPageRoute(
-                              builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
-                              (Route<dynamic> route) => false,
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
+                            (Route<dynamic> route) => false,
                           );
                         }
                       },
@@ -328,18 +339,21 @@ class _LoginState extends State<Login> {
                         'Don\'t have an account? ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                       InkWell(
-                      onTap: () {Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                          builder: (BuildContext context) => SignUp()),
-                            (Route<dynamic> route) => false,
-                      );  },
-                        child: Text(' Sign Up',
-                          style: TextStyle(color: Color.fromARGB(255, 128, 216, 50),
-                              fontWeight: FontWeight.bold
-                      ),
-                    )
-                    )
-
+                      InkWell(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => SignUp()),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                          child: Text(
+                            ' Sign Up',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 128, 216, 50),
+                                fontWeight: FontWeight.bold),
+                          ))
                     ],
                   )
                 ],
