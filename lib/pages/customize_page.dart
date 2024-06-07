@@ -179,6 +179,18 @@ Future<void> _pickImage() async {
   }
 }
 
+/*
+ Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _profileImage = File(image.path);
+      });
+    }
+  }
+ */
+
 //FILE PICKER
 Future<String> uploadFileToFirebase(Uint8List data, String fileName) async {
   String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -223,8 +235,7 @@ Widget build(BuildContext context) {
           leading: IconButton(
             icon: const Icon(Icons.keyboard_backspace),
             onPressed: () {
-              //Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/profile');
+              Navigator.of(context).pop();
             },
           ),
           title: CircleAvatar(
@@ -253,8 +264,7 @@ Widget build(BuildContext context) {
         leading: IconButton(
           icon: const Icon(Icons.keyboard_backspace),
           onPressed: () {
-            //Navigator.of(context).pop();
-            Navigator.pushNamed(context, '/profile');
+            Navigator.of(context).pop();
           },
         ),
         title: CircleAvatar(
@@ -499,8 +509,7 @@ Widget build(BuildContext context) {
               ),
               onPressed: () {
                 _saveProfileData();
-                //Navigator.of(context).pop();
-                Navigator.pushNamed(context, '/profile');
+                Navigator.of(context).pop();
               },
               child: const Text('Save Changes'),
             ),
