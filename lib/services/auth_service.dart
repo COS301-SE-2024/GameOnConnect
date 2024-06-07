@@ -59,7 +59,7 @@ class AuthService {
       //return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
       // Handle errors here
-      print("Error signing in with Google: $e");
+      //print("Error signing in with Google: $e");
     }
     return null;
   }
