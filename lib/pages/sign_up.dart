@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gameonconnect/pages/home_page.dart';
+import 'login_page.dart';
+import 'home_page.dart';
 
 const double _textFieldWidth = 300;
 const InputDecoration _inputDecoration = InputDecoration(
@@ -37,13 +38,13 @@ Future<void> createDefaultProfile() async {
         "age_rating_tags": [],
         "birthday": null,
         "genre_interests_tags": [],
-        "profile_picture": "gameonconnect-cf66d.appspot.com/default_image.jpg",
+        "profile_picture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
         "social_interests_tags": [],
         "theme": "light",
-        "userID": currentUser.uid,
-        // change this to dynamically add the user's id
+        "userID":  currentUser.uid,
         "username": {"profile_name": _username, "unique_num": _nextNum},
-        "visibility": true
+        "visibility": true,
+        "banner" : "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
       };
 
       db.collection("profile_data").doc(currentUser.uid).set(defaultData);
@@ -71,6 +72,7 @@ class SignUp extends StatelessWidget {
     );
     await getNextNumber();
     await createDefaultProfile();
+
   }
 
   void dispose() {
@@ -217,11 +219,10 @@ class SignUp extends StatelessWidget {
                       signUp();
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Signed Up successfully!")));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  HomePage(title: "GameOnConnect")));
+                      Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
+                          builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                            (Route<dynamic> route) => false,
+                      );
                     }
                   },
                   child: const Text(
@@ -233,11 +234,32 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
               ),
-              const Text("Already have an account? Login")
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an account? ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  InkWell(
+                    onTap: () {Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
+                        builder: (BuildContext context) => Login()),
+                      (Route<dynamic> route) => false,
+                    );  },
+
+                    child: Text(' Login',
+                      style: TextStyle(color: Color.fromARGB(255, 214, 193, 4),
+                          fontWeight: FontWeight.bold
+                      ),
+                    )
+                  )
+                  ],
+              )
             ],
+        )
           ),
         ),
-      ),
-    );
+      );
   }
 }

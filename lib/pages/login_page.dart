@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'sign_up.dart';
+import 'home_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '/services/auth_service.dart';
 
@@ -14,15 +16,27 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   //Controllers to control text
+  final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  UserCredential? _userG;
+  UserCredential? _userA;
+
+
 
   Future signIn() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
+  }
+
+  Future google() async{
+    _userG = await AuthService().signInWithGoogle();
+  }
+
+  Future apple() async{
+    _userA  = await AuthService().signInWithApple();
   }
 
   @override
@@ -178,6 +192,14 @@ class _LoginState extends State<Login> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           signIn();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
+                            (Route<dynamic> route) => false,
+                          );
                         }
                       },
                       child: Container(
@@ -228,8 +250,18 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {
-                        AuthService().signInWithGoogle();
+                      onTap:  ()  {
+                        google();
+                        if (_userG != null) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
@@ -265,8 +297,18 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {
-                        AuthService().signInWithApple();
+                      onTap: () async {
+                        apple();
+                        if (_userA != null) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      title: 'GameOnConnect',
+                                    )),
+                            (Route<dynamic> route) => false,
+                          );
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.all(15),
@@ -300,19 +342,28 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'Don\'t have an account? ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        ' Sign Up',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 128, 216, 50),
-                            fontWeight: FontWeight.bold),
-                      )
+                      InkWell(
+                          onTap: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => SignUp()),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                          child: Text(
+                            ' Sign Up',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 128, 216, 50),
+                                fontWeight: FontWeight.bold),
+                          ))
                     ],
                   )
                 ],

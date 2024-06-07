@@ -24,58 +24,69 @@ class AuthService {
   }
 
   signInWithGoogle() async {
-      //start the sign in process
+    //start the sign in process
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      signInOption: SignInOption.standard, // Use SignInOption.standard
-      // Optionally specify a hosted domain and scopes
-      // hostedDomain: 'your-domain.com',
-      // scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly'],
+      signInOption: SignInOption.standard,
     );
+    try {
+      // Start the sign in process
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // User cancelled the sign-in process
+        return null;
+      }
 
-    // Start the sign in process
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      // Get the authentication details
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    // Get the authentication details
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      // Make a new credential with the access token and the id token
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // Make a new credential with the access token and the id token
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final UserCredential authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      
 
-    final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
-      final User? user = authResult.user;
-
-      if (user != null) {
+      if (authResult.user != null) {
         // The account has been created, call the createDefaultProfile function
-        createDefaultProfile(user.uid);
+        createDefaultProfile(authResult.user!.uid);
       }
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return authResult;
+      //return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      // Handle errors here
+      //print("Error signing in with Google: $e");
     }
+    return null;
+  }
 
-    void createDefaultProfile(String uid) {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        final defaultData = <String, dynamic>{
-          "name": "",
-          "surname": "",
-          "age_rating_tags": [],
-          "birthday": null,
-          "genre_interests_tags": [],
-          "profile_picture": "gameonconnect-cf66d.appspot.com/default_image.jpg",
-          "social_interests_tags": [],
-          "theme": "light",
-          "userID": currentUser.uid,
-          "username": {"profile_name": _username, "unique_num": _nextNum},
-          "visibility": true
-        };
+  void createDefaultProfile(String uid) {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final defaultData = <String, dynamic>{
+        "name": "",
+        "surname": "",
+        "age_rating_tags": [],
+        "birthday": null,
+        "genre_interests_tags": [],
+        "profile_picture":
+            "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
+        "social_interests_tags": [],
+        "theme": "light",
+        "userID": currentUser.uid,
+        "username": {"profile_name": _username, "unique_num": _nextNum},
+        "visibility": true,
+        "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
+      };
 
-        db.collection("profile_data").doc(currentUser.uid).set(defaultData);
-      }
+      db.collection("profile_data").doc(currentUser.uid).set(defaultData);
     }
+  }
 
   signInWithApple() async {
     // Request credentials

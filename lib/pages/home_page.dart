@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: const Color.fromARGB(255, 128, 216, 50),
         title: Text(widget.title),
       ),
       body: Center(
@@ -25,9 +26,15 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+              FirebaseAuth.instance.signOut().then((value) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            });
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Sign Out'),
             ),
             /* MaterialButton(
@@ -44,25 +51,27 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey[600],
               child: Text('Customize profile '),
             ),*/
-            MaterialButton(
+            /*MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/sign_up');
               },
               color: Colors.grey[600],
               child: Text('Sign Up Page '),
-            ),
+            ),*/
             MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Profile Page '),
             ),
             MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/game_library');
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Game Library Page '),
             ),
           ],

@@ -23,14 +23,19 @@ class Profile extends StatelessWidget {
             String profileName = data['name'] ?? 'Profile name';
             String username = userInfo['profile_name'] ?? 'username';
             String profilePicture = data['profile_picture'] ?? '';
+            String profileBanner = data['banner'];
 
             String profilePictureUrl = ''; 
+            String bannerUrl ='';
 
             if (profilePicture.isNotEmpty) {
               try {
                 // Use refFromURL for a full URL
                 Reference storageRef = FirebaseStorage.instance.refFromURL(profilePicture);
                 profilePictureUrl = await storageRef.getDownloadURL();
+
+                Reference storage2 = FirebaseStorage.instance.refFromURL(profileBanner);
+                bannerUrl = await storage2.getDownloadURL();
               } catch (e) {
                 return null;
               }
@@ -39,7 +44,8 @@ class Profile extends StatelessWidget {
             return {
               'profileName': profileName,
               'username': username,
-              'profilePicture': profilePictureUrl
+              'profilePicture': profilePictureUrl,
+              'profileBanner' :bannerUrl
             };
           } else {
             return null;
@@ -84,6 +90,7 @@ class Profile extends StatelessWidget {
         String profileName = profileData['profileName'];
         String username = profileData['username'];
         String profilePicture = profileData['profilePicture'];
+        String profileBanner = profileData['profileBanner'];
 
         return DefaultTabController(
           length: 3, 
@@ -125,10 +132,16 @@ class Profile extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: <Widget>[
                     //banner
-                    Container(
-                      height: 170,
-                      color: Colors.grey[300], // Placeholder for banner image
-                    ),
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(profileBanner),
+                  fit: BoxFit.cover,
+                )
+            ),
+                height: 170,
+            ),
+
                     
                     Positioned(
                       bottom: -50, // Half of the CircleAvatar's radius to align it properly

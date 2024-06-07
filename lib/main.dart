@@ -89,6 +89,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
+        '/login': (context) => Login(),
       },
       initialRoute: '/',
       //home: Profile()
