@@ -81,15 +81,15 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-            '/home': (context) => HomePage(
+        '/home': (context) => HomePage(
               title: 'GameOnConnect',
-                ),
-            '/edit-profile': (context) => EditProfilePage(),
-            '/customize': (context) => CustomizeProfilePage(),
-            '/sign_up': (context) => SignUp(),
-            '/profile': (context) => Profile(),
-            '/game_library': (context) => GameLibrary(),
-            '/login' :(context) => Login(),
+            ),
+        '/edit-profile': (context) => EditProfilePage(),
+        '/customize': (context) => CustomizeProfilePage(),
+        '/sign_up': (context) => SignUp(),
+        '/profile': (context) => Profile(),
+        '/game_library': (context) => GameLibrary(),
+        '/login': (context) => Login(),
       },
       initialRoute: '/',
       //home: Profile()

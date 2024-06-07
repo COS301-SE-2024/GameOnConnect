@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: const Color.fromARGB(255, 128, 216, 50),
         title: Text(widget.title),
       ),
       body: Center(
@@ -33,7 +33,8 @@ class _HomePageState extends State<HomePage> {
               );
             });
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Sign Out'),
             ),
             /* MaterialButton(
@@ -61,14 +62,16 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pushNamed(context, '/profile');
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Profile Page '),
             ),
             MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/game_library');
               },
-              color: Colors.grey[600],
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Game Library Page '),
             ),
           ],
