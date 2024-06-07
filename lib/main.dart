@@ -15,6 +15,7 @@ import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:gameonconnect/pages/game_details_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
         '/login': (context) => Login(),
+        '/game_details': (context) => GameDetailsPage()
       },
       initialRoute: '/',
       //home: Profile()
