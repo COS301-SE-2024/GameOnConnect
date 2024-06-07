@@ -1,7 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -23,6 +29,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
   bool _isDataFetched = false; 
+  File? _profileImage;
 
   Future<void> _fetchGenresFromAPI() async {
   //("Fetching genres started");
@@ -134,6 +141,79 @@ Future<void> _fetchData() async {
     //print("Fetching data completed");
 }
 
+void selectImage(){
+
+}
+
+Future<void> onProfileTapped() async {
+  final ImagePicker _picker = ImagePicker();
+  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);  // Or ImageSource.camera for taking a new photo
+
+  if (image != null) {
+    setState(() {
+      _profileImage = File(image.path);  // Store the selected image
+    });
+  }
+}
+
+Future<void> _pickImage() async {
+  if (kIsWeb) {
+    // Web implementation
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      if (file.bytes != null) {
+        String downloadURL = await uploadFileToFirebase(file.bytes!, file.name);
+        await saveProfilePictureURL(downloadURL);
+      }
+    }
+  } else {
+    // Mobile/desktop implementation
+    // Assuming you're using image_picker for non-web
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      String downloadURL = await uploadImageToFirebase(File(pickedFile.path));
+      await saveProfilePictureURL(downloadURL);
+    }
+  }
+}
+
+//FILE PICKER
+Future<String> uploadFileToFirebase(Uint8List data, String fileName) async {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid/$fileName');
+  UploadTask uploadTask = storageReference.putData(data);
+  await uploadTask.whenComplete(() => null);
+  String downloadURL = await storageReference.getDownloadURL();
+  return downloadURL;
+}
+
+Future<String> uploadImageToFirebase(File image) async {
+  // Get the user's UID
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  
+  // Create a reference to Firebase Storage
+  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
+  
+  // Upload the file
+  UploadTask uploadTask = storageReference.putFile(image);
+  await uploadTask.whenComplete(() => null);
+  
+  // Get the download URL
+  String downloadURL = await storageReference.getDownloadURL();
+  return downloadURL;
+}
+
+//only when the user clicks on the save button -----------------
+Future<void> saveProfilePictureURL(String url) async {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  await FirebaseFirestore.instance.collection("profile_data").doc(uid).update({
+    'profile_picture': url,
+  });
+}
+
+
  @override
 Widget build(BuildContext context) {
     if (!_isDataFetched) {
@@ -232,17 +312,19 @@ Widget build(BuildContext context) {
 ),
           
           const SizedBox(height: 30),
-          
+         // profile picture user can change 
           Center( // Wrap with Center widget to align the circle in the center
       child: InkWell(
-        //onTap: _pickImage,
+        //onTap: onProfileTapped,
+        onTap: _pickImage,
         child: Stack(
           alignment: Alignment.bottomRight,
           children: [
             CircleAvatar(
               radius: 60,
               backgroundColor: Colors.grey,
-              //backgroundImage: _profileImage,
+               backgroundImage: _profileImage != null ? FileImage(_profileImage!) : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+             // backgroundImage: NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1')
             ),
             Container(
               height: 30,
@@ -518,6 +600,20 @@ Widget build(BuildContext context) {
       // Use set with merge to create or update the document
       await profileDocRef.set(data, SetOptions(merge: true));
       //print("Profile data set/updated successfully!");
+
+      //save image 
+      if (_profileImage != null) {
+      // Upload the image to Firebase Storage
+      String imageUrl = await uploadImageToFirebase(_profileImage!);
+
+      // Save the download URL to Firestore
+      await saveProfilePictureURL(imageUrl);
+
+      // Show a confirmation message or navigate
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile picture updated')),
+      );
+    }
     }
   } catch (e) {
     //print("Error setting/updating profile data: $e");
