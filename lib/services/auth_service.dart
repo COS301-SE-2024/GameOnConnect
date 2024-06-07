@@ -65,12 +65,14 @@ class AuthService {
           "age_rating_tags": [],
           "birthday": null,
           "genre_interests_tags": [],
-          "profile_picture": "gameonconnect-cf66d.appspot.com/default_image.jpg",
+          "profile_picture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
           "social_interests_tags": [],
           "theme": "light",
           "userID": currentUser.uid,
           "username": {"profile_name": _username, "unique_num": _nextNum},
-          "visibility": true
+          "visibility": true,
+          "banner" : "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
+
         };
 
         db.collection("profile_data").doc(currentUser.uid).set(defaultData);
