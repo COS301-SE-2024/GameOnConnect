@@ -74,6 +74,14 @@ class _HomePageState extends State<HomePage> {
               textColor: Color.fromARGB(255, 24, 24, 24),
               child: Text('Game Library Page '),
             ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/game_details');
+              },
+              color: const Color.fromARGB(255, 128, 216, 50),
+              textColor: Color.fromARGB(255, 24, 24, 24),
+              child: Text('Game Details Page '),
+            ),
           ],
         ),
       ),
