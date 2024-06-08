@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -84,18 +86,44 @@ class _GameLibraryState extends State<GameLibrary> {
                 : SizedBox.shrink();
           }
           final game = _games[index];
-          return Card(
-            child: ListTile(
-              leading: Image.network(
-              game.background_image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-              title: Text(game.name),
-              subtitle: Text(game.released),
-            ),
-          );
+          return Column(children: [
+            Row(
+              children: [
+                Container(
+                  width: 134,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  ),
+                  child: Image.network(
+                    game.background_image,
+                    width: 134,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(game.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        )),
+                    Text(
+                      "Released: ${game.released}"
+                    ),
+                    Text(
+                      "Genres:"
+                    ),
+                    Text(
+                      "Publisher"
+                    )
+                  ],
+                )
+              ],
+            )
+          ]);
         },
       ),
     );
@@ -106,17 +134,22 @@ class Game {
   final int id;
   final String name;
   final String released;
-  // ignore: non_constant_identifier_names
+  final Array platforms;
   final String background_image;
 
-  // ignore: non_constant_identifier_names
-  Game({required this.id, required this.name, required this.released, required this.background_image});
+  Game(
+      {required this.id,
+      required this.name,
+      required this.released,
+      required this.platforms,
+      required this.background_image});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
       id: json['id'],
       name: json['name'],
       released: json['released'],
+      platforms: json['genres'],
       background_image: json['background_image'],
     );
   }
