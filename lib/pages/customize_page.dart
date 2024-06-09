@@ -10,6 +10,8 @@ import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io' if (dart.library.html) 'dart:html' as html;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:convert';
 
 class CustomizeProfilePage extends StatefulWidget {
@@ -29,7 +31,19 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
   bool _isDataFetched = false; 
-  File? _profileImage;
+  //File? _profileImage;
+
+  //NEW CODE
+  /*File? _profileImage; // Local variable for selected image
+  dynamic _profileImage;
+  String? _profileImageFB;*/
+  Uint8List? _profileImageBytes;
+  String _profileImageUrl=''; // URL of the image stored in Firebase
+  dynamic _profileImage;
+Uint8List? _profileImageWeb;
+String? _profileImageFB;
+
+
 
   Future<void> _fetchGenresFromAPI() async {
   //("Fetching genres started");
@@ -122,10 +136,15 @@ Future<void> _fetchUserSelectionsFromDatabase() async {
         final docSnapshot = await profileDocRef.get();
         if (docSnapshot.exists) {
           final data = docSnapshot.data();
-          setState(() {
+          setState(() async {
             _selectedGenres = List<String>.from(data?["genre_interests_tags"] ?? []);
             _selectedAge = List<String>.from(data?["age_rating_tag"] ?? []);
             _selectedInterests = List<String>.from(data?["social_interests_tags"] ?? []);
+             _profileImageUrl = data?["profile_picture"] ?? '';
+             //_profileImage= data?["profile_picture"] ?? '';
+             print("Fetched image from Firebase: $_profileImageUrl");
+ 
+
           });
         }
       }
@@ -137,13 +156,10 @@ Future<void> _fetchUserSelectionsFromDatabase() async {
 Future<void> _fetchData() async {
    //print("Fetching data started");
     await _fetchUserSelectionsFromDatabase();
-    await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
+    //await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
     //print("Fetching data completed");
 }
 
-void selectImage(){
-
-}
 
 Future<void> onProfileTapped() async {
   final ImagePicker _picker = ImagePicker();
@@ -151,12 +167,14 @@ Future<void> onProfileTapped() async {
 
   if (image != null) {
     setState(() {
-      _profileImage = File(image.path);  // Store the selected image
+      _profileImage = File(image.path); 
+      print(_profileImage);
+       // Store the selected image
     });
   }
 }
 
-Future<void> _pickImage() async {
+/*Future<void> _pickImage() async {
   if (kIsWeb) {
     // Web implementation
     FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
@@ -165,7 +183,7 @@ Future<void> _pickImage() async {
       PlatformFile file = result.files.first;
       if (file.bytes != null) {
         String downloadURL = await uploadFileToFirebase(file.bytes!, file.name);
-        await saveProfilePictureURL(downloadURL);
+        await saveProfilePictureUuploadRL(downloadURL);
       }
     }
   } else {
@@ -177,22 +195,41 @@ Future<void> _pickImage() async {
       await saveProfilePictureURL(downloadURL);
     }
   }
-}
+}*/
 
-/*
- Future<void> _pickImage() async {
+//NEW CODE
+Future<void> _pickImage() async {
+  if (kIsWeb) {
+    // Web implementation
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      if (file.bytes != null) {
+        setState(() {
+          _profileImage = (file.bytes!, file.name);
+          _profileImageFB = file.name;
+        });
+      }
+      print("picked image and image updated ");
+    }
+  } else {
+    // Mobile/desktop implementation
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _profileImage = File(image.path);
+         print("picked image and image updated ");
       });
     }
   }
- */
+}
+
+ 
 
 //FILE PICKER
-Future<String> uploadFileToFirebase(Uint8List data, String fileName) async {
+Future<String> FileToFirebase(Uint8List data, String fileName) async {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid/$fileName');
   UploadTask uploadTask = storageReference.putData(data);
@@ -216,14 +253,59 @@ Future<String> uploadImageToFirebase(File image) async {
   String downloadURL = await storageReference.getDownloadURL();
   return downloadURL;
 }
+//new code
+/*Future<String> uploadImageToFirebase(File image) async {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
+  UploadTask uploadTask;
+
+  if (kIsWeb) {
+    // For web, use putData with image bytes
+    Uint8List imageBytes = await image.readAsBytes();
+    uploadTask = storageReference.putData(imageBytes);
+  } else {
+    // For non-web, use File from dart:io
+    uploadTask = storageReference.putFile(image);
+  }
+
+  await uploadTask.whenComplete(() => null);
+  String downloadURL = await storageReference.getDownloadURL();
+  print("Image uploaded to Firebase Storage: $downloadURL");
+  return downloadURL;
+}
+Future<String> uploadImageToFirebase(dynamic image) async {
+  // Get the user's UID
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
+  UploadTask uploadTask;
+
+  if (kIsWeb) {
+    // Web implementation
+    uploadTask = storageReference.putData(image, SettableMetadata(contentType: 'image/jpeg'));
+  } else {
+    // Mobile/desktop implementation
+    uploadTask = storageReference.putFile(image);
+  }
+
+  await uploadTask.whenComplete(() => null);
+  
+  // Get the download URL
+  String downloadURL = await storageReference.getDownloadURL();
+  return downloadURL;
+}*/
+
 
 //only when the user clicks on the save button -----------------
 Future<void> saveProfilePictureURL(String url) async {
   String uid = FirebaseAuth.instance.currentUser!.uid;
   await FirebaseFirestore.instance.collection("profile_data").doc(uid).update({
     'profile_picture': url,
+    
   });
+    print("Saved selected picture to Firebase: $url");
 }
+
+//newest code 
 
 
  @override
@@ -333,8 +415,14 @@ Widget build(BuildContext context) {
             CircleAvatar(
               radius: 60,
               backgroundColor: Colors.grey,
-               backgroundImage: _profileImage != null ? FileImage(_profileImage!) : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
-             // backgroundImage: NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1')
+              //backgroundImage: NetworkImage(profilePicture),
+              //backgroundImage: _profileImageUrl != '' ? NetworkImage(_profileImageUrl) : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+ backgroundImage: _profileImage != null
+               ? (kIsWeb ? NetworkImage(_profileImage!.path) : FileImage(_profileImage!)) as ImageProvider
+              : _profileImageUrl != ''
+                  ? NetworkImage(_profileImageUrl)
+                  : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+              
             ),
             Container(
               height: 30,
@@ -590,7 +678,7 @@ Widget build(BuildContext context) {
 }
 
 
-  void _saveProfileData() async {
+  /*void _saveProfileData() async {
   try {
   final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUser = auth.currentUser;
@@ -608,7 +696,7 @@ Widget build(BuildContext context) {
 
       // Use set with merge to create or update the document
       await profileDocRef.set(data, SetOptions(merge: true));
-      //print("Profile data set/updated successfully!");
+      print("Profile data set/updated successfully!");
 
       //save image 
       if (_profileImage != null) {
@@ -627,7 +715,91 @@ Widget build(BuildContext context) {
   } catch (e) {
     //print("Error setting/updating profile data: $e");
   }
+}*/
+/*void _saveProfileData() async {
+  try {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+
+      // Save image if there is a new one
+      if (_profileImage != null) {
+        print("saving to firebase $_profileImage");
+        // Upload the image to Firebase Storage
+        String imageUrl = await uploadImageToFirebase(_profileImage!);
+
+        // Save the download URL to Firestore
+        await saveProfilePictureURL(imageUrl);
+
+        // Show a confirmation message or navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile picture updated')),
+        );
+      }
+
+      // Data to be set or updated
+      final data = {
+        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
+        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
+      };
+
+      // Use set with merge to create or update the document
+      await profileDocRef.set(data, SetOptions(merge: true));
+      print("Profile data set/updated successfully!");
+    }
+  } catch (e) {
+    print("Error setting/updating profile data: $e");
+  }
+}*/
+void _saveProfileData() async {
+  try {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+
+      // Save image if there is a new one
+      if (_profileImage != null) {
+        // Upload the image to Firebase Storage
+        String imageUrl;
+        if (kIsWeb) {
+          imageUrl = await uploadImageToFirebase(_profileImage!);
+        } else {
+          imageUrl = await uploadImageToFirebase(_profileImage!);
+        }
+
+        // Save the download URL to Firestore
+        await saveProfilePictureURL(imageUrl);
+
+        // Show a confirmation message or navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile picture updated')),
+        );
+      }
+
+      // Data to be set or updated
+      final data = {
+        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
+        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
+      };
+
+      // Use set with merge to create or update the document
+      await profileDocRef.set(data, SetOptions(merge: true));
+      print("Profile data set/updated successfully!");
+    }
+  } catch (e) {
+    print("Error setting/updating profile data: $e");
+  }
 }
+
+
 
 
 }
