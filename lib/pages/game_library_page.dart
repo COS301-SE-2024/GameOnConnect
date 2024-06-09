@@ -68,74 +68,107 @@ class _GameLibraryState extends State<GameLibrary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const TextField(
-          decoration: InputDecoration(
-            labelText: 'Search',
-            border: OutlineInputBorder(),
-          ),
-        ),
-      ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: _games.length + 1,
-        itemBuilder: (context, index) {
-          if (index == _games.length) {
-            return _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : SizedBox.shrink();
-          }
-          final game = _games[index];
-          return Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(children: [
-                Row(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        game.background_image,
-                        width: 134,
-                        height: 120,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(game.name,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              )),
-                          Text("Released: ${game.released}"),
-                          Text("Genres:"),
-                          Text("Publisher")
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Theme.of(context).colorScheme.primary),
-                        ),
-                        child: Text("${game.score}", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12)),
-                      ),
-                      Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.secondary),
-                      Icon(Icons.chevron_right, color: Colors.white),
-                    ],)
-                  ],
+        appBar: appBar(context),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 15, right: 15),
+                  labelText: 'Search',
+                  suffixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(100)),
                 ),
-            ]),
-          );
-        },
-      ),
+              ),
+            ),
+            Expanded(child: gameList()),
+          ],
+        ));
+  }
+
+  AppBar appBar(BuildContext context) {
+    return AppBar(
+      title: Text("Game Library",
+          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+      actions: [
+        Icon(
+          Icons.account_circle_outlined,
+          color: Theme.of(context).colorScheme.primary,
+          size: 32,
+        )
+      ],
+    );
+  }
+
+  ListView gameList() {
+    return ListView.builder(
+      controller: _scrollController,
+      itemCount: _games.length + 1,
+      itemBuilder: (context, index) {
+        if (index == _games.length) {
+          return _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : SizedBox.shrink();
+        }
+        final game = _games[index];
+        return Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(children: [
+            Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    game.background_image,
+                    width: 134,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(game.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          )),
+                      Text("Released: ${game.released}"),
+                      Text("Genres:"),
+                      Text("Publisher")
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      child: Text("${game.score}",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 12)),
+                    ),
+                    Icon(Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.secondary),
+                    Icon(Icons.chevron_right, color: Colors.white),
+                  ],
+                )
+              ],
+            ),
+          ]),
+        );
+      },
     );
   }
 }

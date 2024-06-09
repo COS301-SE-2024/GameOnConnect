@@ -23,7 +23,7 @@ class Game {
       released: json['released'],
       platforms: json['genres'],
       background_image: json['background_image'],
-      score: json['metacritic'],
+      score: json['metacritic'] ?? 0,
     );
   }
 }
