@@ -113,6 +113,7 @@ class _GameLibraryState extends State<GameLibrary> {
               : SizedBox.shrink();
         }
         final game = _games[index];
+        print(game.platforms);
         return Padding(
           padding: const EdgeInsets.all(12),
           child: Column(children: [
@@ -137,8 +138,17 @@ class _GameLibraryState extends State<GameLibrary> {
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                           )),
+                      Row(children: game.getPlatformIcons(context)),
                       Text("Released: ${game.released}"),
-                      Text("Genres:"),
+                      Row(
+                        children: [
+                          Text("Genres:"),
+                          SizedBox(width: 10),
+                          Row(
+                            children: game.getStyledGenres(context),
+                          )
+                        ],
+                      ),
                       Text("Publisher")
                     ],
                   ),
