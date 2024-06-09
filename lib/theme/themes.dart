@@ -14,7 +14,7 @@ ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     surface: Color.fromRGBO(255, 255, 255, 1),
     primary: Color.fromRGBO(0, 223, 103, 1.0),
-    secondary: Color.fromRGBO(0, 144, 66, 1.0),
+    secondary: Color.fromRGBO(42, 42, 42, 1.0),
     tertiary: Color.fromRGBO(136, 255, 131, 1.0)
   )
 );

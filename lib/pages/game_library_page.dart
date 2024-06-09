@@ -86,47 +86,56 @@ class _GameLibraryState extends State<GameLibrary> {
                 : SizedBox.shrink();
           }
           final game = _games[index];
-          return Column(children: [
-            Row(
-              children: [
-                Container(
-                  width: 134,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  ),
-                  child: Image.network(
-                    game.background_image,
-                    width: 134,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          return Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(children: [
+                Row(
                   children: [
-                    Text(game.name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        )),
-                    Text(
-                      "Released: ${game.released}"
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        game.background_image,
+                        width: 134,
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    Text(
-                      "Genres:"
+                    SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(game.name,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              )),
+                          Text("Released: ${game.released}"),
+                          Text("Genres:"),
+                          Text("Publisher")
+                        ],
+                      ),
                     ),
-                    Text(
-                      "Publisher"
-                    )
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Theme.of(context).colorScheme.primary),
+                        ),
+                        child: Text("${game.score}", style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12)),
+                      ),
+                      Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.secondary),
+                      Icon(Icons.chevron_right, color: Colors.white),
+                    ],)
                   ],
-                )
-              ],
-            )
-          ]);
+                ),
+            ]),
+          );
         },
       ),
     );
   }
 }
-
