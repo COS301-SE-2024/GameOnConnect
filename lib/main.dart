@@ -6,6 +6,7 @@ import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
+import 'pages/help_page.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 import 'firebase_options.dart';
@@ -90,6 +91,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
         '/login': (context) => Login(),
+        '/help': (context) => Help()
       },
       initialRoute: '/',
       //home: Profile()

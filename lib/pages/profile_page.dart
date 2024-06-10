@@ -103,25 +103,59 @@ class Profile extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
               ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/edit-profile');
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/customize');
-                  },
-                ),
-              ], 
+              actions: [Builder(
+                builder: (context){
+                  return IconButton(
+                    icon: const Icon(Icons.settings),
+                    onPressed: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                  );
+                },
+              ),
+              ],
               bottom: const TabBar(
                 tabs: [
                   Tab(icon: Icon(Icons.people), text: 'Friends'),
                   Tab(icon: Icon(Icons.gamepad), text: 'Games'),
                   Tab(icon: Icon(Icons.event), text: 'Events'),
+                ],
+              ),
+            ),
+            endDrawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children:  [
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 128, 216, 50),
+                    ),
+                    child: Text("Settings")
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.dashboard_customize),
+                    title: Text('Customize Profile'),
+                    onTap: () {
+                      Navigator.pop(context); // closing the drawer
+                      Navigator.pushNamed(context, '/customize');},
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Edit Profile'),
+                    onTap: () {
+                      Navigator.pop(context); // closing the drawer
+                      Navigator.pushNamed(context, '/edit-profile');},
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.question_mark),
+                    title: Text('Help menu'),
+                    onTap: () {
+                      Navigator.pop(context); // closing the drawer
+                      Navigator.pushNamed(context, '/help');
+
+                      },
+                  )
+
                 ],
               ),
             ),
