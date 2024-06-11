@@ -33,6 +33,7 @@ class Profile extends StatelessWidget {
                 // Use refFromURL for a full URL
                 Reference storageRef = FirebaseStorage.instance.refFromURL(profilePicture);
                 profilePictureUrl = await storageRef.getDownloadURL();
+
               } catch (e) {
                 return null;
               }
