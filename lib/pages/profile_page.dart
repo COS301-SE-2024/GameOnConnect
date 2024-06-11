@@ -155,7 +155,7 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.question_mark,
                       color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Help menu'),
+                      title: Text('Help centre'),
                       onTap: () {
                         Navigator.pop(context); // closing the drawer
                         Navigator.pushNamed(context, '/help');

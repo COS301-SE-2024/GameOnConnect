@@ -19,6 +19,8 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  String errorMessage ="";
+
   UserCredential? _userG;
   UserCredential? _userA;
 
@@ -29,6 +31,7 @@ class _LoginState extends State<Login> {
       email: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
+
   }
 
   Future google() async{
@@ -192,14 +195,31 @@ class _LoginState extends State<Login> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           signIn();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => HomePage(
-                                      title: 'GameOnConnect',
-                                    )),
-                            (Route<dynamic> route) => false,
-                          );
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      HomePage(
+                                        title: 'GameOnConnect',
+                                      )),
+                                  (Route<dynamic> route) => false,
+                            );
+                            setState(() {
+                              errorMessage = "";
+                            });
+                          }else
+                            {
+                              passwordController.clear();
+                              emailController.clear();
+                              setState(() {
+                                errorMessage = "Invalid email or password. Please try again";
+                              });
+                              Text(
+                                errorMessage,
+                                style: TextStyle(color: Colors.red),
+                              );
+                            }
                         }
                       },
                       child: Container(
