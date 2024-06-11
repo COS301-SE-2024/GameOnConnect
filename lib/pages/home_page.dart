@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -15,10 +16,10 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
     Text('Home Page'),
-    Text('Games Page'),
-    Text('Customize Page'),
-    Text('Calendar Page'),
-    Text('Profile Page'),
+    Text('Games Library'),
+    Text('Add to currently playing'),
+    Text('Events Page'),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -37,59 +38,63 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: _pages.elementAt(_selectedIndex),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Handle the floating action button press
-        },
-        tooltip: 'Add',
-        child: const Icon(Icons.gamepad_rounded),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: Container(
-          height: 60.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _buildNavItem(Icons.home_filled, 0),
-              _buildNavItem(Icons.sports_esports, 1),
-              SizedBox(width: 48.0), // Space for the floating action button
-              _buildNavItem(Icons.calendar_today, 2),
-              _buildNavItem(Icons.person, 3),
-            ],
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
           ),
-        ),
+        ],
+      ),
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        items: [
+          _buildNavItem(Icons.home_filled, 'Home', 0),
+          _buildNavItem(Icons.sports_esports, 'Games', 1),
+          _buildNavItem(Icons.gamepad_rounded, 'Customize', 2),
+          _buildNavItem(Icons.calendar_today, 'Calendar', 3),
+          _buildNavItem(Icons.person, 'Profile', 4),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, int index) {
-    return GestureDetector(
-      onTap: () => _onItemTapped(index),
-      child: Container(
-        width: MediaQuery.of(context).size.width / 5,
-        height: 60.0,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (_selectedIndex == index)
-              Container(
-                width: 40.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            Icon(
-              icon,
-              color: _selectedIndex == index ? Colors.white : Colors.grey,
-            ),
-          ],
+  BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
+    bool isSelected = _selectedIndex == index;
+    Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.green;
+    Color highlightColor = Theme.of(context).brightness == Brightness.light ? Color(0xFF00FF00) : Colors.grey;
+
+    return BottomNavigationBarItem(
+      icon: Container(
+        decoration: isSelected
+            ? BoxDecoration(
+                color: highlightColor,
+                shape: BoxShape.circle,
+                 
+              )
+            : null,
+        child: Icon(
+          icon,
+          color: isSelected ? selectedColor : Colors.grey,
         ),
       ),
+      label: '',
     );
   }
 }
