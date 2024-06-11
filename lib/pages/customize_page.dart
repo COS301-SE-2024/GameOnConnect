@@ -33,16 +33,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   bool _isDataFetched = false; 
   //File? _profileImage;
 
-  //NEW CODE
-  /*File? _profileImage; // Local variable for selected image
-  dynamic _profileImage;
-  String? _profileImageFB;*/
+  //profile picture 
   Uint8List? _profileImageBytes;
   String _profileImageUrl=''; // URL of the image stored in Firebase
   dynamic _profileImage;
 Uint8List? _profileImageWeb;
 String? _profileImageFB;
 
+//profile banner
+String _profileBannerUrl=''; // URL of the image stored in Firebase
+  dynamic _profileBanner;
+  String? _profileBannerFB;
 
 
   Future<void> _fetchGenresFromAPI() async {
@@ -141,9 +142,9 @@ Future<void> _fetchUserSelectionsFromDatabase() async {
             _selectedAge = List<String>.from(data?["age_rating_tag"] ?? []);
             _selectedInterests = List<String>.from(data?["social_interests_tags"] ?? []);
              _profileImageUrl = data?["profile_picture"] ?? '';
-             //_profileImage= data?["profile_picture"] ?? '';
              print("Fetched image from Firebase: $_profileImageUrl");
- 
+             _profileBannerUrl = data?["banner"] ?? '';
+              print("Fetched banner from Firebase: $_profileBannerUrl");
 
           });
         }
@@ -160,42 +161,6 @@ Future<void> _fetchData() async {
     //print("Fetching data completed");
 }
 
-
-Future<void> onProfileTapped() async {
-  final ImagePicker _picker = ImagePicker();
-  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);  // Or ImageSource.camera for taking a new photo
-
-  if (image != null) {
-    setState(() {
-      _profileImage = File(image.path); 
-      print(_profileImage);
-       // Store the selected image
-    });
-  }
-}
-
-/*Future<void> _pickImage() async {
-  if (kIsWeb) {
-    // Web implementation
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      if (file.bytes != null) {
-        String downloadURL = await uploadFileToFirebase(file.bytes!, file.name);
-        await saveProfilePictureUuploadRL(downloadURL);
-      }
-    }
-  } else {
-    // Mobile/desktop implementation
-    // Assuming you're using image_picker for non-web
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      String downloadURL = await uploadImageToFirebase(File(pickedFile.path));
-      await saveProfilePictureURL(downloadURL);
-    }
-  }
-}*/
 
 //NEW CODE
 Future<void> _pickImage() async {
@@ -226,6 +191,34 @@ Future<void> _pickImage() async {
   }
 }
 
+Future<void> _pickBanner() async {
+  if (kIsWeb) {
+    // Web implementation
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      if (file.bytes != null) {
+        setState(() {
+          _profileBanner = (file.bytes!, file.name);
+          _profileBannerFB = file.name;
+        });
+      }
+      print("picked banner and  updated ");
+    }
+  } else {
+    // Mobile/desktop implementation
+    final ImagePicker _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _profileBanner = File(image.path);
+         print("picked banner and  updated ");
+      });
+    }
+  }
+}
+
  
 
 //FILE PICKER
@@ -238,7 +231,39 @@ Future<String> FileToFirebase(Uint8List data, String fileName) async {
   return downloadURL;
 }
 
-Future<String> uploadImageToFirebase(File image) async {
+Future<String> uploadImageToFirebase(File image,String imagetype) async {
+  // Get the user's UID
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  
+  // Create a reference to Firebase Storage
+  if(imagetype=='Profile_picture')
+  {
+    Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
+    // Upload the file
+    UploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.whenComplete(() => null);
+    
+    // Get the download URL
+    String downloadURL = await storageReference.getDownloadURL();
+    return downloadURL;
+    }
+  else
+  {
+    Reference storageReference = FirebaseStorage.instance.ref().child('banners/$uid.jpg');
+    // Upload the file
+    UploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask.whenComplete(() => null);
+    
+    // Get the download URL
+    String downloadURL = await storageReference.getDownloadURL();
+    return downloadURL;
+  }
+  
+  
+}
+//worked
+/**
+ * Future<String> uploadImageToFirebase(File image) async {
   // Get the user's UID
   String uid = FirebaseAuth.instance.currentUser!.uid;
   
@@ -253,46 +278,7 @@ Future<String> uploadImageToFirebase(File image) async {
   String downloadURL = await storageReference.getDownloadURL();
   return downloadURL;
 }
-//new code
-/*Future<String> uploadImageToFirebase(File image) async {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-  UploadTask uploadTask;
-
-  if (kIsWeb) {
-    // For web, use putData with image bytes
-    Uint8List imageBytes = await image.readAsBytes();
-    uploadTask = storageReference.putData(imageBytes);
-  } else {
-    // For non-web, use File from dart:io
-    uploadTask = storageReference.putFile(image);
-  }
-
-  await uploadTask.whenComplete(() => null);
-  String downloadURL = await storageReference.getDownloadURL();
-  print("Image uploaded to Firebase Storage: $downloadURL");
-  return downloadURL;
-}
-Future<String> uploadImageToFirebase(dynamic image) async {
-  // Get the user's UID
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-  UploadTask uploadTask;
-
-  if (kIsWeb) {
-    // Web implementation
-    uploadTask = storageReference.putData(image, SettableMetadata(contentType: 'image/jpeg'));
-  } else {
-    // Mobile/desktop implementation
-    uploadTask = storageReference.putFile(image);
-  }
-
-  await uploadTask.whenComplete(() => null);
-  
-  // Get the download URL
-  String downloadURL = await storageReference.getDownloadURL();
-  return downloadURL;
-}*/
+ */
 
 
 //only when the user clicks on the save button -----------------
@@ -304,8 +290,6 @@ Future<void> saveProfilePictureURL(String url) async {
   });
     print("Saved selected picture to Firebase: $url");
 }
-
-//newest code 
 
 
  @override
@@ -369,21 +353,25 @@ Widget build(BuildContext context) {
             child: Text('Customize Profile', style: TextStyle(fontSize: 24)),
           ),
          InkWell(
-  //onTap: _pickImage,
+  onTap: _pickBanner,
   child: Stack(
     alignment: Alignment.center, // Change to Alignment.center
     children: [
       Container(
         width: double.infinity, // Full width of the screen
         height: 150, // Adjust the height as needed
-        color: Colors.grey,
-        // Uncomment and use the decoration property if you want to use an image
-        /*decoration: BoxDecoration(
+        //color: Colors.grey,
+        //Uncomment and use the decoration property if you want to use an image
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: _bannerImage,
+            image: _profileBanner != null
+               ? (kIsWeb ? NetworkImage(_profileBanner!.path) : FileImage(_profileBanner!)) as ImageProvider
+              : _profileBannerUrl != ''
+                  ? NetworkImage(_profileBannerUrl)as ImageProvider
+                  : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
             fit: BoxFit.cover,
           ),
-        ),*/
+        ),
       ),
       Container(
         height: 30,
@@ -420,7 +408,7 @@ Widget build(BuildContext context) {
  backgroundImage: _profileImage != null
                ? (kIsWeb ? NetworkImage(_profileImage!.path) : FileImage(_profileImage!)) as ImageProvider
               : _profileImageUrl != ''
-                  ? NetworkImage(_profileImageUrl)
+                  ? NetworkImage(_profileImageUrl)as ImageProvider
                   : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
               
             ),
@@ -678,83 +666,6 @@ Widget build(BuildContext context) {
 }
 
 
-  /*void _saveProfileData() async {
-  try {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-    final currentUser = auth.currentUser;
-
-    if (currentUser != null) {
-      final db = FirebaseFirestore.instance;
-      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-
-      // Data to be set or updated
-      final data = {
-        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
-        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
-      };
-
-      // Use set with merge to create or update the document
-      await profileDocRef.set(data, SetOptions(merge: true));
-      print("Profile data set/updated successfully!");
-
-      //save image 
-      if (_profileImage != null) {
-      // Upload the image to Firebase Storage
-      String imageUrl = await uploadImageToFirebase(_profileImage!);
-
-      // Save the download URL to Firestore
-      await saveProfilePictureURL(imageUrl);
-
-      // Show a confirmation message or navigate
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile picture updated')),
-      );
-    }
-    }
-  } catch (e) {
-    //print("Error setting/updating profile data: $e");
-  }
-}*/
-/*void _saveProfileData() async {
-  try {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final currentUser = auth.currentUser;
-
-    if (currentUser != null) {
-      final db = FirebaseFirestore.instance;
-      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-
-      // Save image if there is a new one
-      if (_profileImage != null) {
-        print("saving to firebase $_profileImage");
-        // Upload the image to Firebase Storage
-        String imageUrl = await uploadImageToFirebase(_profileImage!);
-
-        // Save the download URL to Firestore
-        await saveProfilePictureURL(imageUrl);
-
-        // Show a confirmation message or navigate
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile picture updated')),
-        );
-      }
-
-      // Data to be set or updated
-      final data = {
-        "genre_interests_tags": _selectedGenres.isNotEmpty ? _selectedGenres : FieldValue.delete(),
-        "age_rating_tag": _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-        "social_interests_tags": _selectedInterests.isNotEmpty ? _selectedInterests : FieldValue.delete(),
-      };
-
-      // Use set with merge to create or update the document
-      await profileDocRef.set(data, SetOptions(merge: true));
-      print("Profile data set/updated successfully!");
-    }
-  } catch (e) {
-    print("Error setting/updating profile data: $e");
-  }
-}*/
 void _saveProfileData() async {
   try {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -769,9 +680,9 @@ void _saveProfileData() async {
         // Upload the image to Firebase Storage
         String imageUrl;
         if (kIsWeb) {
-          imageUrl = await uploadImageToFirebase(_profileImage!);
+          imageUrl = await uploadImageToFirebase(_profileImage!,'Profile_picture');
         } else {
-          imageUrl = await uploadImageToFirebase(_profileImage!);
+          imageUrl = await uploadImageToFirebase(_profileImage!,'Profile_picture');
         }
 
         // Save the download URL to Firestore
@@ -780,6 +691,25 @@ void _saveProfileData() async {
         // Show a confirmation message or navigate
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile picture updated')),
+        );
+      }
+
+      // Save banner if there is a new one
+      if (_profileBanner != null) {
+        // Upload the image to Firebase Storage
+        String bannerUrl;
+        if (kIsWeb) {
+          bannerUrl = await uploadImageToFirebase(_profileBanner!,'banner');
+        } else {
+          bannerUrl = await uploadImageToFirebase(_profileBanner!,'banner');
+        }
+
+        // Save the download URL to Firestore
+        await saveProfilePictureURL(bannerUrl);
+
+        // Show a confirmation message or navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('banner updated')),
         );
       }
 
