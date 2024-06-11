@@ -23,8 +23,10 @@ class Profile extends StatelessWidget {
             String profileName = data['name'] ?? 'Profile name';
             String username = userInfo['profile_name'] ?? 'username';
             String profilePicture = data['profile_picture'] ?? '';
+            String banner= data['banner'] ?? '';
 
             String profilePictureUrl = ''; 
+            String BannerUrl=''; 
 
             if (profilePicture.isNotEmpty) {
               try {
@@ -35,11 +37,21 @@ class Profile extends StatelessWidget {
                 return null;
               }
             }
+            if (banner.isNotEmpty) {//l
+              try {
+                // Use refFromURL for a full URL
+                Reference storageRef = FirebaseStorage.instance.refFromURL(banner);
+                BannerUrl = await storageRef.getDownloadURL();
+              } catch (e) {
+                return null;
+              }
+            }
 
             return {
               'profileName': profileName,
               'username': username,
-              'profilePicture': profilePictureUrl
+              'profilePicture': profilePictureUrl,
+              'banner': BannerUrl//l
             };
           } else {
             return null;
@@ -84,6 +96,7 @@ class Profile extends StatelessWidget {
         String profileName = profileData['profileName'];
         String username = profileData['username'];
         String profilePicture = profileData['profilePicture'];
+        String banner=profileData['banner'];
 
         return DefaultTabController(
           length: 3, 
@@ -127,7 +140,13 @@ class Profile extends StatelessWidget {
                     //banner
                     Container(
                       height: 170,
-                      color: Colors.grey[300], // Placeholder for banner image
+                      //color: Colors.grey[300], // Placeholder for banner image
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(banner), // Replace with your image path
+                          fit: BoxFit.cover, // Adjust the fit as needed
+                        ),
+                      ),
                     ),
                     
                     Positioned(
