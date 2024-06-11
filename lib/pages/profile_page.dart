@@ -8,7 +8,7 @@ class Profile extends StatelessWidget {
 
   // Create an instance of ProfileService
   final profileService = ProfileService();
-  
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
@@ -135,33 +135,54 @@ class Profile extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
-                        FutureBuilder<List<String>>(
-                          future: FriendServices().getFriends(),
+                        FutureBuilder<List<Map<String, dynamic>?>>(
+                          future: FriendServices().getFriends().then(
+                              (friendIds) => Future.wait(friendIds.map((id) =>
+                                  FriendServices()
+                                      .fetchFriendProfileData(id)))),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              // Display a loading indicator while waiting for the data
-                              return Center(child: CircularProgressIndicator());
+                              return CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              // Display an error message if something went wrong
-                              return Center(
-                                  child: Text(
-                                      'There was an error your fetching friends.'));
+                              return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
-                              // Display the friends if data is fetched successfully
-                              List<String> friends = snapshot.data!;
+                              List<Map<String, dynamic>?> friendsProfiles =
+                                  snapshot.data!;
                               return ListView.builder(
-                                itemCount: friends.length,
+                                itemCount: friendsProfiles.length,
                                 itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: Text(friends[
-                                        index]), // Display each friend's ID for now
-                                  );
+                                  var friendProfile = friendsProfiles[index];
+                                  if (friendProfile != null) {
+                                    return ListTile(
+                                      leading: CircleAvatar(
+                                        backgroundImage: friendProfile[
+                                                        'profilePicture'] !=
+                                                    null &&
+                                                friendProfile[
+                                                        'profilePicture'] !=
+                                                    ''
+                                            ? NetworkImage(
+                                                friendProfile['profilePicture'])
+                                            : AssetImage(
+                                                    'assets/default_profile.png')
+                                                as ImageProvider,
+                                      ),
+                                      title: Text(friendProfile['name'] ??
+                                          'No Name'), // Assuming 'name' is the key for profile name
+                                      subtitle: Text(
+                                          friendProfile['username'] ??
+                                              'No Username'),
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      title: Text('Profile not found'),
+                                    );
+                                  }
                                 },
                               );
                             } else {
-                              // Display an error message if there are no friends
-                              return Center(child: Text('No friends found.'));
+                              return Text('No friends found.');
                             }
                           },
                         ),
@@ -258,7 +279,7 @@ class Profile extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 30),
-                            //game discription
+                            //game description
                             const Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
