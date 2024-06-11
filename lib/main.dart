@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
+import 'package:gameonconnect/pages/getting_started_page.dart';
+import 'package:gameonconnect/pages/profile_management_page.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
@@ -91,7 +93,9 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
         '/login': (context) => Login(),
-        '/help': (context) => Help()
+        '/help': (context) => Help(),
+        '/getting_started': (context) => GettingStarted(),
+        '/profile_management' : (context) => ProfileManagement()
       },
       initialRoute: '/',
       //home: Profile()
