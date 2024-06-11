@@ -282,13 +282,26 @@ Future<String> uploadImageToFirebase(File image,String imagetype) async {
 
 
 //only when the user clicks on the save button -----------------
-Future<void> saveProfilePictureURL(String url) async {
+Future<void> saveProfilePictureURL(String url, String imageType) async {
   String uid = FirebaseAuth.instance.currentUser!.uid;
-  await FirebaseFirestore.instance.collection("profile_data").doc(uid).update({
+  if(imageType=='Profile_picture')
+  {
+    await FirebaseFirestore.instance.collection("profile_data").doc(uid).update({
     'profile_picture': url,
     
   });
-    print("Saved selected picture to Firebase: $url");
+  print("Saved selected profile picture to Firebase: $url");
+  }
+  else
+  {
+    await FirebaseFirestore.instance.collection("profile_data").doc(uid).update({
+    'banner': url,
+    
+  });
+  print("Saved selected banner to Firebase: $url");
+  }
+  
+    
 }
 
 
@@ -686,7 +699,7 @@ void _saveProfileData() async {
         }
 
         // Save the download URL to Firestore
-        await saveProfilePictureURL(imageUrl);
+        await saveProfilePictureURL(imageUrl,'Profile_picture');
 
         // Show a confirmation message or navigate
         ScaffoldMessenger.of(context).showSnackBar(
@@ -705,7 +718,7 @@ void _saveProfileData() async {
         }
 
         // Save the download URL to Firestore
-        await saveProfilePictureURL(bannerUrl);
+        await saveProfilePictureURL(bannerUrl,'banner');
 
         // Show a confirmation message or navigate
         ScaffoldMessenger.of(context).showSnackBar(
