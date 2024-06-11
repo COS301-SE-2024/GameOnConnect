@@ -149,37 +149,74 @@ class Profile extends StatelessWidget {
                             } else if (snapshot.hasData) {
                               List<Map<String, dynamic>?> friendsProfiles =
                                   snapshot.data!;
-                              return ListView.builder(
+                              return ListView.separated(
                                 itemCount: friendsProfiles.length,
                                 itemBuilder: (context, index) {
                                   var friendProfile = friendsProfiles[index];
                                   if (friendProfile != null) {
-                                    return ListTile(
-                                      leading: CircleAvatar(
-                                        backgroundImage: friendProfile[
-                                                        'profilePicture'] !=
-                                                    null &&
-                                                friendProfile[
-                                                        'profilePicture'] !=
-                                                    ''
-                                            ? NetworkImage(
-                                                friendProfile['profilePicture'])
-                                            : AssetImage(
-                                                    'assets/default_profile.png')
-                                                as ImageProvider,
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, 
+                                        border: Border.all(
+                                          color: Color.fromARGB(255, 0, 255, 117), 
+                                          width: 1.0, 
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                      title: Text(friendProfile['name'] ??
-                                          'No Name'), // Assuming 'name' is the key for profile name
-                                      subtitle: Text(
-                                          friendProfile['username'] ??
-                                              'No Username'),
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: friendProfile[
+                                                            'profilePicture'] !=
+                                                        null &&
+                                                    friendProfile[
+                                                            'profilePicture'] !=
+                                                        ''
+                                                ? NetworkImage(friendProfile[
+                                                    'profilePicture'])
+                                                : AssetImage(
+                                                        'assets/default_profile.png')
+                                                    as ImageProvider,
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(friendProfile['name'] ??
+                                                    'No Name Found'),
+                                                Text(
+                                                    friendProfile['username'] ??
+                                                        'No Username Found'),
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.message),
+                                            onPressed: () {
+                                              //here the message functionality will come in
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.more_vert),
+                                            onPressed: () {
+                                              //here the remove friend option should be displayed. 
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     );
                                   } else {
-                                    return ListTile(
-                                      title: Text('Profile not found'),
+                                    return Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text('Profile not found'),
                                     );
                                   }
                                 },
+                                separatorBuilder: (context, index) => SizedBox(height: 10),
                               );
                             } else {
                               return Text('No friends found.');
