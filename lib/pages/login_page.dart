@@ -22,7 +22,6 @@ class _LoginState extends State<Login> {
   String errorMessage ="";
 
   UserCredential? _userG;
-  UserCredential? _userA;
 
 
 
@@ -36,10 +35,6 @@ class _LoginState extends State<Login> {
 
   Future google() async{
     _userG = await AuthService().signInWithGoogle();
-  }
-
-  Future apple() async{
-    _userA  = await AuthService().signInWithApple();
   }
 
   @override
@@ -205,19 +200,13 @@ class _LoginState extends State<Login> {
                                       )),
                                   (Route<dynamic> route) => false,
                             );
-                            setState(() {
-                              errorMessage = "";
-                            });
                           }else
                             {
                               passwordController.clear();
                               emailController.clear();
-                              setState(() {
-                                errorMessage = "Invalid email or password. Please try again";
-                              });
-                              Text(
-                                errorMessage,
-                                style: TextStyle(color: Colors.red),
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Email or password incorrect"),
+                                  backgroundColor: Colors.red.shade300,)
                               );
                             }
                         }
@@ -314,7 +303,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Padding(
+                  /*Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
@@ -359,7 +348,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                   const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
                   Row(
