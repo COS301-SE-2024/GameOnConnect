@@ -8,6 +8,7 @@ class Game {
   final String background_image;
   final int score;
   final List genres;
+  final int reviewsCount;
 
   Game(
       {required this.id,
@@ -16,7 +17,8 @@ class Game {
       required this.platforms,
       required this.background_image,
       required this.score,
-      required this.genres});
+      required this.genres,
+      required this.reviewsCount});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
@@ -27,6 +29,7 @@ class Game {
       background_image: json['background_image'],
       score: json['metacritic'] ?? 0,
       genres: json['genres'],
+      reviewsCount: json['reviews_count'] ?? 0
     );
   }
 
@@ -84,7 +87,7 @@ class Game {
               color: Theme.of(context).colorScheme.primary,
             )));
         genresWidgets.add(SizedBox(
-          width: 15,
+          width: 5,
         ));
       }
     } else {

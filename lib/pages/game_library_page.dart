@@ -123,64 +123,69 @@ class _GameLibraryState extends State<GameLibrary> {
         return Padding(
           padding: const EdgeInsets.all(12),
           child: Column(children: [
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    game.background_image,
-                    width: 134,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(game.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          )),
-                      Row(children: game.getPlatformIcons(context)),
-                      Text("Released: ${game.released}"),
-                      Row(
-                        children: [
-                          Text("Genres:"),
-                          SizedBox(width: 10),
-                          Row(
-                            children: game.getStyledGenres(context),
-                          )
-                        ],
-                      ),
-                      Text("Publisher")
-                    ],
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      child: Text("${game.score}",
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 12)),
+            SizedBox(
+              height: 120,
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      game.background_image,
+                      width: 134,
+                      height: 120,
+                      fit: BoxFit.cover,
                     ),
-                    Icon(Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.secondary),
-                    Icon(Icons.chevron_right, color: Colors.white),
-                  ],
-                )
-              ],
+                  ),
+                  SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(game.name,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            overflow: TextOverflow.ellipsis,),
+                        Row(children: game.getPlatformIcons(context)),
+                        Text("Released: ${game.released}"),
+                        Row(
+                          children: [
+                            Text("Genres:"),
+                            SizedBox(width: 10),
+                            Row(
+                              children: game.getStyledGenres(context),
+                            )
+                          ],
+                        ),
+                        Text("Reviews: ${game.reviewsCount}")
+                      ],
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        child: Text("${game.score}",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 12)),
+                      ),
+                      Icon(Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.secondary),
+                      SizedBox(height: 10,)
+                    ],
+                  )
+                ],
+              ),
             ),
           ]),
         );
