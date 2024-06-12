@@ -67,30 +67,37 @@ class _GameLibraryState extends State<GameLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: appBar(context),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 15, right: 15),
-                  labelText: 'Search',
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100)),
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: appBar(context),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 15, right: 15),
+                      labelText: 'Search',
+                      suffixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Expanded(child: gameList()),
-          ],
-        ));
+                TabBar.secondary(tabs: const [
+                  Tab(text: 'GAMES'),
+                  Tab(text: 'FRIENDS'),
+                ]),
+                Expanded(
+                    child: TabBarView(children: [gameList(), friendList()]))
+              ],
+            )));
   }
 
   AppBar appBar(BuildContext context) {
     return AppBar(
-      title: Text("Game Library",
+      title: Text("Search",
           style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
       actions: [
         Icon(
@@ -113,7 +120,6 @@ class _GameLibraryState extends State<GameLibrary> {
               : SizedBox.shrink();
         }
         final game = _games[index];
-        print(game.platforms);
         return Padding(
           padding: const EdgeInsets.all(12),
           child: Column(children: [
@@ -179,6 +185,28 @@ class _GameLibraryState extends State<GameLibrary> {
           ]),
         );
       },
+    );
+  }
+
+  Widget friendList() {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Search for friends',
+              suffixIcon: Icon(Icons.search),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
+            ),
+          ),
+          SizedBox(height: 20),
+          // Add a list view or a grid view to display the search results
+          // You can use a similar approach to the gameList() method
+          // to display the search results
+        ],
+      ),
     );
   }
 }
