@@ -186,7 +186,7 @@ class Profile extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(friendProfile['name'] ??
+                                                Text(friendProfile['profileName'] ??
                                                     'No Name Found'),
                                                 Text(
                                                     friendProfile['username'] ??
