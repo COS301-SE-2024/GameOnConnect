@@ -4,69 +4,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/pages/login_page.dart';
+import 'package:gameonconnect/services/friend_service.dart';
+import 'package:gameonconnect/services/profile_service.dart';
+
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  Profile({super.key});
 
-  //Function to query FireStore
-  Future<Map<String, dynamic>?> fetchProfileData() async {
-    try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-
-      if (currentUser != null) {
-        DocumentSnapshot doc =
-            await db.collection("profile_data").doc(currentUser.uid).get();
-
-        if (doc.exists) {
-          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          Map<String, dynamic> userInfo =
-              data['username'] as Map<String, dynamic>;
-          String profileName = data['name'] ?? 'Profile name';
-          String username = userInfo['profile_name'] ?? 'username';
-          String profilePicture = data['profile_picture'] ?? '';
-          String profileBanner = data['banner'];
-
-          String profilePictureUrl = '';
-          String bannerUrl = '';
-
-          if (profilePicture.isNotEmpty) {
-            try {
-              // Use refFromURL for a full URL
-              Reference storageRef =
-                  FirebaseStorage.instance.refFromURL(profilePicture);
-              profilePictureUrl = await storageRef.getDownloadURL();
-
-              Reference storage2 =
-                  FirebaseStorage.instance.refFromURL(profileBanner);
-              bannerUrl = await storage2.getDownloadURL();
-            } catch (e) {
-              return null;
-            }
-          }
-
-          return {
-            'profileName': profileName,
-            'username': username,
-            'profilePicture': profilePictureUrl,
-            'profileBanner': bannerUrl
-          };
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
+  // Create an instance of ProfileService
+  final profileService = ProfileService();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
-      future: fetchProfileData(),
+      future: profileService.fetchProfileData(),
+
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
@@ -213,6 +165,8 @@ class Profile extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   const SizedBox(height: 8),
+                  
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -237,11 +191,95 @@ class Profile extends StatelessWidget {
                   ),
                   Expanded(
                     child: TabBarView(
-                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
-                        Center(
-                            child: Text(
-                                '5 Friends')), // Replace with actual Friends content
+                        FutureBuilder<List<Map<String, dynamic>?>>(
+                          future: FriendServices().getFriends().then(
+                              (friendIds) => Future.wait(friendIds.map((id) =>
+                                  FriendServices()
+                                      .fetchFriendProfileData(id)))),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              List<Map<String, dynamic>?> friendsProfiles =
+                                  snapshot.data!;
+                              return ListView.separated(
+                                itemCount: friendsProfiles.length,
+                                itemBuilder: (context, index) {
+                                  var friendProfile = friendsProfiles[index];
+                                  if (friendProfile != null) {
+                                    return Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, 
+                                        border: Border.all(
+                                          color: Color.fromARGB(255, 0, 255, 117), 
+                                          width: 1.0, 
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: friendProfile[
+                                                            'profilePicture'] !=
+                                                        null &&
+                                                    friendProfile[
+                                                            'profilePicture'] !=
+                                                        ''
+                                                ? NetworkImage(friendProfile[
+                                                    'profilePicture'])
+                                                : AssetImage(
+                                                        'assets/default_profile.png')
+                                                    as ImageProvider,
+                                          ),
+                                          SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(friendProfile['profileName'] ??
+                                                    'No Name Found'),
+                                                Text(
+                                                    friendProfile['username'] ??
+                                                        'No Username Found'),
+                                              ],
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.message),
+                                            onPressed: () {
+                                              //here the message functionality will come in
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.more_vert),
+                                            onPressed: () {
+                                              //here the remove friend option should be displayed. 
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text('Profile not found'),
+                                    );
+                                  }
+                                },
+                                separatorBuilder: (context, index) => SizedBox(height: 10),
+                              );
+                            } else {
+                              return Text('No friends found.');
+                            }
+                          },
+                        ),
                         Column(
                           children: <Widget>[
                             const Text('Game Name',
@@ -335,7 +373,7 @@ class Profile extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 30),
-                            //game discription
+                            //game description
                             const Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
