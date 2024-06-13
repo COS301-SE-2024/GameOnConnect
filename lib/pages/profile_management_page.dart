@@ -61,6 +61,8 @@ class ProfileManagement extends StatelessWidget {
               )
             ],
           )
-        ]));
+        ]
+        )
+    );
   }
 }

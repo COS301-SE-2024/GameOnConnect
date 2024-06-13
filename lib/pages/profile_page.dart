@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gameonconnect/pages/login_page.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
 
@@ -63,7 +61,8 @@ class Profile extends StatelessWidget {
                       return IconButton(
                         icon: const Icon(Icons.settings),
                         onPressed: () {
-                          Scaffold.of(context).openEndDrawer();
+                          //Scaffold.of(context).openEndDrawer();
+                          Navigator.pushNamed(context, '/settings');
                         },
                       );
                     },
@@ -77,7 +76,7 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
-              endDrawer: Drawer(
+              /*endDrawer: Drawer(
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: [
@@ -127,7 +126,7 @@ class Profile extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
+              ),*/
               body: Column(
                 children: <Widget>[
                   Stack(
