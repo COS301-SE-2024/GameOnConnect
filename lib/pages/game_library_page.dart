@@ -248,6 +248,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             SizedBox(width: 10),
                             Expanded(
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: game.getStyledGenres(context),
                               ),
                             )

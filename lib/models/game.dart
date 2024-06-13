@@ -22,15 +22,15 @@ class Game {
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
-      id: json['id'],
-      name: json['name'],
-      released: json['released'] ?? "Unknown",
-      platforms: json['platforms'],
-      background_image: json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
-      score: json['metacritic'] ?? 0,
-      genres: json['genres'],
-      reviewsCount: json['reviews_count'] ?? 0
-    );
+        id: json['id'],
+        name: json['name'],
+        released: json['released'] ?? "Unknown",
+        platforms: json['platforms'],
+        background_image:
+            json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
+        score: json['metacritic'] ?? 0,
+        genres: json['genres'],
+        reviewsCount: json['reviews_count'] ?? 0);
   }
 
   List<Widget> getPlatformIcons(BuildContext context) {
@@ -80,26 +80,33 @@ class Game {
 
     if (genres.isNotEmpty) {
       for (var genre in genres) {
-        genresWidgets.add(Text(genre['name'],
+        genresWidgets.add(Expanded(
+          child: Text(
+            genre['name'],
             style: TextStyle(
-              decoration: TextDecoration.underline, decorationColor: Theme.of(context).colorScheme.primary,
+              decoration: TextDecoration.underline,
+              decorationColor: Theme.of(context).colorScheme.primary,
               fontSize: 14,
               color: Theme.of(context).colorScheme.primary,
             ),
             overflow: TextOverflow.ellipsis,
-            ));
+          ),
+        ));
         genresWidgets.add(const SizedBox(
           width: 5,
         ));
       }
     } else {
-      return [Text("None",
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            overflow: TextOverflow.ellipsis,
-            )];
+      return [
+        Text(
+          "None",
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          overflow: TextOverflow.ellipsis,
+        )
+      ];
     }
     return genresWidgets;
   }
