@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/pages/login_page.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
