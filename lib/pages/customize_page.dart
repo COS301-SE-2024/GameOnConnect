@@ -223,6 +223,7 @@ Future<void> _pickBanner() async {
     if (image != null) {
       setState(() {
         _profileBanner = File(image.path);
+        testBannerurl= _profileBanner!.path;
          print("picked banner and  updated ");
       });
     }
@@ -275,45 +276,8 @@ Future<String> uploadImageToFirebase(File image,String imagetype) async {
       });
     return downloadURL;
   }
-
-  /**
-   * if (_image != null) {
-      String fileName = 'new_banner.jpg';
-      Reference storageRef = FirebaseStorage.instance.ref().child('banners/$fileName');
-      UploadTask uploadTask = storageRef.putFile(_image!);
-      TaskSnapshot taskSnapshot = await uploadTask;
-      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-
-      await FirebaseFirestore.instance.collection('profile_data').doc('your_document_id').update({
-        'banner': downloadUrl,
-      });
-
-      setState(() {
-        imageUrl = downloadUrl;
-      });
-    }
-   */
-  
   
 }
-//worked
-/**
- * Future<String> uploadImageToFirebase(File image) async {
-  // Get the user's UID
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  
-  // Create a reference to Firebase Storage
-  Reference storageReference = FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-  
-  // Upload the file
-  UploadTask uploadTask = storageReference.putFile(image);
-  await uploadTask.whenComplete(() => null);
-  
-  // Get the download URL
-  String downloadURL = await storageReference.getDownloadURL();
-  return downloadURL;
-}
- */
 
 
 //only when the user clicks on the save button -----------------
@@ -335,24 +299,7 @@ Future<void> saveImageURL(String url, String imageType) async {
   });
   print("Saved selected banner to Firebase: $url");
   }
-  
-  /**?
-   * if (_image != null) {
-      String fileName = 'new_banner.jpg';
-      Reference storageRef = FirebaseStorage.instance.ref().child('banners/$fileName');
-      UploadTask uploadTask = storageRef.putFile(_image!);
-      TaskSnapshot taskSnapshot = await uploadTask;
-      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('profile_data').doc('your_document_id').update({
-        'banner': downloadUrl,
-      });
-
-      setState(() {
-        imageUrl = downloadUrl;
-      });
-    }
-   */
 }
 
 
@@ -428,16 +375,13 @@ Widget build(BuildContext context) {
         //Uncomment and use the decoration property if you want to use an image
         decoration: BoxDecoration(
           image: DecorationImage(
-            /*image: _profileBanner != null
-               ? (kIsWeb ? MemoryImage(_profileBanner.bytes) : FileImage(_profileBanner)) as ImageProvider
-              : _profileBannerUrl.isNotEmpty
-                  ? NetworkImage(_profileBannerUrl)
-                  : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1'),*/
-              image: NetworkImage(testBannerurl),
+              //image: NetworkImage(testBannerurl),
+               image: _profileBanner != null ? FileImage(_profileBanner!) 
+               : NetworkImage(testBannerurl) as ImageProvider,
             fit: BoxFit.cover,
           ),
         ),
-        
+       
       ),
       Container(
         height: 30,
