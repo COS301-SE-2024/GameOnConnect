@@ -85,6 +85,39 @@ class _GameLibraryState extends State<GameLibrary> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 0.5, color: Theme.of(context).colorScheme.secondary))
+                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text("Sort",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            SizedBox(width: 10),
+                            Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary,)
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Filter",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                            SizedBox(width: 10),
+                            Icon(Icons.tune, color: Theme.of(context).colorScheme.primary,)
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 TabBar.secondary(tabs: const [
                   Tab(text: 'GAMES'),
                   Tab(text: 'FRIENDS'),
@@ -142,12 +175,14 @@ class _GameLibraryState extends State<GameLibrary> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(game.name,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            overflow: TextOverflow.ellipsis,),
+                        Text(
+                          game.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         Row(children: game.getPlatformIcons(context)),
                         Text("Released: ${game.released}"),
                         Row(
@@ -167,8 +202,8 @@ class _GameLibraryState extends State<GameLibrary> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding:
-                            EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
+                        padding: EdgeInsets.only(
+                            left: 5, top: 3, right: 5, bottom: 3),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(
@@ -181,7 +216,9 @@ class _GameLibraryState extends State<GameLibrary> {
                       ),
                       Icon(Icons.chevron_right,
                           color: Theme.of(context).colorScheme.secondary),
-                      SizedBox(height: 10,)
+                      SizedBox(
+                        height: 10,
+                      )
                     ],
                   )
                 ],
