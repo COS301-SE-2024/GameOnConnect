@@ -24,9 +24,9 @@ class Game {
     return Game(
       id: json['id'],
       name: json['name'],
-      released: json['released'],
+      released: json['released'] ?? "Unknown",
       platforms: json['platforms'],
-      background_image: json['background_image'],
+      background_image: json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
       score: json['metacritic'] ?? 0,
       genres: json['genres'],
       reviewsCount: json['reviews_count'] ?? 0
@@ -47,7 +47,7 @@ class Game {
           Icons.computer,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       } else if (platform.toString().toLowerCase().contains('xbox') && !xbox) {
@@ -56,7 +56,7 @@ class Game {
           Icons.gamepad,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       } else if (platform.toString().toLowerCase().contains('playstation') &&
@@ -66,7 +66,7 @@ class Game {
           Icons.videogame_asset,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       }
@@ -78,20 +78,28 @@ class Game {
   List<Widget> getStyledGenres(BuildContext context) {
     List<Widget> genresWidgets = [];
 
-    if (genres.isNotEmpty && genres != null) {
+    if (genres.isNotEmpty) {
       for (var genre in genres) {
         genresWidgets.add(Text(genre['name'],
             style: TextStyle(
               decoration: TextDecoration.underline, decorationColor: Theme.of(context).colorScheme.primary,
               fontSize: 14,
               color: Theme.of(context).colorScheme.primary,
-            )));
-        genresWidgets.add(SizedBox(
+            ),
+            overflow: TextOverflow.ellipsis,
+            ));
+        genresWidgets.add(const SizedBox(
           width: 5,
         ));
       }
     } else {
-      return [];
+      return [Text("None",
+            style: TextStyle(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            overflow: TextOverflow.ellipsis,
+            )];
     }
     return genresWidgets;
   }

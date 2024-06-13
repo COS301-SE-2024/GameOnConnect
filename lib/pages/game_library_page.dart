@@ -17,6 +17,8 @@ class _GameLibraryState extends State<GameLibrary> {
   int _currentPage = 1;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -34,7 +36,50 @@ class _GameLibraryState extends State<GameLibrary> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  void _onSearchEntered(String query) {
+    setState(() {
+      _searchQuery = query;
+      if (_searchQuery.isNotEmpty) {
+        _games.clear(); // Clear previous search results
+        _searchGames();
+      } else {
+        _games.clear();
+        _currentPage = 1;
+        _loadGames(_currentPage);
+      }
+    });
+  }
+
+  Future<void> _searchGames() async {
+    if (_isLoading) return;
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response = await http.get(Uri.parse(
+        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6&search=$_searchQuery'));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      final games = (jsonData['results'] as List)
+          .map((gameJson) => Game.fromJson(gameJson))
+          .toList();
+
+      setState(() {
+        _games.addAll(games);
+        _currentPage++;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      throw Exception('Failed to load games');
+    }
   }
 
   Future<void> _loadGames(int page) async {
@@ -83,41 +128,10 @@ class _GameLibraryState extends State<GameLibrary> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100)),
                     ),
+                    onSubmitted: _onSearchEntered,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 0.5, color: Theme.of(context).colorScheme.secondary))
-                      ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text("Sort",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            SizedBox(width: 10),
-                            Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary,)
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("Filter",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                            SizedBox(width: 10),
-                            Icon(Icons.tune, color: Theme.of(context).colorScheme.primary,)
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                sortFilter(context),
                 TabBar.secondary(tabs: const [
                   Tab(text: 'GAMES'),
                   Tab(text: 'FRIENDS'),
@@ -126,6 +140,49 @@ class _GameLibraryState extends State<GameLibrary> {
                     child: TabBarView(children: [gameList(), friendList()]))
               ],
             )));
+  }
+
+  Padding sortFilter(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Container(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    width: 0.5,
+                    color: Theme.of(context).colorScheme.secondary))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Text("Sort",
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                SizedBox(width: 10),
+                Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Text("Filter",
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                SizedBox(width: 10),
+                Icon(
+                  Icons.tune,
+                  color: Theme.of(context).colorScheme.primary,
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   AppBar appBar(BuildContext context) {
@@ -189,8 +246,10 @@ class _GameLibraryState extends State<GameLibrary> {
                           children: [
                             Text("Genres:"),
                             SizedBox(width: 10),
-                            Row(
-                              children: game.getStyledGenres(context),
+                            Expanded(
+                              child: Row(
+                                children: game.getStyledGenres(context),
+                              ),
                             )
                           ],
                         ),
