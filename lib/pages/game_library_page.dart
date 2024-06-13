@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,6 +20,7 @@ class _GameLibraryState extends State<GameLibrary> {
   final ScrollController _scrollController = ScrollController();
   //lee
   final List<String> _friends = ["Alice", "Bob", "Charlie", "David"];// static friends for now 
+  List<String> users = [];
   final List<String> _filteredFriends = [];
    TabController? _tabController; // manages state of tabs
   TextEditingController _searchController = TextEditingController(); // controls text input for search bar 
@@ -27,9 +29,9 @@ class _GameLibraryState extends State<GameLibrary> {
   void initState() {
     super.initState();
     _loadGames(_currentPage);
-
+    _loadUsers();
     //lee
-    _tabController = TabController(length: 2, vsync: this); //Initializes the TabController with two tabs.
+    //_tabController = TabController(length: 2, vsync: this); //Initializes the TabController with two tabs.
     ///
 
     _scrollController.addListener(() {
@@ -43,7 +45,7 @@ class _GameLibraryState extends State<GameLibrary> {
      _searchController.addListener(_onSearchChanged);// listener to the search controller to handle search input changes.
   }
 
-//lee
+
   @override
   //Cleans up the controllers when the widget is removed from the tree to avoid memory leaks
   void dispose() {
@@ -51,29 +53,25 @@ class _GameLibraryState extends State<GameLibrary> {
     //lee
      _tabController?.dispose();
     _searchController.dispose();
-    //
+    ///
     super.dispose();
   }
 
+//lee
 //---? is it not a future function?
 // filters the list of games/friends based on current tab and search query
   void _onSearchChanged() {
   final query = _searchController.text.toLowerCase();// convert search query to lower case
   if (_tabController?.index == 0) // active tab is games
   {
-    // Search in games
-    /*setState(() {
-      _filteredGames.clear();
-      _filteredGames.addAll(
-        _games.where((game) => game.name.toLowerCase().contains(query)),
-      );
-    });*/
+    // Search in games(franco)
+    
   } 
   else  //active tab is friends
   { 
     // Search in friends
     setState(() {
-      _filteredFriends.clear();
+      _filteredFriends.clear();// clear list 
       _filteredFriends.addAll(
         _friends.where((friend) => friend.toLowerCase().contains(query)),
       );
@@ -81,6 +79,24 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 }
 
+Future<List<String>> searchFriends(String query) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('profile_data')
+      .where('username', isGreaterThanOrEqualTo: query)
+      .where('username', isLessThanOrEqualTo: query + '\uf8ff')
+      .get();
+
+  List<String> friends = snapshot.docs.map((doc) => doc['username'] as String).toList();
+  return friends;
+}
+
+Future<void> _loadUsers() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('profile_data').get();
+    List<String> userList = snapshot.docs.map((doc) => doc['username'] as String).toList();
+    setState(() {
+      users = userList;
+    });
+  }
 
   Future<void> _loadGames(int page) async {
     if (_isLoading) return;
@@ -239,24 +255,13 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   Widget friendList() {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              labelText: 'Search for friends',
-              suffixIcon: Icon(Icons.search),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
-          SizedBox(height: 20),
-          // Add a list view or a grid view to display the search results
-          // You can use a similar approach to the gameList() method
-          // to display the search results
-        ],
-      ),
-    );
+    return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(users[index]),
+                );
+              },
+            );
   }
 }
