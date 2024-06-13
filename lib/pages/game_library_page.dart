@@ -19,6 +19,7 @@ class _GameLibraryState extends State<GameLibrary> {
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  String? _sortValue = '';
 
   @override
   void initState() {
@@ -157,14 +158,111 @@ class _GameLibraryState extends State<GameLibrary> {
           children: [
             Row(
               children: [
-                Text("Sort",
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                SizedBox(width: 10),
-                Icon(
-                  Icons.chevron_right,
-                  color: Theme.of(context).colorScheme.primary,
-                )
+                TextButton(
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Sort by'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          RadioListTile(
+                            title: Text('Name'),
+                            value: 'name',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Released'),
+                            value: 'released',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Added'),
+                            value: 'added',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Created'),
+                            value: 'created',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Updated'),
+                            value: 'updated',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Rating'),
+                            value: 'rating',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                          RadioListTile(
+                            title: Text('Metacritic'),
+                            value: 'metacritic',
+                            groupValue: _sortValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _sortValue = value;
+                              });
+                            }
+                          ),
+                        ]
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Sort'),
+                          child: const Text('Sort'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Text("Sort",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.sort,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
             Row(
