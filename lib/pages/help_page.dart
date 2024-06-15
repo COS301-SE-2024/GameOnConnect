@@ -34,7 +34,7 @@ class Help extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          GestureDetector(
+          /*GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/profile_management');
             },
@@ -82,7 +82,7 @@ class Help extends StatelessWidget {
           ),
           SizedBox(
             height: 5,
-          ),
+          ),*/
         ])));
   }
 }

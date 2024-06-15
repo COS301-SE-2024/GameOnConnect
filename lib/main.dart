@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/profile_management' : (context) => ProfileManagement(),
-        '/settings' : (context) => settings()
+        '/settings' : (context) => Options()
       },
       initialRoute: '/',
       //home: Profile()

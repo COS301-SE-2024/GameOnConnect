@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
-class settings extends StatelessWidget {
-  const settings({super.key});
+class Options extends StatelessWidget {
+  const Options({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class settings extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
                         size: 20,
@@ -134,7 +134,7 @@ class settings extends StatelessWidget {
               ),
               ),
                Align(
-                alignment: AlignmentDirectional(0, 1),
+                alignment: const AlignmentDirectional(0, 1),
 
                 child: GestureDetector(
                   onTap: () {
