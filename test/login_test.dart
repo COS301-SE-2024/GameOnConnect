@@ -14,6 +14,7 @@ void main() {
       expect(find.text('Don\'t have an account? '), findsOneWidget);
       expect(find.text(' Sign Up' ), findsOneWidget);
       expect(find.byKey(const Key('Login_Button')), findsOneWidget);
+      expect(find.byKey(const Key('Google_Login')), findsOneWidget);
     });
   });
 }
