@@ -89,7 +89,12 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   Future<void> _loadGames(int page) async {
-    _runApiRequest('&page_size=20&page=$page');
+    if (_sortValue!.isNotEmpty) {
+      _runApiRequest('&ordering=$_sortValue&page_size=20&page=$page');
+    } else {
+      _runApiRequest('&page_size=20&page=$page');
+    }
+    
   }
 
   @override
@@ -148,6 +153,7 @@ class _GameLibraryState extends State<GameLibrary> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Name'),
                             value: 'name',
                             groupValue: _sortValue,
@@ -158,6 +164,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Released'),
                             value: 'released',
                             groupValue: _sortValue,
@@ -168,6 +175,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Added'),
                             value: 'added',
                             groupValue: _sortValue,
@@ -178,6 +186,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Created'),
                             value: 'created',
                             groupValue: _sortValue,
@@ -188,6 +197,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Updated'),
                             value: 'updated',
                             groupValue: _sortValue,
@@ -198,6 +208,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Rating'),
                             value: 'rating',
                             groupValue: _sortValue,
@@ -208,6 +219,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             }
                           ),
                           RadioListTile(
+                            activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Metacritic'),
                             value: 'metacritic',
                             groupValue: _sortValue,
@@ -225,7 +237,13 @@ class _GameLibraryState extends State<GameLibrary> {
                           child: const Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Sort'),
+                          onPressed: () async {
+                            Navigator.pop(context, 'Sort');
+                            setState(() {
+                              _games.clear();
+                            });
+                            await _loadGames(1);
+                          } ,
                           child: const Text('Sort'),
                         ),
                       ],
