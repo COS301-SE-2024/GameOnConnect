@@ -8,6 +8,8 @@ import 'package:gameonconnect/pages/sign_up.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
+import 'pages/currently_playing_page.dart';
+import 'pages/events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,10 +63,8 @@ class MyApp extends StatelessWidget {
   // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
 
-  // This is the root of our application.
   @override
   Widget build(BuildContext context) {
-    //_fetchUserTheme(Provider.of<ThemeProvider>(context));
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,
@@ -89,9 +89,10 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
+        '/currently_playing': (context) => CurrentlyPlayingPage(),
+        '/events': (context) => EventsPage(),
       },
       initialRoute: '/',
-      //home: Profile()
     );
   }
 }
