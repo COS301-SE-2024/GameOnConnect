@@ -28,7 +28,8 @@ class _GameLibraryState extends State<GameLibrary> {
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent && _searchQuery.isEmpty) {
+              _scrollController.position.maxScrollExtent &&
+          _searchQuery.isEmpty) {
         _loadGames(_currentPage);
       }
     });
@@ -63,7 +64,7 @@ class _GameLibraryState extends State<GameLibrary> {
     });
 
     final response = await http.get(Uri.parse(
-      'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6$request'));
+        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6$request'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
@@ -90,11 +91,20 @@ class _GameLibraryState extends State<GameLibrary> {
 
   Future<void> _loadGames(int page) async {
     if (_sortValue!.isNotEmpty) {
-      _runApiRequest('&ordering=$_sortValue&page_size=20&page=$page');
+      _runApiRequest('&ordering=-$_sortValue&page_size=20&page=$page');
     } else {
       _runApiRequest('&page_size=20&page=$page');
     }
-    
+  }
+
+  clearFilters() {
+    setState(() {
+      _searchQuery = '';
+      _sortValue = '';
+      _games.clear();
+      _currentPage = 1;
+      _loadGames(_currentPage);
+    });
   }
 
   @override
@@ -118,6 +128,16 @@ class _GameLibraryState extends State<GameLibrary> {
                     onSubmitted: _onSearchEntered,
                   ),
                 ),
+                FilledButton(
+                    onPressed: () => clearFilters(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Text('Clear filters'),
+                        Icon(Icons.clear),
+                      ],
+                    )),
                 sortFilter(context),
                 TabBar.secondary(tabs: const [
                   Tab(text: 'GAMES'),
@@ -149,10 +169,9 @@ class _GameLibraryState extends State<GameLibrary> {
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text('Sort by'),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          RadioListTile(
+                      content:
+                          Column(mainAxisSize: MainAxisSize.min, children: [
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Name'),
                             value: 'name',
@@ -161,9 +180,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Released'),
                             value: 'released',
@@ -172,9 +190,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Added'),
                             value: 'added',
@@ -183,9 +200,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Created'),
                             value: 'created',
@@ -194,9 +210,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Updated'),
                             value: 'updated',
@@ -205,9 +220,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Rating'),
                             value: 'rating',
@@ -216,9 +230,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                          RadioListTile(
+                            }),
+                        RadioListTile(
                             activeColor: Theme.of(context).colorScheme.primary,
                             title: Text('Metacritic'),
                             value: 'metacritic',
@@ -227,10 +240,8 @@ class _GameLibraryState extends State<GameLibrary> {
                               setState(() {
                                 _sortValue = value;
                               });
-                            }
-                          ),
-                        ]
-                      ),
+                            }),
+                      ]),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -243,7 +254,7 @@ class _GameLibraryState extends State<GameLibrary> {
                               _games.clear();
                             });
                             await _loadGames(1);
-                          } ,
+                          },
                           child: const Text('Sort'),
                         ),
                       ],
