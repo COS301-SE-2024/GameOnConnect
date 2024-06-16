@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
+import 'package:gameonconnect/pages/currently_playing_page.dart';
+import 'package:gameonconnect/pages/events_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -14,12 +16,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  static const List<Widget> _pages = <Widget>[
-    Text('Home Page'),
-    Text('Games Library'),
-    Text('Add to currently playing'),
-    Text('Events Page'),
-    Profile(),
+
+  static final List<Widget> _pages = <Widget>[
+    Center(child: Text('Home Page')), // Placeholder for the Home Page
+    GameLibrary(), // Actual page for the Games Library
+    CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
+    EventsPage(), // Placeholder for the Events Page
+    Profile(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
@@ -35,15 +38,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
-      ),
+      body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
   Widget _buildBottomNavigationBar() {
     return Container(
+      margin: EdgeInsets.only(bottom: 10.0),
+      height: 60,
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.circular(30),
@@ -56,45 +60,42 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        items: [
-          _buildNavItem(Icons.home_filled, 'Home', 0),
-          _buildNavItem(Icons.sports_esports, 'Games', 1),
-          _buildNavItem(Icons.gamepad_rounded, 'Customize', 2),
-          _buildNavItem(Icons.calendar_today, 'Calendar', 3),
-          _buildNavItem(Icons.person, 'Profile', 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(Icons.home_filled, 0),
+          _buildNavItem(Icons.sports_esports, 1),
+          _buildNavItem(Icons.gamepad_rounded, 2),
+          _buildNavItem(Icons.calendar_today, 3),
+          _buildNavItem(Icons.person, 4),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
       ),
     );
   }
 
-  BottomNavigationBarItem _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(IconData icon, int index) {
     bool isSelected = _selectedIndex == index;
     Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.green;
     Color highlightColor = Theme.of(context).brightness == Brightness.light ? Color(0xFF00FF00) : Colors.grey;
 
-    return BottomNavigationBarItem(
-      icon: Container(
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Container(
+        width: 40,
+        height: 40,
+        alignment: Alignment.center,
         decoration: isSelected
             ? BoxDecoration(
                 color: highlightColor,
                 shape: BoxShape.circle,
-                 
               )
             : null,
         child: Icon(
           icon,
+          size: 30,
           color: isSelected ? selectedColor : Colors.grey,
         ),
       ),
-      label: '',
     );
   }
 }
