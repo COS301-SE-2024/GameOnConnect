@@ -28,7 +28,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent && _searchQuery.isEmpty) {
         _loadGames(_currentPage);
       }
     });
@@ -49,20 +49,21 @@ class _GameLibraryState extends State<GameLibrary> {
         _searchGames();
       } else {
         _games.clear();
+        _searchQuery = '';
         _currentPage = 1;
         _loadGames(_currentPage);
       }
     });
   }
 
-  Future<void> _searchGames() async {
+  Future<void> _runApiRequest(String request) async {
     if (_isLoading) return;
     setState(() {
       _isLoading = true;
     });
 
     final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6&search=$_searchQuery'));
+      'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6$request'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
@@ -83,32 +84,12 @@ class _GameLibraryState extends State<GameLibrary> {
     }
   }
 
+  Future<void> _searchGames() async {
+    _runApiRequest('&search=$_searchQuery');
+  }
+
   Future<void> _loadGames(int page) async {
-    if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-    });
-
-    final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6&page_size=20&page=$page'));
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final games = (jsonData['results'] as List)
-          .map((gameJson) => Game.fromJson(gameJson))
-          .toList();
-
-      setState(() {
-        _games.addAll(games);
-        _currentPage++;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      throw Exception('Failed to load games');
-    }
+    _runApiRequest('&page_size=20&page=$page');
   }
 
   @override
