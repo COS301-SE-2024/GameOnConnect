@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/pages/search_friends_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -30,20 +31,6 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey[600],
               child: Text('Sign Out'),
             ),
-            /* MaterialButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/edit-profile');
-              },
-              color: Colors.grey[600],
-              child: Text('Edit Profile'),
-            ),
-            MaterialButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/customize');
-              },
-              color: Colors.grey[600],
-              child: Text('Customize profile '),
-            ),*/
             MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/sign_up');
@@ -65,6 +52,33 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey[600],
               child: Text('Game Library Page '),
             ),
+           /* MaterialButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/friends');
+              },
+              color: Colors.grey[600],
+              child: Text('search friends '),
+            ),*/
+            MaterialButton(
+  onPressed: () {
+    // Get the current user's ID
+    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    if (currentUserId != null) {
+      // Pass the current user's ID to the search friends page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FriendSearchPage(currentUserId),
+        ),
+      );
+    } else {
+      // Handle the case where there is no logged-in user
+      print('No user is currently logged in.');
+    }
+  },
+  color: Colors.grey[600],
+  child: Text('search friends '),
+),
           ],
         ),
       ),
