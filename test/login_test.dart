@@ -29,12 +29,15 @@ void main() {
   group('Login Widget Tests', () {
     testWidgets('If Login Page loads render the correct UI', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(home: Login()));
-
+      //UI tests to see if the code is loaded
       expect(find.text('Login'), findsNWidgets(2)); 
       expect(find.text('Don\'t have an account? '), findsOneWidget);
       expect(find.text(' Sign Up'), findsOneWidget);
       expect(find.byKey(const Key('Login_Button')), findsOneWidget);
       expect(find.byKey(const Key('Google_Login')), findsOneWidget);
+      expect(find.text('Forgot password?'), findsOneWidget);
+      expect(find.byKey(const Key('emailInput')), findsOneWidget);
+      expect(find.byKey(const Key('passwordInput')), findsOneWidget);
     });
   }); 
 
@@ -93,6 +96,6 @@ void main() {
     test('returns null if email is valid', () {
       expect(emailValidator('test@example.com'), null);
     });
-  }); // Corrected: Added missing closing parenthesis and semicolon
+  }); 
 }
 
