@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 
-class CurrentlyPlayingPage extends StatelessWidget {
-  const CurrentlyPlayingPage({super.key});
+class EventsGamingSessions extends StatelessWidget {
+  const EventsGamingSessions({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Currently Playing'),
+        title: Text('Events and Gaming Sessions'),
       ),
       body: Center(
-        child: Text('Currently Playing Page'),
+        child: Text('Create Events or Gaming Sessions'),
       ),
     );
   }

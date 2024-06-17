@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
-import 'package:gameonconnect/pages/currently_playing_page.dart';
+import 'package:gameonconnect/pages/events_and_gaming_sessions.dart';
 import 'package:gameonconnect/pages/events_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _pages = <Widget>[
     Center(child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
-    const CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
+    const EventsGamingSessions(), // Placeholder for the Currently Playing Page
     const EventsPage(), // Placeholder for the Events Page
     Profile(), // Actual page for the Profile
   ];
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildNavItem(Icons.home_filled, 0),
-          _buildNavItem(Icons.sports_esports, 1),
+          _buildNavItem(Icons.search, 1),
           _buildNavItem(Icons.gamepad_rounded, 2),
           _buildNavItem(Icons.calendar_today, 3),
           _buildNavItem(Icons.person, 4),
@@ -117,11 +117,11 @@ class _DevelopmentButtons extends StatelessWidget {
           // ),
           MaterialButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/game_library');
+              
             },
             color: const Color.fromARGB(255, 128, 216, 50),
             textColor: Color.fromARGB(255, 24, 24, 24),
-            child: Text('Game Library Page '),
+            child: Text('Feed Page'),
           ),
         ],
       ),
