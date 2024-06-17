@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfile {
   final String username;
   //final String profilePictureUrl;
-  final bool isFollowing;
+   bool isFollowing;
   final String uid;
 
  UserProfile({required this.username,required this.uid,required this.isFollowing});
