@@ -6,8 +6,7 @@ import 'package:gameonconnect/pages/currently_playing_page.dart';
 import 'package:gameonconnect/pages/events_page.dart';
 
 class HomePage extends StatefulWidget {
-  // ignore: use_super_parameters
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  const HomePage({super.key, required this.title});
   final String title;
 
   @override
@@ -18,11 +17,11 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _pages = <Widget>[
-    Center(child: Text('Home Page')), // Placeholder for the Home Page
-    GameLibrary(), // Actual page for the Games Library
-    CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
-    EventsPage(), // Placeholder for the Events Page
-    Profile(), // Actual page for the Profile
+    const Center(child: Text('Home Page')), // Placeholder for the Home Page
+    const GameLibrary(), // Actual page for the Games Library
+    const CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
+    const EventsPage(), // Placeholder for the Events Page
+    const Profile(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
@@ -45,13 +44,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBottomNavigationBar() {
     return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       height: 60,
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(30),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             spreadRadius: 2,
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNavItem(IconData icon, int index) {
     bool isSelected = _selectedIndex == index;
     Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.green;
-    Color highlightColor = Theme.of(context).brightness == Brightness.light ? Color(0xFF00FF00) : Colors.grey;
+    Color highlightColor = Theme.of(context).brightness == Brightness.light ? const Color(0xFF00FF00) : Colors.grey;
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
