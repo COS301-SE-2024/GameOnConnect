@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNavItem(IconData icon, int index) {
     bool isSelected = _selectedIndex == index;
     Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.green;
-    Color highlightColor = Theme.of(context).brightness == Brightness.light ? const Color(0xFF00FF00) : Colors.grey;
+    Color defaultColor = Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.green;
+    Color highlightColor = Theme.of(context).brightness == Brightness.light ? const Color(0xFF00FF00) : const Color.fromARGB(255, 43, 43, 43);
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(
           icon,
           size: 30,
-          color: isSelected ? selectedColor : Colors.grey,
+          color: isSelected ? selectedColor : defaultColor,
         ),
       ),
     );
