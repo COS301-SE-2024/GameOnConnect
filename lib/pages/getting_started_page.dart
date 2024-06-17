@@ -23,7 +23,7 @@ class GettingStarted extends StatelessWidget {
           title: const Text(
             'Getting Started',
             style: TextStyle(
-              fontFamily: 'Inder',
+              fontFamily: 'Inter',
               color: Colors.white,
               fontSize: 30,
               letterSpacing: 0,
@@ -79,7 +79,7 @@ class GettingStarted extends StatelessWidget {
                                   Text(
                                     'Friends',
                                     style: TextStyle(
-                                      fontFamily: 'Inder',
+                                      fontFamily: 'Inter',
                                       color: Color(0xFF14181B),
                                       fontSize: 20,
                                       letterSpacing: 0,
@@ -133,7 +133,7 @@ class GettingStarted extends StatelessWidget {
                                                 Text(
                                                   'How to search for friends',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -189,10 +189,9 @@ class GettingStarted extends StatelessWidget {
                                                               ' using their username',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 letterSpacing:
                                                                     0,
                                                                 fontWeight:
@@ -238,7 +237,7 @@ class GettingStarted extends StatelessWidget {
                                               Text(
                                                 'How to add friends',
                                                 style: TextStyle(
-                                                  fontFamily: 'Inder',
+                                                  fontFamily: 'Inter',
                                                   color: Color(0xFF57636C),
                                                   letterSpacing: 0,
                                                   fontWeight: FontWeight.w500,
@@ -299,7 +298,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0),
                                                             child: Text(
                                                               'To add friends,'
-                                                              ' naviagte to the'
+                                                              ' navigate to the'
                                                               ' search page , search'
                                                               ' for their profile.'
                                                               ' You will get a list'
@@ -309,10 +308,9 @@ class GettingStarted extends StatelessWidget {
                                                               'Add friend button',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 letterSpacing:
                                                                     0,
                                                                 fontWeight:
@@ -350,7 +348,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'Accepting/rejecting friend requests',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -416,10 +414,9 @@ class GettingStarted extends StatelessWidget {
                                                               ' the friend requests',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -487,7 +484,7 @@ class GettingStarted extends StatelessWidget {
                                   Text(
                                     'Game Library',
                                     style: TextStyle(
-                                      fontFamily: 'Inder',
+                                      fontFamily: 'Inter',
                                       color: Color(0xFF14181B),
                                       fontSize: 20,
                                       letterSpacing: 0,
@@ -541,7 +538,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'How to search for games',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -590,10 +587,9 @@ class GettingStarted extends StatelessWidget {
                                                             ' search for a game.',
                                                             style: TextStyle(
                                                               fontFamily:
-                                                                  'Inder',
-                                                              color:
-                                                              Color(0xFF57636C),
-
+                                                                  'Inter',
+                                                              color: Color(
+                                                                  0xFF57636C),
                                                               fontSize: 14,
                                                               letterSpacing: 0,
                                                               fontWeight:
@@ -638,7 +634,7 @@ class GettingStarted extends StatelessWidget {
                                             child: Text(
                                               'How to sort the Game Library',
                                               style: TextStyle(
-                                                fontFamily: 'Inder',
+                                                fontFamily: 'Inter',
                                                 color: Color(0xFF57636C),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
@@ -700,8 +696,9 @@ class GettingStarted extends StatelessWidget {
                                                           ' to apply to the'
                                                           ' Library',
                                                           style: TextStyle(
-                                                            fontFamily: 'Inder',
-                                                            color: Color(0xFF57636C),
+                                                            fontFamily: 'Inter',
+                                                            color: Color(
+                                                                0xFF57636C),
                                                             fontSize: 14,
                                                             letterSpacing: 0,
                                                             fontWeight:
@@ -735,7 +732,7 @@ class GettingStarted extends StatelessWidget {
                                             child: Text(
                                               'How to filter the Game Library',
                                               style: TextStyle(
-                                                fontFamily: 'Inder',
+                                                fontFamily: 'Inter',
                                                 color: Color(0xFF57636C),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
@@ -793,10 +790,9 @@ class GettingStarted extends StatelessWidget {
                                                           ' you want to apply '
                                                           'to the Game Library.',
                                                           style: TextStyle(
-                                                            fontFamily: 'Inder',
-                                                            color:
-                                                            Color(0xFF57636C),
-
+                                                            fontFamily: 'Inter',
+                                                            color: Color(
+                                                                0xFF57636C),
                                                             fontSize: 14,
                                                             letterSpacing: 0,
                                                             fontWeight:
@@ -865,7 +861,7 @@ class GettingStarted extends StatelessWidget {
                                       Text(
                                         'Game Information',
                                         style: TextStyle(
-                                          fontFamily: 'Inder',
+                                          fontFamily: 'Inter',
                                           color: Color(0xFF14181B),
                                           fontSize: 20,
                                           letterSpacing: 0,
@@ -919,7 +915,7 @@ class GettingStarted extends StatelessWidget {
                                                     child: Text(
                                                       'How to view more information about a game',
                                                       style: TextStyle(
-                                                        fontFamily: 'Inder',
+                                                        fontFamily: 'Inter',
                                                         color:
                                                             Color(0xFF57636C),
                                                         letterSpacing: 0,
@@ -991,11 +987,10 @@ class GettingStarted extends StatelessWidget {
                                                                 style:
                                                                     TextStyle(
                                                                   fontFamily:
-                                                                      'Inder',
-                                                                      color:
-                                                                      Color(0xFF57636C),
-
-                                                                      fontSize: 14,
+                                                                      'Inter',
+                                                                  color: Color(
+                                                                      0xFF57636C),
+                                                                  fontSize: 14,
                                                                   letterSpacing:
                                                                       0,
                                                                   fontWeight:
@@ -1041,7 +1036,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'How to share a game ',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -1111,10 +1106,9 @@ class GettingStarted extends StatelessWidget {
                                                               ' sharing',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1151,7 +1145,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'How do I add a game to my wishlist',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -1221,10 +1215,9 @@ class GettingStarted extends StatelessWidget {
                                                               'to your wishlist.',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1261,7 +1254,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'How to add a game to my Currently Playings list',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -1319,30 +1312,29 @@ class GettingStarted extends StatelessWidget {
                                                                         0),
                                                             child: Text(
                                                               'To add a game to'
-                                                                  ' your'
+                                                              ' your'
                                                               ' currently '
-                                                                  'playing, '
+                                                              'playing, '
                                                               'navigate'
                                                               ' to  specific '
-                                                                  'game you '
+                                                              'game you '
                                                               'want to add to '
-                                                                  'the list.'
+                                                              'the list.'
                                                               ' Click on the '
-                                                                  'Add to '
+                                                              'Add to '
                                                               'currently playing'
-                                                                  ' button.'
+                                                              ' button.'
                                                               ' This will add '
-                                                                  'the game'
+                                                              'the game'
                                                               ' to your '
-                                                                  'currently '
+                                                              'currently '
                                                               'playing '
                                                               'list. ',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1379,7 +1371,7 @@ class GettingStarted extends StatelessWidget {
                                                 child: Text(
                                                   'How do I remove a game from my Wishlist',
                                                   style: TextStyle(
-                                                    fontFamily: 'Inder',
+                                                    fontFamily: 'Inter',
                                                     color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
@@ -1437,39 +1429,38 @@ class GettingStarted extends StatelessWidget {
                                                                         0),
                                                             child: Text(
                                                               'To remove a game '
-                                                                  'to your '
+                                                              'to your '
                                                               'wishlist, '
                                                               'navigate to your'
                                                               ' profile. Click'
-                                                                  ' on the '
+                                                              ' on the '
                                                               'Wishlist tab. '
-                                                                  'This will'
+                                                              'This will'
                                                               ' show you '
-                                                                  'all the'
+                                                              'all the'
                                                               ' games in your'
-                                                                  ' Wishlist.'
+                                                              ' Wishlist.'
                                                               ' Click on the'
-                                                                  ' game you want'
+                                                              ' game you want'
                                                               ' to remove from '
-                                                                  'your '
+                                                              'your '
                                                               'wishlist. This '
-                                                                  'will take'
+                                                              'will take'
                                                               ' you to that '
-                                                                  'game page. '
+                                                              'game page. '
                                                               'Click on the'
-                                                                  ' Remove'
+                                                              ' Remove'
                                                               ' from Wishlist'
-                                                                  ' button .'
+                                                              ' button .'
                                                               ' The game is now'
-                                                                  ' removed'
+                                                              ' removed'
                                                               ' from your '
-                                                                  'wishlist.',
+                                                              'wishlist.',
                                                               style: TextStyle(
                                                                 fontFamily:
-                                                                    'Inder',
-                                                                color:
-                                                                Color(0xFF57636C),
-
+                                                                    'Inter',
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
