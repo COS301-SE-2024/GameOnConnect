@@ -49,12 +49,6 @@ class Profile extends StatelessWidget {
             child: Scaffold(
               appBar: AppBar(
                 title: const Text('Profile'),
-                leading: IconButton(
-                  icon: const Icon(Icons.keyboard_backspace),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
                 actions: [
                   Builder(
                     builder: (context) {
