@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -24,7 +22,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            MaterialButton(
+            /*MaterialButton(
               onPressed: () {
               FirebaseAuth.instance.signOut().then((value) {
               Navigator.pushReplacement(
@@ -35,8 +33,7 @@ class _HomePageState extends State<HomePage> {
               },
               color: const Color.fromARGB(255, 128, 216, 50),
               textColor: Color.fromARGB(255, 24, 24, 24),
-              child: Text('Sign Out'),
-            ),
+            ),*/
             /* MaterialButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/edit-profile');

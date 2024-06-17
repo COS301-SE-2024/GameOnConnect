@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
 
+
 class Profile extends StatelessWidget {
   Profile({super.key});
 
@@ -13,6 +14,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: profileService.fetchProfileData(),
+
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
@@ -53,17 +55,16 @@ class Profile extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/edit-profile');
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.settings),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/customize');
+                actions: [
+                  Builder(
+                    builder: (context) {
+                      return IconButton(
+                        icon: const Icon(Icons.settings),
+                        onPressed: () {
+                          //Scaffold.of(context).openEndDrawer();
+                          Navigator.pushNamed(context, '/settings');
+                        },
+                      );
                     },
                   ),
                 ],
@@ -75,6 +76,57 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
+              /*endDrawer: Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    DrawerHeader(
+
+                        child: Text("Settings")),
+                    ListTile(
+                      leading: Icon(Icons.dashboard_customize,
+                      color: Color.fromARGB(255, 128, 216, 50),),
+                      title: Text('Customize Profile'),
+                      onTap: () {
+                        Navigator.pop(context); // closing the drawer
+                        Navigator.pushNamed(context, '/customize');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.edit,
+                      color: Color.fromARGB(255, 128, 216, 50),),
+                      title: Text('Edit Profile'),
+                      onTap: () {
+                        Navigator.pop(context); // closing the drawer
+                        Navigator.pushNamed(context, '/edit-profile');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.question_mark,
+                      color: Color.fromARGB(255, 128, 216, 50),),
+                      title: Text('Help centre'),
+                      onTap: () {
+                        Navigator.pop(context); // closing the drawer
+                        Navigator.pushNamed(context, '/help');
+                      },
+                    ),
+                    ListTile(
+                        leading: Icon(Icons.close,
+                        color: Colors.red,),
+                        title: Text("Log out"),
+                        onTap: () {
+                          Navigator.pop(context);// closing the drawer
+                          FirebaseAuth.instance.signOut().then((value) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Login()),
+                            );
+                          });
+                        }
+                    )
+                  ],
+                ),
+              ),*/
               body: Column(
                 children: <Widget>[
                   Stack(
@@ -110,6 +162,8 @@ class Profile extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   const SizedBox(height: 8),
+                  
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(

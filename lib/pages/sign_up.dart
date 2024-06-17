@@ -2,13 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../services/auth_service.dart';
 import 'login_page.dart';
 import 'home_page.dart';
 
-const double _textFieldWidth = 300;
-const InputDecoration _inputDecoration = InputDecoration(
-  border: OutlineInputBorder(),
-);
+
 int? _nextNum;
 Future<void> getNextNumber() async {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -54,16 +53,23 @@ Future<void> createDefaultProfile() async {
   }
 }
 
-String? _username;
 
-class SignUp extends StatelessWidget {
+String? _username;
+class SignUp extends StatefulWidget {
+  // ignore: use_super_parameters
+  const SignUp({Key? key}) : super(key: key);
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  SignUp({super.key});
+  UserCredential? _userG;
 
   Future signUp() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -74,12 +80,19 @@ class SignUp extends StatelessWidget {
     await createDefaultProfile();
 
   }
+  Future google() async{
+    _userG = await AuthService().signInWithGoogle();
+  }
 
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
     _confirmPasswordController.dispose();
+    super.dispose();
+
   }
 
   @override
@@ -102,8 +115,8 @@ class SignUp extends StatelessWidget {
                 padding: EdgeInsets.all(20),
                 child: Text("Sign Up",
                     style: TextStyle(
-                      fontSize: 31,
-                      fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 28.46200180053711
                     )),
               ),
               Form(
@@ -111,38 +124,41 @@ class SignUp extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: _textFieldWidth,
-                        child: TextFormField(
-                          key: Key('usernameInput'),
-                          controller: _usernameController,
-                          decoration:
-                              _inputDecoration.copyWith(labelText: 'Username'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a username';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: _textFieldWidth,
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0.0),
                         child: TextFormField(
                           key: Key('emailInput'),
                           controller: _emailController,
-                          decoration:
-                              _inputDecoration.copyWith(labelText: 'Email'),
+                          decoration:InputDecoration(
+                            fillColor: Colors.grey[100],
+                            filled: true,
+                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 190, 190, 190),
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 0, 255, 117),
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            hintText: 'Email',
+                            prefixIcon: Icon(
+                              Icons.email,
+                              size: 20,
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter an email address';
                             }
                             if (!RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                 .hasMatch(value)) {
                               return 'Please enter a valid email address';
                             }
@@ -151,16 +167,79 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 15),
+
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: _textFieldWidth,
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0.0),
+                        child: TextFormField(
+                          key: Key('usernameInput'),
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
+                          contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 190, 190, 190),
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 0, 255, 117),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          hintText: 'Username',
+                          prefixIcon: Icon(
+                            Icons.person,
+                            size: 20,
+                          ),
+                          ),                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a username';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 0.0),
                         child: TextFormField(
                           key: Key('passwordInput'),
                           controller: _passwordController,
                           obscureText: true,
-                          decoration:
-                              _inputDecoration.copyWith(labelText: 'Password'),
+                          decoration:InputDecoration(
+                            fillColor: Colors.grey[100],
+                            filled: true,
+                            contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 190, 190, 190),
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color.fromARGB(255, 0, 255, 117),
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            hintText: 'Password',
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              size: 20,
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
@@ -180,7 +259,7 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
+                    /*Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                         width: _textFieldWidth,
@@ -201,12 +280,122 @@ class SignUp extends StatelessWidget {
                           },
                         ),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
               const SizedBox(height: 20),
-              SizedBox(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: GestureDetector(
+                  onTap: () {
+
+                      if (_formKey.currentState!.validate()) {
+                        _username = _usernameController.text;
+                        signUp();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Signed Up successfully!")));
+                        Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                              (Route<dynamic> route) => false,
+                        );
+                      }
+
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    key: Key('signupButton'),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 0, 255, 117),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 24, 24, 24),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const <Widget>[
+                  Expanded(
+                    child: Divider(
+                        color: Color.fromARGB(255, 190, 190, 190),
+                        height: 40,
+                        indent: 25,
+                        endIndent: 10),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 1),
+                    child: Text("or"),
+                  ),
+                  Expanded(
+                    child: Divider(
+                        color: Color.fromARGB(255, 190, 190, 190),
+                        height: 40,
+                        indent: 10,
+                        endIndent: 25),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 25),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                child: GestureDetector(
+                  onTap:  ()  {
+                    google();
+                    if (_userG != null) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => HomePage(
+                              title: 'GameOnConnect',
+                            )),
+                            (Route<dynamic> route) => false,
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    key: Key('Google_Login'),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 190, 190, 190),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.google,
+                            size: 20,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 24, 24, 24),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              /*SizedBox(
                 width: _textFieldWidth,
                 height: 50,
                 child: FilledButton(
@@ -233,7 +422,7 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -249,7 +438,8 @@ class SignUp extends StatelessWidget {
                     );  },
 
                     child: Text(' Login',
-                      style: TextStyle(color: Color.fromARGB(255, 214, 193, 4),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 128, 216, 50),
                           fontWeight: FontWeight.bold
                       ),
                     )
