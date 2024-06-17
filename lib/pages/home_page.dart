@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     const GameLibrary(), // Actual page for the Games Library
     const CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
     const EventsPage(), // Placeholder for the Events Page
-    const Profile(), // Actual page for the Profile
+    Profile(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
