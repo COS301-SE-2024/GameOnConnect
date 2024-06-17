@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
-import '../models/FriendSearch.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/UserProfile.dart';
 
 class FriendSearchPage extends StatefulWidget {
+  final String currentUserId; 
+
+  FriendSearchPage( this.currentUserId);
+
   @override
   _FriendSearchPageState createState() => _FriendSearchPageState();
 }
 
 class _FriendSearchPageState extends State<FriendSearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  final FriendSearch _friendSearch = FriendSearch();
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
+
+   Stream<List<UserProfile>> searchFriends(String query) {
+  return db
+    .collection('profile_data')
+    .where('username.profile_name', isGreaterThanOrEqualTo: query.toLowerCase())
+    .where('username.profile_name', isLessThan: query.toLowerCase() + '\uf8ff')
+    .snapshots()
+    .asyncMap((snapshot) async {
+      List<UserProfile> userProfiles = [];
+      for (var doc in snapshot.docs) {
+        UserProfile userProfile = await UserProfile.fromDocumentSnapshot(doc);
+        userProfiles.add(userProfile);
+      }
+      print("current user id"+ widget.currentUserId);
+      return userProfiles;
+    });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +61,12 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
           ),
           Expanded(
             child: StreamBuilder<List<UserProfile>>(
-              stream: _friendSearch.searchFriends(_searchController.text),
+              stream: searchFriends(_searchController.text),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return CircularProgressIndicator();
-                List<UserProfile> userProfiles = snapshot.data!;
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator()); // Centered CircularProgressIndicator
+                }
+                List<UserProfile> userProfiles = snapshot.data!.where((userProfile) => userProfile.uid != widget.currentUserId).toList(); // Filter out current user
                 return ListView.builder(
                   itemCount: userProfiles.length,
                   itemBuilder: (context, index) {
@@ -54,7 +78,7 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
                             ? Icon(Icons.person_remove)
                             : Icon(Icons.person_add),
                         onPressed: () {
-                          // TODO: Implement follow/unfollow functionality
+                          //Implement follow/unfollow functionality
                         },
                       ),
                     );
