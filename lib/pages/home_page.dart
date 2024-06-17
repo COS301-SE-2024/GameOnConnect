@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _pages = <Widget>[
-    const Center(child: Text('Home Page')), // Placeholder for the Home Page
+    Center(child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CurrentlyPlayingPage(), // Placeholder for the Currently Playing Page
     const EventsPage(), // Placeholder for the Events Page
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: const Color.fromARGB(255, 128, 216, 50),
         title: Text(widget.title),
       ),
       body: _pages[_selectedIndex], // Display the selected page
@@ -94,6 +94,35 @@ class _HomePageState extends State<HomePage> {
           size: 30,
           color: isSelected ? selectedColor : Colors.grey,
         ),
+      ),
+    );
+  }
+}
+
+class _DevelopmentButtons extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          MaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+            color: const Color.fromARGB(255, 128, 216, 50),
+            textColor: Color.fromARGB(255, 24, 24, 24),
+            child: Text('Profile Page '),
+          ),
+          MaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/game_library');
+            },
+            color: const Color.fromARGB(255, 128, 216, 50),
+            textColor: Color.fromARGB(255, 24, 24, 24),
+            child: Text('Game Library Page '),
+          ),
+        ],
       ),
     );
   }
