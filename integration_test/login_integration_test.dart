@@ -23,16 +23,19 @@ void main() {
       
       // Enter text for the email address
       await tester.enterText(emailField, 'testuser@example.com');
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 2));
 
       // Enter text for the password
       await tester.enterText(passwordField, 'Password1234\$');
-      await Future.delayed(const Duration(seconds:3));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds:2));
 
       await tester.tap(loginButton);
       await tester.pumpAndSettle();
 
       await tester.pump(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
     });
   });
 }

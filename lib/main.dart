@@ -30,6 +30,9 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.debug,
   );
+  
+  //TO turn off APP check
+  //FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(false);
 
   Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
     User? user = FirebaseAuth.instance.currentUser;
