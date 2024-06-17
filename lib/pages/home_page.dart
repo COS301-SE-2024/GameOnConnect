@@ -107,14 +107,14 @@ class _DevelopmentButtons extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          MaterialButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-            color: const Color.fromARGB(255, 128, 216, 50),
-            textColor: Color.fromARGB(255, 24, 24, 24),
-            child: Text('Profile Page '),
-          ),
+          // MaterialButton(
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/profile');
+          //   },
+          //   color: const Color.fromARGB(255, 128, 216, 50),
+          //   textColor: Color.fromARGB(255, 24, 24, 24),
+          //   child: Text('Profile Page '),
+          // ),
           MaterialButton(
             onPressed: () {
               Navigator.pushNamed(context, '/game_library');
