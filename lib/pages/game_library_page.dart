@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,6 +12,7 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -112,7 +112,114 @@ class _GameLibraryState extends State<GameLibrary> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+            key: _scaffoldKey,
             appBar: appBar(context),
+            endDrawer: Drawer(
+              elevation: 0,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.vertical,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Color(0xFF2A2A2A),
+                        width: 0.5,
+                      ),
+                    ),
+                    child: Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text(
+                        'Filter',
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Platforms',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Developers',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Publishers',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Genres',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Stores',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Tags',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Metacritic',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Release',
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                    ),
+                    dense: false,
+                  ),
+                ],
+              ),
+            ),
             body: Column(
               children: [
                 Padding(
@@ -271,20 +378,28 @@ class _GameLibraryState extends State<GameLibrary> {
                         color: Theme.of(context).colorScheme.primary,
                       )
                     ],
-                  ),
-                ),
+                  ),),
               ],
             ),
             Row(
               children: [
-                Text("Filter",
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                SizedBox(width: 10),
-                Icon(
-                  Icons.tune,
-                  color: Theme.of(context).colorScheme.primary,
-                )
+                TextButton(
+                    onPressed: () async {
+                      _scaffoldKey.currentState!.openEndDrawer();
+                    },
+                    child: 
+                    Row(children: [
+                      Text("Filter",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.tune,
+                        color: Theme.of(context).colorScheme.primary,
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ],
