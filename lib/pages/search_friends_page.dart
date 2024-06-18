@@ -55,6 +55,39 @@ Future<void> sendConnectRequest(String currentUserId, String otherUserId) async 
   });
 }
 
+// Function to accept a friend request from another user
+Future<void> acceptedFriendRequest(String currentUserId, String otherUserId) async {
+  // Move otherUserId from pending array to friends array for both users
+  final currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
+  final otherUserDoc = FirebaseFirestore.instance.collection('friends').doc(otherUserId);
+
+  return FirebaseFirestore.instance.runTransaction((transaction) async {
+    // Get both users' documents
+    DocumentSnapshot currentUserSnapshot = await transaction.get(currentUserDoc);
+    DocumentSnapshot otherUserSnapshot = await transaction.get(otherUserDoc);
+
+    List<dynamic> currentUserPending = (currentUserSnapshot.data() as Map<String, dynamic>)['pending'];
+    List<dynamic> currentUserFriends = (currentUserSnapshot.data() as Map<String, dynamic>)['friends'];
+    List<dynamic> otherUserFriends = (otherUserSnapshot.data() as Map<String, dynamic>)['friends'];
+
+    // Move otherUserId from currentUserPending to currentUserFriends
+    if (currentUserPending.contains(otherUserId)) {
+      currentUserPending.remove(otherUserId);
+      currentUserFriends.add(otherUserId);
+      transaction.update(currentUserDoc, {'pending': currentUserPending, 'friends': currentUserFriends});
+    }
+
+    // Also add currentUserId to otherUserFriends
+    if (!otherUserFriends.contains(currentUserId)) {
+      otherUserFriends.add(currentUserId);
+      transaction.update(otherUserDoc, {'friends': otherUserFriends});
+    }
+  }).catchError((error) {
+    print('Error accepting friend request: $error');
+  });
+}
+
+
 
 
   @override
