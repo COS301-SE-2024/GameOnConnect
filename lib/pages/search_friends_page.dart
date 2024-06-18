@@ -87,7 +87,34 @@ Future<void> acceptedFriendRequest(String currentUserId, String otherUserId) asy
   });
 }
 
+// Function to unfollow (remove from friends list) another user
+Future<void> disconnectUser(String currentUserId, String friendId) async {
+  // Remove friendId from the current user's friends array and vice versa
+  final currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
+  final friendUserDoc = FirebaseFirestore.instance.collection('friends').doc(friendId);
 
+  return FirebaseFirestore.instance.runTransaction((transaction) async {
+    // Get both users' documents
+    DocumentSnapshot currentUserSnapshot = await transaction.get(currentUserDoc);
+    DocumentSnapshot friendUserSnapshot = await transaction.get(friendUserDoc);
+
+    List<dynamic> currentUserFriends = (currentUserSnapshot.data() as Map<String, dynamic>)['friends'];
+    List<dynamic> friendUserFriends = (friendUserSnapshot.data() as Map<String, dynamic>)['friends'];
+
+    // Remove each other's IDs from their respective friends arrays
+    if (currentUserFriends.contains(friendId)) {
+      currentUserFriends.remove(friendId);
+      transaction.update(currentUserDoc, {'friends': currentUserFriends});
+    }
+    
+    if (friendUserFriends.contains(currentUserId)) {
+      friendUserFriends.remove(currentUserId);
+      transaction.update(friendUserDoc, {'friends': friendUserFriends});
+    }
+  }).catchError((error) {
+    print('Error unfollowing user: $error');
+  });
+}
 
 
   @override
