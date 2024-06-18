@@ -32,80 +32,29 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
     });
 }
 
-// Function to follow a user
-Future<void> followUser(String currentUserId, String friendId) async {
-  final DocumentReference currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
-  final DocumentReference friendUserDoc = FirebaseFirestore.instance.collection('friends').doc(friendId);
+// follow (friend request) 
+Future<void> sendConnectRequest(String currentUserId, String otherUserId) async {
+  // Add otherUserId to the current user's pending array
+  final currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
+  final otherUserDoc = FirebaseFirestore.instance.collection('friends').doc(otherUserId);
 
   return FirebaseFirestore.instance.runTransaction((transaction) async {
     // Get the current user's document
     DocumentSnapshot currentUserSnapshot = await transaction.get(currentUserDoc);
-    List<dynamic> currentUserFriends = (currentUserSnapshot.data() as Map<String, dynamic>)['friends'];
+    List<dynamic> currentUserPending = (currentUserSnapshot.data() as Map<String, dynamic>)['pending'];
 
-    // Get the friend's document
-    DocumentSnapshot friendUserSnapshot = await transaction.get(friendUserDoc);
-    List<dynamic> friendUserFriends = (friendUserSnapshot.data() as Map<String, dynamic>)['friends'];
-
-    // Add each other's IDs to their respective friends arrays
-    if (!currentUserFriends.contains(friendId)) {
-      currentUserFriends.add(friendId);
-      transaction.update(currentUserDoc, {'friends': currentUserFriends});
+    // Add otherUserId to currentUserPending list 
+    if (!currentUserPending.contains(otherUserId)) {
+      currentUserPending.add(otherUserId);
+      transaction.update(currentUserDoc, {'pending': currentUserPending});
     }
-    if (!friendUserFriends.contains(currentUserId)) {
-      friendUserFriends.add(currentUserId);
-      transaction.update(friendUserDoc, {'friends': friendUserFriends});
-    }
+   //-- change ui to pending and hour glass 
+    // Handle sending a notification or updating other user's UI here if needed
   }).catchError((error) {
-    print('Error following user: $error');
+    print('Error sending friend request: $error');
   });
 }
 
-// Function to unfollow a user
-Future<void> unfollowUser(String currentUserId, String friendId) async {
-  final DocumentReference currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
-  final DocumentReference friendUserDoc = FirebaseFirestore.instance.collection('friends').doc(friendId);
-
-  return FirebaseFirestore.instance.runTransaction((transaction) async {
-    // Get the current user's document
-    DocumentSnapshot currentUserSnapshot = await transaction.get(currentUserDoc);
-    List<dynamic> currentUserFriends = (currentUserSnapshot.data() as Map<String, dynamic>)['friends'];
-
-    // Get the friend's document
-    DocumentSnapshot friendUserSnapshot = await transaction.get(friendUserDoc);
-    List<dynamic> friendUserFriends = (friendUserSnapshot.data() as Map<String, dynamic>)['friends'];
-
-    // Remove each other's IDs from their respective friends arrays
-    if (currentUserFriends.contains(friendId)) {
-      currentUserFriends.remove(friendId);
-      transaction.update(currentUserDoc, {'friends': currentUserFriends});
-    }
-    if (friendUserFriends.contains(currentUserId)) {
-      friendUserFriends.remove(currentUserId);
-      transaction.update(friendUserDoc, {'friends': friendUserFriends});
-    }
-  }).catchError((error) {
-    print('Error unfollowing user: $error');
-  });
-}
-
-/**
- * // Example of how to call these functions in your IconButton's onPressed callback:
-IconButton(
-  icon: userProfile.isFollowing ? Icon(Icons.person_remove) : Icon(Icons.person_add),
-  onPressed: () async {
-    if (userProfile.isFollowing) {
-      await unfollowUser(widget.currentUserId, userProfile.uid);
-    } else {
-      await followUser(widget.currentUserId, userProfile.uid);
-    }
-    
-    // Update the state to reflect the new follow status
-    setState(() {
-      userProfile.isFollowing = !userProfile.isFollowing;
-    });
-  },
-),
- */
 
 
   @override
@@ -174,7 +123,7 @@ IconButton(
             TextButton(
               child: Text('Follow'),
               onPressed: () async {
-                await followUser(widget.currentUserId, userProfile.uid);
+                //await followUser(widget.currentUserId, userProfile.uid);
                 setState(() {
                   userProfile.isFollowing = true;
                 });
@@ -184,7 +133,7 @@ IconButton(
             TextButton(
               child: Text('Unfollow'),
               onPressed: () async {
-                await unfollowUser(widget.currentUserId, userProfile.uid);
+                //await unfollowUser(widget.currentUserId, userProfile.uid);
                 setState(() {
                   userProfile.isFollowing = false;
                 });
@@ -194,9 +143,9 @@ IconButton(
             icon: userProfile.isFollowing ? Icon(Icons.person_remove) : Icon(Icons.person_add),
             onPressed: () async {
               if (userProfile.isFollowing) {
-                await unfollowUser(widget.currentUserId, userProfile.uid);
+                //await unfollowUser(widget.currentUserId, userProfile.uid);
               } else {
-                await followUser(widget.currentUserId, userProfile.uid);
+                //await followUser(widget.currentUserId, userProfile.uid);
               }
               setState(() {
                 userProfile.isFollowing = !userProfile.isFollowing;
