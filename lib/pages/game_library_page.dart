@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
+import 'package:expandable/expandable.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -21,10 +22,15 @@ class _GameLibraryState extends State<GameLibrary> {
   String _searchQuery = '';
   String? _sortValue = '';
 
+  //Filter arrays
+  List<String> _stores = [];
+  List<String> _genres = [];
+
   @override
   void initState() {
     super.initState();
     _loadGames(_currentPage);
+    _getFilters();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -55,6 +61,50 @@ class _GameLibraryState extends State<GameLibrary> {
         _loadGames(_currentPage);
       }
     });
+  }
+
+  Future<void> _getFilters() async {
+    var response = await http.get(Uri.parse(
+        'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      final results = jsonData['results'];
+
+      // Create a new list to hold the formatted strings
+      List<String> genres = results.map<String>((genre) {
+        String name = genre['name'];
+        String slug = genre['slug'];
+        return 'name:$name,slug:$slug';
+      }).toList();
+
+      setState(() {
+        _genres = genres;
+      });
+    } else {
+      throw Exception('Failed to load games');
+    }
+
+    response = await http.get(Uri.parse(
+        'https://api.rawg.io/api/developers?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      final results = jsonData['results'];
+
+      // Create a new list to hold the formatted strings
+      List<String> stores = results.map<String>((store) {
+        String name = store['name'];
+        String slug = store['slug'];
+        return 'name:$name,slug:$slug';
+      }).toList();
+
+      setState(() {
+        _stores = stores;
+      });
+    } else {
+      throw Exception('Failed to load games');
+    }
   }
 
   Future<void> _runApiRequest(String request) async {
@@ -378,17 +428,18 @@ class _GameLibraryState extends State<GameLibrary> {
                         color: Theme.of(context).colorScheme.primary,
                       )
                     ],
-                  ),),
+                  ),
+                ),
               ],
             ),
             Row(
               children: [
                 TextButton(
-                    onPressed: () async {
-                      _scaffoldKey.currentState!.openEndDrawer();
-                    },
-                    child: 
-                    Row(children: [
+                  onPressed: () async {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                  child: Row(
+                    children: [
                       Text("Filter",
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold)),
