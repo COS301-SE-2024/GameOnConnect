@@ -13,13 +13,13 @@ class Wishlist {
     currentUser = auth.currentUser;
   }
 
-  Future<List<int>> getWishlist() async {
+  Future<List<String>> getWishlist() async {
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
           await db.collection('profile_data').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<int> wishlist = List<int>.from(snapshot.data()!['wishlist']);
+        List<String> wishlist = List<String>.from(snapshot.data()!['wishlist']);
         return wishlist;
       } else {
         return [];
