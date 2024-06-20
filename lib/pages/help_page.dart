@@ -9,6 +9,7 @@ class Help extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
+            key: Key('Back_button_key'),
             icon: const Icon(Icons.keyboard_backspace),
             onPressed: () {
               Navigator.pop(context);
@@ -28,7 +29,11 @@ class Help extends StatelessWidget {
                 borderRadius: BorderRadius.circular(60),
                 color: Color.fromARGB(255, 128, 216, 50),
               ),
-              child: const Center(child: Text("Getting started")),
+              child: const Center(
+                child: Text(
+                  key: Key('Getting_started_text'),
+                  "Getting started"),
+              ),
             ),
           ),
           SizedBox(
