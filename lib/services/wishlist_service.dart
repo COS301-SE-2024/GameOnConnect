@@ -39,7 +39,7 @@ class Wishlist {
           .doc(currentUser?.uid)
           .set(data, SetOptions(merge: true));
     } catch (e) {
-      return 0;
+      //return 0;
     }
   }
 
@@ -52,7 +52,7 @@ class Wishlist {
 
       });
     } catch (e) {
-      return [];
+      //return [];
     }
   }
 }
