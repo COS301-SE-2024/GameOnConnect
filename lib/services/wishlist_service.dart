@@ -29,7 +29,7 @@ class Wishlist {
     }
   }
 
-  Future addToWishlist(String gameID) async {
+  Future<void> addToWishlist(String gameID) async {
     try {
       List<String> oldList =await  getWishlist();
       oldList.add(gameID);
@@ -43,14 +43,14 @@ class Wishlist {
     }
   }
 
-  Future<List<int>> removeFromWishlist(int gameID) async {
+  Future<void> removeFromWishlist(int gameID) async {
     try {
-      final data = db
-              .collection('profile_data')
-              .doc(currentUser?.uid)
-              .update({'wishlist': FieldValue.arrayRemove(gameID as List)})
-          as List<int>;
-      return data;
+      db.collection('profile_data')
+          .doc(auth.currentUser?.uid)
+          .update({
+        'wishlist': FieldValue.arrayRemove([gameID])
+
+      });
     } catch (e) {
       return [];
     }
