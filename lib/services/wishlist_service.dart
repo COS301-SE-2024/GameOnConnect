@@ -29,9 +29,11 @@ class Wishlist {
     }
   }
 
-  Future addToWishlist(int gameID) async {
+  Future addToWishlist(String gameID) async {
     try {
-      final data = {'wishlist': gameID};
+      List<String> oldList =await  getWishlist();
+      oldList.add(gameID);
+      final data = {'wishlist': oldList};
       await db
           .collection('profile_data')
           .doc(currentUser?.uid)
