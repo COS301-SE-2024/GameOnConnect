@@ -18,6 +18,7 @@ class Profile extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
+            key: Key('loadingScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -25,6 +26,7 @@ class Profile extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           return Scaffold(
+            key: Key('errorScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -32,6 +34,7 @@ class Profile extends StatelessWidget {
           );
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
+            key: Key('emptyDataScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -53,6 +56,7 @@ class Profile extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       return IconButton(
+                        key: Key('settings_icon_button'),
                         icon: const Icon(Icons.settings),
                         onPressed: () {
                           //Scaffold.of(context).openEndDrawer();
