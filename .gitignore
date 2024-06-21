@@ -50,6 +50,8 @@ app.*.map.json
 /macos/Flutter/GeneratedPluginRegistrant.swift
 /windows/flutter/generated_plugin_registrant.cc
 /windows/flutter/generated_plugins.cmake
+/linux/flutter/generated_plugins.cmake
+/linux/flutter/generated_plugin_registrant.cc
 
 #ignore this ios file
 /ios/Runner/GoogleService-Info.plist

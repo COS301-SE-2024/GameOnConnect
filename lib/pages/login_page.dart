@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
@@ -19,24 +20,31 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  String errorMessage = "";
+  bool validUser = false;
+
   UserCredential? _userG;
-  UserCredential? _userA;
-
-
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      ).catchError((e){
+          passwordController.clear();
+          emailController.clear();
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    "Email or password incorrect"),
+                backgroundColor: Colors.red.shade300,
+              ));
+       throw(e);
+      });
+
   }
 
-  Future google() async{
+  Future google() async {
     _userG = await AuthService().signInWithGoogle();
-  }
-
-  Future apple() async{
-    _userA  = await AuthService().signInWithApple();
   }
 
   @override
@@ -191,15 +199,39 @@ class _LoginState extends State<Login> {
                     child: GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          signIn();
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) => HomePage(
-                                      title: 'GameOnConnect',
-                                    )),
-                            (Route<dynamic> route) => false,
-                          );
+                            signIn();
+                            FirebaseAuth.instance.userChanges().listen((User? user) {
+                             if(user != null){
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          HomePage(
+                                            title: 'GameOnConnect',
+                                          )),
+                                      (Route<dynamic> route) => false,
+                                );
+                              }
+                            }
+                            );
+
+                          if (validUser) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => HomePage(
+                                        title: 'GameOnConnect',
+                                      )),
+                              (Route<dynamic> route) => false,
+                            );
+                          } else {
+                            passwordController.clear();
+                            emailController.clear();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Email or password incorrect"),
+                              backgroundColor: Colors.red.shade300,
+                            ));
+                          }
                         }
                       },
                       child: Container(
@@ -250,7 +282,7 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap:  ()  {
+                      onTap: () {
                         google();
                         if (_userG != null) {
                           Navigator.pushAndRemoveUntil(
@@ -294,7 +326,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Padding(
+                  /*Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
@@ -339,7 +371,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
                   const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
                   Row(

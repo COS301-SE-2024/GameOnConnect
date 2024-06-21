@@ -3,11 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
+import 'package:gameonconnect/pages/getting_started_page.dart';
+import 'package:gameonconnect/pages/profile_management_page.dart';
+import 'package:gameonconnect/pages/settings.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
+import 'pages/help_page.dart';
 import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
+import 'pages/events_and_gaming_sessions.dart';
+import 'pages/events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +37,9 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.debug,
   );
+  
+  //TO turn off APP check
+  //FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(false);
 
   Future<void> fetchUserTheme(ThemeProvider themeProvider) async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -62,10 +71,8 @@ class MyApp extends StatelessWidget {
   // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
 
-  // This is the root of our application.
   @override
   Widget build(BuildContext context) {
-    //_fetchUserTheme(Provider.of<ThemeProvider>(context));
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,
@@ -90,11 +97,16 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
+        '/currently_playing': (context) => EventsGamingSessions(),
+        '/events': (context) => EventsPage(),
         '/login': (context) => Login(),
         '/game_details': (context) => GameDetailsPage()
+        '/help': (context) => Help(),
+        '/getting_started': (context) => GettingStarted(),
+        '/profile_management' : (context) => ProfileManagement(),
+        '/settings' : (context) => Options()
       },
       initialRoute: '/',
-      //home: Profile()
     );
   }
 }
