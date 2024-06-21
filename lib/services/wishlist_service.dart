@@ -43,7 +43,7 @@ class Wishlist {
     }
   }
 
-  Future<void> removeFromWishlist(int gameID) async {
+  Future<void> removeFromWishlist(String gameID) async {
     try {
       db.collection('profile_data')
           .doc(auth.currentUser?.uid)
