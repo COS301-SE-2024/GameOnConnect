@@ -68,6 +68,50 @@ void main() {
       expect(find.byKey(const Key('key_how_to_filter_games')), findsOneWidget);
     });
 
+    testWidgets('ExpansionTile for Game Information opens and shows content on tap', (WidgetTester tester) async {
+      await tester.pumpWidget(const MaterialApp(home: GettingStarted()));
+
+      Finder expansionTileFinder = find.byKey(const Key('view_game_info'));
+      //tap on the key
+      await tester.ensureVisible(expansionTileFinder);
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_view_specific_game')), findsOneWidget);
+      
+      // now search for the second question
+      expansionTileFinder = find.byKey(const Key('share_game_info'));
+      //make sure the tile is onscreen
+      await tester.ensureVisible(expansionTileFinder);
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_sharing_game_info')), findsOneWidget);
+
+      //3rd question
+      await tester.ensureVisible(expansionTileFinder);
+      expansionTileFinder = find.byKey(const Key('add_game_to_wishlist'));
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_add_to_wishlist')), findsOneWidget);
+
+      //4th question
+      await tester.ensureVisible(expansionTileFinder);
+      expansionTileFinder = find.byKey(const Key('add_to_currently_playing'));
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_navigate_to_currently_playing')), findsOneWidget);
+
+      //5th question
+      await tester.ensureVisible(expansionTileFinder);
+      expansionTileFinder = find.byKey(const Key('remove_from_wishlist'));
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_removing_from_wishlist')), findsOneWidget); 
+    });
 
   });
 }

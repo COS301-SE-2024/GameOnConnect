@@ -929,6 +929,7 @@ class GettingStarted extends StatelessWidget {
                                         child: SizedBox(
                                           width: double.infinity,
                                           child: ExpansionTile(
+                                            key: Key('view_game_info'),
                                             title: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(12, 8, 12, 8),
@@ -993,6 +994,7 @@ class GettingStarted extends StatelessWidget {
                                                                           0,
                                                                           0),
                                                               child: Text(
+                                                                key: Key('key_view_specific_game'),
                                                                 'When you click'
                                                                 ' on a specific '
                                                                 'game in the Game'
@@ -1050,6 +1052,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('share_game_info'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1124,6 +1127,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_sharing_game_info'),
                                                               'Select a Game you'
                                                               ' want to share.'
                                                               'Click on the share'
@@ -1159,6 +1163,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('add_game_to_wishlist'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1229,6 +1234,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_add_to_wishlist'),
                                                               'To add a game to '
                                                               'your wishlist,'
                                                               ' navigate to '
@@ -1268,6 +1274,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('add_to_currently_playing'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1338,6 +1345,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_navigate_to_currently_playing'),
                                                               'To add a game to'
                                                               ' your'
                                                               ' currently '
@@ -1385,6 +1393,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('remove_from_wishlist'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1455,6 +1464,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_removing_from_wishlist'),
                                                               'To remove a game '
                                                               'to your '
                                                               'wishlist, '
