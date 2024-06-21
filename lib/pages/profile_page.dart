@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,13 +16,12 @@ class _ProfileState extends State<Profile> {
   // Create an instance of ProfileService
   final profileService = ProfileService();
 
-  static final customCacheManager = CacheManager(
+  /*static final customCacheManager = CacheManager(
     Config(
       'userProfilePicturesCache',
       stalePeriod: Duration(days: 21),
-      maxNrOfCacheObjects: 100,
     ),
-  );
+  );*/
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +145,7 @@ class _ProfileState extends State<Profile> {
                         height: 170,
                         width: double.infinity,
                         child: CachedNetworkImage(
-                          cacheManager: customCacheManager,
+                          //cacheManager: customCacheManager,
                           imageUrl: profileBanner,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
@@ -170,7 +169,7 @@ class _ProfileState extends State<Profile> {
                             height: 100,
                             width: 100,
                             child: CachedNetworkImage(
-                              cacheManager: customCacheManager,
+                              //cacheManager: customCacheManager,
                               imageUrl: profilePicture,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
@@ -255,7 +254,7 @@ class _ProfileState extends State<Profile> {
                                               height: 45,
                                               width: 45,
                                               child: CachedNetworkImage(
-                                                cacheManager: customCacheManager,
+                                                //cacheManager: customCacheManager,
                                                 imageUrl: friendProfile[
                                                     'profilePicture'],
                                                 fit: BoxFit.cover,
