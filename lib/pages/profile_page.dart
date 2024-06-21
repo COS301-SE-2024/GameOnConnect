@@ -134,8 +134,11 @@ class Profile extends StatelessWidget {
                         child: CachedNetworkImage(
                           imageUrl: profileBanner,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          fadeInDuration: Duration(milliseconds: 0),
+                          fadeOutDuration: Duration(milliseconds: 0),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
@@ -153,8 +156,11 @@ class Profile extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: profilePicture,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              fadeInDuration: Duration(milliseconds: 0),
+                              fadeOutDuration: Duration(milliseconds: 0),
                               errorWidget: (context, url, error) =>
                                   Icon(Icons.error),
                             ),
@@ -199,7 +205,7 @@ class Profile extends StatelessWidget {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
@@ -231,12 +237,18 @@ class Profile extends StatelessWidget {
                                               height: 45,
                                               width: 45,
                                               child: CachedNetworkImage(
-                                                imageUrl: friendProfile['profilePicture'],
+                                                imageUrl: friendProfile[
+                                                    'profilePicture'],
                                                 fit: BoxFit.cover,
                                                 placeholder: (context, url) =>
                                                     Center(
-                                                        child:
-                                                            CircularProgressIndicator()),
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                fadeInDuration:
+                                                    Duration(milliseconds: 0),
+                                                fadeOutDuration:
+                                                    Duration(milliseconds: 0),
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Icon(Icons.error),

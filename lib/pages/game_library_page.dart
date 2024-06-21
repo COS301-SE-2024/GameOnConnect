@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -86,12 +87,23 @@ class _GameLibraryState extends State<GameLibrary> {
           final game = _games[index];
           return Card(
             child: ListTile(
-              leading: Image.network(
-              game.background_image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
+              leading:
+                  // ignore: sized_box_for_whitespace
+                  Container(
+                height: 100,
+                width: 100,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      game.background_image, // Use game's background image URL
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  fadeInDuration: Duration(milliseconds: 0),
+                  fadeOutDuration: Duration(milliseconds: 0),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
               title: Text(game.name),
               subtitle: Text(game.released),
             ),
@@ -110,7 +122,11 @@ class Game {
   final String background_image;
 
   // ignore: non_constant_identifier_names
-  Game({required this.id, required this.name, required this.released, required this.background_image});
+  Game(
+      {required this.id,
+      required this.name,
+      required this.released,
+      required this.background_image});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
