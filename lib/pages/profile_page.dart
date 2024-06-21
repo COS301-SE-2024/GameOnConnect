@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatelessWidget {
   Profile({super.key});
@@ -14,7 +14,6 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: profileService.fetchProfileData(),
-
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
@@ -128,35 +127,44 @@ class Profile extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: <Widget>[
                       //banner
+                      // ignore: sized_box_for_whitespace
                       Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: NetworkImage(profileBanner),
-                          fit: BoxFit.cover,
-                        )),
                         height: 170,
+                        width: double.infinity,
+                        child: CachedNetworkImage(
+                          imageUrl: profileBanner,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              Center(child: CircularProgressIndicator()),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
                       ),
-
                       Positioned(
                         bottom:
                             -50, // Half of the CircleAvatar's radius to align it properly
                         left: 50,
                         //profile picture
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor:
-                              Colors.grey, // Placeholder for profile image
-                          backgroundImage: NetworkImage(profilePicture),
-                          child: profilePicture.isEmpty
-                              ? CircularProgressIndicator()
-                              : null,
+                        child: ClipOval(
+                          // ignore: sized_box_for_whitespace
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: CachedNetworkImage(
+                              imageUrl: profilePicture,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 50),
                   const SizedBox(height: 8),
-                  
 
                   Align(
                     alignment: Alignment.centerLeft,
@@ -203,30 +211,37 @@ class Profile extends StatelessWidget {
                                   var friendProfile = friendsProfiles[index];
                                   if (friendProfile != null) {
                                     return Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 20),
                                       decoration: BoxDecoration(
-                                        color: Colors.white, 
+                                        color: Colors.white,
                                         border: Border.all(
-                                          color: Color.fromARGB(255, 0, 255, 117), 
-                                          width: 1.0, 
+                                          color:
+                                              Color.fromARGB(255, 0, 255, 117),
+                                          width: 1.0,
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage: friendProfile[
-                                                            'profilePicture'] !=
-                                                        null &&
-                                                    friendProfile[
-                                                            'profilePicture'] !=
-                                                        ''
-                                                ? NetworkImage(friendProfile[
-                                                    'profilePicture'])
-                                                : AssetImage(
-                                                        'assets/default_profile.png')
-                                                    as ImageProvider,
+                                          ClipOval(
+                                            // ignore: sized_box_for_whitespace
+                                            child: Container(
+                                              height: 45,
+                                              width: 45,
+                                              child: CachedNetworkImage(
+                                                imageUrl: friendProfile['profilePicture'],
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(width: 10),
                                           Expanded(
@@ -234,7 +249,8 @@ class Profile extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(friendProfile['profileName'] ??
+                                                Text(friendProfile[
+                                                        'profileName'] ??
                                                     'No Name Found'),
                                                 Text(
                                                     friendProfile['username'] ??
@@ -251,7 +267,7 @@ class Profile extends StatelessWidget {
                                           IconButton(
                                             icon: Icon(Icons.more_vert),
                                             onPressed: () {
-                                              //here the remove friend option should be displayed. 
+                                              //here the remove friend option should be displayed.
                                             },
                                           ),
                                         ],
@@ -264,7 +280,8 @@ class Profile extends StatelessWidget {
                                     );
                                   }
                                 },
-                                separatorBuilder: (context, index) => SizedBox(height: 10),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 10),
                               );
                             } else {
                               return Text('No friends found.');
