@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -12,6 +13,14 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
+  static final customCacheManager = CacheManager(
+    Config(
+      'GamePicturesCache',
+      stalePeriod: Duration(days: 5),
+      maxNrOfCacheObjects: 200,
+    ),
+  );
+
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -90,9 +99,10 @@ class _GameLibraryState extends State<GameLibrary> {
               leading:
                   // ignore: sized_box_for_whitespace
                   Container(
-                height: 100,
-                width: 100,
+                height: 80,
+                width: 80,
                 child: CachedNetworkImage(
+                  cacheManager: customCacheManager,
                   imageUrl:
                       game.background_image, // Use game's background image URL
                   fit: BoxFit.cover,
@@ -101,6 +111,7 @@ class _GameLibraryState extends State<GameLibrary> {
                   ),
                   fadeInDuration: Duration(milliseconds: 0),
                   fadeOutDuration: Duration(milliseconds: 0),
+                  maxHeightDiskCache: 80,
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),

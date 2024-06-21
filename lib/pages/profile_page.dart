@@ -1,14 +1,28 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class Profile extends StatelessWidget {
-  Profile({super.key});
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   // Create an instance of ProfileService
   final profileService = ProfileService();
+
+  static final customCacheManager = CacheManager(
+    Config(
+      'userProfilePicturesCache',
+      stalePeriod: Duration(days: 21),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +146,7 @@ class Profile extends StatelessWidget {
                         height: 170,
                         width: double.infinity,
                         child: CachedNetworkImage(
+                          cacheManager: customCacheManager,
                           imageUrl: profileBanner,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
@@ -139,6 +154,7 @@ class Profile extends StatelessWidget {
                           ),
                           fadeInDuration: Duration(milliseconds: 0),
                           fadeOutDuration: Duration(milliseconds: 0),
+                          maxHeightDiskCache: 170,
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                         ),
@@ -154,6 +170,7 @@ class Profile extends StatelessWidget {
                             height: 100,
                             width: 100,
                             child: CachedNetworkImage(
+                              cacheManager: customCacheManager,
                               imageUrl: profilePicture,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
@@ -161,6 +178,7 @@ class Profile extends StatelessWidget {
                               ),
                               fadeInDuration: Duration(milliseconds: 0),
                               fadeOutDuration: Duration(milliseconds: 0),
+                              maxHeightDiskCache: 100,
                               errorWidget: (context, url, error) =>
                                   Icon(Icons.error),
                             ),
@@ -237,6 +255,7 @@ class Profile extends StatelessWidget {
                                               height: 45,
                                               width: 45,
                                               child: CachedNetworkImage(
+                                                cacheManager: customCacheManager,
                                                 imageUrl: friendProfile[
                                                     'profilePicture'],
                                                 fit: BoxFit.cover,
@@ -249,6 +268,7 @@ class Profile extends StatelessWidget {
                                                     Duration(milliseconds: 0),
                                                 fadeOutDuration:
                                                     Duration(milliseconds: 0),
+                                                maxHeightDiskCache: 45,
                                                 errorWidget:
                                                     (context, url, error) =>
                                                         Icon(Icons.error),
