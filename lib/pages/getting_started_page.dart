@@ -545,6 +545,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('how_search_games'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -600,6 +601,7 @@ class GettingStarted extends StatelessWidget {
                                                                   .fromSTEB(12,
                                                                       0, 0, 0),
                                                           child: Text(
+                                                            key: Key('key_navigate_search_games'),
                                                             'Navigate to the'
                                                             ' search tab.'
                                                             ' Select the Games'
@@ -642,6 +644,7 @@ class GettingStarted extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ExpansionTile(
+                                    key: Key('how_sort_games'),
                                     title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
@@ -708,6 +711,7 @@ class GettingStarted extends StatelessWidget {
                                                                 .fromSTEB(12, 0,
                                                                     0, 0),
                                                         child: Text(
+                                                          key: Key('key_navigate_sort_games'),
                                                           'Navigate to the search'
                                                           ' tab. Click on the'
                                                           ' sort button and '
@@ -740,6 +744,7 @@ class GettingStarted extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ExpansionTile(
+                                    key: Key('filter_games'),
                                     title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
@@ -803,6 +808,7 @@ class GettingStarted extends StatelessWidget {
                                                                 .fromSTEB(12, 0,
                                                                     0, 0),
                                                         child: Text(
+                                                          key: Key('key_how_to_filter_games'),
                                                           'Navigate to the search'
                                                           ' tab. Click on the'
                                                           ' filter button and '

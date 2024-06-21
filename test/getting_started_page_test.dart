@@ -41,6 +41,33 @@ void main() {
       expect(find.byKey(const Key('key_friend_requests')), findsOneWidget);
     });
 
+    testWidgets('ExpansionTile for GameLibrary opens and shows content on tap', (WidgetTester tester) async {
+      await tester.pumpWidget(const MaterialApp(home: GettingStarted()));
+
+      Finder expansionTileFinder = find.byKey(const Key('how_search_games'));
+      //tap on the key
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_navigate_search_games')), findsOneWidget);
+      
+      // now search for the second question
+      expansionTileFinder = find.byKey(const Key('how_sort_games'));
+      //make sure the tile is onscreen
+      await tester.ensureVisible(expansionTileFinder);
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_navigate_sort_games')), findsOneWidget);
+
+      //last question
+      expansionTileFinder = find.byKey(const Key('filter_games'));
+      await tester.tap(expansionTileFinder);
+      await tester.pumpAndSettle(); 
+
+      expect(find.byKey(const Key('key_how_to_filter_games')), findsOneWidget);
+    });
+
 
   });
 }
