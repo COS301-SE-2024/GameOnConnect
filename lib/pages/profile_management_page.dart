@@ -33,6 +33,7 @@ class ProfileManagement extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
+            key: const Key('back_button'),
             icon: const Icon(Icons.keyboard_backspace),
             onPressed: () {
               Navigator.pop(context);
@@ -41,6 +42,7 @@ class ProfileManagement extends StatelessWidget {
         ),
         body: const Column(children: [
           ExpansionTile(
+            key: Key('Change_username'),
             title: Text('Change my username'),
             children: <Widget>[
               ListTile(
@@ -53,6 +55,7 @@ class ProfileManagement extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text('Change my first name'),
+            key: Key('Change_first_name'),
             children: [
               ListTile(
                 title: Text('To change your first name, navigate'

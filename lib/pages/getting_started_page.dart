@@ -21,6 +21,7 @@ class GettingStarted extends StatelessWidget {
             },
           ),
           title: const Text(
+            key : Key('getting_started'),
             'Getting Started',
             style: TextStyle(
               fontFamily: 'Inter',
@@ -36,12 +37,14 @@ class GettingStarted extends StatelessWidget {
         body: SafeArea(
             top: true,
             child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('Friends_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -76,14 +79,17 @@ class GettingStarted extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Friends',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Color(0xFF14181B),
-                                      fontSize: 20,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
+                                  Expanded(
+                                    child: Text(
+                                      'Friends',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFF14181B),
+                                        fontSize: 20,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis, //handles possible overflow
                                     ),
                                   ),
                                 ],
@@ -130,13 +136,16 @@ class GettingStarted extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  'How to search for friends',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Color(0xFF57636C),
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
+                                                Expanded(
+                                                  child: Text(
+                                                    'How to search for friends',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      color: Color(0xFF57636C),
+                                                      letterSpacing: 0,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis, //handles possible overflow
                                                   ),
                                                 ),
                                               ],
@@ -234,13 +243,16 @@ class GettingStarted extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'How to add friends',
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
-                                                  color: Color(0xFF57636C),
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
+                                              Expanded(
+                                                child: Text(
+                                                  'How to add friends',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    color: Color(0xFF57636C),
+                                                    letterSpacing: 0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis, //handles possible overflow
                                                 ),
                                               ),
                                             ],
@@ -447,6 +459,7 @@ class GettingStarted extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('game_library_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -821,6 +834,7 @@ class GettingStarted extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('game_information_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
