@@ -15,28 +15,59 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+List<UserProfile> _userProfiles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+  
+  void _updateUserProfileStatus(String userId, String newStatus) {
+    int index = _userProfiles.indexWhere((userProfile) => userProfile.id == userId);
+    if (index != -1) {
+      setState(() {
+        _userProfiles[index].relationshipStatus = newStatus;
+      });
+    }
+  }
+
 
    Stream<List<UserProfile>> searchFriends(String query) {
-  return db
-    .collection('profile_data')
-    .where('username.profile_name', isGreaterThanOrEqualTo: query.toLowerCase())
-    .where('username.profile_name', isLessThan: query.toLowerCase() + '\uf8ff')
-    .snapshots()
-    .asyncMap((snapshot) async {
-      List<UserProfile> userProfiles = [];
-      for (var doc in snapshot.docs) {
-        UserProfile userProfile = await UserProfile.fromDocumentSnapshot(doc);
-        userProfiles.add(userProfile);
-      }
-      return userProfiles;
-    });
-}
+    return db
+      .collection('profile_data')
+      .where('username.profile_name', isGreaterThanOrEqualTo: query.toLowerCase())
+      .where('username.profile_name', isLessThan: query.toLowerCase() + '\uf8ff')
+      .snapshots()
+      .asyncMap((snapshot) async {
+        List<UserProfile> userProfiles = [];
+        for (var doc in snapshot.docs) {
+          UserProfile userProfile = UserProfile.fromDocumentSnapshot(doc, widget.currentUserId);
+          userProfiles.add(userProfile);
+        }
+        setState(() {
+          _userProfiles = userProfiles;
+        });
+        return userProfiles;
+      });
+  }
 
 // follow (friend request) 
-Future<void> sendConnectRequest(String currentUserId, String otherUserId) async {
+Future<void> sendConnectRequest(String currentUserId, String otherUserId ) async {
   // Add otherUserId to the current user's pending array
   final currentUserDoc = FirebaseFirestore.instance.collection('friends').doc(currentUserId);
-  final otherUserDoc = FirebaseFirestore.instance.collection('friends').doc(otherUserId);
+  //final otherUserDoc = FirebaseFirestore.instance.collection('friends').doc(otherUserId);
 
   return FirebaseFirestore.instance.runTransaction((transaction) async {
     // Get the current user's document
@@ -48,11 +79,13 @@ Future<void> sendConnectRequest(String currentUserId, String otherUserId) async 
       currentUserPending.add(otherUserId);
       transaction.update(currentUserDoc, {'pending': currentUserPending});
     }
-   //-- change ui to pending and hour glass 
+   //-- change ui to pending and hour glass (CURRENT)
     // Handle sending a notification or updating other user's UI here if needed
+    
   }).catchError((error) {
     print('Error sending friend request: $error');
   });
+
 }
 
 // Function to accept a friend request from another user
@@ -82,6 +115,7 @@ Future<void> acceptedFriendRequest(String currentUserId, String otherUserId) asy
       otherUserFriends.add(currentUserId);
       transaction.update(otherUserDoc, {'friends': otherUserFriends});
     }
+    //--update ui ..following is true on both , have unfollow info(BOTH)
   }).catchError((error) {
     print('Error accepting friend request: $error');
   });
@@ -111,6 +145,7 @@ Future<void> disconnectUser(String currentUserId, String friendId) async {
       friendUserFriends.remove(currentUserId);
       transaction.update(friendUserDoc, {'friends': friendUserFriends});
     }
+    //--update ui to isfollwing false have follow icon etc (BOTH)
   }).catchError((error) {
     print('Error unfollowing user: $error');
   });
@@ -148,75 +183,62 @@ Future<void> disconnectUser(String currentUserId, String friendId) async {
               stream: searchFriends(_searchController.text),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator()); // Centered CircularProgressIndicator
+                  return Center(child: CircularProgressIndicator());
                 }
-                List<UserProfile> userProfiles = snapshot.data!.where((userProfile) => userProfile.uid != widget.currentUserId).toList(); // Filter out current user
-                return 
-                /*ListView.builder(
+                List<UserProfile> userProfiles = snapshot.data!
+                    .where((userProfile) => userProfile.id != widget.currentUserId)
+                    .toList();
+                return ListView.builder(
                   itemCount: userProfiles.length,
                   itemBuilder: (context, index) {
                     UserProfile userProfile = userProfiles[index];
                     return ListTile(
                       title: Text(userProfile.username),
-                      trailing: IconButton(
-                        icon: userProfile.isFollowing
-                            ? Icon(Icons.person_remove)
-                            : Icon(Icons.person_add),
-                        onPressed: () {
-                          //Implement follow/unfollow functionality
-                        },
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (userProfile.relationshipStatus == "notFollowing")
+                            TextButton(
+                              child: Text('Follow'),
+                              onPressed: () async {
+                                await sendConnectRequest(widget.currentUserId, userProfile.id);
+                                _updateUserProfileStatus(userProfile.id, "pending");
+                              },
+                            ),
+                          if (userProfile.relationshipStatus == "following")
+                            TextButton(
+                              child: Text('Unfollow'),
+                              onPressed: () async {
+                                await disconnectUser(widget.currentUserId, userProfile.id);
+                                _updateUserProfileStatus(userProfile.id, "notFollowing");
+                              },
+                            ),
+                          if (userProfile.relationshipStatus == "pending")
+                            TextButton(
+                              child: Text('Pending'),
+                              onPressed: null, // Optionally disable button or show a different UI
+                            ),
+                          IconButton(
+                            icon: userProfile.relationshipStatus == "following"
+                                ? Icon(Icons.person_remove)
+                                : userProfile.relationshipStatus == "pending"
+                                    ? Icon(Icons.hourglass_empty)
+                                    : Icon(Icons.person_add),
+                            onPressed: () async {
+                              if (userProfile.relationshipStatus == "following") {
+                                await disconnectUser(widget.currentUserId, userProfile.id);
+                                _updateUserProfileStatus(userProfile.id, "notFollowing");
+                              } else if (userProfile.relationshipStatus == "notFollowing") {
+                                await sendConnectRequest(widget.currentUserId, userProfile.id);
+                                _updateUserProfileStatus(userProfile.id, "pending");
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     );
                   },
-                );*/
-                ListView.builder(
-  itemCount: userProfiles.length,
-  itemBuilder: (context, index) {
-    UserProfile userProfile = userProfiles[index];
-    return ListTile(
-      title: Text(userProfile.username),
-      //subtitle: Text(userProfile.isFollowing ? 'Following' : 'Not Following'),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!userProfile.isFollowing) // Show follow button if not following
-            TextButton(
-              child: Text('Follow'),
-              onPressed: () async {
-                //await followUser(widget.currentUserId, userProfile.uid);
-                setState(() {
-                  userProfile.isFollowing = true;
-                });
-              },
-            ),
-          if (userProfile.isFollowing) // Show unfollow button if following
-            TextButton(
-              child: Text('Unfollow'),
-              onPressed: () async {
-                //await unfollowUser(widget.currentUserId, userProfile.uid);
-                setState(() {
-                  userProfile.isFollowing = false;
-                });
-              },
-            ),
-          IconButton(
-            icon: userProfile.isFollowing ? Icon(Icons.person_remove) : Icon(Icons.person_add),
-            onPressed: () async {
-              if (userProfile.isFollowing) {
-                //await unfollowUser(widget.currentUserId, userProfile.uid);
-              } else {
-                //await followUser(widget.currentUserId, userProfile.uid);
-              }
-              setState(() {
-                userProfile.isFollowing = !userProfile.isFollowing;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  },
-);
+                );
               },
             ),
           ),
