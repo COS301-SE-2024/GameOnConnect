@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/pages/search_friends_page.dart';
+import 'package:gameonconnect/pages/friends_page.dart';
 
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
@@ -63,12 +63,15 @@ class _HomePageState extends State<HomePage> {
   onPressed: () {
     // Get the current user's ID
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+     print("current user from home: $currentUserId");
     if (currentUserId != null) {
       // Pass the current user's ID to the search friends page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FriendSearchPage(currentUserId),
+          //builder: (context) => FriendSearchPage(currentUserId),
+         
+          builder: (context) => FriendSearch(currentUserId),
         ),
       );
     } else {
