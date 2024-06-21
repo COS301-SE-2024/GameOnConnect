@@ -12,6 +12,7 @@ class GettingStarted extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(
+              key: Key('back_button'),
               Icons.arrow_back_rounded,
               color: Colors.white,
               size: 30,
@@ -126,6 +127,7 @@ class GettingStarted extends StatelessWidget {
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ExpansionTile(
+                                          key: Key('how_to_friends_List_tile'),
                                           title: const Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
@@ -190,6 +192,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_searching_friends'),
                                                               'Navigate to the '
                                                               'search tab. '
                                                               'Select the Friends'
@@ -234,6 +237,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('how_to_add_friends'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -309,6 +313,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_adding_friends'),
                                                               'To add friends,'
                                                               ' navigate to the'
                                                               ' search page , search'
@@ -347,6 +352,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('Accepting_friends'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -417,6 +423,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_friend_requests'),
                                                               'To accept or reject'
                                                               ' friend requests, '
                                                               'navigate to your'
