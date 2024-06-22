@@ -7,7 +7,7 @@ void main() {
     testWidgets('Profile UI loads', (WidgetTester tester) async {
       //This page needs to be loaded properly before testing the rest of the items
       //At the moment without loading the API data the page is not loading and cannot be tested
-      await tester.pumpWidget(MaterialApp(home: Profile()));
+      await tester.pumpWidget(const MaterialApp(home: Profile()));
       await tester.pumpAndSettle();
       await tester.pump();
       
