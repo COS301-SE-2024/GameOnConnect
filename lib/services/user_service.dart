@@ -67,13 +67,12 @@ class UserService {
         'friend_requests': FieldValue.arrayUnion([currentUserId])
       });
     } catch (e) {
-      throw Exception('Error sending friend request: $e');// [cloud_firestore/permission-denied] Missing or insufficient permissions.
+      throw Exception('Error sending friend request: $e');
     }
   }
-  // ---???when they click on pending it should remove everyone from pending and freind request 
-  Future<void> UndoFriendRequest (String currentUserId,  String targetUserId) async {
+
+  Future<void> undoFriendRequest (String currentUserId,  String targetUserId) async {
     try {
-      // Add each other to friends list
       await _firestore.collection('friends').doc(currentUserId).update({
          'pending': FieldValue.arrayRemove([targetUserId])
         
@@ -105,6 +104,23 @@ class UserService {
       throw Exception('Error accepting friend request: $e');
     }
   }
+
+  //reject friend request
+  Future<void> rejectFriendRequest(String currentUserId, String requesterUserId) async {
+    try {
+      // Add each other to friends list
+      await _firestore.collection('friends').doc(currentUserId).update({
+        'friend_requests': FieldValue.arrayRemove([requesterUserId])
+      });
+
+      await _firestore.collection('friends').doc(requesterUserId).update({
+        'pending': FieldValue.arrayRemove([currentUserId]) 
+        // later might have to send a notification to let the other user they were rejected
+      });
+    } catch (e) {
+      throw Exception('Error rejecting friend request: $e');
+    }
+  } 
 
   // Unfollow user
   Future<void> unfollowUser(String currentUserId, String targetUserId) async {
