@@ -86,57 +86,6 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              /*endDrawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    DrawerHeader(
-
-                        child: Text("Settings")),
-                    ListTile(
-                      leading: Icon(Icons.dashboard_customize,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Customize Profile'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/customize');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.edit,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Edit Profile'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/edit-profile');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.question_mark,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Help centre'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/help');
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.close,
-                        color: Colors.red,),
-                        title: Text("Log out"),
-                        onTap: () {
-                          Navigator.pop(context);// closing the drawer
-                          FirebaseAuth.instance.signOut().then((value) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Login()),
-                            );
-                          });
-                        }
-                    )
-                  ],
-                ),
-              ),*/
               body: Column(
                 children: <Widget>[
                   Stack(

@@ -17,8 +17,8 @@ class Wishlist {
       await db.collection('profile_data').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<String> wishlist = List<String>.from(snapshot.data()!['wishlist']);
-        return wishlist;
+        List<String> currentlyPlaying = List<String>.from(snapshot.data()!['currently_playing']);
+        return currentlyPlaying;
       } else {
         return [];
       }
@@ -36,7 +36,7 @@ class Wishlist {
 
       List<String> oldList =await  getCurrentlyPlaying();
       oldList.add(gameID);
-      final data = {'wishlist': oldList};
+      final data = {'currently_playing': oldList};
       await db
           .collection('profile_data')
           .doc(currentUser?.uid)
@@ -54,7 +54,7 @@ class Wishlist {
       db.collection('profile_data')
           .doc(auth.currentUser?.uid)
           .update({
-        'wishlist': FieldValue.arrayRemove([gameID])
+        'currently_playing': FieldValue.arrayRemove([gameID])
 
       });
     } catch (e) {
