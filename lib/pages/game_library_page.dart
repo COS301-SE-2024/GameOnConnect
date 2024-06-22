@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+//import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -81,43 +81,40 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   Future<void> _getFilters() async {
-    var response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
+    // var response = await http.get(Uri.parse(
+    //     'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
 
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final results = jsonData['results'];
+    // if (response.statusCode == 200) {
+    //   final jsonData = jsonDecode(response.body);
+    //   final results = jsonData['results'];
 
-      // Create a new list to hold the formatted strings
-      List<String> genres = results.map<String>((genre) {
-        String name = genre['name'];
-        String slug = genre['slug'];
-        return 'name:$name,slug:$slug';
-      }).toList();
+    //   // Create a new list to hold the formatted strings
+    //   List<String> genres = results.map<String>((genre) {
+    //     String name = genre['name'];
+    //     String slug = genre['slug'];
+    //     return 'name:$name,slug:$slug';
+    //   }).toList();
 
-      printToConsole(genres as String);
-    } else {
-      throw Exception('Failed to load games');
-    }
+    // } else {
+    //   throw Exception('Failed to load games');
+    // }
 
-    response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/developers?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
+    // response = await http.get(Uri.parse(
+    //     'https://api.rawg.io/api/developers?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
 
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final results = jsonData['results'];
+    // if (response.statusCode == 200) {
+    //   final jsonData = jsonDecode(response.body);
+    //   final results = jsonData['results'];
 
-      // Create a new list to hold the formatted strings
-      List<String> stores = results.map<String>((store) {
-        String name = store['name'];
-        String slug = store['slug'];
-        return 'name:$name,slug:$slug';
-      }).toList();
-
-      printToConsole(stores as String);
-    } else {
-      throw Exception('Failed to load games');
-    }
+    //   // Create a new list to hold the formatted strings
+    //   List<String> stores = results.map<String>((store) {
+    //     String name = store['name'];
+    //     String slug = store['slug'];
+    //     return 'name:$name,slug:$slug';
+    //   }).toList();
+    // } else {
+    //   throw Exception('Failed to load games');
+    // }
   }
 
   Future<void> _runApiRequest(String request) async {
