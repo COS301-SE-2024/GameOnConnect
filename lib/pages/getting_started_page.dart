@@ -12,6 +12,7 @@ class GettingStarted extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(
+              key: Key('back_button'),
               Icons.arrow_back_rounded,
               color: Colors.white,
               size: 30,
@@ -21,6 +22,7 @@ class GettingStarted extends StatelessWidget {
             },
           ),
           title: const Text(
+            key : Key('getting_started'),
             'Getting Started',
             style: TextStyle(
               fontFamily: 'Inter',
@@ -36,12 +38,14 @@ class GettingStarted extends StatelessWidget {
         body: SafeArea(
             top: true,
             child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('Friends_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -76,14 +80,17 @@ class GettingStarted extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    'Friends',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Color(0xFF14181B),
-                                      fontSize: 20,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
+                                  Expanded(
+                                    child: Text(
+                                      'Friends',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFF14181B),
+                                        fontSize: 20,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis, //handles possible overflow
                                     ),
                                   ),
                                 ],
@@ -120,6 +127,7 @@ class GettingStarted extends StatelessWidget {
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ExpansionTile(
+                                          key: Key('how_to_friends_List_tile'),
                                           title: const Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
@@ -130,13 +138,16 @@ class GettingStarted extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  'How to search for friends',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Color(0xFF57636C),
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
+                                                Expanded(
+                                                  child: Text(
+                                                    'How to search for friends',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      color: Color(0xFF57636C),
+                                                      letterSpacing: 0,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis, //handles possible overflow
                                                   ),
                                                 ),
                                               ],
@@ -181,6 +192,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_searching_friends'),
                                                               'Navigate to the '
                                                               'search tab. '
                                                               'Select the Friends'
@@ -225,6 +237,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('how_to_add_friends'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -234,13 +247,16 @@ class GettingStarted extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                'How to add friends',
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
-                                                  color: Color(0xFF57636C),
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
+                                              Expanded(
+                                                child: Text(
+                                                  'How to add friends',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    color: Color(0xFF57636C),
+                                                    letterSpacing: 0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis, //handles possible overflow
                                                 ),
                                               ),
                                             ],
@@ -297,6 +313,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_adding_friends'),
                                                               'To add friends,'
                                                               ' navigate to the'
                                                               ' search page , search'
@@ -335,6 +352,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('Accepting_friends'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -405,6 +423,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_friend_requests'),
                                                               'To accept or reject'
                                                               ' friend requests, '
                                                               'navigate to your'
@@ -447,6 +466,7 @@ class GettingStarted extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('game_library_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -525,6 +545,7 @@ class GettingStarted extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('how_search_games'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -580,6 +601,7 @@ class GettingStarted extends StatelessWidget {
                                                                   .fromSTEB(12,
                                                                       0, 0, 0),
                                                           child: Text(
+                                                            key: Key('key_navigate_search_games'),
                                                             'Navigate to the'
                                                             ' search tab.'
                                                             ' Select the Games'
@@ -622,6 +644,7 @@ class GettingStarted extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ExpansionTile(
+                                    key: Key('how_sort_games'),
                                     title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
@@ -688,6 +711,7 @@ class GettingStarted extends StatelessWidget {
                                                                 .fromSTEB(12, 0,
                                                                     0, 0),
                                                         child: Text(
+                                                          key: Key('key_navigate_sort_games'),
                                                           'Navigate to the search'
                                                           ' tab. Click on the'
                                                           ' sort button and '
@@ -720,6 +744,7 @@ class GettingStarted extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   child: ExpansionTile(
+                                    key: Key('filter_games'),
                                     title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
@@ -783,6 +808,7 @@ class GettingStarted extends StatelessWidget {
                                                                 .fromSTEB(12, 0,
                                                                     0, 0),
                                                         child: Text(
+                                                          key: Key('key_how_to_filter_games'),
                                                           'Navigate to the search'
                                                           ' tab. Click on the'
                                                           ' filter button and '
@@ -821,6 +847,7 @@ class GettingStarted extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
+                      key: Key('game_information_section'),
                       width: 352,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -902,6 +929,7 @@ class GettingStarted extends StatelessWidget {
                                         child: SizedBox(
                                           width: double.infinity,
                                           child: ExpansionTile(
+                                            key: Key('view_game_info'),
                                             title: Padding(
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(12, 8, 12, 8),
@@ -966,6 +994,7 @@ class GettingStarted extends StatelessWidget {
                                                                           0,
                                                                           0),
                                                               child: Text(
+                                                                key: Key('key_view_specific_game'),
                                                                 'When you click'
                                                                 ' on a specific '
                                                                 'game in the Game'
@@ -1023,6 +1052,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('share_game_info'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1097,6 +1127,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_sharing_game_info'),
                                                               'Select a Game you'
                                                               ' want to share.'
                                                               'Click on the share'
@@ -1132,6 +1163,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('add_game_to_wishlist'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1202,6 +1234,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_add_to_wishlist'),
                                                               'To add a game to '
                                                               'your wishlist,'
                                                               ' navigate to '
@@ -1241,6 +1274,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('add_to_currently_playing'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1311,6 +1345,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_navigate_to_currently_playing'),
                                                               'To add a game to'
                                                               ' your'
                                                               ' currently '
@@ -1358,6 +1393,7 @@ class GettingStarted extends StatelessWidget {
                                     SizedBox(
                                       width: double.infinity,
                                       child: ExpansionTile(
+                                        key: Key('remove_from_wishlist'),
                                         title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -1428,6 +1464,7 @@ class GettingStarted extends StatelessWidget {
                                                                         0,
                                                                         0),
                                                             child: Text(
+                                                              key: Key('key_removing_from_wishlist'),
                                                               'To remove a game '
                                                               'to your '
                                                               'wishlist, '

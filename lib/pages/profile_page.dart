@@ -18,6 +18,7 @@ class Profile extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
+            key: Key('loadingScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -25,6 +26,7 @@ class Profile extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           return Scaffold(
+            key: Key('errorScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -32,6 +34,7 @@ class Profile extends StatelessWidget {
           );
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
+            key: Key('emptyDataScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -53,6 +56,7 @@ class Profile extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       return IconButton(
+                        key: Key('settings_icon_button'),
                         icon: const Icon(Icons.settings),
                         onPressed: () {
                           //Scaffold.of(context).openEndDrawer();
@@ -271,119 +275,121 @@ class Profile extends StatelessWidget {
                             }
                           },
                         ),
-                        Column(
-                          children: <Widget>[
-                            const Text('Game Name',
-                                style: TextStyle(fontSize: 24)),
-                            const SizedBox(height: 8),
-                            //game tags
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical:
-                                              7), // Add some padding around the text
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(
-                                            25), // The rounded ends of the rectangle
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              const Text('Game Name',
+                                  style: TextStyle(fontSize: 24)),
+                              const SizedBox(height: 8),
+                              //game tags
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical:
+                                                7), // Add some padding around the text
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(
+                                              25), // The rounded ends of the rectangle
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle, // dot icon
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    8), // Space between the icon and the text
+                                            Text('Action'),
+                                          ],
+                                        ),
                                       ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle, // dot icon
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(
-                                              width:
-                                                  8), // Space between the icon and the text
-                                          Text('Action'),
-                                        ],
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Sept 2022',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 7),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(25),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'MOBA',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle,
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'Sept 2022',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 7),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle,
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'MOBA',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            //game description
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text('Game Description',
-                                    style: TextStyle(fontSize: 18)),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text(
-                                    'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-                                    style: TextStyle(fontSize: 14)),
+                              const SizedBox(height: 30),
+                              //game description
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text('Game Description',
+                                      style: TextStyle(fontSize: 18)),
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                      'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+                                      style: TextStyle(fontSize: 14)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Center(
                             child: Text(
