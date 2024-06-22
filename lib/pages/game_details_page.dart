@@ -1,295 +1,1299 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class GameDetailsPage extends StatelessWidget {
-  final Map<String, dynamic> mockGameData = {
-    'title': 'Fortnite',
-    'developer': 'Epic Games',
-    'ratings': '457.2 M',
-    'score': 96,
-    'attribute': '64%',
-    'about': 'Fortnite is a third-person shooter game where up to 100 players compete to be the last person or team standing. You can compete alone or in a team of up to four. You progress through the game by exploring the island, collecting weapons, building fortifications and engaging in combat with other players.',
-    'platforms': 'Platforms',
-    'publisher': 'Epic Games',
-    'releaseDate': '2017/09/26',
-    'genres': ['Action', 'Battle Royale', 'Shooter'],
-    'systemRequirements': {
-      'minimum': {
-        'OS': 'Windows 10 - 64-Bit',
-        'processor': 'Intel Core i5-6600K / AMD Ryzen 5 3600 3.7GHz',
-        'storage': '100 GB',
-        'graphics': 'NVIDIA GeForce GTX 1050 Ti / AMD Radeon RX 570 4GB',
-      },
-      'recommended': {
-        'OS': 'Windows 10 - 64-Bit',
-        'processor': 'Intel Core i7-8700 / AMD Ryzen 7 2700X 3.7GHz',
-        'storage': '100 GB',
-        'graphics': 'NVIDIA GeForce GTX 1660 / AMD Radeon RX 580 XT',
-      },
-    },
-    'storeLinks': [
-      {'name': 'STEAM', 'icon': Icons.store, 'url': ''},
-      {'name': 'EPIC GAMES', 'icon': Icons.store, 'url': ''},
-      {'name': 'PS STORE', 'icon': Icons.store, 'url': ''},
-    ],
-  };
+class GameDetailsPage extends StatefulWidget {
+  const GameDetailsPage({super.key});
+
+  @override
+  State<GameDetailsPage> createState() => _GameDetailsPageState();
+}
+
+class _GameDetailsPageState extends State<GameDetailsPage> {
+  // late GameDetailsPageModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // _model = createModel(context, () => GameDetailsPageModel());
+  }
+
+  @override
+  void dispose() {
+    // _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Specific Game - Dark'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Image.network(
-                  'https://cdn2.unrealengine.com/fortnite-chapter-2-keyart-1920x1080-1920x1080-dbb72ac1f733.jpg',
-                  height: 200,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                mockGameData['title'],
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                mockGameData['developer'],
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildStatCard('RATINGS', mockGameData['ratings']),
-                  _buildStatCard('SCORE', mockGameData['score'].toString()),
-                  _buildStatCard('ATTRIBUTE', mockGameData['attribute']),
-                ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                'About',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Image.network(
-                'https://cdn2.unrealengine.com/fortnite-chapter-2-keyart-1920x1080-1920x1080-dbb72ac1f733.jpg',
-                height: 100,
-              ),
-              SizedBox(height: 8),
-              Text(
-                mockGameData['about'],
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Platforms',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.desktop_windows, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Icon(Icons.phone_iphone, color: Colors.grey),
-                  SizedBox(width: 8),
-                  Icon(Icons.videogame_asset, color: Colors.grey),
-                ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Developer',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                mockGameData['developer'],
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Publisher',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                mockGameData['publisher'],
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Release date',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                mockGameData['releaseDate'],
-                style: TextStyle(color: Colors.grey),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Genres',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                children: mockGameData['genres']
-                    .map<Widget>((genre) => Chip(
-                          label: Text(genre),
-                          backgroundColor: Colors.grey[800],
-                          labelStyle: TextStyle(color: Colors.white),
-                        ))
-                    .toList(),
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+    return GestureDetector(
+      // onTap: () => _model.unfocusNode.canRequestFocus
+      //     ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+      //     : FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: 230,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: Image.network(
+                            'https://images.unsplash.com/photo-1598904326301-4c9cb279a3f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGNvZmZlZSUyMGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60',
+                          ).image,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 2,
+                            color: Color(0x17202529),
+                            offset: Offset(
+                              0.0,
+                              1,
+                            ),
+                          )
+                        ],
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(0),
+                          topLeft: Radius.circular(0),
+                          topRight: Radius.circular(0),
+                        ),
                       ),
-                      child: Text('Add to wishlist'),
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(16, 50, 16, 0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.secondary.withOpacity(0.1), // Adapt to your theme
+                                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      color: Theme.of(context).colorScheme.onSecondary, // Adapt to your theme
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context); // Use Navigator.pop instead of context.pop
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Text('Add to currently playing'),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                'System requirements',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                    Align(
+                      alignment: const Alignment(-1, -1),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Align(
+                            alignment: const Alignment(-1, 0),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+                              child: Text(
+                                'Fortnite',
+                                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                      fontFamily: 'Inter',
+                                      color: Colors.black,
+                                      fontSize: 32,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          const Spacer(), // To push the icons to the rightmost side
+                          const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 5, 5), // Adjust top, left, right padding as needed
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  color: Color(0xFF00DF67),
+                                  size: 24,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 20, 20, 5), // Adjust top, left, right padding as needed
+                                child: Icon(
+                                  Icons.share_outlined,
+                                  color: Color(0xFF00DF67),
+                                  size: 24,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                      child: Text(
+                        'Epic Games',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontFamily: 'Inter',
+                              color: Colors.black,
+                              fontSize: 12,
+                              letterSpacing: 0,
+                            ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
+                          child: Container(
+                            width: 110,
+                            height: 75,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              shape: BoxShape.rectangle,
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                               Align(
+                                  alignment: Alignment(0, -1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      'RATINGS',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFF00DF67), // Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 14,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500, // Adjust font weight if needed
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(4),
+                                    child: Text(
+                                      '457.2M',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 16,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.bold,
+                                      )
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
+                          child: Container(
+                            width: 110,
+                            height: 75,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(0, -1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      'SCORE',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFF00DF67),// Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 14,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(6),
+                                    child: Text(
+                                      '96',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Colors.black,// Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 16,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
+                          child: Container(
+                            width: 110,
+                            height: 75,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
+                              ),
+                              border: Border.all(
+                                color: Colors.black,
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Align(
+                                  alignment: AlignmentDirectional(0, -1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Text(
+                                      'ATTRIBUTE',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Color(0xFF00DF67), // Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 14,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(6),
+                                    child: Text(
+                                      '64%',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Colors.black,// Direct color value or use Theme.of(context).colorScheme.primary
+                                        fontSize: 16,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+                    ),
+                    const Align(
+                      alignment: Alignment(-1, -1),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 20, 0, 10),
+                        child: Text(
+                          'About',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                            fontSize: 20,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(0, -1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          child: Image.network(
+                            'https://picsum.photos/seed/239/600',
+                            width: 464,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/194/600',
+                                    width: 80,
+                                    height: 55,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/170/600',
+                                    width: 80,
+                                    height: 55,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/185/600',
+                                    width: 80,
+                                    height: 55,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/137/600',
+                                    width: 80,
+                                    height: 55,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    'https://picsum.photos/seed/962/600',
+                                    width: 80,
+                                    height: 55,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        'Fortnite is a third-person shooter game where up to 100 players compete to be the last person or team standing. You can compete alone or join a team of up to four. You progress through the game by exploring the island, collecting weapons, building fortifications and engaging in combat with other players.',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                          letterSpacing: 0,
+                          fontSize: 16, // Adjust font size as needed
+                          fontWeight: FontWeight.normal, // Adjust font weight as needed
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    const Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text(
+                            'Platforms',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Colors.black,
+                              letterSpacing: 0,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        Spacer(), // This spacer will push the icons to the right edge
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
+                              child: Icon(
+                                Icons.window_sharp,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
+                              child: Icon(
+                                Icons.videogame_asset,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(4, 2, 20, 2),
+                              child: Icon(
+                                Icons.games_rounded,
+                                color: Colors.black,
+                                size: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                            child: Text(
+                              'Developer',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(215, 0, 20, 0),
+                            child: Text(
+                              'Epic Games',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                            child: Text(
+                              'Publisher',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(223, 0, 20, 0),
+                            child: Text(
+                              'Epic Games',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(6, 0, 0, 0),
+                            child: Text(
+                              'Release Date',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(202, 0, 20, 0),
+                            child: Text(
+                              '2017/02/34',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                            child: Text(
+                              'Genres',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                fontSize: 14,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(120, 0, 4, 0),
+                            child: Text(
+                              'Action',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                            child: Text(
+                              'Battle Royale',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(4, 0, 20, 0),
+                            child: Text(
+                              'Shooter',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                letterSpacing: 0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width - 20, // Subtracting 20 for padding on both sides
+                        child: const Divider(
+                          thickness: 1,
+                          indent: 0,
+                          color: Color(0xCC929292),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0), // Outer padding
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 5), // Space between buttons
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  print('Add to wishlist pressed ...');
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF00DF67)), // Replace with your desired color
+                                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                    const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                  ),
+                                  elevation: WidgetStateProperty.all<double>(3),
+                                  shape: WidgetStateProperty.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Add to wishlist',
+                                  style: TextStyle(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.black, // Replace with your desired text color
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5), // Space between buttons
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  print('Add to currently playing pressed ...');
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(Colors.white), // Replace with your desired button background color
+                                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                    const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                  ),
+                                  elevation: WidgetStateProperty.all<double>(3),
+                                  shape: WidgetStateProperty.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: const BorderSide(
+                                        color: Color(0xFF00DF67), // Replace with your desired border color
+                                        width: 1,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Add to currently playing',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter', // Replace with your desired font family if needed
+                                    color: Colors.black, // Replace with your desired text color
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+                      child: Text(
+                        'System Requirements',
+                        style: TextStyle(
+                          fontFamily: 'Inter', // Replace with your desired font family if needed
+                          color: Colors.black, // Replace with your desired text color
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ),
+                    
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0), // Outer padding
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(right: 5), // Space between sections
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 2, 2, 6),
+                                    child: Text(
+                                      'Minimum',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                    child: Text(
+                                      'Windows OS',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'Windows 10 - 64-Bit',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Processor',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'Intel Core i5-6600K @ 3.50GHz\nAMD Ryzen 5 1600 @ 3.7GHz',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Storage',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      '100 GB',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Memory',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      '8 GB',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Graphics',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'NVIDIA GeForce GTX 1050 Ti 4GB\nAMD Radeon RX 570 4GB',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 280,
+                            child: VerticalDivider(
+                              thickness: 1,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 5), // Space between sections
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 2, 2, 6),
+                                    child: Text(
+                                      'Recommended',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                    child: Text(
+                                      'Windows OS',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'Windows 10 - 64-Bit',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Processor',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'Intel Core i7-6700 @ 3.40GHz\nAMD Ryzen 7 2700X @ 3.7GHz',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Storage',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      '100 GB',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Memory',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      '12 GB',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 6, 2, 2),
+                                    child: Text(
+                                      'Graphics',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                                    child: Text(
+                                      'NVIDIA GeForce GTX 1660\nAMD RX 5600 XT',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter', // Replace with your desired font family if needed
+                                        color: Colors.black, // Replace with your desired text color
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
+                      child: Text(
+                        'Stores selling the game',
+                        style: TextStyle(
+                                    fontFamily: 'Inter', // Replace with your desired font family if needed
+                                    color: Colors.black, // Replace with your desired text color
+                                    fontSize: 20,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 5, 6),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      76, 4, 0, 0),
+                                  child: Icon(
+                                    Icons.open_in_new,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      4, 8, 4, 4),
+                                  child: Icon(
+                                    Icons.videogame_asset,
+                                    color: Color(0xFF00DF67),
+                                    size: 36,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Text(
+                                    'STEAM',
+                                    style: TextStyle(
+                                    fontFamily: 'Readex Pro', // Replace with your desired font family
+                                    color: Colors.white, // Replace with your desired text color
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                  ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 6, 5, 6),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.black, // Replace with your desired color
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 4),
+                                  child: Icon(
+                                    Icons.open_in_new,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  child: Icon(
+                                    Icons.videogame_asset,
+                                    color: Color(0xFF00DF67),
+                                    size: 36,
+                                  ),
+                                ),
+                                Text(
+                                  'EPIC GAMES',
+                                  style: TextStyle(
+                                    fontFamily: 'Readex Pro', // Replace with your desired font family
+                                    color: Colors.white, // Replace with your desired text color
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(5, 6, 5, 6),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                            ),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      76, 4, 0, 0),
+                                  child: Icon(
+                                    Icons.open_in_new,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      4, 8, 4, 8),
+                                  child: Icon(
+                                    Icons.videogame_asset,
+                                    color: Color(0xFF00DF67),
+                                    size: 36,
+                                  ),
+                                ),
+                                Text(
+                                  'PS STORE',
+                                  style: TextStyle(
+                                    fontFamily: 'Readex Pro', // Replace with your desired font family
+                                    color: Colors.white, // Replace with your desired text color
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildSystemRequirementsCard('Minimum', mockGameData['systemRequirements']['minimum']),
-                  _buildSystemRequirementsCard('Recommended', mockGameData['systemRequirements']['recommended']),
-                ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Stores selling the game',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: mockGameData['storeLinks']
-                    .map<Widget>((store) => _buildStoreLink(store))
-                    .toList(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildStatCard(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          value,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSystemRequirementsCard(String type, Map<String, String> requirements) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: requirements.entries
-            .map((entry) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.0),
-                  child: Text(
-                    '${entry.key}: ${entry.value}',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ))
-            .toList(),
-      ),
-    );
-  }
-
-  Widget _buildStoreLink(Map<String, dynamic> store) {
-    return Column(
-      children: [
-        Icon(store['icon'], color: Colors.green, size: 40),
-        SizedBox(height: 4),
-        Text(
-          store['name'],
-          style: TextStyle(color: Colors.grey),
-        ),
-      ],
     );
   }
 }
