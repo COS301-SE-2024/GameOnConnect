@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:gameonconnect/pages/game_details_page.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -34,6 +35,16 @@ class _GameLibraryState extends State<GameLibrary> {
     _scrollController.dispose();
     super.dispose();
   }
+
+  void _navigateToGameDetails(Game game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameDetailsPage(gameId: game.id),
+      ),
+    );
+  }
+
 
   Future<void> _loadGames(int page) async {
     if (_isLoading) return;
