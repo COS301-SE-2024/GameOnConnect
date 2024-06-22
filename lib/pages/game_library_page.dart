@@ -1,7 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -11,6 +13,13 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
+  /*static final customCacheManager = CacheManager(
+    Config(
+      'GamePicturesCache',
+      stalePeriod: Duration(days: 5),
+    ),
+  );*/
+
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -86,12 +95,33 @@ class _GameLibraryState extends State<GameLibrary> {
           final game = _games[index];
           return Card(
             child: ListTile(
-              leading: Image.network(
-              game.background_image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
+              leading:
+                  // ignore: sized_box_for_whitespace
+                  Container(
+                height: 80,
+                width: 80,
+                child: CachedNetworkImage(
+                  //cacheManager: customCacheManager,
+                  imageUrl:
+                      game.background_image, // Use game's background image URL
+                  fit: BoxFit.cover,
+                  imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  fadeInDuration: Duration(milliseconds: 0),
+                  fadeOutDuration: Duration(milliseconds: 0),
+                  maxHeightDiskCache: 80,
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
               title: Text(game.name),
               subtitle: Text(game.released),
             ),
@@ -106,11 +136,13 @@ class Game {
   final int id;
   final String name;
   final String released;
-  // ignore: non_constant_identifier_names
   final String background_image;
 
-  // ignore: non_constant_identifier_names
-  Game({required this.id, required this.name, required this.released, required this.background_image});
+  Game(
+      {required this.id,
+      required this.name,
+      required this.released,
+      required this.background_image});
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game(
