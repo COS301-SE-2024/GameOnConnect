@@ -60,6 +60,15 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
+  void _undoFriendRequest(String targetUserId) async {
+    try {
+      await _userService.UndoFriendRequest(widget.currentUserId, targetUserId);
+      _fetchData();
+    } catch (e) {
+      print('Error undoing friend request: $e');
+    }
+  }
+
   void _acceptFriendRequest(String requesterUserId) async {
     try {
       await _userService.acceptFriendRequest(widget.currentUserId, requesterUserId);
@@ -174,7 +183,7 @@ class _FriendSearchState extends State<FriendSearch> {
                           
                           : isPending
                               ? ElevatedButton.icon(
-                                  onPressed: null,
+                                  onPressed: () =>_undoFriendRequest(user.uid),
                                   icon: Icon(
                                     Icons.hourglass_bottom,
                                     color: Colors.white, 
