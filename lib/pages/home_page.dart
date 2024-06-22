@@ -123,6 +123,14 @@ class _DevelopmentButtons extends StatelessWidget {
             textColor: Color.fromARGB(255, 24, 24, 24),
             child: Text('Feed Page'),
           ),
+          MaterialButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/game_details');
+            },
+            color: const Color.fromARGB(255, 128, 216, 50),
+            textColor: Color.fromARGB(255, 24, 24, 24),
+            child: Text('Feed Page'),
+          ),
         ],
       ),
     );
