@@ -147,6 +147,14 @@ class _ProfileState extends State<Profile> {
                         child: CachedNetworkImage(
                           //cacheManager: customCacheManager,
                           imageUrl: profileBanner,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
                             child: CircularProgressIndicator(),
@@ -171,6 +179,15 @@ class _ProfileState extends State<Profile> {
                             child: CachedNetworkImage(
                               //cacheManager: customCacheManager,
                               imageUrl: profilePicture,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator(),
@@ -257,6 +274,16 @@ class _ProfileState extends State<Profile> {
                                                 //cacheManager: customCacheManager,
                                                 imageUrl: friendProfile[
                                                     'profilePicture'],
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
                                                 fit: BoxFit.cover,
                                                 placeholder: (context, url) =>
                                                     Center(

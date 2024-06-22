@@ -105,6 +105,14 @@ class _GameLibraryState extends State<GameLibrary> {
                   imageUrl:
                       game.background_image, // Use game's background image URL
                   fit: BoxFit.cover,
+                  imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                   placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(),
                   ),
