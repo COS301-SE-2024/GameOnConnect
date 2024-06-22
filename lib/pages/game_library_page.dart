@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
 import 'package:expandable/expandable.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -16,6 +18,13 @@ class GameLibrary extends StatefulWidget {
 
 class _GameLibraryState extends State<GameLibrary> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  /*static final customCacheManager = CacheManager(
+    Config(
+      'GamePicturesCache',
+      stalePeriod: Duration(days: 5),
+    ),
+  );*/
+
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
