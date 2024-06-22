@@ -174,158 +174,7 @@ class _GameLibraryState extends State<GameLibrary> {
         child: Scaffold(
             key: _scaffoldKey,
             appBar: appBar(context),
-            endDrawer: Drawer(
-              elevation: 0,
-              child: ListView(
-                padding: EdgeInsets.zero,
-                scrollDirection: Axis.vertical,
-                children: [
-                  Container(
-                    width: 100,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Color(0xFF2A2A2A),
-                        width: 0.5,
-                      ),
-                    ),
-                    child: Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Text(
-                        'Filter',
-                      ),
-                    ),
-                  ),
-                  ExpandableNotifier(
-                      child: ExpandablePanel(
-                          header: Text('Platforms'),
-                          collapsed: SizedBox(width: 100, height: 0),
-                          expanded: ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              children: [
-                                Theme(
-                                  data: ThemeData(
-                                    checkboxTheme: CheckboxThemeData(
-                                      visualDensity: VisualDensity.compact,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(25),
-                                      ),
-                                    ),
-                                    unselectedWidgetColor: Theme.of(context)
-                                        .colorScheme
-                                        .secondary,
-                                  ),
-                                  child: CheckboxListTile(
-                                    value: _pcSelected,
-                                    onChanged: (newValue) async {
-                                      setState(
-                                          () => _pcSelected = newValue!);
-                                    },
-                                    title: Text('PC'),
-                                    tileColor: Colors.white,
-                                    activeColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary,
-                                    checkColor: Colors.white,
-                                    dense: true,
-                                    controlAffinity:
-                                        ListTileControlAffinity.trailing,
-                                  ),
-                                )
-                              ]))),
-                  ListTile(
-                    title: Text(
-                      'Platforms',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Developers',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Publishers',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Genres',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Stores',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Tags',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Metacritic',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  ListTile(
-                    title: Text(
-                      'Release',
-                    ),
-                    trailing: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 20,
-                    ),
-                    dense: false,
-                  ),
-                  FilledButton(onPressed: () async {
-                    await _filterGames();
-                  },
-                  child: Text("Filter"))
-                ],
-              ),
-            ),
+            endDrawer: filterDrawer(context),
             body: Column(
               children: [
                 Padding(
@@ -360,6 +209,161 @@ class _GameLibraryState extends State<GameLibrary> {
                     child: TabBarView(children: [gameList(), friendList()]))
               ],
             )));
+  }
+
+  Drawer filterDrawer(BuildContext context) {
+    return Drawer(
+            elevation: 0,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.vertical,
+              children: [
+                Container(
+                  width: 100,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Color(0xFF2A2A2A),
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: Text(
+                      'Filter',
+                    ),
+                  ),
+                ),
+                ExpandableNotifier(
+                    child: ExpandablePanel(
+                        header: Text('Platforms'),
+                        collapsed: SizedBox(width: 100, height: 0),
+                        expanded: ListView(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            children: [
+                              Theme(
+                                data: ThemeData(
+                                  checkboxTheme: CheckboxThemeData(
+                                    visualDensity: VisualDensity.compact,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                  unselectedWidgetColor: Theme.of(context)
+                                      .colorScheme
+                                      .secondary,
+                                ),
+                                child: CheckboxListTile(
+                                  value: _pcSelected,
+                                  onChanged: (newValue) async {
+                                    setState(
+                                        () => _pcSelected = newValue!);
+                                  },
+                                  title: Text('PC'),
+                                  tileColor: Colors.white,
+                                  activeColor: Theme.of(context)
+                                      .colorScheme
+                                      .primary,
+                                  checkColor: Colors.white,
+                                  dense: true,
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                ),
+                              )
+                            ]))),
+                ListTile(
+                  title: Text(
+                    'Platforms',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Developers',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Publishers',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Genres',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Stores',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Tags',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Metacritic',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                ListTile(
+                  title: Text(
+                    'Release',
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                  ),
+                  dense: false,
+                ),
+                FilledButton(onPressed: () async {
+                  await _filterGames();
+                },
+                child: Text("Filter"))
+              ],
+            ),
+          );
   }
 
   Padding sortFilter(BuildContext context) {
