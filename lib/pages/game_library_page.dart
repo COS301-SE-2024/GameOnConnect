@@ -1,3 +1,4 @@
+
 // ignore_for_file: prefer_const_constructors
 //import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
+import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -14,6 +20,13 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
+  /*static final customCacheManager = CacheManager(
+    Config(
+      'GamePicturesCache',
+      stalePeriod: Duration(days: 5),
+    ),
+  );*/
+
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -128,129 +141,81 @@ Future<void> _loadUsers() async {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: appBar(context),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 15, right: 15),
-                      labelText: 'Search',
-                      suffixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const TextField(
+          decoration: InputDecoration(
+            labelText: 'Search',
+            border: OutlineInputBorder(),
+          ),
+        ),
+      ),
+      body: ListView.builder(
+        controller: _scrollController,
+        itemCount: _games.length + 1,
+        itemBuilder: (context, index) {
+          if (index == _games.length) {
+            return _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : SizedBox.shrink();
+          }
+          final game = _games[index];
+          return Card(
+            child: ListTile(
+              leading:
+                  // ignore: sized_box_for_whitespace
+                  Container(
+                height: 80,
+                width: 80,
+                child: CachedNetworkImage(
+                  //cacheManager: customCacheManager,
+                  imageUrl:
+                      game.background_image, // Use game's background image URL
+                  fit: BoxFit.cover,
+                  imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
                   ),
+                  fadeInDuration: Duration(milliseconds: 0),
+                  fadeOutDuration: Duration(milliseconds: 0),
+                  maxHeightDiskCache: 80,
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
-                TabBar.secondary(tabs: const [
-                  Tab(text: 'GAMES'),
-                  Tab(text: 'FRIENDS'),
-                ]),
-                Expanded(
-                    child: TabBarView(children: [gameList(), friendList()]))
-              ],
-            )));
-  }
-
-  AppBar appBar(BuildContext context) {
-    return AppBar(
-      title: Text("Search",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-      actions: [
-        Icon(
-          Icons.account_circle_outlined,
-          color: Theme.of(context).colorScheme.primary,
-          size: 32,
-        )
-      ],
+              ),
+              title: Text(game.name),
+              subtitle: Text(game.released),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  ListView gameList() {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: _games.length + 1,
-      itemBuilder: (context, index) {
-        if (index == _games.length) {
-          return _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : SizedBox.shrink();
-        }
-        final game = _games[index];
-        return Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(children: [
-            SizedBox(
-              height: 120,
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      game.background_image,
-                      width: 134,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(game.name,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            overflow: TextOverflow.ellipsis,),
-                        Row(children: game.getPlatformIcons(context)),
-                        Text("Released: ${game.released}"),
-                        Row(
-                          children: [
-                            Text("Genres:"),
-                            SizedBox(width: 10),
-                            Row(
-                              children: game.getStyledGenres(context),
-                            )
-                          ],
-                        ),
-                        Text("Reviews: ${game.reviewsCount}")
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.only(left: 5, top: 3, right: 5, bottom: 3),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        child: Text("${game.score}",
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 12)),
-                      ),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.secondary),
-                      SizedBox(height: 10,)
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ]),
-        );
-      },
+class Game {
+  final int id;
+  final String name;
+  final String released;
+  final String background_image;
+
+  Game(
+      {required this.id,
+      required this.name,
+      required this.released,
+      required this.background_image});
+
+  factory Game.fromJson(Map<String, dynamic> json) {
+    return Game(
+      id: json['id'],
+      name: json['name'],
+      released: json['released'],
+      background_image: json['background_image'],
     );
   }
 
