@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GameDetails {
   final int id;
   final String name;
-  final String developer;
+  final List developer;
   final String description;
   final String released;
   final List platforms;
@@ -13,7 +13,7 @@ class GameDetails {
   final int reviewsCount;
   final int playtime;
   final List screenshots;
-  final String publisher;
+  final List publisher;
 
   GameDetails({
     required this.id,
@@ -35,7 +35,7 @@ class GameDetails {
     return GameDetails(
       id: json['id'],
       name: json['name'],
-      developer: json['developer'] ?? "No developer available.",
+      developer: json['developers'] ?? [],
       description: json['description'] ?? "No description available.",
       released: json['released'] ?? "Unknown",
       platforms: json['platforms'],
@@ -45,7 +45,7 @@ class GameDetails {
       reviewsCount: json['reviews_count'] ?? 0,
       playtime: json['playtime'] ?? 0,
       screenshots: json['screenshots'] ?? [],
-      publisher: json['publisher'] ?? "No publisher available.",
+      publisher: json['publishers'] ?? [],
     );
   }
 }
