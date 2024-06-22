@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/user_service.dart';
 import '../models/user_model.dart';
 import '../models/friend_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FriendSearch extends StatefulWidget {
   final String currentUserId;
@@ -146,9 +147,17 @@ class _FriendSearchState extends State<FriendSearch> {
                     bool isPending = currentUserFriendData?.pending.contains(user.uid) ?? false;
 
                     return ListTile(
-                      /*leading: CircleAvatar(
-                        backgroundImage: NetworkImage(user.profilePicture),
-                      ),*/
+                      leading:  CircleAvatar(
+                        child: CachedNetworkImage( 
+                          imageUrl: user.profilePicture, 
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>  CircularProgressIndicator(), 
+                          errorWidget: (context, url, error) => Icon(Icons.error), 
+                        ),
+                        //backgroundImage: NetworkImage(user.profilePicture),https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg
+                        //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
+
+                      ),
                       title: Text(user.profileName),
                       trailing: isFriend
                           ? ElevatedButton.icon(

@@ -21,9 +21,12 @@ class UserService {
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
-          users.add(User.fromMap(data));
+          User currentuser =User.fromMap(data);
+          //await currentuser.setpicture(data); // Await the result
+          users.add(currentuser);
+          //users.add(User.fromMap(data));
         } else {
-          print('Skipping document ${doc.id} due to missing required fields \n');
+          //print('Skipping document ${doc.id} due to missing required fields \n');
           //print('user document: $data \n');
             //print("---------------------------- \n");
         }
@@ -67,6 +70,7 @@ class UserService {
       throw Exception('Error sending friend request: $e');// [cloud_firestore/permission-denied] Missing or insufficient permissions.
     }
   }
+  // ---???when they click on pending it should remove everyone from pending and freind request 
 
   // Accept friend request
   Future<void> acceptFriendRequest(String currentUserId, String requesterUserId) async {
