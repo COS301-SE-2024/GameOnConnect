@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
 import 'package:expandable/expandable.dart';
-//import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class GameLibrary extends StatefulWidget {
@@ -213,25 +213,21 @@ class _GameLibraryState extends State<GameLibrary> {
                                       materialTapTargetSize:
                                           MaterialTapTargetSize.shrinkWrap,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(25),
+                                        borderRadius: BorderRadius.circular(25),
                                       ),
                                     ),
-                                    unselectedWidgetColor: Theme.of(context)
-                                        .colorScheme
-                                        .secondary,
+                                    unselectedWidgetColor:
+                                        Theme.of(context).colorScheme.secondary,
                                   ),
                                   child: CheckboxListTile(
                                     value: _pcSelected,
                                     onChanged: (newValue) async {
-                                      setState(
-                                          () => _pcSelected = newValue!);
+                                      setState(() => _pcSelected = newValue!);
                                     },
                                     title: Text('PC'),
                                     tileColor: Colors.white,
-                                    activeColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary,
+                                    activeColor:
+                                        Theme.of(context).colorScheme.primary,
                                     checkColor: Colors.white,
                                     dense: true,
                                     controlAffinity:
@@ -319,10 +315,11 @@ class _GameLibraryState extends State<GameLibrary> {
                     ),
                     dense: false,
                   ),
-                  FilledButton(onPressed: () async {
-                    await _filterGames();
-                  },
-                  child: Text("Filter"))
+                  FilledButton(
+                      onPressed: () async {
+                        await _filterGames();
+                      },
+                      child: Text("Filter"))
                 ],
               ),
             ),
@@ -547,13 +544,30 @@ class _GameLibraryState extends State<GameLibrary> {
               height: 120,
               child: Row(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      game.backgroundImage,
-                      width: 134,
-                      height: 120,
+                  // ignore: sized_box_for_whitespace
+                  Container(
+                    height: 120,
+                    width: 134,
+                    child: CachedNetworkImage(
+                      //cacheManager: customCacheManager,
+                      imageUrl: game.backgroundImage,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      fadeInDuration: Duration(milliseconds: 0),
+                      fadeOutDuration: Duration(milliseconds: 0),
+                      maxHeightDiskCache: 120,
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   ),
                   SizedBox(width: 15),
