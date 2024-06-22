@@ -18,8 +18,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
+import 'pages/connection_requests.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +102,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
-        '/settings' : (context) => Options()
+        '/settings' : (context) => Options(),
+        '/requests' : (context) => Requests()
       },
       initialRoute: '/',
     );

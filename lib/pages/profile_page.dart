@@ -256,7 +256,7 @@ class _ProfileState extends State<Profile> {
                                   ElevatedButton.icon(
                                     icon: Icon(Icons.arrow_forward),
                                     onPressed: () {
-                                      print("hello");
+                                      Navigator.pushNamed(context, '/requests');
                                     },
                                     label: Text(
                                       "Requests",
