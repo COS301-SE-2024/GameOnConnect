@@ -71,6 +71,22 @@ class UserService {
     }
   }
   // ---???when they click on pending it should remove everyone from pending and freind request 
+  Future<void> UndoFriendRequest (String currentUserId,  String targetUserId) async {
+    try {
+      // Add each other to friends list
+      await _firestore.collection('friends').doc(currentUserId).update({
+         'pending': FieldValue.arrayRemove([targetUserId])
+        
+      });
+
+      await _firestore.collection('friends').doc(targetUserId).update({
+       'friend_requests': FieldValue.arrayRemove([currentUserId])
+      });
+    } catch (e) {
+      throw Exception('Error undoing friend request: $e');
+    }
+  }
+
 
   // Accept friend request
   Future<void> acceptFriendRequest(String currentUserId, String requesterUserId) async {

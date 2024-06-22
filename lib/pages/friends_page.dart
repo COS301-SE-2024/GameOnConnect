@@ -156,7 +156,7 @@ class _FriendSearchState extends State<FriendSearch> {
                     bool isPending = currentUserFriendData?.pending.contains(user.uid) ?? false;
 
                     return ListTile(
-                      leading:  CircleAvatar(
+                      /*leading:  CircleAvatar(
                         child: CachedNetworkImage( 
                           imageUrl: user.profilePicture, 
                           fit: BoxFit.cover,
@@ -166,7 +166,7 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage(user.profilePicture),https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
-                      ),
+                      ),*/
                       title: Text(user.profileName),
                       trailing: isFriend
                           ? ElevatedButton.icon(
