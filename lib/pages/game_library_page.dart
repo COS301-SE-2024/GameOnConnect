@@ -95,20 +95,24 @@ class _GameLibraryState extends State<GameLibrary> {
                 : SizedBox.shrink();
           }
           final game = _games[index];
-          return Card(
-            child: ListTile(
-              leading: Image.network(
-              game.background_image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-              title: Text(game.name),
-              subtitle: Text(game.released),
+          return InkWell(
+            onTap: () => _navigateToGameDetails(game),
+            child: Card(
+              child: ListTile(
+                leading: Image.network(
+                  game.background_image,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+                title: Text(game.name),
+                subtitle: Text(game.released),
+              ),
             ),
           );
         },
       ),
+
     );
   }
 }
