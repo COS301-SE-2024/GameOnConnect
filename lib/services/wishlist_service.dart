@@ -4,17 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class Wishlist {
-  //get an instance from FireStore Database
-  FirebaseFirestore db = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser;
 
-  void initializeCurrentUser() {
-    currentUser = auth.currentUser;
-  }
 
   Future<List<String>> getWishlist() async {
     try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      User? currentUser;
+      currentUser = auth.currentUser;
+
       DocumentSnapshot<Map<String, dynamic>> snapshot =
           await db.collection('profile_data').doc(currentUser?.uid).get();
 
@@ -31,6 +29,11 @@ class Wishlist {
 
   Future<void> addToWishlist(String gameID) async {
     try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      User? currentUser;
+      currentUser = auth.currentUser;
+
       List<String> oldList =await  getWishlist();
       oldList.add(gameID);
       final data = {'wishlist': oldList};
@@ -45,6 +48,9 @@ class Wishlist {
 
   Future<void> removeFromWishlist(String gameID) async {
     try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+
       db.collection('profile_data')
           .doc(auth.currentUser?.uid)
           .update({
