@@ -5,7 +5,7 @@ class Game {
   final String name;
   final String released;
   final List platforms;
-  final String background_image;
+  final String backgroundImage;
   final int score;
   final List genres;
   final int reviewsCount;
@@ -15,7 +15,7 @@ class Game {
       required this.name,
       required this.released,
       required this.platforms,
-      required this.background_image,
+      required this.backgroundImage,
       required this.score,
       required this.genres,
       required this.reviewsCount});
@@ -26,7 +26,7 @@ class Game {
         name: json['name'],
         released: json['released'] ?? "Unknown",
         platforms: json['platforms'],
-        background_image:
+        backgroundImage:
             json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
         score: json['metacritic'] ?? 0,
         genres: json['genres'],

@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,10 +23,8 @@ class _GameLibraryState extends State<GameLibrary> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String? _sortValue = '';
-
-  //Filter arrays
-  List<String> _stores = [];
-  List<String> _genres = [];
+  bool _pcSelected = false;
+  List<String> selectedPlatforms = [];
 
   @override
   void initState() {
@@ -63,6 +63,14 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
+  Future<void> _filterGames() async {
+    setState(() {
+      if (_pcSelected) {
+        selectedPlatforms.add('pc');
+      }
+    });
+  }
+
   Future<void> _getFilters() async {
     var response = await http.get(Uri.parse(
         'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
@@ -78,9 +86,7 @@ class _GameLibraryState extends State<GameLibrary> {
         return 'name:$name,slug:$slug';
       }).toList();
 
-      setState(() {
-        _genres = genres;
-      });
+      printToConsole(genres as String);
     } else {
       throw Exception('Failed to load games');
     }
@@ -99,9 +105,7 @@ class _GameLibraryState extends State<GameLibrary> {
         return 'name:$name,slug:$slug';
       }).toList();
 
-      setState(() {
-        _stores = stores;
-      });
+      printToConsole(stores as String);
     } else {
       throw Exception('Failed to load games');
     }
@@ -187,6 +191,48 @@ class _GameLibraryState extends State<GameLibrary> {
                       ),
                     ),
                   ),
+                  ExpandableNotifier(
+                      child: ExpandablePanel(
+                          header: Text('Platforms'),
+                          collapsed: SizedBox(width: 100, height: 0),
+                          expanded: ListView(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              children: [
+                                Theme(
+                                  data: ThemeData(
+                                    checkboxTheme: CheckboxThemeData(
+                                      visualDensity: VisualDensity.compact,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25),
+                                      ),
+                                    ),
+                                    unselectedWidgetColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondary,
+                                  ),
+                                  child: CheckboxListTile(
+                                    value: _pcSelected,
+                                    onChanged: (newValue) async {
+                                      setState(
+                                          () => _pcSelected = newValue!);
+                                    },
+                                    title: Text('PC'),
+                                    tileColor: Colors.white,
+                                    activeColor: Theme.of(context)
+                                        .colorScheme
+                                        .primary,
+                                    checkColor: Colors.white,
+                                    dense: true,
+                                    controlAffinity:
+                                        ListTileControlAffinity.trailing,
+                                  ),
+                                )
+                              ]))),
                   ListTile(
                     title: Text(
                       'Platforms',
@@ -267,6 +313,10 @@ class _GameLibraryState extends State<GameLibrary> {
                     ),
                     dense: false,
                   ),
+                  FilledButton(onPressed: () async {
+                    await _filterGames();
+                  },
+                  child: Text("Filter"))
                 ],
               ),
             ),
@@ -494,7 +544,7 @@ class _GameLibraryState extends State<GameLibrary> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.network(
-                      game.background_image,
+                      game.backgroundImage,
                       width: 134,
                       height: 120,
                       fit: BoxFit.cover,
