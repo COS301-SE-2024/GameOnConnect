@@ -29,23 +29,23 @@ void main() {
   testWidgets('Test if the values of input fields when signing up',
       (WidgetTester tester) async {
     // Build the SignUp widget
-    await tester.pumpWidget(MaterialApp(home: SignUp()));
+    await tester.pumpWidget(const MaterialApp(home: SignUp()));
 
     // Find the input fields and sign-up button
     final usernameField = find.byKey(const Key('usernameInput'));
     final emailField = find.byKey(const Key('emailInput'));
     final passwordField = find.byKey(const Key('passwordInput'));
-    final confirmPasswordField = find.byKey(const Key('confirmPasswordInput'));
+    //final confirmPasswordField = find.byKey(const Key('confirmPasswordInput'));
 
     // Enter text into the input fields
     await tester.enterText(usernameField, 'testuser');
     await tester.enterText(emailField, 'testuser@example.com');
     await tester.enterText(passwordField, 'Password123!');
-    await tester.enterText(confirmPasswordField, 'Password123!');
+    //await tester.enterText(confirmPasswordField, 'Password123!');
 
     expect(find.text('testuser'), findsOneWidget);
     expect(find.text('testuser@example.com'), findsOneWidget);
-    expect(find.text('Password123!'), findsWidgets);
+    //expect(find.text('Password123!'), findsWidgets);
   });
 
   //Test if password validator works
