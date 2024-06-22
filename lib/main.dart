@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
         '/currently_playing': (context) => EventsGamingSessions(),
         '/events': (context) => EventsPage(),
         '/login': (context) => Login(),
-        '/game_details': (context) => GameDetailsPage(),
+        // '/game_details': (context) => GameDetailsPage(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/profile_management' : (context) => ProfileManagement(),
