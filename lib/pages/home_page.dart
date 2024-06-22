@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/currently_playing_service.dart';
+
 class HomePage extends StatefulWidget {
   // ignore: use_super_parameters
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -26,10 +28,63 @@ class _HomePageState extends State<HomePage> {
 
   }
   Future <void> wishlistFunctions() async{
-    getWL();
+    //Currently playing testing:
+
+    //getCP();
+    //await addCP('11');
+    await removeCP('10');
+    getCP();
+
+    // Wishlist testing :
+
+    //getWL();
     //await addToWL('10');
-    await removeFromWL('10');
-    getWL();
+    //await removeFromWL('10');
+    //getWL();
+
+
+
+  }
+  Future<void> getCP() async{
+    try{
+      final currentlyPlaying = CurrentlyPlaying();
+      List<String> c = await currentlyPlaying.getCurrentlyPlaying();
+      print(c);
+      setState((){
+        _counter = "currently playing: $c";
+      });
+    }catch (e)
+    {
+      setState((){
+        _counter = 'Error: $e';
+      });
+    };
+  }
+
+  Future<void> addCP(String gameID) async {
+    try
+    {
+      final c = CurrentlyPlaying();
+      await c.addToCurrentlyPlaying(gameID);
+
+    }catch (e)
+    {
+      setState((){
+        _counter = 'error in add: $e';
+      });
+    }
+  }
+
+  Future<void> removeCP(String gameID) async{
+    try{
+      final c = CurrentlyPlaying();
+      await c.removeFromCurrentlyPlaying(gameID);
+    }catch(e)
+    {
+      setState((){
+        _counter = 'error in remove: $e';
+      });
+    }
   }
 
   Future<void> getWL() async{
@@ -129,7 +184,6 @@ class _HomePageState extends State<HomePage> {
       FirebaseFirestore db = FirebaseFirestore.instance;
       CollectionReference profileRef = db.collection("profile_data");
       final FirebaseAuth auth = FirebaseAuth.instance;
-      User? currentUser;
       DocumentSnapshot qs = await profileRef.doc(auth.currentUser?.uid).get();
 
       if(qs.exists)
