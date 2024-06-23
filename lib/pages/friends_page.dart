@@ -69,14 +69,6 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  void _acceptFriendRequest(String requesterUserId) async {
-    try {
-      await _userService.acceptFriendRequest(widget.currentUserId, requesterUserId);
-      _fetchData();
-    } catch (e) {
-      print('Error accepting friend request: $e');
-    }
-  }
 
   void _unfollowUser(String targetUserId) async {
     try {
@@ -86,6 +78,8 @@ class _FriendSearchState extends State<FriendSearch> {
       print('Error unfollowing user: $e');
     }
   }
+
+  
   @override
   Widget build(BuildContext context) {
    return Scaffold(

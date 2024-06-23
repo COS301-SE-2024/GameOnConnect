@@ -174,7 +174,6 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                   const SizedBox(height: 30),
-
                   //friends, games, events
 
                   const Divider(
@@ -187,7 +186,7 @@ class _ProfileState extends State<Profile> {
                       children: [
                         SingleChildScrollView(
                           child: FutureBuilder<List<Map<String, dynamic>?>>(
-                            future: FriendServices().getFriends().then(
+                            future: FriendServices().getFriends("friends").then(
                                 (friendIds) => Future.wait(friendIds.map((id) =>
                                     FriendServices()
                                         .fetchFriendProfileData(id)))),
