@@ -811,6 +811,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       onPressed: () {
                                         wishlist.addToWishlist(
                                             gameDetails.id.toString());
+                                         ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  "Added to wishlist!"),
+                                              backgroundColor: Colors.green,
+                                            ));
                                         //TODO: add functionality to change button text
                                       },
                                       style: ButtonStyle(
@@ -854,6 +860,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       onPressed: () {
                                         currentlyPlaying.addToCurrentlyPlaying(
                                             gameDetails.id.toString());
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  "Successfully added game to "
+                                                      "currently playing list"),
+                                              backgroundColor: Colors.green,
+                                            ));
                                         // TODO : change text to show its added
                                       },
                                       style: ButtonStyle(
