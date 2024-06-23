@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:gameonconnect/services/currently_playing_service.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -1206,9 +1208,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               'Buy ${gameDetails.name}:',
                               style: const TextStyle(
                                 fontFamily:
-                                    'Inter', // Replace with your desired font family if needed
-                                color: Colors
-                                    .black, // Replace with your desired text color
+                                    'Inter', 
+                                color: Colors.black, 
                                 fontSize: 20,
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.bold,
@@ -1239,7 +1240,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       IconButton(
                                         padding: const EdgeInsetsDirectional.fromSTEB(
                                             76, 4, 0, 0),
-                                        onPressed: () {
+                                        onPressed: () async {
+                                          final Uri url = Uri.parse(gameDetails.website);
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
                                         },
                                         icon: const Icon(
                                           Icons.open_in_new,
@@ -1256,7 +1263,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           size: 36,
                                         ),
                                       ),
-
+                                      // Text(
+                                      //   'STORE',
+                                      //   style: TextStyle(
+                                      //     fontFamily:
+                                      //         'Readex Pro', 
+                                      //     color: Colors
+                                      //         .white, 
+                                      //     fontSize: 12,
+                                      //     letterSpacing: 0,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -1268,7 +1285,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   height: 100,
                                   decoration: BoxDecoration(
                                     color: Colors
-                                        .black, // Replace with your desired color
+                                        .black, 
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: const Column(
