@@ -33,7 +33,6 @@ class _GameLibraryState extends State<GameLibrary> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String? _sortValue = '';
-  bool _pcSelected = false;
   List<String> selectedPlatforms = [];
 
   @override
@@ -72,14 +71,6 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
-  Future<void> _filterGames() async {
-    setState(() {
-      if (_pcSelected) {
-        selectedPlatforms.add('pc');
-      }
-    });
-  }
-  
   // void _navigateToGameDetails(Game game) {
   //   Navigator.push(
   //     context,

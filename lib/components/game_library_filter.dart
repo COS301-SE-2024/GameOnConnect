@@ -5,7 +5,7 @@ import 'package:gameonconnect/model/game_filter.dart';
 
 class FilterPage extends StatefulWidget {
   final Function(String) apiFunction;
-  const FilterPage({Key? key, required this.apiFunction}) : super(key: key);
+  const FilterPage({super.key, required this.apiFunction});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -71,13 +71,13 @@ class _FilterPageState extends State<FilterPage> {
           future: _filterListFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {
               return filterList(context, snapshot.data!);
             } else {
-              return Center(child: Text('No data'));
+              return const Center(child: Text('No data'));
             }
           },
         ),
@@ -137,18 +137,19 @@ class _FilterPageState extends State<FilterPage> {
     ].where((filter) => filter.isNotEmpty).join();
 
     await widget.apiFunction(concatenatedFilterString);
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 }
 
 class ExpandableFilter extends StatefulWidget {
   const ExpandableFilter({
-    Key? key,
+    super.key,
     required this.platformExpandableController,
     required this.filterName,
     required this.filterValues,
     required this.onFilterChanged,
-  }) : super(key: key);
+  });
 
   final ExpandableController platformExpandableController;
   final String filterName;
