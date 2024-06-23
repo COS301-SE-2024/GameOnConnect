@@ -105,7 +105,9 @@ class _GameLibraryState extends State<GameLibrary> {
           }
           final game = _games[index];
 
-          return Card(
+          return InkWell (
+            onTap:  () => _navigateToGameDetails(game),
+              child:Card(
             child: ListTile(
               leading:
                   // ignore: sized_box_for_whitespace
@@ -138,6 +140,7 @@ class _GameLibraryState extends State<GameLibrary> {
               subtitle: Text(game.released),
 
             ),
+          )
           );
         },
       ),
