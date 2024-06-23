@@ -200,6 +200,7 @@ class _GameLibraryState extends State<GameLibrary> {
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: TextField(
+                    key: Key('searchTextField'),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 15, right: 15),
                       labelText: 'Search',
