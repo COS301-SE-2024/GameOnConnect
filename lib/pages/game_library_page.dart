@@ -2,8 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -43,6 +44,16 @@ class _GameLibraryState extends State<GameLibrary> {
     _scrollController.dispose();
     super.dispose();
   }
+
+  void _navigateToGameDetails(Game game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameDetailsPage(gameId: game.id),
+      ),
+    );
+  }
+
 
   Future<void> _loadGames(int page) async {
     if (_isLoading) return;
@@ -93,7 +104,10 @@ class _GameLibraryState extends State<GameLibrary> {
                 : SizedBox.shrink();
           }
           final game = _games[index];
-          return Card(
+
+          return InkWell (
+            onTap:  () => _navigateToGameDetails(game),
+              child:Card(
             child: ListTile(
               leading:
                   // ignore: sized_box_for_whitespace
@@ -124,10 +138,13 @@ class _GameLibraryState extends State<GameLibrary> {
               ),
               title: Text(game.name),
               subtitle: Text(game.released),
+
             ),
+          )
           );
         },
       ),
+
     );
   }
 }

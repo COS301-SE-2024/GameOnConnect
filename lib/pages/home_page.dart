@@ -151,6 +151,7 @@ class _DevelopmentButtons extends StatelessWidget {
   textColor: Color.fromARGB(255, 24, 24, 24),
   child: Text('search friends '),
 ),
+
         ],
       ),
     );

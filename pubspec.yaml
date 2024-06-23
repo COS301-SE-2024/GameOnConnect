@@ -43,6 +43,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   google_sign_in: ^6.2.1
   sign_in_with_apple: ^6.1.0
+  flutter_html: 3.0.0-beta.2
   flutter_cache_manager: ^3.3.2
 
 dev_dependencies:
