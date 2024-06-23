@@ -1,15 +1,18 @@
+// ignore_for_file: unused_element, avoid_print
+
 import 'package:flutter/material.dart';
 import '../services/user_service.dart';
 import '../models/user_model.dart';
 import '../models/friend_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class FriendSearch extends StatefulWidget {
   final String currentUserId;
 
-  FriendSearch(this.currentUserId);
+  // ignore: use_key_in_widget_constructors
+  const FriendSearch(this.currentUserId);
 
   @override
+  // ignore: library_private_types_in_public_api
   _FriendSearchState createState() => _FriendSearchState();
 }
 
@@ -18,7 +21,6 @@ class _FriendSearchState extends State<FriendSearch> {
   final UserService _userService = UserService();
   List<User> _users = [];
   String _searchQuery = '';
-   Friend? _currentUserFriendData;
 
   @override
   void initState() {
@@ -41,10 +43,8 @@ class _FriendSearchState extends State<FriendSearch> {
   Future<void> _fetchData() async {
     try {
       List<User> users = await _userService.fetchAllUsers();
-      Friend currentUserFriendData = await _userService.fetchCurrentUserFriends(widget.currentUserId);
       setState(() {
         _users = users;
-        _currentUserFriendData = currentUserFriendData;
       });
     } catch (e) {
       print('Error fetching data: $e');
@@ -62,7 +62,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _undoFriendRequest(String targetUserId) async {
     try {
-      await _userService.UndoFriendRequest(widget.currentUserId, targetUserId);
+      await _userService.undoFriendRequest(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       print('Error undoing friend request: $e');
@@ -90,13 +90,13 @@ class _FriendSearchState extends State<FriendSearch> {
   Widget build(BuildContext context) {
    return Scaffold(
   appBar: AppBar(
-    title: Text('Friends'),
+    title: const Text('Friends'),
   ),
   body: StreamBuilder<Friend>(
     stream: _userService.getCurrentUserFriendsStream(widget.currentUserId),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }
       if (snapshot.hasError) {
         return Center(child: Text('Error: ${snapshot.error}'));
@@ -127,11 +127,11 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               decoration: InputDecoration(
                 hintText: 'Search by profile name',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.search),
                 labelText: 'Search',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     _searchController.clear();
                     setState(() {
@@ -145,7 +145,7 @@ class _FriendSearchState extends State<FriendSearch> {
             ),
           ),
           if (filteredUsers.isEmpty)
-            Center(child: Text('No results found.')) // Display a message for no results
+            const Center(child: Text('No results found.')) // Display a message for no results
           else
               Expanded(
                 child: ListView.builder(
@@ -171,37 +171,37 @@ class _FriendSearchState extends State<FriendSearch> {
                       trailing: isFriend
                           ? ElevatedButton.icon(
                               onPressed: () => _unfollowUser(user.uid),
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.person_remove,
                                 color: Colors.white, // Set your desired icon color
                               ),
-                              label: Text('Disconnect', style: TextStyle(color: Colors.white)),
+                              label: const Text('Disconnect', style: TextStyle(color: Colors.white)),
                               style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
+                                backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
                               ),
                             )
                           
                           : isPending
                               ? ElevatedButton.icon(
                                   onPressed: () =>_undoFriendRequest(user.uid),
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.hourglass_bottom,
                                     color: Colors.white, 
                                     ),
-                                  label: Text('Pending', style: TextStyle(color: Colors.white)),
+                                  label: const Text('Pending', style: TextStyle(color: Colors.white)),
                                   style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
+                                backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
                               ),
                                 )
                               : ElevatedButton.icon(
                                   onPressed: () => _sendFriendRequest(user.uid),
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.person_add,
                                     color: Colors.white, 
                                     ),
-                                  label: Text('Connect', style: TextStyle(color: Colors.white)),
+                                  label: const Text('Connect', style: TextStyle(color: Colors.white)),
                                   style: ButtonStyle(
-                                backgroundColor: WidgetStateProperty.all<Color>(Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
+                                backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(0, 223, 103, 1.0),), // Set your desired color
                               ),
                                 ),
                     );

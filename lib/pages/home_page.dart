@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/pages/friends_page.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
@@ -129,7 +130,7 @@ class _DevelopmentButtons extends StatelessWidget {
   onPressed: () {
     // Get the current user's ID
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-     print("current user from home: $currentUserId");
+     //print("current user from home: $currentUserId");
     if (currentUserId != null) {
       // Pass the current user's ID to the search friends page
       Navigator.push(
@@ -142,6 +143,7 @@ class _DevelopmentButtons extends StatelessWidget {
       );
     } else {
       // Handle the case where there is no logged-in user
+      // ignore: avoid_print
       print('No user is currently logged in.');
     }
   },

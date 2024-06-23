@@ -1,16 +1,9 @@
-
-// ignore_for_file: prefer_const_constructors
-//import 'dart:ffi';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/game.dart';
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 //import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -31,21 +24,11 @@ class _GameLibraryState extends State<GameLibrary> {
   int _currentPage = 1;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
-  //lee
-  final List<String> _friends = ["Alice", "Bob", "Charlie", "David"];// static friends for now 
-  List<String> users = [];
-  final List<String> _filteredFriends = [];
-   TabController? _tabController; // manages state of tabs
-  TextEditingController _searchController = TextEditingController(); // controls text input for search bar 
 
   @override
   void initState() {
     super.initState();
     _loadGames(_currentPage);
-    _loadUsers();
-    //lee
-    //_tabController = TabController(length: 2, vsync: this); //Initializes the TabController with two tabs.
-    ///
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -53,62 +36,12 @@ class _GameLibraryState extends State<GameLibrary> {
         _loadGames(_currentPage);
       }
     });
-
-    //lee
-     _searchController.addListener(_onSearchChanged);// listener to the search controller to handle search input changes.
   }
-
 
   @override
-  //Cleans up the controllers when the widget is removed from the tree to avoid memory leaks
   void dispose() {
     _scrollController.dispose();
-    //lee
-     _tabController?.dispose();
-    _searchController.dispose();
-    ///
     super.dispose();
-  }
-
-//lee
-//---? is it not a future function?
-// filters the list of games/friends based on current tab and search query
-  void _onSearchChanged() {
-  final query = _searchController.text.toLowerCase();// convert search query to lower case
-  if (_tabController?.index == 0) // active tab is games
-  {
-    // Search in games(franco)
-    
-  } 
-  else  //active tab is friends
-  { 
-    // Search in friends
-    setState(() {
-      _filteredFriends.clear();// clear list 
-      _filteredFriends.addAll(
-        _friends.where((friend) => friend.toLowerCase().contains(query)),
-      );
-    });
-  }
-}
-
-Future<List<String>> searchFriends(String query) async {
-  QuerySnapshot snapshot = await FirebaseFirestore.instance
-      .collection('profile_data')
-      .where('username', isGreaterThanOrEqualTo: query)
-      .where('username', isLessThanOrEqualTo: query + '\uf8ff')
-      .get();
-
-  List<String> friends = snapshot.docs.map((doc) => doc['username'] as String).toList();
-  return friends;
-}
-
-Future<void> _loadUsers() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('profile_data').get();
-    List<String> userList = snapshot.docs.map((doc) => doc['username'] as String).toList();
-    setState(() {
-      users = userList;
-    });
   }
 
   Future<void> _loadGames(int page) async {
@@ -197,6 +130,7 @@ Future<void> _loadUsers() async {
       ),
     );
   }
+}
 
 class Game {
   final int id;
@@ -217,16 +151,5 @@ class Game {
       released: json['released'],
       background_image: json['background_image'],
     );
-  }
-
-  Widget friendList() {
-    return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(users[index]),
-                );
-              },
-            );
   }
 }

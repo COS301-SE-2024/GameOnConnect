@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class Game {
@@ -47,7 +49,7 @@ class Game {
           Icons.computer,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       } else if (platform.toString().toLowerCase().contains('xbox') && !xbox) {
@@ -56,7 +58,7 @@ class Game {
           Icons.gamepad,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       } else if (platform.toString().toLowerCase().contains('playstation') &&
@@ -66,7 +68,7 @@ class Game {
           Icons.videogame_asset,
           color: Theme.of(context).colorScheme.primary,
         ));
-        icons.add(SizedBox(
+        icons.add(const SizedBox(
           width: 10,
         ));
       }
@@ -78,6 +80,7 @@ class Game {
   List<Widget> getStyledGenres(BuildContext context) {
     List<Widget> genresWidgets = [];
 
+    // ignore: unnecessary_null_comparison
     if (genres.isNotEmpty && genres != null) {
       for (var genre in genres) {
         genresWidgets.add(Text(genre['name'],
@@ -86,7 +89,7 @@ class Game {
               fontSize: 14,
               color: Theme.of(context).colorScheme.primary,
             )));
-        genresWidgets.add(SizedBox(
+        genresWidgets.add(const SizedBox(
           width: 5,
         ));
       }
