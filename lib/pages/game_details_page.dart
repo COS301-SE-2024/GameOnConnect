@@ -1201,7 +1201,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             ),*/
                            Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
+                                const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
                             child: Text(
                               'Buy ${gameDetails.name}:',
                               style: const TextStyle(
@@ -1248,7 +1248,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ),
                                       const Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                        padding:  EdgeInsetsDirectional.fromSTEB(
                                             4, 8, 4, 4),
                                         child: Icon(
                                           Icons.videogame_asset,
