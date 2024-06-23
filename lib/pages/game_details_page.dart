@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/model/game_details.dart';
-import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 // import 'package:expandable/expandable.dart';
@@ -54,14 +53,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
             future: _gameDetails,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: const CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData) {
-                return Center(child: Text('No data available'));
+                return const Center(child: Text('No data available'));
               } else {
                 final gameDetails = snapshot.data!;
-                return 
+                return
                   Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -135,11 +134,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               alignment: const Alignment(-1, -1),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
+                                children: [ Flexible(child:
                                   Align(
                                     alignment: const Alignment(-1, 0),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
                                       child: Text(
                                         gameDetails.name,
                                         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -150,9 +147,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                       ),
-                                    ),
                                   ),
-                                  const Spacer(), // To push the icons to the rightmost side
+              ),
+                                  //const Spacer(), // To push the icons to the rightmost side
                                   const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
@@ -175,13 +172,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ],
                                   ),
                                 ],
+
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
                               child: Text(
-                                // gameDetails.developer[0],
-                                'EPIC GAMES',
+                                 gameDetails.publisher[0]['name'],
+
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                       fontFamily: 'Inter',
                                       color: Colors.black,
@@ -243,11 +241,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                         Align(
                                           alignment: AlignmentDirectional(0, 1),
-                                          child: Padding(
+                                          child:  Padding(
                                             padding: EdgeInsets.all(4),
-                                            child: Text(
-                                              '14.5M',
-                                              // gameDetails.developer,  //ratings
+                                            child:  Text(
+                                              "hello",
+                                                //gameDetails.publisher[0]['name'],
+                                                //ratings
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.primary
@@ -337,7 +336,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                     child: const Column(
                                       mainAxisSize: MainAxisSize.max,
-                                      children: [
+                                      children: [ Flexible(child:
                                         Align(
                                           alignment: AlignmentDirectional(0, -1),
                                           child: Padding(
@@ -353,8 +352,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Align(
+                                      ),
+                                      ),
+                                         Align(
                                           alignment: AlignmentDirectional(0, 1),
                                           child: Padding(
                                             padding: EdgeInsets.all(6),
@@ -549,6 +549,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                 ),
+
                                 Spacer(), // This spacer will push the icons to the right edge
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -592,23 +593,22 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Row(
+                              const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
+                                children: [ Flexible(child:
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     child: Text(
                                       'Developer',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
+                                        fontSize: 14,
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                                ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(215, 0, 20, 0),
                                     child: Text(
@@ -623,7 +623,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ],
                               ),
-                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: SizedBox(
@@ -635,13 +634,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Row(
+
+                              const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
+                                children: [ Flexible(child:
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     child: Text(
                                       'Publisher',
                                       style: TextStyle(
@@ -651,7 +649,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                                ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(223, 0, 20, 0),
                                     child: Text(
@@ -665,7 +663,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                 ],
-                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -678,11 +675,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Row(
+                              const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
+                                children: [ Flexible(child:
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(6, 0, 0, 0),
                                     child: Text(
@@ -694,7 +689,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                              ),
                                   Padding(
                                     padding:
                                         EdgeInsetsDirectional.fromSTEB(202, 0, 20, 0),
@@ -710,7 +705,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ],
                               ),
-                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: SizedBox(
@@ -722,11 +716,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Row(
+
+                              const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [
+                                children: [ Flexible(child:
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Text(
@@ -739,7 +732,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                                ),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(120, 0, 4, 0),
                                     child: Text(
@@ -781,7 +774,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ],
                               ),
-                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: SizedBox(

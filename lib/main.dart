@@ -21,7 +21,6 @@ import 'pages/login_page.dart';
 import 'pages/edit_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:gameonconnect/pages/game_details_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +99,6 @@ class MyApp extends StatelessWidget {
         '/currently_playing': (context) => EventsGamingSessions(),
         '/events': (context) => EventsPage(),
         '/login': (context) => Login(),
-        // '/game_details': (context) => GameDetailsPage(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/profile_management' : (context) => ProfileManagement(),
