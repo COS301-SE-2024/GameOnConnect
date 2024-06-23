@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
 import 'package:expandable/expandable.dart';
-import 'package:gameonconnect/pages/game_details_page.dart';
+//import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 
@@ -118,14 +118,14 @@ class _GameLibraryState extends State<GameLibrary> {
     // }
   }
   
-  void _navigateToGameDetails(Game game) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GameDetailsPage(gameId: game.id),
-      ),
-    );
-  }
+  // void _navigateToGameDetails(Game game) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => GameDetailsPage(gameId: game.id),
+  //     ),
+  //   );
+  // }
 
   Future<void> _runApiRequest(String request) async {
     
