@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
 import 'package:expandable/expandable.dart';
-//import 'package:gameonconnect/pages/game_details_page.dart';
+import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 
@@ -56,6 +56,15 @@ class _GameLibraryState extends State<GameLibrary> {
     _scrollController.dispose();
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _navigateToGameDetails(Game game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameDetailsPage(gameId: game.id),
+      ),
+    );
   }
 
   void _onSearchEntered(String query) {
@@ -560,7 +569,9 @@ class _GameLibraryState extends State<GameLibrary> {
           child: Column(children: [
             SizedBox(
               height: 120,
-              child: Row(
+              child: InkWell(
+                onTap:  () => _navigateToGameDetails(game),
+                child:Row(
                 children: [
                   // ignore: sized_box_for_whitespace
                   Container(
@@ -644,6 +655,7 @@ class _GameLibraryState extends State<GameLibrary> {
                     ],
                   )
                 ],
+              ),
               ),
             ),
           ]),
