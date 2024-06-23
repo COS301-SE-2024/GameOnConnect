@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/friend_service.dart'; //You can remove this service when replacing with your own
 
 class Requests extends StatefulWidget {
+  //final String currentUserId;
   const Requests({super.key});
 
   @override
@@ -10,6 +11,8 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +27,7 @@ class _RequestsState extends State<Requests> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List<Map<String, dynamic>?>>(
-          future: FriendServices().getFriends().then((friendIds) => Future.wait(
+          future: FriendServices().getFriends("requests").then((friendIds) => Future.wait(
               friendIds
                   .map((id) => FriendServices().fetchFriendProfileData(id)))),
           builder: (context, snapshot) {
@@ -114,13 +117,14 @@ class _RequestsState extends State<Requests> {
                               color: const Color.fromARGB(255, 128, 216, 50),
                               onPressed: () {
                                 //code to accept the request goes here
+                                FriendServices().acceptFriendRequest(friendProfile['userID'] );
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.close),
                               color: const Color.fromARGB(255, 128, 216, 50),
                               onPressed: () {
-                                //code to decline the request goes here
+                                FriendServices().rejectFriendRequest(friendProfile['userID'] );
                               },
                             ),
                           ],
@@ -145,4 +149,6 @@ class _RequestsState extends State<Requests> {
       ),
     );
   }
+  
+
 }
