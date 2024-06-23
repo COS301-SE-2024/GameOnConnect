@@ -85,7 +85,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 fit: BoxFit.cover,
                                 image: Image.network(
                                   gameDetails.backgroundImage,
-                                  // 'https://images.unsplash.com/photo-1598904326301-4c9cb279a3f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjF8fGNvZmZlZSUyMGZhcm18ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60',
                                 ).image,
                               ),
                               boxShadow: const [
@@ -1200,12 +1199,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ],
                               ),
                             ),*/
-                          const Padding(
+                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
                             child: Text(
-                              'Stores selling the game',
-                              style: TextStyle(
+                              'Buy ${gameDetails.name}:',
+                              style: const TextStyle(
                                 fontFamily:
                                     'Inter', // Replace with your desired font family if needed
                                 color: Colors
@@ -1234,20 +1233,22 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       topRight: Radius.circular(10),
                                     ),
                                   ),
-                                  child: const Column(
+                                  child:  Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                      IconButton(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             76, 4, 0, 0),
-                                        child: Icon(
+                                        onPressed: () {
+                                        },
+                                        icon: const Icon(
                                           Icons.open_in_new,
                                           color: Colors.white,
                                           size: 12,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                      const Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
                                             4, 8, 4, 4),
                                         child: Icon(
                                           Icons.videogame_asset,
@@ -1255,25 +1256,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           size: 36,
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.all(4),
-                                        child: Text(
-                                          'STEAM',
-                                          style: TextStyle(
-                                            fontFamily:
-                                                'Readex Pro', // Replace with your desired font family
-                                            color: Colors
-                                                .white, // Replace with your desired text color
-                                            fontSize: 12,
-                                            letterSpacing: 0,
-                                          ),
-                                        ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
                               ),
-                              Padding(
+                              /*Padding(
                                 padding: const EdgeInsets.fromLTRB(5, 6, 5, 6),
                                 child: Container(
                                   width: 100,
@@ -1319,8 +1307,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              Padding(
+                              ),*/
+                              /*Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     5, 6, 5, 6),
                                 child: Container(
@@ -1370,7 +1358,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ],
                                   ),
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                         ],
