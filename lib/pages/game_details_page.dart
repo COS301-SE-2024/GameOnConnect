@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/model/game_details.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -159,7 +158,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 20, 5, 5), // Adjust top, left, right padding as needed
+                                        padding:  EdgeInsets.fromLTRB(0, 20, 5, 5), // Adjust top, left, right padding as needed
                                         child: Icon(
                                           Icons.favorite_border,
                                           color: Color(0xFF00DF67),
@@ -172,6 +171,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           icon :const Icon(Icons.share_outlined),
                                           color: const Color(0xFF00DF67),
                                           onPressed: () {
+                                            // TODO : add popup with link
                                             ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(
                                               content: Text(
@@ -311,9 +311,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                         ),
                                         Align(
-                                          alignment: AlignmentDirectional(0, 1),
+                                          alignment: const AlignmentDirectional(0, 1),
                                           child: Padding(
-                                            padding: EdgeInsets.all(6),
+                                            padding: const EdgeInsets.all(6),
                                             child: Text(
                                               gameDetails.score.toString(),
                                               //gameDetails.score,
@@ -672,7 +672,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(223, 0, 20, 0),
+                                    padding: const EdgeInsets.fromLTRB(223, 0, 20, 0),
                                     child: Text(
                                       // gameDetails.publisher,
                                       gameDetails.publisher[0]['name'],
@@ -739,7 +739,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
                                const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [ const Flexible(child:
+                                children: [  Flexible(child:
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Text(
