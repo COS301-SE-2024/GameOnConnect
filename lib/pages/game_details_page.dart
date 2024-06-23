@@ -317,7 +317,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                 ),
-                                Padding(
+                                Flexible(child: Padding(
                                   padding:
                                       const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
                                   child: Container(
@@ -336,7 +336,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                     child: const Column(
                                       mainAxisSize: MainAxisSize.max,
-                                      children: [ Flexible(child:
+                                      children: [
                                         Align(
                                           alignment: AlignmentDirectional(0, -1),
                                           child: Padding(
@@ -352,7 +352,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               ),
                                             ),
                                           ),
-                                      ),
                                       ),
                                          Align(
                                           alignment: AlignmentDirectional(0, 1),
@@ -373,6 +372,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ],
                                     ),
                                   ),
+                                ),
                                 ),
                               ],
                             ),
