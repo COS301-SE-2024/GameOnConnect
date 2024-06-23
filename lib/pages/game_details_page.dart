@@ -155,10 +155,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
               ),
                                   //const Spacer(), // To push the icons to the rightmost side
-                                  const Row(
+                                   Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Padding(
+                                      const Padding(
                                         padding: const EdgeInsets.fromLTRB(0, 20, 5, 5), // Adjust top, left, right padding as needed
                                         child: Icon(
                                           Icons.favorite_border,
@@ -168,10 +168,19 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(0, 20, 20, 5), // Adjust top, left, right padding as needed
-                                        child: Icon(
-                                          Icons.share_outlined,
-                                          color: Color(0xFF00DF67),
-                                          size: 24,
+                                        child: IconButton(
+                                          icon :const Icon(Icons.share_outlined),
+                                          color: const Color(0xFF00DF67),
+                                          onPressed: () {
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  gameDetails.website,
+                                              ),
+                                              backgroundColor: Colors.green.shade300,
+                                            ));
+                                          },
+
                                         ),
                                       ),
                                     ],
@@ -872,7 +881,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ],
                               ),
                             ),
-                            const Padding(
+                            /*const Padding(
                               padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
                               child: Text(
                                 'System Requirements',
@@ -1173,7 +1182,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ],
                               ),
-                            ),
+                            ),*/
                             const Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
                               child: Text(
@@ -1188,6 +1197,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                             Row(
+                              // TODO : get this info from platforms and make icons
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Padding(

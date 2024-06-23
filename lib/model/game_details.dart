@@ -15,6 +15,7 @@ class GameDetails {
   final List screenshots;
   final List publisher;
   final double rating;
+  final String website;
 
   GameDetails({
     required this.id,
@@ -31,6 +32,7 @@ class GameDetails {
     required this.screenshots,
     required this.publisher,
     required this.rating,
+    required this.website,
   });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
@@ -49,6 +51,7 @@ class GameDetails {
       screenshots: json['screenshots'] ?? [],
       publisher: json['publishers'] ?? [],
       rating: json['rating'] ?? 0.0,
+      website: json['website'] ?? "No website available",
     );
   }
 }
