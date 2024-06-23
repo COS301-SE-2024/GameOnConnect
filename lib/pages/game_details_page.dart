@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/model/game_details.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-// import 'package:expandable/expandable.dart';
+import 'package:gameonconnect/services/wishlist_service.dart';
+import 'package:gameonconnect/services/currently_playing_service.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -19,7 +20,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   late Future<GameDetails> _gameDetails;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  final wishlist = Wishlist();
+  final currentlyPlaying = CurrentlyPlaying();
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       throw Exception('Failed to load game details');
     }
   }
+
+
 
   // @override
   // void dispose() {
@@ -559,6 +563,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
                                 Spacer(), // This spacer will push the icons to the right edge
                                 Row(
+                                  // TODO: get icons for the different platofrms
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Padding(
@@ -600,9 +605,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                              const Row(
+                               Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [ Flexible(child:
+                                children: [ const Flexible(child:
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     child: Text(
@@ -617,11 +622,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(215, 0, 20, 0),
+                                    padding:  const EdgeInsets.fromLTRB(215, 0, 20, 0),
                                     child: Text(
                                       // gameDetails.developer,
-                                      'Epic Games',
-                                      style: TextStyle(
+                                      gameDetails.publisher[0]['name'],
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
@@ -642,9 +647,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
 
-                              const Row(
+                               Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [ Flexible(child:
+                                children: [ const Flexible(child:
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                     child: Text(
@@ -661,8 +666,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: EdgeInsets.fromLTRB(223, 0, 20, 0),
                                     child: Text(
                                       // gameDetails.publisher,
-                                      'Epic Games',
-                                      style: TextStyle(
+                                      gameDetails.publisher[0]['name'],
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
@@ -682,9 +687,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                              const Row(
+                               Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [ Flexible(child:
+                                children: [ const Flexible(child:
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(6, 0, 0, 0),
                                     child: Text(
@@ -699,11 +704,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                                   Padding(
                                     padding:
-                                        EdgeInsetsDirectional.fromSTEB(202, 0, 20, 0),
+                                        const EdgeInsetsDirectional.fromSTEB(202, 0, 20, 0),
                                     child: Text(
-                                      // gameDetails.released,
-                                      '2017/02/34',
-                                      style: TextStyle(
+                                       gameDetails.released,
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
@@ -724,9 +728,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
 
-                              const Row(
+                               const Row(
                                 mainAxisSize: MainAxisSize.max,
-                                children: [ Flexible(child:
+                                children: [ const Flexible(child:
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Text(
@@ -740,45 +744,43 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                 ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(120, 0, 4, 0),
+                                  /*Padding(
+                                    padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
                                     child: Text(
-                                      // gameDetails.genres[0],
-                                      'Action',
-                                      style: TextStyle(
+                                      //TODO: we need to get the genres from another request
+                                       gameDetails.genres[0],
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                                  ),*/
+                                 /* Padding(
+                                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                                     child: Text(
-                                      // gameDetails.genres[1],
-                                      'Battle Royale',
-                                      style: TextStyle(
+                                       gameDetails.genres[1],
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 0, 20, 0),
+                                  ),*/
+                                 /* Padding(
+                                    padding: const EdgeInsets.fromLTRB(4, 0, 20, 0),
                                     child: Text(
-                                      // gameDetails.genres[2],
-                                      'Shooter',
-                                      style: TextStyle(
+                                       gameDetails.genres[2],
+                                      style: const TextStyle(
                                         fontFamily: 'Inter',
                                         color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
                                         letterSpacing: 0,
                                         decoration: TextDecoration.underline,
                                       ),
                                     ),
-                                  ),
+                                  ),*/
                                 ],
                               ),
                             Padding(
@@ -803,7 +805,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       padding: const EdgeInsets.only(right: 5), // Space between buttons
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          print('Add to wishlist pressed ...');
+                                          wishlist.addToWishlist(gameDetails.id.toString());
+                                          //TODO: add functionality to change button text
                                         },
                                         style: ButtonStyle(
                                           backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF00DF67)), // Replace with your desired color
@@ -820,7 +823,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         child: const Text(
                                           'Add to wishlist',
                                           style: TextStyle(
-                                            fontFamily: 'Readex Pro',
+                                            fontFamily: 'Inter',
                                             color: Colors.black, // Replace with your desired text color
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -835,7 +838,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       padding: const EdgeInsets.only(left: 5), // Space between buttons
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          print('Add to currently playing pressed ...');
+                                          currentlyPlaying.addToCurrentlyPlaying(gameDetails.id.toString());
+                                          // TODO : change text to show its added
                                         },
                                         style: ButtonStyle(
                                           backgroundColor: WidgetStateProperty.all<Color>(Colors.white), // Replace with your desired button background color
