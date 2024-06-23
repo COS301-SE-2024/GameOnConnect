@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/game_library_filter.dart';
 import '../models/game.dart';
-//import 'package:gameonconnect/pages/game_details_page.dart';
+import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 
