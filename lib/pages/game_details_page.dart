@@ -1245,7 +1245,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           if (await canLaunchUrl(url)) {
                                             await launchUrl(url);
                                           } else {
-                                            print('Could not launch $url');
                                             throw 'Could not launch $url';
                                           }
                                         },
