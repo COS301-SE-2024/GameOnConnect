@@ -1,16 +1,16 @@
 class Filter {
   String value;
-  String slug;
+  String id;
 
   Filter({
     required this.value,
-    required this.slug
+    required this.id
   });
 
   factory Filter.fromJson(Map<String, dynamic> json) {
     return Filter(
       value: json['name'],
-      slug: json['slug']
+      id: json['id'].toString()
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../components/game_library_filter.dart';
 import '../models/game.dart';
-import 'package:expandable/expandable.dart';
 //import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -90,8 +89,7 @@ class _GameLibraryState extends State<GameLibrary> {
   //   );
   // }
 
-  Future<void> _runApiRequest(String request) async {
-    
+  Future<void> _runApiRequest(String request) async {   
     if (_isLoading) return;
     setState(() {
       _isLoading = true;
@@ -107,6 +105,7 @@ class _GameLibraryState extends State<GameLibrary> {
           .toList();
 
       setState(() {
+        _games.clear();
         _games.addAll(games);
         _currentPage++;
         _isLoading = false;
@@ -316,7 +315,7 @@ class _GameLibraryState extends State<GameLibrary> {
                   onPressed: () {
                     Navigator.push(
                       context, 
-                      MaterialPageRoute(builder: (context) => const FilterPage()),
+                      MaterialPageRoute(builder: (context) => FilterPage(apiFunction: _runApiRequest)),
                     );
                   },
                   child: Row(

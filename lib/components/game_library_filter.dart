@@ -4,7 +4,8 @@ import 'package:gameonconnect/model/game_filters.dart';
 import 'package:gameonconnect/model/game_filter.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({Key? key}) : super(key: key);
+  final Function(String) apiFunction;
+  const FilterPage({Key? key, required this.apiFunction}) : super(key: key);
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -127,7 +128,7 @@ class _FilterPageState extends State<FilterPage> {
         ]);
   }
 
-  void _applyFilters() {
+  void _applyFilters() async {
     String concatenatedFilterString = [
       _platformFilterKey.currentState?.getFilterString() ?? '',
       _genreFilterKey.currentState?.getFilterString() ?? '',
@@ -135,7 +136,8 @@ class _FilterPageState extends State<FilterPage> {
       _tagFilterKey.currentState?.getFilterString() ?? '',
     ].where((filter) => filter.isNotEmpty).join();
 
-    print(concatenatedFilterString);
+    await widget.apiFunction(concatenatedFilterString);
+    Navigator.pop(context);
   }
 }
 
@@ -241,8 +243,8 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
           unselectedWidgetColor: Theme.of(context).colorScheme.tertiary,
         ),
         child: CheckboxListTile(
-          value: _selectedValues.contains(value.slug),
-          onChanged: (newValue) => _onCheckboxChanged(newValue, value.slug),
+          value: _selectedValues.contains(value.id),
+          onChanged: (newValue) => _onCheckboxChanged(newValue, value.id),
           title: Text(value.value),
           tileColor: Theme.of(context).colorScheme.surface,
           activeColor: Theme.of(context).colorScheme.primary,
