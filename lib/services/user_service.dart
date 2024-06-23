@@ -88,8 +88,9 @@ class UserService {
 
 
   // Accept friend request
-  Future<void> acceptFriendRequest(String currentUserId, String requesterUserId) async {
+  Future<void> acceptFriendRequest(String? currentUserId , String requesterUserId) async {
     try {
+      
       // Add each other to friends list
       await _firestore.collection('friends').doc(currentUserId).update({
         'friends': FieldValue.arrayUnion([requesterUserId]),
@@ -106,7 +107,7 @@ class UserService {
   }
 
   //reject friend request
-  Future<void> rejectFriendRequest(String currentUserId, String requesterUserId) async {
+  Future<void> rejectFriendRequest(String? currentUserId, String requesterUserId) async {
     try {
       // Add each other to friends list
       await _firestore.collection('friends').doc(currentUserId).update({
