@@ -317,10 +317,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                 ),
-                                Flexible(child: Padding(
+                                const Flexible(child: Padding(
                                   padding:
-                                      const EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
-                                  child: Container(
+                                      EdgeInsetsDirectional.fromSTEB(10, 12, 10, 0),
+                                 /* child: Container(
                                     width: 110,
                                     height: 75,
                                     decoration: BoxDecoration(
@@ -371,7 +371,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ),*/
                                 ),
                                 ),
                               ],
@@ -438,6 +438,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             topRight: Radius.circular(10),
                                           ),
                                           child: Image.network(
+                                            // TODO : use the get screenshots function for this
                                             // gameDetails.screenshots[0],
                                             'https://picsum.photos/seed/194/600',
                                             width: 80,
