@@ -181,123 +181,157 @@ class _ProfileState extends State<Profile> {
                     color: Colors.black54,
                     thickness: 1.0,
                   ),
+
                   Expanded(
                     child: TabBarView(
                       children: [
-                        FutureBuilder<List<Map<String, dynamic>?>>(
-                          future: FriendServices().getFriends().then(
-                              (friendIds) => Future.wait(friendIds.map((id) =>
-                                  FriendServices()
-                                      .fetchFriendProfileData(id)))),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (snapshot.hasData) {
-                              List<Map<String, dynamic>?> friendsProfiles =
-                                  snapshot.data!;
-                              return ListView.separated(
-                                itemCount: friendsProfiles.length,
-                                itemBuilder: (context, index) {
-                                  var friendProfile = friendsProfiles[index];
-                                  if (friendProfile != null) {
-                                    return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 20),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                          color:
-                                              Color.fromARGB(255, 0, 255, 117),
-                                          width: 1.0,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      padding: EdgeInsets.all(10),
-                                      child: Row(
-                                        children: [
-                                          ClipOval(
-                                            // ignore: sized_box_for_whitespace
-                                            child: Container(
-                                              height: 45,
-                                              width: 45,
-                                              child: CachedNetworkImage(
-                                                //cacheManager: customCacheManager,
-                                                imageUrl: friendProfile[
-                                                    'profilePicture'],
-                                                imageBuilder:
-                                                    (context, imageProvider) =>
+                        SingleChildScrollView(
+                          child: FutureBuilder<List<Map<String, dynamic>?>>(
+                            future: FriendServices().getFriends().then(
+                                (friendIds) => Future.wait(friendIds.map((id) =>
+                                    FriendServices()
+                                        .fetchFriendProfileData(id)))),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData) {
+                                List<Map<String, dynamic>?> friendsProfiles =
+                                    snapshot.data!;
+                                return Column(children: [
+                                  ElevatedButton.icon(
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/requests');
+                                    },
+                                    label: Text(
+                                      "Connection Requests",
+                                      style: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Colors.blue),
+                                    ),
+                                  ),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: friendsProfiles.length,
+                                    itemBuilder: (context, index) {
+                                      var friendProfile =
+                                          friendsProfiles[index];
+                                      if (friendProfile != null) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.surface,
+                                            border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 128, 216, 50),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            children: [
+                                              ClipOval(
+                                                // ignore: sized_box_for_whitespace
+                                                child: Container(
+                                                  height: 45,
+                                                  width: 45,
+                                                  child: CachedNetworkImage(
+                                                    //cacheManager: customCacheManager,
+                                                    imageUrl: friendProfile[
+                                                        'profilePicture'],
+                                                    imageBuilder: (context,
+                                                            imageProvider) =>
                                                         Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
                                                     ),
+                                                    fit: BoxFit.cover,
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    fadeInDuration: Duration(
+                                                        milliseconds: 0),
+                                                    fadeOutDuration: Duration(
+                                                        milliseconds: 0),
+                                                    maxHeightDiskCache: 45,
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            Icon(Icons.error),
                                                   ),
                                                 ),
-                                                fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                                fadeInDuration:
-                                                    Duration(milliseconds: 0),
-                                                fadeOutDuration:
-                                                    Duration(milliseconds: 0),
-                                                maxHeightDiskCache: 45,
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Icon(Icons.error),
                                               ),
-                                            ),
+                                              SizedBox(width: 10),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      friendProfile[
+                                                              'profileName'] ??
+                                                          'No Name Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      friendProfile[
+                                                              'username'] ??
+                                                          'No Username Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.message),
+                                                onPressed: () {
+                                                  //here the message functionality will come in
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.more_vert),
+                                                onPressed: () {
+                                                  //here the remove friend option should be displayed.
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(width: 10),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(friendProfile[
-                                                        'profileName'] ??
-                                                    'No Name Found'),
-                                                Text(
-                                                    friendProfile['username'] ??
-                                                        'No Username Found'),
-                                              ],
-                                            ),
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.message),
-                                            onPressed: () {
-                                              //here the message functionality will come in
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.more_vert),
-                                            onPressed: () {
-                                              //here the remove friend option should be displayed.
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    return Container(
-                                      padding: EdgeInsets.all(10),
-                                      child: Text('Profile not found'),
-                                    );
-                                  }
-                                },
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(height: 10),
-                              );
-                            } else {
-                              return Text('No friends found.');
-                            }
-                          },
+                                        );
+                                      } else {
+                                        return Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Text('Profile not found'),
+                                        );
+                                      }
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 10),
+                                  )
+                                ]);
+                              } else {
+                                return Text('No friends found.');
+                              }
+                            },
+                          ),
                         ),
                         SingleChildScrollView(
                           child: Column(
@@ -307,7 +341,8 @@ class _ProfileState extends State<Profile> {
                               const SizedBox(height: 8),
                               //game tags
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Column(
                                     children: <Widget>[
@@ -345,7 +380,8 @@ class _ProfileState extends State<Profile> {
                                             horizontal: 20, vertical: 7),
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
-                                          borderRadius: BorderRadius.circular(25),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
                                         ),
                                         child: const Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -371,7 +407,8 @@ class _ProfileState extends State<Profile> {
                                             horizontal: 20, vertical: 7),
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
-                                          borderRadius: BorderRadius.circular(25),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
                                         ),
                                         child: const Row(
                                           mainAxisSize: MainAxisSize.min,
