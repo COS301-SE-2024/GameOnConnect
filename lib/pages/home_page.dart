@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/pages/friends_page.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/pages/profile_page.dart';
 import 'package:gameonconnect/pages/events_and_gaming_sessions.dart';
 import 'package:gameonconnect/pages/events_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -123,6 +126,31 @@ class _DevelopmentButtons extends StatelessWidget {
             textColor: Color.fromARGB(255, 24, 24, 24),
             child: Text('Feed Page'),
           ),
+          MaterialButton(
+  onPressed: () {
+    // Get the current user's ID
+    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+     //print("current user from home: $currentUserId");
+    if (currentUserId != null) {
+      // Pass the current user's ID to the search friends page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          //builder: (context) => FriendSearchPage(currentUserId),
+         
+          builder: (context) => FriendSearch(currentUserId),
+        ),
+      );
+    } else {
+      // Handle the case where there is no logged-in user
+      // ignore: avoid_print
+      print('No user is currently logged in.');
+    }
+  },
+  color: const Color.fromARGB(255, 128, 216, 50),
+  textColor: Color.fromARGB(255, 24, 24, 24),
+  child: Text('search friends '),
+),
         ],
       ),
     );
