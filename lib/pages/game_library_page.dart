@@ -56,6 +56,15 @@ class _GameLibraryState extends State<GameLibrary> {
     super.dispose();
   }
 
+  void _navigateToGameDetails(Game game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameDetailsPage(gameId: game.id),
+      ),
+    );
+  }
+
   void _onSearchEntered(String query) {
     setState(() {
       _searchQuery = query;
@@ -143,6 +152,7 @@ class _GameLibraryState extends State<GameLibrary> {
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: TextField(
+                    key: Key('searchTextField'),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 15, right: 15),
                       labelText: 'Search',
@@ -360,7 +370,9 @@ class _GameLibraryState extends State<GameLibrary> {
           child: Column(children: [
             SizedBox(
               height: 120,
-              child: Row(
+              child: InkWell(
+                onTap:  () => _navigateToGameDetails(game),
+                child:Row(
                 children: [
                   // ignore: sized_box_for_whitespace
                   Container(
@@ -444,6 +456,7 @@ class _GameLibraryState extends State<GameLibrary> {
                     ],
                   )
                 ],
+              ),
               ),
             ),
           ]),
