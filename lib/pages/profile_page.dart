@@ -1,65 +1,36 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:gameonconnect/services/friend_service.dart';
+import 'package:gameonconnect/services/profile_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
 
-    //Function to query FireStore
-    Future<Map<String, dynamic>?> fetchProfileData() async {
-      try {
-        FirebaseFirestore db = FirebaseFirestore.instance;
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final currentUser = auth.currentUser;
+  @override
+  State<Profile> createState() => _ProfileState();
+}
 
-        if (currentUser != null) {
-          DocumentSnapshot doc = await db.collection("profile_data").doc(currentUser.uid).get();
+class _ProfileState extends State<Profile> {
+  // Create an instance of ProfileService
+  final profileService = ProfileService();
 
-          if (doc.exists) {
-            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-            Map<String,dynamic> userInfo = data['username'] as Map <String, dynamic>;
-            String profileName = data['name'] ?? 'Profile name';
-            String username = userInfo['profile_name'] ?? 'username';
-            String profilePicture = data['profile_picture'] ?? '';
+  /*static final customCacheManager = CacheManager(
+    Config(
+      'userProfilePicturesCache',
+      stalePeriod: Duration(days: 21),
+    ),
+  );*/
 
-            String profilePictureUrl = ''; 
-
-            if (profilePicture.isNotEmpty) {
-              try {
-                // Use refFromURL for a full URL
-                Reference storageRef = FirebaseStorage.instance.refFromURL(profilePicture);
-                profilePictureUrl = await storageRef.getDownloadURL();
-              } catch (e) {
-                return null;
-              }
-            }
-
-            return {
-              'profileName': profileName,
-              'username': username,
-              'profilePicture': profilePictureUrl
-            };
-          } else {
-            return null;
-          }
-        } else {
-          return null;
-        }
-      } catch (e) {
-        return null;
-      }
-    }
-
-    @override
-    Widget build(BuildContext context)
-    {
-      return FutureBuilder<Map<String, dynamic>?>(
-        future: fetchProfileData(),
-        builder: (context, snapshot) {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: profileService.fetchProfileData(),
+      builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
+            key: Key('loadingScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -67,6 +38,7 @@ class Profile extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           return Scaffold(
+            key: Key('errorScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -74,205 +46,414 @@ class Profile extends StatelessWidget {
           );
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
+            key: Key('emptyDataScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
             body: const Center(child: Text('No profile data found.')),
           );
-      } else {
-        var profileData = snapshot.data!;
-        String profileName = profileData['profileName'];
-        String username = profileData['username'];
-        String profilePicture = profileData['profilePicture'];
+        } else {
+          var profileData = snapshot.data!;
+          String profileName = profileData['profileName'];
+          String username = profileData['username'];
+          String profilePicture = profileData['profilePicture'];
+          String profileBanner = profileData['profileBanner'];
 
-        return DefaultTabController(
-          length: 3, 
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Profile'),
-              leading:IconButton(
-                  icon: const Icon(Icons.keyboard_backspace),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/edit-profile');
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/customize');
-                  },
-                ),
-              ], 
-              bottom: const TabBar(
-                tabs: [
-                  Tab(icon: Icon(Icons.people), text: 'Friends'),
-                  Tab(icon: Icon(Icons.gamepad), text: 'Games'),
-                  Tab(icon: Icon(Icons.event), text: 'Events'),
+          return DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Profile'),
+                actions: [
+                  Builder(
+                    builder: (context) {
+                      return IconButton(
+                        key: Key('settings_icon_button'),
+                        icon: const Icon(Icons.settings),
+                        onPressed: () {
+                          //Scaffold.of(context).openEndDrawer();
+                          Navigator.pushNamed(context, '/settings');
+                        },
+                      );
+                    },
+                  ),
                 ],
-              ),
-            ),
-            body: Column(
-              children: <Widget>[
-                Stack(
-                  alignment: Alignment.bottomCenter,
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    //banner
-                    Container(
-                      height: 170,
-                      color: Colors.grey[300], // Placeholder for banner image
-                    ),
-                    
-                    Positioned(
-                      bottom: -50, // Half of the CircleAvatar's radius to align it properly
-                      left: 50,
-                      //profile picture
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey, // Placeholder for profile image
-                        backgroundImage: NetworkImage(profilePicture),
-                        child: profilePicture.isEmpty ? CircularProgressIndicator() : null,
-                      ),
-                    ),
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(icon: Icon(Icons.people), text: 'Friends'),
+                    Tab(icon: Icon(Icons.gamepad), text: 'Games'),
+                    Tab(icon: Icon(Icons.event), text: 'Events'),
                   ],
                 ),
-                const SizedBox(height: 50),
-                const SizedBox(height: 8),
-                Align(
-                alignment: Alignment.centerLeft,
-                child:    Padding(
-                  padding: EdgeInsets.only(left: 30), 
-                  child: Text(profileName, style: TextStyle(fontSize: 24)),
+              ),
+              body: Column(
+                children: <Widget>[
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
+                      //banner
+                      // ignore: sized_box_for_whitespace
+                      Container(
+                        height: 170,
+                        width: double.infinity,
+                        child: CachedNetworkImage(
+                          //cacheManager: customCacheManager,
+                          imageUrl: profileBanner,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          fadeInDuration: Duration(milliseconds: 0),
+                          fadeOutDuration: Duration(milliseconds: 0),
+                          maxHeightDiskCache: 170,
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
+                      ),
+                      Positioned(
+                        bottom:
+                            -50, // Half of the CircleAvatar's radius to align it properly
+                        left: 50,
+                        //profile picture
+                        child: ClipOval(
+                          // ignore: sized_box_for_whitespace
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: CachedNetworkImage(
+                              //cacheManager: customCacheManager,
+                              imageUrl: profilePicture,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              fadeInDuration: Duration(milliseconds: 0),
+                              fadeOutDuration: Duration(milliseconds: 0),
+                              maxHeightDiskCache: 100,
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Align(
-                alignment: Alignment.centerLeft,
-                child:    Padding(
-                  padding: EdgeInsets.only(left: 30), 
-                  child: Text(username, style: TextStyle(fontSize: 20)),
+                  const SizedBox(height: 50),
+                  const SizedBox(height: 8),
+
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Text(profileName, style: TextStyle(fontSize: 24)),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-          
-                //friends, games, events
-                
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Text(username, style: TextStyle(fontSize: 20)),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  //friends, games, events
+
                   const Divider(
-                  color: Colors.black54, 
-                  thickness: 1.0, 
-                ),
-                Expanded(
-                  child: TabBarView(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Center(child: Text('5 Friends')), // Replace with actual Friends content
-                        Column(
-                          children: <Widget>[
-                            const Text('Game Name', style: TextStyle(fontSize: 24)),
-                            const SizedBox(height: 8),
-                            //game tags
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), // Add some padding around the text
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300], 
-                                        borderRadius: BorderRadius.circular(25), // The rounded ends of the rectangle
-                                      ),
-                                      child:const Row(
-                                        mainAxisSize: MainAxisSize.min, 
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle, // dot icon
-                                            size: 8.0, 
-                                            color: Colors.black, 
-                                          ),
-                                          SizedBox(width: 8), // Space between the icon and the text
-                                          Text('Action'),
-                                        ],
-                                      ),
+                    color: Colors.black54,
+                    thickness: 1.0,
+                  ),
+
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        SingleChildScrollView(
+                          child: FutureBuilder<List<Map<String, dynamic>?>>(
+                            future: FriendServices().getFriends("friends").then(
+                                (friendIds) => Future.wait(friendIds.map((id) =>
+                                    FriendServices()
+                                        .fetchFriendProfileData(id)))),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (snapshot.hasData) {
+                                List<Map<String, dynamic>?> friendsProfiles =
+                                    snapshot.data!;
+                                return Column(children: [
+                                  ElevatedButton.icon(
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/requests');
+                                    },
+                                    label: Text(
+                                      "Connection Requests",
+                                      style: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Colors.blue),
                                     ),
-                                  ],
-                                ),
-                                Column(
-                                children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), 
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300], 
-                                        borderRadius: BorderRadius.circular(25), 
-                                      ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min, 
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle, 
-                                            size: 8.0, 
-                                            color: Colors.black, 
+                                  ),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    itemCount: friendsProfiles.length,
+                                    itemBuilder: (context, index) {
+                                      var friendProfile =
+                                          friendsProfiles[index];
+                                      if (friendProfile != null) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.surface,
+                                            border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 128, 216, 50),
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          SizedBox(width: 8), 
-                                          Text('Sept 2022',),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: 
-                                    <Widget>[
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7), 
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[300], 
-                                          borderRadius: BorderRadius.circular(25), 
-                                        ),
-                                        child: 
-                                          const Row(
-                                            mainAxisSize: MainAxisSize.min, 
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                size: 8.0, 
-                                                color: Colors.black, 
+                                          padding: EdgeInsets.all(10),
+                                          child: Row(
+                                            children: [
+                                              ClipOval(
+                                                // ignore: sized_box_for_whitespace
+                                                child: Container(
+                                                  height: 45,
+                                                  width: 45,
+                                                  child: CachedNetworkImage(
+                                                    //cacheManager: customCacheManager,
+                                                    imageUrl: friendProfile[
+                                                        'profilePicture'],
+                                                    imageBuilder: (context,
+                                                            imageProvider) =>
+                                                        Container(
+                                                      decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    fadeInDuration: Duration(
+                                                        milliseconds: 0),
+                                                    fadeOutDuration: Duration(
+                                                        milliseconds: 0),
+                                                    maxHeightDiskCache: 45,
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            Icon(Icons.error),
+                                                  ),
+                                                ),
                                               ),
-                                              SizedBox(width: 8), 
-                                              Text('MOBA',),
+                                              SizedBox(width: 10),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      friendProfile[
+                                                              'profileName'] ??
+                                                          'No Name Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      friendProfile[
+                                                              'username'] ??
+                                                          'No Username Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.message),
+                                                onPressed: () {
+                                                  //here the message functionality will come in
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.more_vert),
+                                                onPressed: () {
+                                                  //here the remove friend option should be displayed.
+                                                },
+                                              ),
                                             ],
                                           ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Text('Profile not found'),
+                                        );
+                                      }
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 10),
+                                  )
+                                ]);
+                              } else {
+                                return Text('No friends found.');
+                              }
+                            },
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              const Text('Game Name',
+                                  style: TextStyle(fontSize: 24)),
+                              const SizedBox(height: 8),
+                              //game tags
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical:
+                                                7), // Add some padding around the text
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(
+                                              25), // The rounded ends of the rectangle
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle, // dot icon
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    8), // Space between the icon and the text
+                                            Text('Action'),
+                                          ],
+                                        ),
                                       ),
                                     ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Sept 2022',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'MOBA',
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               const SizedBox(height: 30),
-                              //game discription
+                              //game description
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: 5), 
-                                  child: Text('Game Description', style: TextStyle(fontSize: 18)),
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text('Game Description',
+                                      style: TextStyle(fontSize: 18)),
                                 ),
                               ),
                               const SizedBox(height: 10),
                               const Align(
                                 alignment: Alignment.centerLeft,
-                                  child:  Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                  child: Text('Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...', style: TextStyle(fontSize: 14)),
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                      'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+                                      style: TextStyle(fontSize: 14)),
+                                ),
                               ),
-                            ),  
-                          ],
+                            ],
+                          ),
                         ),
-                        Center(child: Text('Events')), // Replace with actual Events content
+                        Center(
+                            child: Text(
+                                'Events')), // Replace with actual Events content
                       ],
                     ),
                   ),
