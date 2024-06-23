@@ -17,6 +17,7 @@ jobs:
 
       - name: Create index.html file with secrets
         run: |
+          mkdir -p build/web
           cat <<EOF > ./build/web/index.html
           <!DOCTYPE html>
           <html>
