@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-class Wishlist {
+class CurrentlyPlaying {
 
 
-  Future<List<String>> getWishlist() async {
+
+  Future<List<String>> getCurrentlyPlaying() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
@@ -14,13 +15,11 @@ class Wishlist {
       currentUser = auth.currentUser;
 
       DocumentSnapshot<Map<String, dynamic>> snapshot =
-
-          await db.collection('profile_data').doc(currentUser?.uid).get();
-
+      await db.collection('profile_data').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<String> wishlist = List<String>.from(snapshot.data()!['wishlist']);
-        return wishlist;
+        List<String> currentlyPlaying = List<String>.from(snapshot.data()!['currently_playing']);
+        return currentlyPlaying;
       } else {
         return [];
       }
@@ -29,16 +28,16 @@ class Wishlist {
     }
   }
 
-  Future<void> addToWishlist(String gameID) async {
+  Future<void> addToCurrentlyPlaying(String gameID) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
       User? currentUser;
       currentUser = auth.currentUser;
 
-      List<String> oldList =await  getWishlist();
+      List<String> oldList =await  getCurrentlyPlaying();
       oldList.add(gameID);
-      final data = {'wishlist': oldList};
+      final data = {'currently_playing': oldList};
       await db
           .collection('profile_data')
           .doc(currentUser?.uid)
@@ -48,7 +47,7 @@ class Wishlist {
     }
   }
 
-  Future<void> removeFromWishlist(String gameID) async {
+  Future<void> removeFromCurrentlyPlaying(String gameID) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
@@ -56,7 +55,7 @@ class Wishlist {
       db.collection('profile_data')
           .doc(auth.currentUser?.uid)
           .update({
-        'wishlist': FieldValue.arrayRemove([gameID])
+        'currently_playing': FieldValue.arrayRemove([gameID])
 
       });
     } catch (e) {
@@ -65,3 +64,4 @@ class Wishlist {
   }
 
 }
+

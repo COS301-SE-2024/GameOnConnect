@@ -52,7 +52,6 @@ app.*.map.json
 /windows/flutter/generated_plugins.cmake
 
 
-/web/index.html
 /linux/flutter/generated_plugins.cmake
 /linux/flutter/generated_plugin_registrant.cc
 
@@ -60,3 +59,4 @@ app.*.map.json
 /ios/Runner/GoogleService-Info.plist
 
 /web/index.html
+

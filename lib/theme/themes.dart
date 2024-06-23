@@ -9,7 +9,6 @@ ThemeData darkTheme = ThemeData(
   )
 );
 
-
 ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     surface: Color.fromRGBO(255, 255, 255, 1),

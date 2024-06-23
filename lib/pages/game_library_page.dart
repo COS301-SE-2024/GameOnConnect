@@ -6,8 +6,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/game.dart';
 import 'package:expandable/expandable.dart';
+import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -116,8 +117,18 @@ class _GameLibraryState extends State<GameLibrary> {
     //   throw Exception('Failed to load games');
     // }
   }
+  
+  void _navigateToGameDetails(Game game) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameDetailsPage(gameId: game.id),
+      ),
+    );
+  }
 
   Future<void> _runApiRequest(String request) async {
+    
     if (_isLoading) return;
     setState(() {
       _isLoading = true;
