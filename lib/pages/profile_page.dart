@@ -259,7 +259,7 @@ class _ProfileState extends State<Profile> {
                                       Navigator.pushNamed(context, '/requests');
                                     },
                                     label: Text(
-                                      "Requests",
+                                      "Connection Requests",
                                       style: TextStyle(
                                           fontFamily: 'Inter',
                                           color: Colors.blue),
@@ -276,10 +276,10 @@ class _ProfileState extends State<Profile> {
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: Theme.of(context).colorScheme.surface,
                                             border: Border.all(
                                               color: Color.fromARGB(
-                                                  255, 0, 255, 117),
+                                                  255, 128, 216, 50),
                                               width: 1.0,
                                             ),
                                             borderRadius:
@@ -331,12 +331,24 @@ class _ProfileState extends State<Profile> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(friendProfile[
-                                                            'profileName'] ??
-                                                        'No Name Found'),
-                                                    Text(friendProfile[
-                                                            'username'] ??
-                                                        'No Username Found'),
+                                                    Text(
+                                                      friendProfile[
+                                                              'profileName'] ??
+                                                          'No Name Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      friendProfile[
+                                                              'username'] ??
+                                                          'No Username Found',
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
