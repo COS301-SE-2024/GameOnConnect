@@ -15,11 +15,6 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
-      - name: Build Flutter web app
-        run: |
-          flutter config --enable-web
-          flutter build web
-
       - name: Create index.html file with secrets
         run: |
           cat <<EOF > ./build/web/index.html
@@ -96,6 +91,11 @@ jobs:
           </html>
           EOF
         shell: bash
+      
+      - name: Build Flutter web app
+        run: |
+          flutter config --enable-web
+          flutter build web
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
