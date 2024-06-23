@@ -14,6 +14,7 @@ class GameDetails {
   final int playtime;
   final List screenshots;
   final List publisher;
+  final double rating;
 
   GameDetails({
     required this.id,
@@ -29,6 +30,7 @@ class GameDetails {
     required this.playtime,
     required this.screenshots,
     required this.publisher,
+    required this.rating,
   });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class GameDetails {
       playtime: json['playtime'] ?? 0,
       screenshots: json['screenshots'] ?? [],
       publisher: json['publishers'] ?? [],
+      rating: json['rating'] ?? 0.0,
     );
   }
 }

@@ -220,10 +220,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                    child: const Column(
+                                    child:  Column(
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
-                                      Align(
+                                      const Align(
                                           alignment: Alignment(0, -1),
                                           child: Padding(
                                             padding: EdgeInsets.all(8),
@@ -240,14 +240,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                         ),
                                         Align(
-                                          alignment: AlignmentDirectional(0, 1),
+                                          alignment: const AlignmentDirectional(0, 1),
                                           child:  Padding(
-                                            padding: EdgeInsets.all(4),
+                                            padding:  const EdgeInsets.all(4),
                                             child:  Text(
-                                              "hello",
-                                                //gameDetails.publisher[0]['name'],
+                                                gameDetails.rating.toString(),
                                                 //ratings
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.primary
                                                 fontSize: 16,
@@ -278,14 +277,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                    child: const Column(
+                                    child:  Column(
                                       mainAxisSize: MainAxisSize.max,
-                                      children: [
+                                      children: [ const
                                         Align(
                                           alignment: AlignmentDirectional(0, -1),
                                           child: Padding(
                                             padding: EdgeInsets.all(8),
-                                            child: Text(
+                                            child:  Text(
                                               'SCORE',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
@@ -302,8 +301,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           child: Padding(
                                             padding: EdgeInsets.all(6),
                                             child: Text(
-                                              '96',   //gameDetails.score,
-                                              style: TextStyle(
+                                              gameDetails.score.toString(),
+                                              //gameDetails.score,
+                                              style: const TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Colors.black,// Direct color value or use Theme.of(context).colorScheme.primary
                                                 fontSize: 16,
