@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/model/game_details.dart';
 import 'package:http/http.dart' as http;
@@ -509,18 +510,23 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Text(
-                                // gameDetails.description,
-                                'Fortnite is a third-person shooter game where up to 100 players compete to be the last person or team standing. You can compete alone or join a team of up to four. You progress through the game by exploring the island, collecting weapons, building fortifications and engaging in combat with other players.',
-                                style: TextStyle(
+                             Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Html(
+                                 data:gameDetails.description,
+                                  //TODO : remove spanish text
+                                style: {
+                                   "body" :Style(
                                   fontFamily: 'Inter',
-                                  color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
+                                  color: Colors.black,
+                                  // Direct color value or use Theme.of(context).colorScheme.onBackground
                                   letterSpacing: 0,
-                                  fontSize: 16, // Adjust font size as needed
-                                  fontWeight: FontWeight.normal, // Adjust font weight as needed
-                                ),
+                                  fontSize: FontSize(16.0),
+                                  // Adjust font size as needed
+                                  fontWeight: FontWeight.normal,
+                                  // Adjust font weight as needed
+                                   ),
+                                }
                               ),
                             ),
                             Padding(
