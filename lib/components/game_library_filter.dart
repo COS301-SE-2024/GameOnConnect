@@ -16,10 +16,10 @@ class _FilterPageState extends State<FilterPage> {
   final ExpandableController _genreExpandableController =
       ExpandableController();
   final ExpandableController _tagExpandableController = ExpandableController();
-  final ExpandableController _metacriticExpandableController =
-      ExpandableController();
-  final ExpandableController _releaseExpandableController =
-      ExpandableController();
+  // final ExpandableController _metacriticExpandableController =
+  //     ExpandableController();
+  // final ExpandableController _releaseExpandableController =
+  //     ExpandableController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _FilterPageState extends State<FilterPage> {
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               )),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 0,
         ),
@@ -53,17 +53,17 @@ class _FilterPageState extends State<FilterPage> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.vertical,
               children: [
-                ExpandableFilter(platformExpandableController: _platformExpandableController, filterName: "Platforms", filterValues: ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _genreExpandableController, filterName: "Genres", filterValues: ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _storeExpandableController, filterName: "Stores", filterValues: ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _tagExpandableController, filterName: "Tags", filterValues: ["PC", "Xbox", "PlayStation"],),
+                ExpandableFilter(platformExpandableController: _platformExpandableController, filterName: "Platforms", filterValues: const ["PC", "Xbox", "PlayStation"]),
+                ExpandableFilter(platformExpandableController: _genreExpandableController, filterName: "Genres", filterValues: const ["PC", "Xbox", "PlayStation"]),
+                ExpandableFilter(platformExpandableController: _storeExpandableController, filterName: "Stores", filterValues: const ["PC", "Xbox", "PlayStation"]),
+                ExpandableFilter(platformExpandableController: _tagExpandableController, filterName: "Tags", filterValues: const ["PC", "Xbox", "PlayStation"],),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: FilledButton(
                     onPressed: () {
-                      print("Filter clicked");
+                      // print("Filter clicked");
                     },
-                    child: Text("Filter"),
+                    child: const Text("Filter"),
                   ),
                 )
               ]);
@@ -71,7 +71,7 @@ class _FilterPageState extends State<FilterPage> {
 }
 
 class ExpandableFilter extends StatefulWidget {
-  ExpandableFilter({
+  const ExpandableFilter({
     super.key,
     required ExpandableController platformExpandableController,
     required this.filterName,
@@ -107,8 +107,8 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Container(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
           width: double.infinity,
           child: ExpandableNotifier(
             controller: widget._platformExpandableController,
@@ -116,7 +116,7 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
               header: Text(
                 _filterName,
               ),
-              collapsed: Container(
+              collapsed: const SizedBox(
                 width: 0,
                 height: 0,
               ),
