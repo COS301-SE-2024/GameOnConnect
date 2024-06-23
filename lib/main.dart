@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/pages/customize_page.dart';
 import 'package:gameonconnect/pages/game_library_page.dart';
 import 'package:gameonconnect/pages/getting_started_page.dart';
-import 'package:gameonconnect/pages/profile_management_page.dart';
 import 'package:gameonconnect/pages/settings.dart';
 import 'package:gameonconnect/theme/theme_provider.dart';
 import 'package:gameonconnect/pages/sign_up.dart';
@@ -101,7 +100,6 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
-        '/profile_management' : (context) => ProfileManagement(),
         '/settings' : (context) => Options()
       },
       initialRoute: '/',

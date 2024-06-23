@@ -1,23 +1,36 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:gameonconnect/services/friend_service.dart';
 import 'package:gameonconnect/services/profile_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
-class Profile extends StatelessWidget {
-  Profile({super.key});
+  @override
+  State<Profile> createState() => _ProfileState();
+}
 
+class _ProfileState extends State<Profile> {
   // Create an instance of ProfileService
   final profileService = ProfileService();
+
+  /*static final customCacheManager = CacheManager(
+    Config(
+      'userProfilePicturesCache',
+      stalePeriod: Duration(days: 21),
+    ),
+  );*/
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: profileService.fetchProfileData(),
-
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
+            key: Key('loadingScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -25,6 +38,7 @@ class Profile extends StatelessWidget {
           );
         } else if (snapshot.hasError) {
           return Scaffold(
+            key: Key('errorScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -32,6 +46,7 @@ class Profile extends StatelessWidget {
           );
         } else if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
+            key: Key('emptyDataScaffold'),
             appBar: AppBar(
               title: const Text('Profile'),
             ),
@@ -53,6 +68,7 @@ class Profile extends StatelessWidget {
                   Builder(
                     builder: (context) {
                       return IconButton(
+                        key: Key('settings_icon_button'),
                         icon: const Icon(Icons.settings),
                         onPressed: () {
                           //Scaffold.of(context).openEndDrawer();
@@ -70,57 +86,6 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
-              /*endDrawer: Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    DrawerHeader(
-
-                        child: Text("Settings")),
-                    ListTile(
-                      leading: Icon(Icons.dashboard_customize,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Customize Profile'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/customize');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.edit,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Edit Profile'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/edit-profile');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.question_mark,
-                      color: Color.fromARGB(255, 128, 216, 50),),
-                      title: Text('Help centre'),
-                      onTap: () {
-                        Navigator.pop(context); // closing the drawer
-                        Navigator.pushNamed(context, '/help');
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.close,
-                        color: Colors.red,),
-                        title: Text("Log out"),
-                        onTap: () {
-                          Navigator.pop(context);// closing the drawer
-                          FirebaseAuth.instance.signOut().then((value) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Login()),
-                            );
-                          });
-                        }
-                    )
-                  ],
-                ),
-              ),*/
               body: Column(
                 children: <Widget>[
                   Stack(
@@ -128,35 +93,71 @@ class Profile extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: <Widget>[
                       //banner
+                      // ignore: sized_box_for_whitespace
                       Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                          image: NetworkImage(profileBanner),
-                          fit: BoxFit.cover,
-                        )),
                         height: 170,
+                        width: double.infinity,
+                        child: CachedNetworkImage(
+                          //cacheManager: customCacheManager,
+                          imageUrl: profileBanner,
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          fadeInDuration: Duration(milliseconds: 0),
+                          fadeOutDuration: Duration(milliseconds: 0),
+                          maxHeightDiskCache: 170,
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                        ),
                       ),
-
                       Positioned(
                         bottom:
                             -50, // Half of the CircleAvatar's radius to align it properly
                         left: 50,
                         //profile picture
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor:
-                              Colors.grey, // Placeholder for profile image
-                          backgroundImage: NetworkImage(profilePicture),
-                          child: profilePicture.isEmpty
-                              ? CircularProgressIndicator()
-                              : null,
+                        child: ClipOval(
+                          // ignore: sized_box_for_whitespace
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: CachedNetworkImage(
+                              //cacheManager: customCacheManager,
+                              imageUrl: profilePicture,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              fadeInDuration: Duration(milliseconds: 0),
+                              fadeOutDuration: Duration(milliseconds: 0),
+                              maxHeightDiskCache: 100,
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 50),
                   const SizedBox(height: 8),
-                  
 
                   Align(
                     alignment: Alignment.centerLeft,
@@ -191,7 +192,7 @@ class Profile extends StatelessWidget {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return CircularProgressIndicator();
+                              return Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (snapshot.hasData) {
@@ -203,30 +204,55 @@ class Profile extends StatelessWidget {
                                   var friendProfile = friendsProfiles[index];
                                   if (friendProfile != null) {
                                     return Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 20),
                                       decoration: BoxDecoration(
-                                        color: Colors.white, 
+                                        color: Colors.white,
                                         border: Border.all(
-                                          color: Color.fromARGB(255, 0, 255, 117), 
-                                          width: 1.0, 
+                                          color:
+                                              Color.fromARGB(255, 0, 255, 117),
+                                          width: 1.0,
                                         ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       padding: EdgeInsets.all(10),
                                       child: Row(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage: friendProfile[
-                                                            'profilePicture'] !=
-                                                        null &&
-                                                    friendProfile[
-                                                            'profilePicture'] !=
-                                                        ''
-                                                ? NetworkImage(friendProfile[
-                                                    'profilePicture'])
-                                                : AssetImage(
-                                                        'assets/default_profile.png')
-                                                    as ImageProvider,
+                                          ClipOval(
+                                            // ignore: sized_box_for_whitespace
+                                            child: Container(
+                                              height: 45,
+                                              width: 45,
+                                              child: CachedNetworkImage(
+                                                //cacheManager: customCacheManager,
+                                                imageUrl: friendProfile[
+                                                    'profilePicture'],
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                                fadeInDuration:
+                                                    Duration(milliseconds: 0),
+                                                fadeOutDuration:
+                                                    Duration(milliseconds: 0),
+                                                maxHeightDiskCache: 45,
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(width: 10),
                                           Expanded(
@@ -234,7 +260,8 @@ class Profile extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(friendProfile['profileName'] ??
+                                                Text(friendProfile[
+                                                        'profileName'] ??
                                                     'No Name Found'),
                                                 Text(
                                                     friendProfile['username'] ??
@@ -251,7 +278,7 @@ class Profile extends StatelessWidget {
                                           IconButton(
                                             icon: Icon(Icons.more_vert),
                                             onPressed: () {
-                                              //here the remove friend option should be displayed. 
+                                              //here the remove friend option should be displayed.
                                             },
                                           ),
                                         ],
@@ -264,126 +291,129 @@ class Profile extends StatelessWidget {
                                     );
                                   }
                                 },
-                                separatorBuilder: (context, index) => SizedBox(height: 10),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 10),
                               );
                             } else {
                               return Text('No friends found.');
                             }
                           },
                         ),
-                        Column(
-                          children: <Widget>[
-                            const Text('Game Name',
-                                style: TextStyle(fontSize: 24)),
-                            const SizedBox(height: 8),
-                            //game tags
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical:
-                                              7), // Add some padding around the text
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(
-                                            25), // The rounded ends of the rectangle
+                        SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              const Text('Game Name',
+                                  style: TextStyle(fontSize: 24)),
+                              const SizedBox(height: 8),
+                              //game tags
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical:
+                                                7), // Add some padding around the text
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(
+                                              25), // The rounded ends of the rectangle
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle, // dot icon
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(
+                                                width:
+                                                    8), // Space between the icon and the text
+                                            Text('Action'),
+                                          ],
+                                        ),
                                       ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle, // dot icon
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(
-                                              width:
-                                                  8), // Space between the icon and the text
-                                          Text('Action'),
-                                        ],
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Sept 2022',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 7),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(25),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 7),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[300],
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        child: const Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.circle,
+                                              size: 8.0,
+                                              color: Colors.black,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'MOBA',
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle,
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'Sept 2022',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 7),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.circle,
-                                            size: 8.0,
-                                            color: Colors.black,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'MOBA',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            //game description
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text('Game Description',
-                                    style: TextStyle(fontSize: 18)),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: Text(
-                                    'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-                                    style: TextStyle(fontSize: 14)),
+                              const SizedBox(height: 30),
+                              //game description
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text('Game Description',
+                                      style: TextStyle(fontSize: 18)),
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                      'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
+                                      style: TextStyle(fontSize: 14)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Center(
                             child: Text(

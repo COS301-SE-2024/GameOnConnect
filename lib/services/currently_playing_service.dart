@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class CurrentlyPlaying {
 
 
+
   Future<List<String>> getCurrentlyPlaying() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
@@ -61,4 +62,6 @@ class CurrentlyPlaying {
       //return [];
     }
   }
+
 }
+

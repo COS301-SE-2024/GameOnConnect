@@ -14,7 +14,9 @@ class Wishlist {
       currentUser = auth.currentUser;
 
       DocumentSnapshot<Map<String, dynamic>> snapshot =
-      await db.collection('profile_data').doc(currentUser?.uid).get();
+
+          await db.collection('profile_data').doc(currentUser?.uid).get();
+
 
       if (snapshot.exists && snapshot.data() != null) {
         List<String> wishlist = List<String>.from(snapshot.data()!['wishlist']);
@@ -61,4 +63,5 @@ class Wishlist {
       //return [];
     }
   }
+
 }
