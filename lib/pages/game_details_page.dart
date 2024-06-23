@@ -1243,7 +1243,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         onPressed: () async {
                                           final Uri url = Uri.parse(gameDetails.website);
                                           if (await canLaunchUrl(url)) {
-                                            await launchUrl(url);
+                                            await launchUrl(url, mode: LaunchMode.externalApplication);
                                           } else {
                                             throw 'Could not launch $url';
                                           }
