@@ -1,8 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/game_filters.dart';
+import 'package:gameonconnect/model/game_filter.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({super.key});
+  final Function(String) apiFunction;
+  const FilterPage({super.key, required this.apiFunction});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -16,71 +19,142 @@ class _FilterPageState extends State<FilterPage> {
   final ExpandableController _genreExpandableController =
       ExpandableController();
   final ExpandableController _tagExpandableController = ExpandableController();
-  // final ExpandableController _metacriticExpandableController =
-  //     ExpandableController();
-  // final ExpandableController _releaseExpandableController =
-  //     ExpandableController();
+
+  late Future<FilterList> _filterListFuture;
+
+  final GlobalKey<_ExpandableFilterState> _platformFilterKey =
+      GlobalKey<_ExpandableFilterState>();
+  final GlobalKey<_ExpandableFilterState> _genreFilterKey =
+      GlobalKey<_ExpandableFilterState>();
+  final GlobalKey<_ExpandableFilterState> _storeFilterKey =
+      GlobalKey<_ExpandableFilterState>();
+  final GlobalKey<_ExpandableFilterState> _tagFilterKey =
+      GlobalKey<_ExpandableFilterState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _filterListFuture = FilterList.getInstance();
+  }
+
+  void _updateFilterString() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () async {
-              //pop this page;
-            },
-          ),
-          title: Text('Filter',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurface,
-              )),
-          actions: const [],
-          centerTitle: false,
-          elevation: 0,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            Navigator.pop(context);
+          },
         ),
-        body: SafeArea(
-            top: true,
-            child: filterList(context)));
+        title: Text(
+          'Filter',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        actions: const [],
+        centerTitle: false,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<FilterList>(
+          future: _filterListFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              return filterList(context, snapshot.data!);
+            } else {
+              return const Center(child: Text('No data'));
+            }
+          },
+        ),
+      ),
+    );
   }
 
-  ListView filterList(BuildContext context) {
+  ListView filterList(BuildContext context, FilterList filterList) {
     return ListView(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              children: [
-                ExpandableFilter(platformExpandableController: _platformExpandableController, filterName: "Platforms", filterValues: const ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _genreExpandableController, filterName: "Genres", filterValues: const ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _storeExpandableController, filterName: "Stores", filterValues: const ["PC", "Xbox", "PlayStation"]),
-                ExpandableFilter(platformExpandableController: _tagExpandableController, filterName: "Tags", filterValues: const ["PC", "Xbox", "PlayStation"],),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: FilledButton(
-                    onPressed: () {
-                      // print("Filter clicked");
-                    },
-                    child: const Text("Filter"),
-                  ),
-                )
-              ]);
+        padding: EdgeInsets.zero,
+        scrollDirection: Axis.vertical,
+        children: [
+          ExpandableFilter(
+            key: _platformFilterKey,
+            platformExpandableController: _platformExpandableController,
+            filterName: "Platforms",
+            filterValues: filterList.platformFilters.toList(),
+            onFilterChanged: _updateFilterString,
+          ),
+          ExpandableFilter(
+            key: _genreFilterKey,
+            platformExpandableController: _genreExpandableController,
+            filterName: "Genres",
+            filterValues: filterList.genreFilters.toList(),
+            onFilterChanged: _updateFilterString,
+          ),
+          ExpandableFilter(
+            key: _storeFilterKey,
+            platformExpandableController: _storeExpandableController,
+            filterName: "Stores",
+            filterValues: filterList.storeFilters.toList(),
+            onFilterChanged: _updateFilterString,
+          ),
+          ExpandableFilter(
+            key: _tagFilterKey,
+            platformExpandableController: _tagExpandableController,
+            filterName: "Tags",
+            filterValues: filterList.tagFilters.toList(),
+            onFilterChanged: _updateFilterString,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: _applyFilters,
+              child: const Text("Filter"),
+            ),
+          ),
+        ]);
+  }
+
+  void _applyFilters() async {
+    String concatenatedFilterString = [
+      _platformFilterKey.currentState?.getFilterString() ?? '',
+      _genreFilterKey.currentState?.getFilterString() ?? '',
+      _storeFilterKey.currentState?.getFilterString() ?? '',
+      _tagFilterKey.currentState?.getFilterString() ?? '',
+    ].where((filter) => filter.isNotEmpty).join();
+
+    await widget.apiFunction(concatenatedFilterString);
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
   }
 }
 
 class ExpandableFilter extends StatefulWidget {
   const ExpandableFilter({
     super.key,
-    required ExpandableController platformExpandableController,
+    required this.platformExpandableController,
     required this.filterName,
     required this.filterValues,
-  }) : _platformExpandableController = platformExpandableController;
+    required this.onFilterChanged,
+  });
 
-  final ExpandableController _platformExpandableController;
+  final ExpandableController platformExpandableController;
   final String filterName;
-  final List<String> filterValues;
+  final List<Filter> filterValues;
+  final VoidCallback onFilterChanged;
 
   @override
   State<ExpandableFilter> createState() => _ExpandableFilterState();
@@ -88,13 +162,32 @@ class ExpandableFilter extends StatefulWidget {
 
 class _ExpandableFilterState extends State<ExpandableFilter> {
   late String _filterName;
-  late List<String> _filterValues;
+  late List<Filter> _filterValues;
+  final List<String> _selectedValues = [];
 
   @override
   void initState() {
     super.initState();
-    _filterName = widget.filterName; 
-    _filterValues = widget.filterValues; 
+    _filterName = widget.filterName;
+    _filterValues = widget.filterValues;
+  }
+
+  String getFilterString() {
+    if (_selectedValues.isEmpty) {
+      return "";
+    }
+    return "&${_filterName.toLowerCase()}=${_selectedValues.join(',')}";
+  }
+
+  void _onCheckboxChanged(bool? newValue, String value) {
+    setState(() {
+      if (newValue == true) {
+        _selectedValues.add(value);
+      } else {
+        _selectedValues.remove(value);
+      }
+      widget.onFilterChanged();
+    });
   }
 
   @override
@@ -111,28 +204,21 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
         child: SizedBox(
           width: double.infinity,
           child: ExpandableNotifier(
-            controller: widget._platformExpandableController,
+            controller: widget.platformExpandableController,
             child: ExpandablePanel(
-              header: Text(
-                _filterName,
-              ),
-              collapsed: const SizedBox(
-                width: 0,
-                height: 0,
-              ),
+              header: Text(_filterName),
+              collapsed: const SizedBox(width: 0, height: 0),
               expanded: ListView(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                children: 
-                  _buildCheckboxList(context, _filterValues),
+                children: _buildCheckboxList(context, _filterValues),
               ),
               theme: const ExpandableThemeData(
                 tapHeaderToExpand: true,
                 tapBodyToExpand: false,
                 tapBodyToCollapse: false,
-                headerAlignment:
-                    ExpandablePanelHeaderAlignment.center,
+                headerAlignment: ExpandablePanelHeaderAlignment.center,
                 hasIcon: true,
                 expandIcon: Icons.chevron_right,
                 collapseIcon: Icons.keyboard_arrow_down,
@@ -144,41 +230,30 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
     );
   }
 
-  List<Widget> _buildCheckboxList(BuildContext context, List<String> values) {
+  List<Widget> _buildCheckboxList(BuildContext context, List<Filter> values) {
     return values.map((value) {
       return Theme(
-                  data: ThemeData(
-                    checkboxTheme: CheckboxThemeData(
-                      visualDensity: VisualDensity.compact,
-                      materialTapTargetSize:
-                          MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    unselectedWidgetColor:
-                        Theme.of(context).colorScheme.tertiary,
-                  ),
-                  child: CheckboxListTile(
-                    value: false,
-                    onChanged: (newValue) async {
-                      //change the checkbox state
-                    },
-                    title: Text(
-                      value,
-                    ),
-                    tileColor:
-                        Theme.of(context).colorScheme.surface,
-                    activeColor:
-                        Theme.of(context).colorScheme.primary,
-                    checkColor:
-                        Theme.of(context).colorScheme.surface,
-                    dense: true,
-                    controlAffinity:
-                        ListTileControlAffinity.trailing,
-                  ),
-                );
+        data: ThemeData(
+          checkboxTheme: CheckboxThemeData(
+            visualDensity: VisualDensity.compact,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+          ),
+          unselectedWidgetColor: Theme.of(context).colorScheme.tertiary,
+        ),
+        child: CheckboxListTile(
+          value: _selectedValues.contains(value.id),
+          onChanged: (newValue) => _onCheckboxChanged(newValue, value.id),
+          title: Text(value.value),
+          tileColor: Theme.of(context).colorScheme.surface,
+          activeColor: Theme.of(context).colorScheme.primary,
+          checkColor: Theme.of(context).colorScheme.surface,
+          dense: true,
+          controlAffinity: ListTileControlAffinity.trailing,
+        ),
+      );
     }).toList();
-    
   }
 }

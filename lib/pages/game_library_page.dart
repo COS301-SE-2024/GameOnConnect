@@ -4,8 +4,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../components/game_library_filter.dart';
 import '../models/game.dart';
-import 'package:expandable/expandable.dart';
 import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -33,14 +33,12 @@ class _GameLibraryState extends State<GameLibrary> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   String? _sortValue = '';
-  bool _pcSelected = false;
   List<String> selectedPlatforms = [];
 
   @override
   void initState() {
     super.initState();
     _loadGames(_currentPage);
-    _getFilters();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -82,51 +80,6 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
-  Future<void> _filterGames() async {
-    setState(() {
-      if (_pcSelected) {
-        selectedPlatforms.add('pc');
-      }
-    });
-  }
-
-  Future<void> _getFilters() async {
-    // var response = await http.get(Uri.parse(
-    //     'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
-
-    // if (response.statusCode == 200) {
-    //   final jsonData = jsonDecode(response.body);
-    //   final results = jsonData['results'];
-
-    //   // Create a new list to hold the formatted strings
-    //   List<String> genres = results.map<String>((genre) {
-    //     String name = genre['name'];
-    //     String slug = genre['slug'];
-    //     return 'name:$name,slug:$slug';
-    //   }).toList();
-
-    // } else {
-    //   throw Exception('Failed to load games');
-    // }
-
-    // response = await http.get(Uri.parse(
-    //     'https://api.rawg.io/api/developers?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
-
-    // if (response.statusCode == 200) {
-    //   final jsonData = jsonDecode(response.body);
-    //   final results = jsonData['results'];
-
-    //   // Create a new list to hold the formatted strings
-    //   List<String> stores = results.map<String>((store) {
-    //     String name = store['name'];
-    //     String slug = store['slug'];
-    //     return 'name:$name,slug:$slug';
-    //   }).toList();
-    // } else {
-    //   throw Exception('Failed to load games');
-    // }
-  }
-  
   // void _navigateToGameDetails(Game game) {
   //   Navigator.push(
   //     context,
@@ -136,8 +89,7 @@ class _GameLibraryState extends State<GameLibrary> {
   //   );
   // }
 
-  Future<void> _runApiRequest(String request) async {
-    
+  Future<void> _runApiRequest(String request) async {   
     if (_isLoading) return;
     setState(() {
       _isLoading = true;
@@ -153,6 +105,7 @@ class _GameLibraryState extends State<GameLibrary> {
           .toList();
 
       setState(() {
+        _games.clear();
         _games.addAll(games);
         _currentPage++;
         _isLoading = false;
@@ -194,7 +147,6 @@ class _GameLibraryState extends State<GameLibrary> {
         child: Scaffold(
             key: _scaffoldKey,
             appBar: appBar(context),
-            endDrawer: filterDrawer(context),
             body: Column(
               children: [
                 Padding(
@@ -230,161 +182,6 @@ class _GameLibraryState extends State<GameLibrary> {
                     child: TabBarView(children: [gameList(), friendList()]))
               ],
             )));
-  }
-
-  Drawer filterDrawer(BuildContext context) {
-    return Drawer(
-            elevation: 0,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.vertical,
-              children: [
-                Container(
-                  width: 100,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      color: Color(0xFF2A2A2A),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Align(
-                    alignment: AlignmentDirectional(0, 0),
-                    child: Text(
-                      'Filter',
-                    ),
-                  ),
-                ),
-                ExpandableNotifier(
-                    child: ExpandablePanel(
-                        header: Text('Platforms'),
-                        collapsed: SizedBox(width: 100, height: 0),
-                        expanded: ListView(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            children: [
-                              Theme(
-                                data: ThemeData(
-                                  checkboxTheme: CheckboxThemeData(
-                                    visualDensity: VisualDensity.compact,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(25),
-                                    ),
-                                  ),
-                                  unselectedWidgetColor: Theme.of(context)
-                                      .colorScheme
-                                      .secondary,
-                                ),
-                                child: CheckboxListTile(
-                                  value: _pcSelected,
-                                  onChanged: (newValue) async {
-                                    setState(
-                                        () => _pcSelected = newValue!);
-                                  },
-                                  title: Text('PC'),
-                                  tileColor: Colors.white,
-                                  activeColor: Theme.of(context)
-                                      .colorScheme
-                                      .primary,
-                                  checkColor: Colors.white,
-                                  dense: true,
-                                  controlAffinity:
-                                      ListTileControlAffinity.trailing,
-                                ),
-                              )
-                            ]))),
-                ListTile(
-                  title: Text(
-                    'Platforms',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Developers',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Publishers',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Genres',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Stores',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Tags',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Metacritic',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  title: Text(
-                    'Release',
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20,
-                  ),
-                  dense: false,
-                ),
-                FilledButton(onPressed: () async {
-                  await _filterGames();
-                },
-                child: Text("Filter"))
-              ],
-            ),
-          );
   }
 
   Padding sortFilter(BuildContext context) {
@@ -516,8 +313,11 @@ class _GameLibraryState extends State<GameLibrary> {
             Row(
               children: [
                 TextButton(
-                  onPressed: () async {
-                    _scaffoldKey.currentState!.openEndDrawer();
+                  onPressed: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => FilterPage(apiFunction: _runApiRequest)),
+                    );
                   },
                   child: Row(
                     children: [
