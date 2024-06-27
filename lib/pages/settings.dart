@@ -17,7 +17,7 @@ class Options extends StatelessWidget {
           'Settings\n',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.surface,
             fontSize: 24,
             letterSpacing: 0,
             fontWeight: FontWeight.bold,
@@ -25,7 +25,7 @@ class Options extends StatelessWidget {
         ),
         leading: IconButton(
           key: const Key('back_button'),
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.surface,
           icon: const Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.of(context).pop();
