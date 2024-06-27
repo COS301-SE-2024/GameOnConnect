@@ -120,7 +120,7 @@ class Options extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       title: Text(
-                        key: Key('Help_Centre'),
+                        key: const Key('Help_Centre'),
                         'Help Centre',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
