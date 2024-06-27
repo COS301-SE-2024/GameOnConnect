@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class EditProfilePage extends StatelessWidget {
   // ignore: use_super_parameters
   const EditProfilePage({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,9 +124,17 @@ class  EditProfileFormState  extends State<EditProfileForm> {
                   if (_formKey.currentState?.validate() == true) {
                     _formKey.currentState?.save();
                     // Handle save logic here
-                    editProfile(_username,_firstName,_lastName,_bio,_birthday, _isPrivate);
+                    editProfile(_username,_firstName,_lastName,_bio,_birthday, _isPrivate).then((_) {
+                      Navigator.of(context).pop();
+                    }).catchError((error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to update profile: $error'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    });
                   }
-                  Navigator.of(context).pop();
                 },
                 child: const Text('Save Changes'),
               ),
@@ -245,20 +250,20 @@ class  EditProfileFormState  extends State<EditProfileForm> {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
       if (currentUser != null) {
-        if (username != "") {
+        if (username.isNotEmpty) {
           final data = { "username.profile_name" :username};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
-        if(firstname != "")
+        if(firstname.isEmpty)
         {
             final data = { "name" :firstname};
             await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
-        if (lastName != "") {
+        if (lastName.isNotEmpty) {
           final data = { "surname" :lastName};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
-        if (bio != ""){
+        if (bio.isNotEmpty){
           final data = { "bio" :bio};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
@@ -268,6 +273,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
       }
     }catch (e)
     {
+      throw Exception('Error updating profile: $e');
       /*setState(() {
         _counter = "Error updating profile $e"; // Update counter with error message
       });*/
