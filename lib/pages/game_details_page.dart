@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_details.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:gameonconnect/services/currently_playing_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -31,13 +34,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   }
 
   Future<GameDetails> _fetchGameDetails(int gameId) async {
-    final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games/$gameId?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
-
-    if (response.statusCode == 200) {
-      return GameDetails.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load game details');
+    bool result = await InternetConnection().hasInternetAccess;
+    if (result) {
+      try{
+      final response = await http.get(Uri.parse(
+          'https://api.rawg.io/api/games/$gameId?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
+      if (response.statusCode == 200) {
+        return GameDetails.fromJson(jsonDecode(response.body));
+      }
+        throw Exception('Failed to load game details');
+      }
+      on SocketException {
+        throw Exception('No Internet connection');
+      }
+    }else {
+      throw Exception('Not connected to the internet');
     }
   }
 
@@ -64,7 +75,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
+              Navigator.pop(context);
+              return Center();
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available'));
             } else {

@@ -8,7 +8,7 @@ import '../components/game_library_filter.dart';
 import '../models/game.dart';
 import 'package:gameonconnect/pages/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -56,13 +56,24 @@ class _GameLibraryState extends State<GameLibrary> {
     super.dispose();
   }
 
-  void _navigateToGameDetails(Game game) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GameDetailsPage(gameId: game.id),
-      ),
-    );
+  void _navigateToGameDetails(Game game) async {
+    bool result = await InternetConnection().hasInternetAccess;
+    if(result) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameDetailsPage(gameId: game.id),
+        ),
+      );
+    }else
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Unable to fetch data, check internet connection"),
+              backgroundColor: Colors.red,
+            ));
+      }
   }
 
   void _onSearchEntered(String query) {
@@ -371,7 +382,9 @@ class _GameLibraryState extends State<GameLibrary> {
             SizedBox(
               height: 120,
               child: InkWell(
-                onTap:  () => _navigateToGameDetails(game),
+                onTap:  () => {
+
+                  _navigateToGameDetails(game)},
                 child:Row(
                 children: [
                   // ignore: sized_box_for_whitespace
