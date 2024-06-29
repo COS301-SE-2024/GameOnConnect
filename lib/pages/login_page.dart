@@ -198,6 +198,9 @@ class _LoginState extends State<Login> {
                             signIn();
                             FirebaseAuth.instance.userChanges().listen((User? user) {
                              if(user != null){
+                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                   content: Text("Welcome to GameOnConnect"),
+                              backgroundColor: Theme.of(context).colorScheme.primary));
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -223,10 +226,10 @@ class _LoginState extends State<Login> {
                           } else {
                             passwordController.clear();
                             emailController.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Email or password incorrect"),
                               backgroundColor: Colors.red.shade300,
-                            ));
+                            ));*/
                           }
                         }
                       },
