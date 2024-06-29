@@ -14,7 +14,7 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon:  Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.secondary),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -22,7 +22,7 @@ class EditProfilePage extends StatelessWidget {
         title: CircleAvatar(
           key: const Key('profileAvatar'),
           radius: 25.0, // Doubled the radius
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           child: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -90,9 +90,9 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         child: Column(
           children: <Widget>[
             const SizedBox(height: 16.0),
-            const Text(
+             Text(
               'Edit Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.secondary),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32.0), // Increased space between header and inputs
@@ -117,8 +117,8 @@ class  EditProfileFormState  extends State<EditProfileForm> {
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[400],
-                  foregroundColor: Colors.black,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.surface,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -147,7 +147,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: Text(label),
+            child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
           ),
           Expanded(
             flex: 4,
@@ -155,11 +155,11 @@ class  EditProfileFormState  extends State<EditProfileForm> {
               key: key,
               onChanged: onSaved,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                fillColor: Colors.grey[400],
-                filled: true,
+
               ),
               maxLines: maxLines,
             ),
@@ -176,7 +176,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: Text(label),
+            child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
           ),
           Expanded(
             flex: 4,
@@ -197,14 +197,15 @@ class  EditProfileFormState  extends State<EditProfileForm> {
               },
               child: InputDecorator(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  fillColor: Colors.grey[400],
-                  filled: true,
+
                 ),
                 child: Text(
                   _birthday.toLocal().toString().split(' ')[0],
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
             ),
@@ -221,7 +222,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: Text(label),
+            child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
           ),
           Expanded(
             flex: 4,
@@ -229,9 +230,9 @@ class  EditProfileFormState  extends State<EditProfileForm> {
               key: key,
               value: _isPrivate,
               onChanged: onChanged,
-              activeColor: Colors.black,
-              inactiveTrackColor: Colors.grey,
-              inactiveThumbColor: Colors.black,
+              activeTrackColor :Theme.of(context).colorScheme.primary ,
+              inactiveTrackColor: Theme.of(context).colorScheme.surface,
+              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
             ),
           ),
         ],
