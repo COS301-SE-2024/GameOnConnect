@@ -6,9 +6,15 @@ class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
  // Stream for real-time updates
-  Stream<Friend> getCurrentUserFriendsStream(String uid) {
+  Stream<Friend?> getCurrentUserFriendsStream(String uid) {
     return _firestore.collection('friends').doc(uid).snapshots().map((snapshot) {
-      return Friend.fromMap(snapshot.data() as Map<String, dynamic>);
+      final data = snapshot.data();
+      if (data != null) {
+        // ignore: unnecessary_cast
+        return Friend.fromMap(data as Map<String, dynamic>);
+      } else {
+        throw Exception('Could not get friends');
+      }
     });
   }
 
@@ -46,10 +52,15 @@ class UserService {
   }
 
   // Fetch current user's friend data
-  Future<Friend> fetchCurrentUserFriends(String uid) async {
+  Future<Friend?> fetchCurrentUserFriends(String uid) async {
     try {
       DocumentSnapshot docSnapshot = await _firestore.collection('friends').doc(uid).get();
-      return Friend.fromMap(docSnapshot.data() as Map<String, dynamic>);
+      var data = docSnapshot.data();
+      if (data != null) {
+      return Friend.fromMap(data as Map<String, dynamic>);
+    } else {
+      throw Exception('EXCEPTION OCCURRED'); 
+    }
     } catch (e) {
       throw Exception('Error fetching friend data: $e');
     }
