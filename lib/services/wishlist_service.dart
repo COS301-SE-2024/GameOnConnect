@@ -36,13 +36,15 @@ class Wishlist {
       User? currentUser;
       currentUser = auth.currentUser;
 
-      List<String> oldList =await  getWishlist();
-      oldList.add(gameID);
-      final data = {'wishlist': oldList};
-      await db
-          .collection('profile_data')
-          .doc(currentUser?.uid)
-          .set(data, SetOptions(merge: true));
+      List<String> oldList = await getWishlist();
+      if (!oldList.contains(gameID)) {
+        oldList.add(gameID);
+        final data = {'wishlist': oldList};
+        await db
+            .collection('profile_data')
+            .doc(currentUser?.uid)
+            .set(data, SetOptions(merge: true));
+      }
     } catch (e) {
       //return 0;
     }
