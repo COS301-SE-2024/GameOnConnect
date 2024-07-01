@@ -10,6 +10,7 @@ class UserService {
     return _firestore.collection('friends').doc(uid).snapshots().map((snapshot) {
       final data = snapshot.data();
       if (data != null) {
+        // ignore: unnecessary_cast
         return Friend.fromMap(data as Map<String, dynamic>);
       } else {
         throw Exception('Could not get friends');
@@ -58,9 +59,7 @@ class UserService {
       if (data != null) {
       return Friend.fromMap(data as Map<String, dynamic>);
     } else {
-      print('This ERROR OCCURED');
-      throw Exception('ECECPTION OCCURED');
-      
+      throw Exception('EXCEPTION OCCURRED'); 
     }
     } catch (e) {
       throw Exception('Error fetching friend data: $e');
