@@ -284,7 +284,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
           final data = { "username.profile_name" :username};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
         }
-        if(firstname.isEmpty)
+        if(firstname.isNotEmpty)
         {
             final data = { "name" :firstname};
             await db.collection("profile_data").doc(currentUser.uid).update(data);
