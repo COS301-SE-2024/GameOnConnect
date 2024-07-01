@@ -176,14 +176,33 @@ class _FriendSearchState extends State<FriendSearch> {
       appBar: AppBar(
         title: const Text('Friends'),
       ),
-      body: StreamBuilder<Friend>(
+      body: StreamBuilder<Friend?>(
         stream: _userService.getCurrentUserFriendsStream(widget.currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            DelightToastBar(
+                    builder: (context) {
+                      return CustomToastCard(
+                        title: Text(
+                          'Please ensure that you have an active internet connection.',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      );
+                    },
+                    position: DelightSnackbarPosition.top,
+                    autoDismiss: true,
+                    snackbarDuration: Durations.extralong3)
+                .show(
+              // ignore: use_build_context_synchronously
+              context,
+            );
+            //return Center(child: Text('Error: ${snapshot.error}')); to see the error in the page
+            return const Center(child: Text('Please check your internet connection.'));
           }
           Friend? currentUserFriendData = snapshot.data;
           List<User> filteredUsers = _users
