@@ -196,7 +196,7 @@ class _FriendSearchState extends State<FriendSearch> {
                     },
                     position: DelightSnackbarPosition.top,
                     autoDismiss: true,
-                    snackbarDuration: Durations.extralong3)
+                    snackbarDuration: Durations.extralong4)
                 .show(
               // ignore: use_build_context_synchronously
               context,
