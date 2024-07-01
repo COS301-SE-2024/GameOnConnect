@@ -37,8 +37,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 128, 216, 50),
-        title: Text(widget.title),
+        backgroundColor:Theme.of(context).colorScheme.primary,
+        title: Text(widget.title, style: TextStyle(color:Theme.of(context).colorScheme.surface)),
       ),
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -77,9 +77,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildNavItem(IconData icon, int index) {
     bool isSelected = _selectedIndex == index;
-    Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.green;
-    Color defaultColor = Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.green;
-    Color highlightColor = Theme.of(context).brightness == Brightness.light ? const Color(0xFF00FF00) : const Color.fromARGB(255, 43, 43, 43);
+    Color selectedColor = Theme.of(context).brightness == Brightness.light ? Colors.black : Theme.of(context).colorScheme.primary;
+    Color defaultColor = Theme.of(context).brightness == Brightness.light ? Colors.grey : Theme.of(context).colorScheme.primary;
+    Color highlightColor = Theme.of(context).brightness == Brightness.light ? Theme.of(context).colorScheme.primary : const Color.fromARGB(255, 43, 43, 43);
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -122,8 +122,8 @@ class _DevelopmentButtons extends StatelessWidget {
             onPressed: () {
               
             },
-            color: const Color.fromARGB(255, 128, 216, 50),
-            textColor: Color.fromARGB(255, 24, 24, 24),
+            color: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.surface,
             child: Text('Feed Page'),
           ),
           MaterialButton(
@@ -147,8 +147,8 @@ class _DevelopmentButtons extends StatelessWidget {
       print('No user is currently logged in.');
     }
   },
-  color: const Color.fromARGB(255, 128, 216, 50),
-  textColor: Color.fromARGB(255, 24, 24, 24),
+  color: Theme.of(context).colorScheme.primary,
+  textColor: Theme.of(context).colorScheme.surface,
   child: Text('search friends '),
 ),
 

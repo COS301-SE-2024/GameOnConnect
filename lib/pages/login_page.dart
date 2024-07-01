@@ -57,7 +57,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -91,18 +90,17 @@ class _LoginState extends State<Login> {
                         key: Key('emailInput'),
                         controller: emailController,
                         decoration: InputDecoration(
-                          fillColor: Colors.grey[100],
-                          filled: true,
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 190, 190, 190),
+                              color: Theme.of(context).colorScheme.secondary
+                            ,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 0, 255, 117),
+                              color: Theme.of(context).colorScheme.primary,
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -138,18 +136,16 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          fillColor: Colors.grey[100],
-                          filled: true,
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 190, 190, 190),
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Color.fromARGB(255, 0, 255, 117),
+                              color: Theme.of(context).colorScheme.primary,
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -188,7 +184,7 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 0, 255, 117),
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
@@ -202,6 +198,9 @@ class _LoginState extends State<Login> {
                             signIn();
                             FirebaseAuth.instance.userChanges().listen((User? user) {
                              if(user != null){
+                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                   content: Text("Welcome to GameOnConnect"),
+                              backgroundColor: Theme.of(context).colorScheme.primary));
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -227,10 +226,10 @@ class _LoginState extends State<Login> {
                           } else {
                             passwordController.clear();
                             emailController.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Email or password incorrect"),
                               backgroundColor: Colors.red.shade300,
-                            ));
+                            ));*/
                           }
                         }
                       },
@@ -309,6 +308,7 @@ class _LoginState extends State<Login> {
                               Icon(
                                 FontAwesomeIcons.google,
                                 size: 20,
+                                color: Colors.black,
                               ),
                               SizedBox(width: 10),
                               Text(
