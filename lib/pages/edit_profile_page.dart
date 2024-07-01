@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class EditProfilePage extends StatelessWidget {
   // ignore: use_super_parameters
@@ -52,8 +54,7 @@ class  EditProfileFormState  extends State<EditProfileForm> {
   DateTime _birthday = DateTime.now();
   bool _isPrivate = false;
 
-
- /* Future<void> databaseAccess() async {
+/* Future<void> databaseAccess() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       CollectionReference profileRef = db.collection("profile_data");
@@ -120,27 +121,56 @@ class  EditProfileFormState  extends State<EditProfileForm> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState?.validate() == true) {
-                    _formKey.currentState?.save();
-                    // Handle save logic here
-                    editProfile(_username,_firstName,_lastName,_bio,_birthday, _isPrivate).then((_) {
-                      Navigator.of(context).pop();
-                    }).catchError((error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to update profile: $error'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    });
-                  }
-                },
+                onPressed: _saveProfile,
+                // onPressed: () {
+                //   if (_formKey.currentState?.validate() == true) {
+                //     _formKey.currentState?.save();
+                //     // Handle save logic here
+                //     editProfile(_username,_firstName,_lastName,_bio,_birthday, _isPrivate).then((_) {
+                //       Navigator.of(context).pop();
+                //     }).catchError((error) {
+                //       ScaffoldMessenger.of(context).showSnackBar(
+                //         SnackBar(
+                //           content: Text('Failed to update profile: $error'),
+                //           backgroundColor: Colors.red,
+                //         ),
+                //       );
+                //     });
+                //   }
+                // },
                 child: const Text('Save Changes'),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _saveProfile() async {
+    try {
+      bool result = await InternetConnection().hasInternetAccess;
+      // final result = await InternetAddress.lookup('google.com');
+      if (result) {        //(result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (_formKey.currentState?.validate() == true) {
+          _formKey.currentState?.save();
+          await editProfile(_username, _firstName, _lastName, _bio, _birthday, _isPrivate);
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
+        }
+      } else {
+        _showNoInternetSnackbar();
+      }
+    } on SocketException catch (_) {
+      _showNoInternetSnackbar();
+    }
+  }
+
+  void _showNoInternetSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('No internet connection'),
+        backgroundColor: Colors.red,
       ),
     );
   }
