@@ -18,16 +18,36 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
-  // late GameDetailsPageModel _model;
   late Future<GameDetails> _gameDetails;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final wishlist = Wishlist();
+
+  final Wishlist wishlist = Wishlist();
+  bool isInWishlist = false;
+  
   final currentlyPlaying = CurrentlyPlaying();
+  bool isInCurrPlaying = false;
+
   @override
   void initState() {
     super.initState();
     _gameDetails = _fetchGameDetails(widget.gameId);
+    checkWishlistStatus();
+    checkCurrPlayingStatus();
+  }
+
+  Future<void> checkWishlistStatus() async {
+    List<String> currentWishlist = await wishlist.getWishlist();
+    setState(() {
+      isInWishlist = currentWishlist.contains(widget.gameId.toString());
+    });
+  }
+
+  Future<void> checkCurrPlayingStatus() async {
+    List<String> currentCurrPlaying = await currentlyPlaying.getCurrentlyPlaying();
+    setState(() {
+      isInCurrPlaying = currentCurrPlaying.contains(widget.gameId.toString());
+    });
   }
 
   Future<GameDetails> _fetchGameDetails(int gameId) async {
@@ -123,7 +143,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               .colorScheme
                                               .secondary
                                               .withOpacity(
-                                                  0.1), // Adapt to your theme
+                                                  0.6), // Adapt to your theme
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
                                         ),
@@ -810,21 +830,45 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: const EdgeInsets.only(
                                         right: 5), // Space between buttons
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        wishlist.addToWishlist(
-                                            gameDetails.id.toString());
-                                         ScaffoldMessenger.of(context).showSnackBar(
+                                      onPressed: () async {
+                                        if (isInWishlist) {
+                                          await wishlist.removeFromWishlist(gameDetails.id.toString());
+                                          ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
-                                              content: Text(
-                                                  "Added to wishlist!"),
-                                              backgroundColor: Colors.green,
-                                            ));
-                                        //TODO: add functionality to change button text
+                                              content: Text("Removed from wishlist!"),
+                                              backgroundColor: Colors.grey
+                                            ),
+                                          );
+                                        } else {
+                                          await wishlist.addToWishlist(gameDetails.id.toString());
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text("Added to wishlist!"),
+                                              backgroundColor: Colors.grey,
+                                            ),
+                                          );
+                                        }
+                                        // setState(() {
+                                        //   isInWishlist = !isInWishlist;
+                                        // });
+                                        checkWishlistStatus(); 
                                       },
+                                    // child: ElevatedButton(
+                                      // onPressed: () {
+                                      //   wishlist.addToWishlist(
+                                      //       gameDetails.id.toString());
+                                      //    ScaffoldMessenger.of(context).showSnackBar(
+                                      //       const SnackBar(
+                                      //         content: Text(
+                                      //             "Added to wishlist!"),
+                                      //         backgroundColor: Colors.green,
+                                      //       ));
+                                      //   //TODO: add functionality to change button text
+                                      // },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
                                             .all<Color>(const Color(
-                                                0xFF00DF67)), // Replace with your desired color
+                                                0xFF00DF67)), 
                                         padding: WidgetStateProperty.all<
                                             EdgeInsetsGeometry>(
                                           const EdgeInsets.fromLTRB(
@@ -840,12 +884,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Add to wishlist',
-                                        style: TextStyle(
+                                      child: Text(
+                                        isInWishlist ? 'Remove from wishlist' : 'Add to wishlist',
+                                        // 'Add to wishlist',
+                                        style: const TextStyle(
                                           fontFamily: 'Inter',
                                           color: Colors
-                                              .black, // Replace with your desired text color
+                                              .black, 
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 0,
@@ -859,22 +904,46 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: const EdgeInsets.only(
                                         left: 5), // Space between buttons
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        currentlyPlaying.addToCurrentlyPlaying(
-                                            gameDetails.id.toString());
+                                    onPressed: () async {
+                                      if (isInCurrPlaying) {
+                                        await currentlyPlaying.removeFromCurrentlyPlaying(gameDetails.id.toString());
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  "Successfully added game to "
-                                                      "currently playing list"),
-                                              backgroundColor: Colors.green,
-                                            ));
-                                        // TODO : change text to show its added
-                                      },
+                                          const SnackBar(
+                                            content: Text("Removed from currently playing!"),
+                                            backgroundColor: Colors.grey
+                                          ),
+                                        );
+                                      } else {
+                                        await currentlyPlaying.addToCurrentlyPlaying(gameDetails.id.toString());
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text("Added to currently playing!"),
+                                            backgroundColor: Colors.grey,
+                                          ),
+                                        );
+                                      }
+                                      // setState(() {
+                                      //   isInWishlist = !isInWishlist;
+                                      // });
+                                      checkCurrPlayingStatus(); 
+                                    },
+                                    // child: ElevatedButton(
+                                    //   onPressed: () {
+                                    //     currentlyPlaying.addToCurrentlyPlaying(
+                                    //         gameDetails.id.toString());
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //         const SnackBar(
+                                    //           content: Text(
+                                    //               "Successfully added game to "
+                                    //                   "currently playing list"),
+                                    //           backgroundColor: Colors.green,
+                                    //         ));
+                                    //     // TODO : change text to show its added
+                                    //   },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
                                             .all<Color>(Colors
-                                                .white), // Replace with your desired button background color
+                                                .white), 
                                         padding: WidgetStateProperty.all<
                                             EdgeInsetsGeometry>(
                                           const EdgeInsets.fromLTRB(
@@ -889,15 +958,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                 BorderRadius.circular(8),
                                             side: const BorderSide(
                                               color: Color(
-                                                  0xFF00DF67), // Replace with your desired border color
+                                                  0xFF00DF67), 
                                               width: 1,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Add to currently playing',
-                                        style: TextStyle(
+                                      child: Text(
+                                        isInCurrPlaying ? 'Remove from currently playing' : 'Add to currently playing',
+                                        // 'Add to currently playing',
+                                        style: const TextStyle(
                                           fontFamily:
                                               'Inter', // Replace with your desired font family if needed
                                           color: Colors
