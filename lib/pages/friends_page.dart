@@ -38,11 +38,12 @@ class _FriendSearchState extends State<FriendSearch> {
         _users = users;
       });
     } catch (e) {
+      //'Could not fetch users'
       DelightToastBar(
               builder: (context) {
                 return ToastCard(
                   title: Text(
-                    'Could not fetch users',
+                    'An error occurred. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -66,11 +67,12 @@ class _FriendSearchState extends State<FriendSearch> {
         _users = users;
       });
     } catch (e) {
+      //'Error fetching data'
       DelightToastBar(
               builder: (context) {
                 return ToastCard(
                   title: Text(
-                    'Error fetching data',
+                    'An error occurred. Please retry',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -92,11 +94,12 @@ class _FriendSearchState extends State<FriendSearch> {
       await _userService.sendFriendRequest(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
+      //Error sending friend request.
       DelightToastBar(
               builder: (context) {
                 return ToastCard(
                   title: Text(
-                    'Error sending friend request',
+                    'Error sending friend request. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -118,11 +121,12 @@ class _FriendSearchState extends State<FriendSearch> {
       await _userService.undoFriendRequest(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
+      //'Error canceling friend request'
       DelightToastBar(
               builder: (context) {
                 return ToastCard(
                   title: Text(
-                    'Error canceling friend request',
+                    'An error occurred. Please retry',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -144,11 +148,12 @@ class _FriendSearchState extends State<FriendSearch> {
       await _userService.unfollowUser(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
+      //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
                 return ToastCard(
                   title: Text(
-                    'Error unfollowing user',
+                    'Error unfollowing user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
