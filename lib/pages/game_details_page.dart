@@ -10,6 +10,7 @@ import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:gameonconnect/services/currently_playing_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:gameonconnect/components/custom_toast_card.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -818,7 +819,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         //TODO: add functionality to change button text
                                         DelightToastBar(
                                                 builder: (context) {
-                                                  return ToastCard(
+                                                  return CustomToastCard(
                                                     title: Text(
                                                       'Added to wishlist!',
                                                       style: TextStyle(
@@ -883,7 +884,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         // TODO : change text to show its added
                                         DelightToastBar(
                                                 builder: (context) {
-                                                  return ToastCard(
+                                                  return CustomToastCard(
                                                     title: Text(
                                                       'Successfully added game to currently playing list',
                                                       style: TextStyle(

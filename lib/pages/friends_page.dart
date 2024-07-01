@@ -4,6 +4,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/components/custom_toast_card.dart';
 import '../services/user_service.dart';
 import '../models/user_model.dart';
 import '../models/friend_model.dart';
@@ -41,7 +42,7 @@ class _FriendSearchState extends State<FriendSearch> {
       //'Could not fetch users'
       DelightToastBar(
               builder: (context) {
-                return ToastCard(
+                return CustomToastCard(
                   title: Text(
                     'An error occurred. Please ensure that you have an active internet connection.',
                     style: TextStyle(
@@ -70,7 +71,7 @@ class _FriendSearchState extends State<FriendSearch> {
       //'Error fetching data'
       DelightToastBar(
               builder: (context) {
-                return ToastCard(
+                return CustomToastCard(
                   title: Text(
                     'An error occurred. Please retry',
                     style: TextStyle(
@@ -97,7 +98,7 @@ class _FriendSearchState extends State<FriendSearch> {
       //Error sending friend request.
       DelightToastBar(
               builder: (context) {
-                return ToastCard(
+                return CustomToastCard(
                   title: Text(
                     'Error sending friend request. Please ensure that you have an active internet connection.',
                     style: TextStyle(
@@ -124,7 +125,7 @@ class _FriendSearchState extends State<FriendSearch> {
       //'Error canceling friend request'
       DelightToastBar(
               builder: (context) {
-                return ToastCard(
+                return CustomToastCard(
                   title: Text(
                     'An error occurred. Please retry',
                     style: TextStyle(
@@ -151,7 +152,7 @@ class _FriendSearchState extends State<FriendSearch> {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return ToastCard(
+                return CustomToastCard(
                   title: Text(
                     'Error unfollowing user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
