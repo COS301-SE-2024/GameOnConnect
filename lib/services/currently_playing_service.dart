@@ -36,12 +36,14 @@ class CurrentlyPlaying {
       currentUser = auth.currentUser;
 
       List<String> oldList =await  getCurrentlyPlaying();
-      oldList.add(gameID);
-      final data = {'currently_playing': oldList};
-      await db
-          .collection('profile_data')
-          .doc(currentUser?.uid)
-          .set(data, SetOptions(merge: true));
+      if (!oldList.contains(gameID)) {
+        oldList.add(gameID);
+        final data = {'currently_playing': oldList};
+        await db
+            .collection('profile_data')
+            .doc(currentUser?.uid)
+            .set(data, SetOptions(merge: true));
+      } 
     } catch (e) {
       //return 0;
     }
