@@ -58,14 +58,14 @@ class UserService {
   // Send friend request
   Future<void> sendFriendRequest(String currentUserId, String targetUserId) async {
     try {
-      await _firestore.collection('friends').doc(currentUserId).update({
+      await _firestore.collection('friends').doc(currentUserId).set({
         'pending': FieldValue.arrayUnion([targetUserId])
-      });
+      } , SetOptions(merge: true));
 
       // Add to the target user's friend request list
-      await _firestore.collection('friends').doc(targetUserId).update({
+      await _firestore.collection('friends').doc(targetUserId).set({
         'friend_requests': FieldValue.arrayUnion([currentUserId])
-      });
+      } ,SetOptions(merge: true));
     } catch (e) {
       throw Exception('Error sending friend request: $e');
     }

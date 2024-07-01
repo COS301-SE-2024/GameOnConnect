@@ -81,10 +81,20 @@ class AuthService {
         "userID": currentUser.uid,
         "username": {"profile_name": _username, "unique_num": _nextNum},
         "visibility": true,
-        "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
+        "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
+        "wishlist" : [],
+        "currently_playing" : []
+      };
+
+      final friendData= <String, dynamic>{
+        "friend_requests": [],
+        "friends": [],
+        "pending":[],
+        "userID": currentUser.uid
       };
 
       db.collection("profile_data").doc(currentUser.uid).set(defaultData);
+      db.collection("friends").doc(currentUser.uid).set(friendData);
     }
   }
 
