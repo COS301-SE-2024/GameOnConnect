@@ -303,6 +303,13 @@ class  EditProfileFormState  extends State<EditProfileForm> {
       }
     }catch (e)
     {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error updating profile'),
+          backgroundColor: Colors.red,
+        ),
+      );
       throw Exception('Error updating profile: $e');
       /*setState(() {
         _counter = "Error updating profile $e"; // Update counter with error message
