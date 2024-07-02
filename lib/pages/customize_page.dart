@@ -23,7 +23,6 @@ class CustomizeProfilePage extends StatefulWidget {
 
 class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
-
   List<String> _genres = [];
   List<String> _selectedGenres = [];
   List<String> _selectedAge = [];
@@ -43,6 +42,13 @@ String _profileBannerUrl=''; // URL of the image stored in Firebase
   dynamic _profileBanner;
   String testBannerurl='';
 
+
+    setState(() {
+      _interests = (decoded['results'] as List)
+          .map((tag) => tag['name'].toString())
+          .toList();
+    });
+  }
 
   Future<void> _fetchGenresFromAPI() async {
   try {
@@ -79,8 +85,10 @@ Future<void> _fetchTagsFromAPI() async {
 }
 
 
-   Widget _displaySelectedItems(List<String> selectedItems, void Function(String) onDeleted) {
+  Widget _displaySelectedItems(
+      List<String> selectedItems, void Function(String) onDeleted) {
     return Wrap(
+
   spacing: 8.0, 
   children: selectedItems.map((item) => Chip(
     padding: const EdgeInsets.symmetric(vertical: 2),
@@ -102,8 +110,6 @@ Future<void> _fetchTagsFromAPI() async {
     });
   }
 
-  
-
   @override
 void initState() {
   super.initState();
@@ -117,6 +123,7 @@ void initState() {
 
 
 Future<void> _fetchUserSelectionsFromDatabase() async {
+
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
@@ -435,7 +442,10 @@ Widget build(BuildContext context) {
                 children: <Widget>[
                   const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Genre', style: TextStyle(fontSize: 15)), 
+              child: Text('Genre',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.secondary)),
             ),
             const SizedBox(width: 20),
                 InkWell(
@@ -463,20 +473,29 @@ Widget build(BuildContext context) {
     )
                 ],
               ),
+            )
+          ],
+        ),
 
-          const SizedBox(height: 8),
-           _displaySelectedItems(_selectedGenres, (item) => _deleteSelectedItem(item, _selectedGenres)),
+        const SizedBox(height: 8),
+        _displaySelectedItems(_selectedGenres,
+            (item) => _deleteSelectedItem(item, _selectedGenres)),
+
 
             const SizedBox(height: 20),
 
-             // age rating title
-             Row(
-                children: <Widget>[
-                  const Align(
+        // age rating title
+        Row(
+          children: <Widget>[
+            Align(
               alignment: Alignment.centerLeft,
-              child: Text('Age rating ', style: TextStyle(fontSize: 15)), 
+              child: Text('Age rating ',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.secondary)),
             ),
             const SizedBox(width: 20),
+
                 InkWell(
       onTap: () => _showSelectableDialog(
               'Select Age rating',
@@ -501,23 +520,33 @@ Widget build(BuildContext context) {
       ),
     ),
                 ],
+
               ),
-              const SizedBox(height: 8),
-                  _displaySelectedItems(_selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        _displaySelectedItems(
+            _selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
+
 
             const SizedBox(height: 20),
 
-            // social interest title
-          
-             Row(
-                children: <Widget>[
-                  const Align(
+
+        Row(
+          children: <Widget>[
+            Align(
               alignment: Alignment.centerLeft,
-              child: Text('Social interests ', style: TextStyle(fontSize: 15)), 
+              child: Text('Social interests ',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Theme.of(context).colorScheme.secondary)),
             ),
             const SizedBox(width: 20),
+
                 InkWell(
                 onTap: () =>_showSelectableDialog(
+
                 'Select Social interest',
                 _interests,
                 (results) {
@@ -526,6 +555,7 @@ Widget build(BuildContext context) {
                 },
                 'interest',
               ),
+
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -536,16 +566,14 @@ Widget build(BuildContext context) {
           Icons.add, 
           color: Colors.black, 
           size: 12, 
-        ),
-      ),
-    )
-                ],
-              ),  
-                  
-            
 
-            const SizedBox(height: 8),
-            _displaySelectedItems(_selectedInterests, (item) => _deleteSelectedItem(item, _selectedInterests)),
+
+        const SizedBox(height: 8),
+        _displaySelectedItems(_selectedInterests,
+            (item) => _deleteSelectedItem(item, _selectedInterests)),
+
+        // DARK MODE
+        const SizedBox(height: 20),
 
 
           const SizedBox(height: 20),
@@ -581,9 +609,11 @@ Widget build(BuildContext context) {
               onPressed: () {
                 _saveProfileData();
                 Navigator.of(context).pop();
+
               },
               child: const Text('Save Changes'),
             ),
+
           ),
         ],
       ),
@@ -657,6 +687,7 @@ Widget build(BuildContext context) {
 
   if (selectedItems.isNotEmpty) {
     onSelected(selectedItems);
+
   }
 }
 
@@ -669,7 +700,6 @@ void _saveProfileData() async {
     if (currentUser != null) {
       final db = FirebaseFirestore.instance;
       final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
-
       if (_profileImage != null) {
         String imageUrl;
         if (kIsWeb) {
@@ -684,6 +714,7 @@ void _saveProfileData() async {
         /*ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile picture updated successfully.')),
         );*/
+
       }
 
       if (_profileBanner != null) {
@@ -721,12 +752,14 @@ void _saveProfileData() async {
           const SnackBar(content: Text('Failed to update picture.'),backgroundColor: Colors.red),
         );
   }
-}
-
-
-
 
 }
+
+
+
+
+}
+
 
 
 
