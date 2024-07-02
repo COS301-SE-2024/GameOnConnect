@@ -1,4 +1,4 @@
- // ignore_for_file: avoid_print
+ // ignore_for_file: avoid_print, use_build_context_synchronously
 
  import 'dart:io';
 
@@ -169,7 +169,14 @@ Future<void> _pickImage() async {
           _profileImage = (file.bytes!, file.name);
         });
       }
-      print("picked image and image updated ");
+      //print("picked image and image updated ");
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image selected successfully.')),
+        );
+    }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to select Image.')),
+        );
     }
   } else {
     // Mobile/desktop implementation
@@ -180,6 +187,13 @@ Future<void> _pickImage() async {
         _profileImage = File(image.path);
          print("picked image and image updated ");
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image selected successfully.')),
+        );
+    }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to select Image.')),
+        );
     }
   }
 }
@@ -196,7 +210,15 @@ Future<void> _pickBanner() async {
           _profileBanner = (file.bytes!, file.name);
           //_profileBannerFB = file.name;
         });
+        
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image selected successfully.')),
+        );
+    }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to select Image.')),
+        );
     }
   } else {
     // Mobile/desktop implementation
@@ -206,6 +228,13 @@ Future<void> _pickBanner() async {
       setState(() {
         _profileBanner = File(image.path);
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Image selected successfully.')),
+        );
+    }else{
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to select Image.')),
+        );
     }
   }
 }
@@ -261,6 +290,15 @@ Future<void> saveImageURL(String url, String imageType) async {
   }
 
 }
+
+/*void _showSnackbar(BuildContext context, String message, Color color) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    ),
+  );
+}*/
 
 
  @override
@@ -643,8 +681,8 @@ void _saveProfileData() async {
         await saveImageURL(imageUrl,'Profile_picture');
 
         // Show a confirmation message or navigate
-       /* ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile picture updated')),
+        /*ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile picture updated successfully.')),
         );*/
       }
 
@@ -659,8 +697,8 @@ void _saveProfileData() async {
         await saveImageURL(bannerUrl,'banner');
 
         // Show a confirmation message or navigate
-       /* ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('banner updated')),
+       /*ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Banner updated successfully.')),
         );*/
       }
 
@@ -671,9 +709,17 @@ void _saveProfileData() async {
       };
 
       await profileDocRef.set(data, SetOptions(merge: true));
+      
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully.')),
+        );
+  
     }
   } catch (e) {
     print("Error setting/updating profile data: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update picture.'),backgroundColor: Colors.red),
+        );
   }
 }
 
