@@ -31,24 +31,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   bool isDarkMode = false;
   bool _isDataFetched = false; 
-
-  //profile picture 
-  String _profileImageUrl=''; // URL of the image stored in Firebase
+  String _profileImageUrl=''; 
   dynamic _profileImage;
-
-
-//profile banner
-String _profileBannerUrl=''; // URL of the image stored in Firebase
+String _profileBannerUrl=''; 
   dynamic _profileBanner;
   String testBannerurl='';
 
-
-    setState(() {
-      _interests = (decoded['results'] as List)
-          .map((tag) => tag['name'].toString())
-          .toList();
-    });
-  }
 
   Future<void> _fetchGenresFromAPI() async {
   try {
@@ -93,7 +81,7 @@ Future<void> _fetchTagsFromAPI() async {
   children: selectedItems.map((item) => Chip(
     padding: const EdgeInsets.symmetric(vertical: 2),
     label: Text(item),
-    backgroundColor: Colors.grey[300], 
+    backgroundColor: Theme.of(context).colorScheme.primary,
     shape: const StadiumBorder(), 
     side: BorderSide.none, 
     onDeleted: () => onDeleted(item), 
@@ -121,43 +109,48 @@ void initState() {
   isDarkMode = Provider.of<ThemeProvider>(context, listen: false).themeData.brightness == Brightness.dark; 
 }
 
+  Future<void> _fetchUserSelectionsFromDatabase() async {
+  try {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
 
-Future<void> _fetchUserSelectionsFromDatabase() async {
+    if (currentUser != null) {
+      final db = FirebaseFirestore.instance;
+      final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
 
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
+      final docSnapshot = await profileDocRef.get();
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data();
+        final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
+        final age = List<String>.from(data?["age_rating_tag"] ?? []);
+        final interests = List<String>.from(data?["social_interests_tags"] ?? []);
+        final profileImageUrl = data?["profile_picture"] ?? '';
+        final profileBannerUrl = data?["banner"] ?? '';
 
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef = db.collection("profile_data").doc(currentUser.uid);
+        String? bannerDownloadUrl;
+        String? profileDownloadUrl;
 
-        final docSnapshot = await profileDocRef.get();
-        if (docSnapshot.exists) {
-          final data = docSnapshot.data();
-          setState(() async {
-            _selectedGenres = List<String>.from(data?["genre_interests_tags"] ?? []);
-            _selectedAge = List<String>.from(data?["age_rating_tag"] ?? []);
-            _selectedInterests = List<String>.from(data?["social_interests_tags"] ?? []);
-             _profileImageUrl = data?["profile_picture"] ?? '';
-
-             _profileBannerUrl = data?["banner"] ?? '';
-        
-        String bannerDownloadUrl = await FirebaseStorage.instance.refFromURL(_profileBannerUrl).getDownloadURL();
-         String profileDownloadUrl = await FirebaseStorage.instance.refFromURL(_profileImageUrl).getDownloadURL();
-        setState(() {
-          testBannerurl = bannerDownloadUrl;
-          _profileImageUrl=profileDownloadUrl;
-        });
-              
-
-          });
+        if (profileBannerUrl.isNotEmpty) {
+          bannerDownloadUrl = await FirebaseStorage.instance.refFromURL(profileBannerUrl).getDownloadURL();
         }
+        if (profileImageUrl.isNotEmpty) {
+          profileDownloadUrl = await FirebaseStorage.instance.refFromURL(profileImageUrl).getDownloadURL();
+        }
+
+        setState(() {
+          _selectedGenres = genres;
+          _selectedAge = age;
+          _selectedInterests = interests;
+          _profileBannerUrl = bannerDownloadUrl ?? '';
+          _profileImageUrl = profileDownloadUrl ?? '';
+        });
       }
-    } catch (e) {
-      print("Error fetching user selections: $e");
     }
+  } catch (e) {
+    print("Error fetching user selections: $e");
   }
+}
+
 
 Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
@@ -311,6 +304,7 @@ Future<void> saveImageURL(String url, String imageType) async {
  @override
 Widget build(BuildContext context) {
     if (!_isDataFetched) {
+      // Show loading indicator while data is being fetched
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -334,6 +328,7 @@ Widget build(BuildContext context) {
         body: const Center(child: CircularProgressIndicator()),
       );
     } else {
+      // Show the main content once data is fetched
       return _buildContent(context);
     }
   }
@@ -369,33 +364,33 @@ Widget build(BuildContext context) {
          InkWell(
   onTap: _pickBanner,
   child: Stack(
-    alignment: Alignment.center, 
+    alignment: Alignment.center, // Change to Alignment.center
     children: [
       Container(
-        width: double.infinity, 
-        height: 150,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: _profileBanner != null
-               ? (kIsWeb ? NetworkImage(_profileBanner!.path) : FileImage(_profileBanner!)) as ImageProvider
-              : testBannerurl != ''
-                  ? NetworkImage(testBannerurl)as ImageProvider
-                  : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
-            fit: BoxFit.cover,
-          ),
-        ),
-       
+    width: double.infinity,
+    height: 150,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: _profileBanner != null
+          ? (kIsWeb ? NetworkImage(_profileBanner!.path) : FileImage(_profileBanner!)) as ImageProvider
+          : _profileBannerUrl.isNotEmpty
+            ? NetworkImage(_profileBannerUrl) as ImageProvider
+            : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+        fit: BoxFit.cover,
       ),
+    ),
+  ),
       Container(
         height: 30,
         width: 30,
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Theme.of(context).colorScheme.primary,
           shape: BoxShape.circle,
         ),
         child: const Icon(
           Icons.camera_alt,
           size: 15,
+
         ),
       ),
     ],
@@ -410,20 +405,19 @@ Widget build(BuildContext context) {
           alignment: Alignment.bottomRight,
           children: [
             CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.grey,
- backgroundImage: _profileImage != null
-               ? (kIsWeb ? NetworkImage(_profileImage!.path) : FileImage(_profileImage!)) as ImageProvider
-              : _profileImageUrl != ''
-                  ? NetworkImage(_profileImageUrl)as ImageProvider
-                  : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
-              
-            ),
+          radius: 60,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundImage: _profileImage != null
+            ? (kIsWeb ? NetworkImage(_profileImage!.path) : FileImage(_profileImage!)) as ImageProvider
+            : _profileImageUrl.isNotEmpty
+              ? NetworkImage(_profileImageUrl) as ImageProvider
+              : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+        ),
             Container(
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Theme.of(context).colorScheme.primary,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -442,10 +436,7 @@ Widget build(BuildContext context) {
                 children: <Widget>[
                   const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Genre',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.secondary)),
+              child: Text('Genre', style: TextStyle(fontSize: 15)), 
             ),
             const SizedBox(width: 20),
                 InkWell(
@@ -461,41 +452,31 @@ Widget build(BuildContext context) {
       child: Container(
         padding: const EdgeInsets.all(5), 
         decoration: BoxDecoration(
-          color: Colors.grey[300], 
+          color: Theme.of(context).colorScheme.primary, 
           shape: BoxShape.circle, 
         ),
         child: const Icon(
           Icons.add, 
-          color: Colors.black, 
-          size: 12,
+          size: 12, 
         ),
       ),
     )
                 ],
               ),
-            )
-          ],
-        ),
 
-        const SizedBox(height: 8),
-        _displaySelectedItems(_selectedGenres,
-            (item) => _deleteSelectedItem(item, _selectedGenres)),
-
+          const SizedBox(height: 8),
+           _displaySelectedItems(_selectedGenres, (item) => _deleteSelectedItem(item, _selectedGenres)),
 
             const SizedBox(height: 20),
 
-        // age rating title
-        Row(
-          children: <Widget>[
-            Align(
+             // age rating title
+             Row(
+                children: <Widget>[
+                  const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Age rating ',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.secondary)),
+              child: Text('Age rating ', style: TextStyle(fontSize: 15)), 
             ),
             const SizedBox(width: 20),
-
                 InkWell(
       onTap: () => _showSelectableDialog(
               'Select Age rating',
@@ -509,7 +490,7 @@ Widget build(BuildContext context) {
       child: Container(
         padding: const EdgeInsets.all(5), 
         decoration: BoxDecoration(
-          color: Colors.grey[300], 
+          color: Theme.of(context).colorScheme.primary, 
           shape: BoxShape.circle, 
         ),
         child: const Icon(
@@ -520,33 +501,22 @@ Widget build(BuildContext context) {
       ),
     ),
                 ],
-
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        _displaySelectedItems(
-            _selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
-
+              const SizedBox(height: 8),
+                  _displaySelectedItems(_selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
 
             const SizedBox(height: 20),
 
-
-        Row(
-          children: <Widget>[
-            Align(
+            // social interest title
+             Row(
+                children: <Widget>[
+                  const Align(
               alignment: Alignment.centerLeft,
-              child: Text('Social interests ',
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.secondary)),
+              child: Text('Social interests ', style: TextStyle(fontSize: 15)), 
             ),
             const SizedBox(width: 20),
-
                 InkWell(
                 onTap: () =>_showSelectableDialog(
-
                 'Select Social interest',
                 _interests,
                 (results) {
@@ -555,25 +525,24 @@ Widget build(BuildContext context) {
                 },
                 'interest',
               ),
-
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5), 
         decoration: BoxDecoration(
-          color: Colors.grey[300], 
+          color: Theme.of(context).colorScheme.primary,
           shape: BoxShape.circle, 
         ),
         child: const Icon(
           Icons.add, 
           color: Colors.black, 
           size: 12, 
-
-
-        const SizedBox(height: 8),
-        _displaySelectedItems(_selectedInterests,
-            (item) => _deleteSelectedItem(item, _selectedInterests)),
-
-        // DARK MODE
-        const SizedBox(height: 20),
+        ),
+      ),
+    )
+                ],
+              ),  
+                  
+            const SizedBox(height: 8),
+            _displaySelectedItems(_selectedInterests, (item) => _deleteSelectedItem(item, _selectedInterests)),
 
 
           const SizedBox(height: 20),
@@ -600,7 +569,7 @@ Widget build(BuildContext context) {
             child: ElevatedButton(
               key: const Key('saveButton'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[300],
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Colors.black54,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -609,16 +578,15 @@ Widget build(BuildContext context) {
               onPressed: () {
                 _saveProfileData();
                 Navigator.of(context).pop();
-
               },
               child: const Text('Save Changes'),
             ),
-
           ),
         ],
       ),
     );
   }
+
 
  Future<void> _showSelectableDialog(
   String title, List<String> items, Function(List<String>) onSelected, String selectionType) async {
@@ -749,7 +717,7 @@ void _saveProfileData() async {
   } catch (e) {
     print("Error setting/updating profile data: $e");
     ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update picture.'),backgroundColor: Colors.red),
+          const SnackBar(content: Text('Failed to update profile.'),backgroundColor: Colors.red),
         );
   }
 
