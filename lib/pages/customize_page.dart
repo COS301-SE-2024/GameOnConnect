@@ -173,8 +173,8 @@ Future<void> _pickImage() async {
     }
   } else {
     // Mobile/desktop implementation
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _profileImage = File(image.path);
@@ -200,8 +200,8 @@ Future<void> _pickBanner() async {
     }
   } else {
     // Mobile/desktop implementation
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         _profileBanner = File(image.path);
@@ -335,7 +335,7 @@ Widget build(BuildContext context) {
                ? (kIsWeb ? NetworkImage(_profileBanner!.path) : FileImage(_profileBanner!)) as ImageProvider
               : testBannerurl != ''
                   ? NetworkImage(testBannerurl)as ImageProvider
-                  : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+                  : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
             fit: BoxFit.cover,
           ),
         ),
@@ -348,7 +348,7 @@ Widget build(BuildContext context) {
           color: Colors.grey[300],
           shape: BoxShape.circle,
         ),
-        child: Icon(
+        child: const Icon(
           Icons.camera_alt,
           size: 15,
         ),
@@ -371,7 +371,7 @@ Widget build(BuildContext context) {
                ? (kIsWeb ? NetworkImage(_profileImage!.path) : FileImage(_profileImage!)) as ImageProvider
               : _profileImageUrl != ''
                   ? NetworkImage(_profileImageUrl)as ImageProvider
-                  : NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
+                  : const NetworkImage('https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1') as ImageProvider,
               
             ),
             Container(
@@ -381,7 +381,7 @@ Widget build(BuildContext context) {
                 color: Colors.grey[300],
                 shape: BoxShape.circle,
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt,
                 size: 15,
               ),
