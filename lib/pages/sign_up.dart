@@ -98,6 +98,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -130,16 +131,18 @@ class _SignUpState extends State<SignUp> {
                           key: Key('emailInput'),
                           controller: _emailController,
                           decoration:InputDecoration(
+                            fillColor: Colors.grey[100],
+                            filled: true,
                             contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Color.fromARGB(255, 190, 190, 190),
                               ),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 0, 255, 117),
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(15),
@@ -174,16 +177,18 @@ class _SignUpState extends State<SignUp> {
                           key: Key('usernameInput'),
                           controller: _usernameController,
                           decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Color.fromARGB(255, 190, 190, 190),
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Color.fromARGB(255, 0, 255, 117),
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -213,16 +218,18 @@ class _SignUpState extends State<SignUp> {
                           controller: _passwordController,
                           obscureText: true,
                           decoration:InputDecoration(
+                            fillColor: Colors.grey[100],
+                            filled: true,
                             contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Color.fromARGB(255, 190, 190, 190),
                               ),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Color.fromARGB(255, 0, 255, 117),
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(15),
@@ -370,7 +377,6 @@ class _SignUpState extends State<SignUp> {
                           Icon(
                             FontAwesomeIcons.google,
                             size: 20,
-                            color: Colors.black
                           ),
                           SizedBox(width: 10),
                           Text(

@@ -17,11 +17,11 @@ class _RequestsState extends State<Requests> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: const Text(
           'Connection Requests',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.primary,
+            color: Color.fromARGB(255, 128, 216, 50),
           ),
         ),
       ),
@@ -104,9 +104,9 @@ class _RequestsState extends State<Requests> {
                                   Text(
                                     friendProfile['username'] ??
                                         'No Username Found',
-                                    style:  TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Color.fromARGB(255, 128, 216, 50),
                                     ),
                                   ),
                                 ],

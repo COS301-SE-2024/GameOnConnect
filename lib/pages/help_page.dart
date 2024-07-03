@@ -11,7 +11,6 @@ class Help extends StatelessWidget {
           leading: IconButton(
             key: Key('Back_button_key'),
             icon: const Icon(Icons.keyboard_backspace),
-            color: Theme.of(context).colorScheme.secondary,
             onPressed: () {
               Navigator.pop(context);
             },
@@ -28,14 +27,12 @@ class Help extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(60),
-                color: Theme.of(context).colorScheme.primary,
+                color: Color.fromARGB(255, 128, 216, 50),
               ),
-              child:  Center(
+              child: const Center(
                 child: Text(
-                    style: TextStyle(color:Theme.of(context).colorScheme.surface),
                   key: Key('Getting_started_text'),
                   "Getting started"),
-
               ),
             ),
           ),

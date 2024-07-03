@@ -10,14 +10,14 @@ class Options extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: const Color(0xFF80D832),
         automaticallyImplyLeading: false,
-        title:  Text(
-          key: const Key('Settings'),
+        title: const Text(
+          key: Key('Settings'),
           'Settings\n',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.surface,
+            color: Colors.white,
             fontSize: 24,
             letterSpacing: 0,
             fontWeight: FontWeight.bold,
@@ -25,7 +25,6 @@ class Options extends StatelessWidget {
         ),
         leading: IconButton(
           key: const Key('back_button'),
-          color: Theme.of(context).colorScheme.surface,
           icon: const Icon(Icons.keyboard_backspace),
           onPressed: () {
             Navigator.of(context).pop();
@@ -50,26 +49,25 @@ class Options extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children:  [
+                  children: const [
                     ListTile(
                       leading: Icon(
                         Icons.edit,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Color(0xFF80D832),
                       ),
-                      title:  Text(
+                      title: Text(
                         'Edit Profile',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                           fontFamily: 'Inter',
                           fontSize: 22,
                           letterSpacing: 0,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      trailing:  Icon(
+                      trailing: Icon(
                         Icons.arrow_forward_ios,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Colors.white,
                         size: 20,
                       ),
                       dense: false,
@@ -81,16 +79,15 @@ class Options extends StatelessWidget {
                 onTap: () {
                   Navigator.pushNamed(context, '/customize');
                 },
-                child:  ListTile(
+                child: const ListTile(
                   leading: Icon(
                     Icons.dashboard_customize,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Color(0xFF80D832),
                   ),
                   title: Text(
-                    key: const Key('Customize_Profile'),
+                    key: Key('Customize_Profile'),
                     'Customize Profile',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
                       fontFamily: 'Inter',
                       fontSize: 22,
                       letterSpacing: 0,
@@ -99,7 +96,7 @@ class Options extends StatelessWidget {
                   ),
                   trailing: Icon(
                     Icons.arrow_forward_ios,
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Colors.white,
                     size: 20,
                   ),
                   dense: false,
@@ -113,17 +110,16 @@ class Options extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  children:  [
+                  children: const [
                     ListTile(
                       leading: Icon(
                         Icons.help_outline_rounded,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Color(0xFF80D832),
                       ),
                       title: Text(
-                        key: const Key('Help_Centre'),
+                        key: Key('Help_Centre'),
                         'Help Centre',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                           fontFamily: 'Inter',
                           fontSize: 22,
                           letterSpacing: 0,
@@ -132,7 +128,7 @@ class Options extends StatelessWidget {
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Colors.white,
                         size: 20,
                       ),
                       dense: false,
@@ -153,26 +149,24 @@ class Options extends StatelessWidget {
                             ));
                       });
                     },
-                    child:  ListTile(
-                      leading: const Icon(
+                    child: const ListTile(
+                      leading: Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFFE66C56),
                       ),
                       title: Text(
-                        key: const Key('Logout'),
+                        key: Key('Logout'),
                         'Logout',
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
                           fontFamily: 'Inter',
                           fontSize: 22,
                           letterSpacing: 0,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      trailing:  Icon(
+                      trailing: Icon(
                         Icons.arrow_forward_ios,
                         size: 20,
-                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       dense: false,
                     ),

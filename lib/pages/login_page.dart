@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -90,17 +91,18 @@ class _LoginState extends State<Login> {
                         key: Key('emailInput'),
                         controller: emailController,
                         decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary
-                            ,
+                              color: Color.fromARGB(255, 190, 190, 190),
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Color.fromARGB(255, 0, 255, 117),
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -136,16 +138,18 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
+                          fillColor: Colors.grey[100],
+                          filled: true,
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Color.fromARGB(255, 190, 190, 190),
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Color.fromARGB(255, 0, 255, 117),
                               width: 2.0,
                             ),
                             borderRadius: BorderRadius.circular(15),
@@ -184,7 +188,7 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Color.fromARGB(255, 0, 255, 117),
                       ),
                     ),
                   ),
@@ -195,23 +199,19 @@ class _LoginState extends State<Login> {
                     child: GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-
-                            signIn();
-                            FirebaseAuth.instance.userChanges().listen((User? user) {
-                             if(user != null){
-                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                   content: Text("Welcome to GameOnConnect"),
-                              backgroundColor: Theme.of(context).colorScheme.primary));
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          HomePage(
-                                            title: 'GameOnConnect',
-                                          )),
-                                      (Route<dynamic> route) => false,
-                                );
-                              }
+                          signIn();
+                          FirebaseAuth.instance
+                              .userChanges()
+                              .listen((User? user) {
+                            if (user != null) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => HomePage(
+                                          title: 'GameOnConnect',
+                                        )),
+                                (Route<dynamic> route) => false,
+                              );
                             }
                           });
 
@@ -227,10 +227,10 @@ class _LoginState extends State<Login> {
                           } else {
                             passwordController.clear();
                             emailController.clear();
-                            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Email or password incorrect"),
                               backgroundColor: Colors.red.shade300,
-                            ));*/
+                            ));
                           }
                         }
                       },

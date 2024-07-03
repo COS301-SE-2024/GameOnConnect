@@ -11,27 +11,27 @@ class GettingStarted extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
-            icon:  Icon(
+            icon: const Icon(
               key: Key('back_button'),
               Icons.arrow_back_rounded,
-              color: Theme.of(context).colorScheme.surface,
+              color: Colors.white,
               size: 30,
             ),
             onPressed: () async {
               Navigator.pop(context);
             },
           ),
-          title:  Text(
+          title: const Text(
             key : Key('getting_started'),
             'Getting Started',
             style: TextStyle(
               fontFamily: 'Inter',
-              color: Theme.of(context).colorScheme.surface,
+              color: Colors.white,
               fontSize: 30,
               letterSpacing: 0,
             ),
           ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: const Color(0xFF80D832),
           centerTitle: true,
           elevation: 2,
         ),
@@ -48,7 +48,7 @@ class GettingStarted extends StatelessWidget {
                       key: Key('Friends_section'),
                       width: 352,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Colors.white,
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 12,
@@ -61,7 +61,7 @@ class GettingStarted extends StatelessWidget {
                         ],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: const Color(0xFFE0E3E7),
                           width: 2,
                         ),
                       ),
@@ -72,7 +72,7 @@ class GettingStarted extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Padding(
+                            const Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 12, 12),
                               child: Row(
@@ -85,7 +85,7 @@ class GettingStarted extends StatelessWidget {
                                       'Friends',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme.of(context).colorScheme.secondary,
+                                        color: Color(0xFF14181B),
                                         fontSize: 20,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
@@ -96,10 +96,10 @@ class GettingStarted extends StatelessWidget {
                                 ],
                               ),
                             ),
-                             Divider(
+                            const Divider(
                               height: 1,
                               thickness: 1,
-                              color: Theme.of(context).colorScheme.surface,
+                              color: Color(0xFFE0E3E7),
                             ),
                             ListView(
                                 physics: NeverScrollableScrollPhysics(),
@@ -111,14 +111,24 @@ class GettingStarted extends StatelessWidget {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 0, 1),
                                     child: Container(
-                                      decoration:  BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surface,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 0,
+                                            color: Color(0xFFE0E3E7),
+                                            offset: Offset(
+                                              0,
+                                              1,
+                                            ),
+                                          )
+                                        ],
                                       ),
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: ExpansionTile(
                                           key: Key('how_to_friends_List_tile'),
-                                          title:  Padding(
+                                          title: const Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     12, 8, 12, 8),
@@ -133,7 +143,7 @@ class GettingStarted extends StatelessWidget {
                                                     'How to search for friends',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
-                                                      color: Theme.of(context).colorScheme.secondary,
+                                                      color: Color(0xFF57636C),
                                                       letterSpacing: 0,
                                                       fontWeight: FontWeight.w500,
                                                     ),
@@ -150,20 +160,20 @@ class GettingStarted extends StatelessWidget {
                                                 Container(
                                                   width: double.infinity,
                                                   decoration:
-                                                       BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.surface,
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
                                                   decoration:
-                                                       BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.surface,
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                 SizedBox(
                                                   width: double.infinity,
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -192,7 +202,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 letterSpacing:
                                                                     0,
                                                                 fontWeight:
@@ -227,7 +238,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('how_to_add_friends'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -241,7 +252,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How to add friends',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -257,20 +268,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Padding(
@@ -280,10 +291,10 @@ class GettingStarted extends StatelessWidget {
                                                 child: Container(
                                                   width: double.infinity,
                                                   decoration:
-                                                       BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.surface,
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
                                                   ),
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -315,7 +326,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 letterSpacing:
                                                                     0,
                                                                 fontWeight:
@@ -341,7 +353,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('Accepting_friends'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -355,7 +367,7 @@ class GettingStarted extends StatelessWidget {
                                                   'Accepting/rejecting friend requests',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -370,20 +382,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Padding(
@@ -392,7 +404,7 @@ class GettingStarted extends StatelessWidget {
                                                         .fromSTEB(0, 0, 0, 4),
                                                 child: SizedBox(
                                                   width: double.infinity,
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -422,7 +434,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -456,7 +469,7 @@ class GettingStarted extends StatelessWidget {
                       key: Key('game_library_section'),
                       width: 352,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Colors.white,
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 12,
@@ -469,7 +482,7 @@ class GettingStarted extends StatelessWidget {
                         ],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color:  Theme.of(context).colorScheme.surface,
+                          color: const Color(0xFFE0E3E7),
                           width: 2,
                         ),
                       ),
@@ -480,7 +493,7 @@ class GettingStarted extends StatelessWidget {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Padding(
+                            const Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(12, 0, 12, 12),
                               child: Row(
@@ -492,7 +505,7 @@ class GettingStarted extends StatelessWidget {
                                     'Game Library',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Color(0xFF14181B),
                                       fontSize: 20,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
@@ -501,10 +514,10 @@ class GettingStarted extends StatelessWidget {
                                 ],
                               ),
                             ),
-                             Divider(
+                            const Divider(
                               height: 1,
                               thickness: 1,
-                              color: Theme.of(context).colorScheme.surface,
+                              color: Color(0xFFE0E3E7),
                             ),
                             ListView(
                               physics: NeverScrollableScrollPhysics(),
@@ -516,12 +529,12 @@ class GettingStarted extends StatelessWidget {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 0, 1),
                                   child: Container(
-                                    decoration:  BoxDecoration(
-                                      color: Theme.of(context).colorScheme.surface,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
                                       boxShadow: [
                                         BoxShadow(
                                           blurRadius: 0,
-                                          color: Theme.of(context).colorScheme.surface,
+                                          color: Color(0xFFE0E3E7),
                                           offset: Offset(
                                             0,
                                             1,
@@ -533,7 +546,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('how_search_games'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -547,7 +560,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How to search for games',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -562,19 +575,19 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               SizedBox(
                                                 width: double.infinity,
-                                                child:  Padding(
+                                                child: const Padding(
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(12, 8, 12, 8),
                                                   child: Row(
@@ -597,7 +610,8 @@ class GettingStarted extends StatelessWidget {
                                                             style: TextStyle(
                                                               fontFamily:
                                                                   'Inter',
-                                                              color: Theme.of(context).colorScheme.secondary,
+                                                              color: Color(
+                                                                  0xFF57636C),
                                                               fontSize: 14,
                                                               letterSpacing: 0,
                                                               fontWeight:
@@ -631,7 +645,7 @@ class GettingStarted extends StatelessWidget {
                                   width: double.infinity,
                                   child: ExpansionTile(
                                     key: Key('how_sort_games'),
-                                    title:  Padding(
+                                    title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
                                       child: Row(
@@ -644,7 +658,7 @@ class GettingStarted extends StatelessWidget {
                                               'How to sort the Game Library',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
-                                                color: Theme.of(context).colorScheme.secondary,
+                                                color: Color(0xFF57636C),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -659,20 +673,20 @@ class GettingStarted extends StatelessWidget {
                                         children: [
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
                                             ),
                                           ),
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
                                             ),
                                           ),
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
                                             ),
                                           ),
                                           Padding(
@@ -680,10 +694,10 @@ class GettingStarted extends StatelessWidget {
                                                 .fromSTEB(0, 0, 0, 4),
                                             child: Container(
                                               width: double.infinity,
-                                              decoration:  BoxDecoration(
-                                                color: Theme.of(context).colorScheme.surface,
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
                                               ),
-                                              child: Padding(
+                                              child: const Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(12, 8, 12, 8),
                                                 child: Row(
@@ -707,7 +721,8 @@ class GettingStarted extends StatelessWidget {
                                                           ' Library',
                                                           style: TextStyle(
                                                             fontFamily: 'Inter',
-                                                            color: Theme.of(context).colorScheme.secondary,
+                                                            color: Color(
+                                                                0xFF57636C),
                                                             fontSize: 14,
                                                             letterSpacing: 0,
                                                             fontWeight:
@@ -730,7 +745,7 @@ class GettingStarted extends StatelessWidget {
                                   width: double.infinity,
                                   child: ExpansionTile(
                                     key: Key('filter_games'),
-                                    title:  Padding(
+                                    title: const Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 12, 8),
                                       child: Row(
@@ -743,7 +758,7 @@ class GettingStarted extends StatelessWidget {
                                               'How to filter the Game Library',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
-                                                color: Theme.of(context).colorScheme.secondary,
+                                                color: Color(0xFF57636C),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -758,20 +773,20 @@ class GettingStarted extends StatelessWidget {
                                         children: [
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color:Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFF1F4F8),
                                             ),
                                           ),
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFF1F4F8),
                                             ),
                                           ),
                                           Container(
                                             width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFF1F4F8),
                                             ),
                                           ),
                                           Padding(
@@ -779,7 +794,7 @@ class GettingStarted extends StatelessWidget {
                                                 .fromSTEB(0, 0, 0, 4),
                                             child: SizedBox(
                                               width: double.infinity,
-                                              child:  Padding(
+                                              child: const Padding(
                                                 padding: EdgeInsetsDirectional
                                                     .fromSTEB(12, 8, 12, 8),
                                                 child: Row(
@@ -802,7 +817,8 @@ class GettingStarted extends StatelessWidget {
                                                           'to the Game Library.',
                                                           style: TextStyle(
                                                             fontFamily: 'Inter',
-                                                            color: Theme.of(context).colorScheme.secondary,
+                                                            color: Color(
+                                                                0xFF57636C),
                                                             fontSize: 14,
                                                             letterSpacing: 0,
                                                             fontWeight:
@@ -834,7 +850,7 @@ class GettingStarted extends StatelessWidget {
                       key: Key('game_information_section'),
                       width: 352,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
+                        color: Colors.white,
                         boxShadow: const [
                           BoxShadow(
                             blurRadius: 12,
@@ -847,7 +863,7 @@ class GettingStarted extends StatelessWidget {
                         ],
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.surface,
+                          color: const Color(0xFFE0E3E7),
                           width: 2,
                         ),
                       ),
@@ -861,7 +877,7 @@ class GettingStarted extends StatelessWidget {
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Padding(
+                                const Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 12, 12),
                                   child: Row(
@@ -873,7 +889,7 @@ class GettingStarted extends StatelessWidget {
                                         'Game Information',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color: Theme.of(context).colorScheme.secondary,
+                                          color: Color(0xFF14181B),
                                           fontSize: 20,
                                           letterSpacing: 0,
                                           fontWeight: FontWeight.w500,
@@ -882,10 +898,10 @@ class GettingStarted extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                 Divider(
+                                const Divider(
                                   height: 1,
                                   thickness: 1,
-                                  color: Theme.of(context).colorScheme.surface,
+                                  color: Color(0xFFE0E3E7),
                                 ),
                                 ListView(
                                   physics: NeverScrollableScrollPhysics(),
@@ -897,8 +913,18 @@ class GettingStarted extends StatelessWidget {
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0, 0, 0, 1),
                                       child: Container(
-                                        decoration:  BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface,
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 0,
+                                              color: Color(0xFFE0E3E7),
+                                              offset: Offset(
+                                                0,
+                                                1,
+                                              ),
+                                            )
+                                          ],
                                         ),
                                         child: SizedBox(
                                           width: double.infinity,
@@ -912,14 +938,14 @@ class GettingStarted extends StatelessWidget {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
-                                                children:  [
+                                                children: const [
                                                   Flexible(
                                                     child: Text(
                                                       'How to view more information about a game',
                                                       style: TextStyle(
                                                         fontFamily: 'Inter',
                                                         color:
-                                                        Theme.of(context).colorScheme.secondary,
+                                                            Color(0xFF57636C),
                                                         letterSpacing: 0,
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -936,20 +962,20 @@ class GettingStarted extends StatelessWidget {
                                                   Container(
                                                     width: double.infinity,
                                                     decoration:
-                                                         BoxDecoration(
-                                                      color: Theme.of(context).colorScheme.surface,
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                   Container(
                                                     width: double.infinity,
                                                     decoration:
-                                                         BoxDecoration(
-                                                      color: Theme.of(context).colorScheme.surface,
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                   SizedBox(
                                                     width: double.infinity,
-                                                    child:  Padding(
+                                                    child: const Padding(
                                                       padding:
                                                           EdgeInsetsDirectional
                                                               .fromSTEB(
@@ -991,7 +1017,8 @@ class GettingStarted extends StatelessWidget {
                                                                     TextStyle(
                                                                   fontFamily:
                                                                       'Inter',
-                                                                  color: Theme.of(context).colorScheme.secondary,
+                                                                  color: Color(
+                                                                      0xFF57636C),
                                                                   fontSize: 14,
                                                                   letterSpacing:
                                                                       0,
@@ -1026,7 +1053,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('share_game_info'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -1040,7 +1067,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How to share a game ',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -1055,20 +1082,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                               Padding(
@@ -1078,10 +1105,10 @@ class GettingStarted extends StatelessWidget {
                                                 child: Container(
                                                   width: double.infinity,
                                                   decoration:
-                                                       BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.surface,
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
                                                   ),
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -1111,7 +1138,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1136,7 +1164,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('add_game_to_wishlist'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -1150,7 +1178,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How do I add a game to my wishlist',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -1165,20 +1193,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Padding(
@@ -1187,7 +1215,7 @@ class GettingStarted extends StatelessWidget {
                                                         .fromSTEB(12, 8, 12, 8),
                                                 child: SizedBox(
                                                   width: double.infinity,
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -1221,7 +1249,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1246,7 +1275,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('add_to_currently_playing'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -1260,7 +1289,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How to add a game to my Currently Playings list',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -1275,20 +1304,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Padding(
@@ -1297,7 +1326,7 @@ class GettingStarted extends StatelessWidget {
                                                         .fromSTEB(12, 8, 12, 8),
                                                 child: SizedBox(
                                                   width: double.infinity,
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -1339,7 +1368,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
@@ -1364,7 +1394,7 @@ class GettingStarted extends StatelessWidget {
                                       width: double.infinity,
                                       child: ExpansionTile(
                                         key: Key('remove_from_wishlist'),
-                                        title:  Padding(
+                                        title: const Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   12, 8, 12, 8),
@@ -1378,7 +1408,7 @@ class GettingStarted extends StatelessWidget {
                                                   'How do I remove a game from my Wishlist',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    color: Color(0xFF57636C),
                                                     letterSpacing: 0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
@@ -1393,20 +1423,20 @@ class GettingStarted extends StatelessWidget {
                                             children: [
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Container(
                                                 width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
+                                                decoration: const BoxDecoration(
+                                                  color: Color(0xFFF1F4F8),
                                                 ),
                                               ),
                                               Padding(
@@ -1415,7 +1445,7 @@ class GettingStarted extends StatelessWidget {
                                                         .fromSTEB(12, 8, 12, 8),
                                                 child: SizedBox(
                                                   width: double.infinity,
-                                                  child:  Padding(
+                                                  child: const Padding(
                                                     padding:
                                                         EdgeInsetsDirectional
                                                             .fromSTEB(
@@ -1466,7 +1496,8 @@ class GettingStarted extends StatelessWidget {
                                                               style: TextStyle(
                                                                 fontFamily:
                                                                     'Inter',
-                                                                color: Theme.of(context).colorScheme.secondary,
+                                                                color: Color(
+                                                                    0xFF57636C),
                                                                 fontSize: 14,
                                                                 letterSpacing:
                                                                     0,
