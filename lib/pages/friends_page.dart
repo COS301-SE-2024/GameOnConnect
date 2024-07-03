@@ -52,7 +52,7 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               position: DelightSnackbarPosition.top,
               autoDismiss: true,
-              snackbarDuration: Durations.extralong3)
+              snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
         context,
@@ -81,7 +81,7 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               position: DelightSnackbarPosition.top,
               autoDismiss: true,
-              snackbarDuration: Durations.extralong3)
+              snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
         context,
@@ -108,7 +108,7 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               position: DelightSnackbarPosition.top,
               autoDismiss: true,
-              snackbarDuration: Durations.extralong3)
+              snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
         context,
@@ -135,7 +135,7 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               position: DelightSnackbarPosition.top,
               autoDismiss: true,
-              snackbarDuration: Durations.extralong3)
+              snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
         context,
@@ -162,7 +162,7 @@ class _FriendSearchState extends State<FriendSearch> {
               },
               position: DelightSnackbarPosition.top,
               autoDismiss: true,
-              snackbarDuration: Durations.extralong3)
+              snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
         context,
@@ -196,7 +196,7 @@ class _FriendSearchState extends State<FriendSearch> {
                     },
                     position: DelightSnackbarPosition.top,
                     autoDismiss: true,
-                    snackbarDuration: Durations.extralong4)
+                    snackbarDuration: const Duration(seconds: 3))
                 .show(
               // ignore: use_build_context_synchronously
               context,

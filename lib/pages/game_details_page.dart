@@ -833,7 +833,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                     DelightSnackbarPosition.top,
                                                 autoDismiss: true,
                                                 snackbarDuration:
-                                                    Durations.extralong3)
+                                                    const Duration(seconds: 3))
                                             .show(
                                           // ignore: use_build_context_synchronously
                                           context,
@@ -898,7 +898,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                     DelightSnackbarPosition.top,
                                                 autoDismiss: true,
                                                 snackbarDuration:
-                                                    Durations.extralong3)
+                                                    const Duration(seconds: 3))
                                             .show(
                                           // ignore: use_build_context_synchronously
                                           context,
