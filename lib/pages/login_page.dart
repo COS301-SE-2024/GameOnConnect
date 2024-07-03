@@ -22,25 +22,25 @@ class _LoginState extends State<Login> {
   final passwordController = TextEditingController();
   String errorMessage = "";
   bool validUser = false;
+  bool isLoading = false;
 
   UserCredential? _userG;
 
   Future signIn() async {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      ).catchError((e){
-          passwordController.clear();
-          emailController.clear();
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    "Email or password incorrect"),
-                backgroundColor: Colors.red.shade300,
-              ));
-       throw(e);
-      });
-
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    )
+        .catchError((e) {
+      passwordController.clear();
+      emailController.clear();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Email or password incorrect"),
+        backgroundColor: Colors.red.shade300,
+      ));
+      throw (e);
+    });
   }
 
   Future google() async {
@@ -199,21 +199,21 @@ class _LoginState extends State<Login> {
                     child: GestureDetector(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                            signIn();
-                            FirebaseAuth.instance.userChanges().listen((User? user) {
-                             if(user != null){
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          HomePage(
-                                            title: 'GameOnConnect',
-                                          )),
-                                      (Route<dynamic> route) => false,
-                                );
-                              }
+                          signIn();
+                          FirebaseAuth.instance
+                              .userChanges()
+                              .listen((User? user) {
+                            if (user != null) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => HomePage(
+                                          title: 'GameOnConnect',
+                                        )),
+                                (Route<dynamic> route) => false,
+                              );
                             }
-                            );
+                          });
 
                           if (validUser) {
                             Navigator.pushAndRemoveUntil(
@@ -283,7 +283,13 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () {
+                        setState(() {
+                          isLoading = true;
+                        });
                         google();
+                        setState(() {
+                          isLoading = false;
+                        });
                         if (_userG != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -302,25 +308,27 @@ class _LoginState extends State<Login> {
                           color: Color.fromARGB(255, 190, 190, 190),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: const Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.google,
-                                size: 20,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Continue with Google',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 24, 24, 24),
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 15,
+                        child: Center(
+                          child: isLoading
+                              ? CircularProgressIndicator()
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(
+                                      FontAwesomeIcons.google,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Continue with Google',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 24, 24, 24),
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
                     ),
