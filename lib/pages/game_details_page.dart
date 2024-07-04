@@ -198,7 +198,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       padding: EdgeInsets.fromLTRB(0, 20, 5,
                                           5), // Adjust top, left, right padding as needed
                                       child: Icon(
-                                        Icons.favorite_border,
+                                        Icons.play_circle,
                                         color: Color(0xFF00DF67),
                                         size: 24,
                                       ),
@@ -836,7 +836,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
-                                              content: Text("Removed from wishlist!"),
+                                              content: Text("Removed from Want to Play!"),
                                               backgroundColor: Colors.grey
                                             ),
                                           );
@@ -845,7 +845,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
-                                              content: Text("Added to wishlist!"),
+                                              content: Text("Added to Want to Play!"),
                                               backgroundColor: Colors.grey,
                                             ),
                                           );
@@ -887,7 +887,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ),
                                       child: Text(
-                                        isInWishlist ? 'Remove from wishlist' : 'Add to wishlist',
+                                        isInWishlist ? 'Remove from Want to Play' : 'Add to Want to Play',
                                         // 'Add to wishlist',
                                         style: const TextStyle(
                                           fontFamily: 'Inter',
@@ -912,7 +912,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
-                                            content: Text("Removed from currently playing!"),
+                                            content: Text("Removed from My Games!"),
                                             backgroundColor: Colors.grey
                                           ),
                                         );
@@ -921,7 +921,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
-                                            content: Text("Added to currently playing!"),
+                                            content: Text("Added to My Games!"),
                                             backgroundColor: Colors.grey,
                                           ),
                                         );
@@ -969,7 +969,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ),
                                       child: Text(
-                                        isInCurrPlaying ? 'Remove from currently playing' : 'Add to currently playing',
+                                        isInCurrPlaying ? 'Remove from My Games' : 'Add to My Games',
                                         // 'Add to currently playing',
                                         style: const TextStyle(
                                           fontFamily:
