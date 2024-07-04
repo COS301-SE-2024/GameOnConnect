@@ -833,6 +833,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       onPressed: () async {
                                         if (isInWishlist) {
                                           await wishlist.removeFromWishlist(gameDetails.id.toString());
+                                          // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                               content: Text("Removed from wishlist!"),
@@ -841,6 +842,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           );
                                         } else {
                                           await wishlist.addToWishlist(gameDetails.id.toString());
+                                          // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                               content: Text("Added to wishlist!"),
@@ -907,6 +909,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     onPressed: () async {
                                       if (isInCurrPlaying) {
                                         await currentlyPlaying.removeFromCurrentlyPlaying(gameDetails.id.toString());
+                                        // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             content: Text("Removed from currently playing!"),
@@ -915,6 +918,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         );
                                       } else {
                                         await currentlyPlaying.addToCurrentlyPlaying(gameDetails.id.toString());
+                                        // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             content: Text("Added to currently playing!"),
