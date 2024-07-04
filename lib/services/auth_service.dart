@@ -65,6 +65,7 @@ class AuthService {
 
   Future<void> createDefaultProfile(String? username) async {
     try {
+      await getNextNumber();
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
