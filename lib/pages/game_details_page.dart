@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_details.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../services/game_service.dart';
 import 'dart:async';
 import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:gameonconnect/services/currently_playing_service.dart';
@@ -22,7 +19,7 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   // late GameDetailsPageModel _model;
-  late Future<GameDetails> _gameDetails;
+  late Stream<GameDetails> _gameDetails;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final wishlist = Wishlist();
@@ -30,27 +27,25 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _gameDetails = _fetchGameDetails(widget.gameId);
+     _fetchGameDetails(widget.gameId);
   }
 
-  Future<GameDetails> _fetchGameDetails(int gameId) async {
-    bool result = await InternetConnection().hasInternetAccess;
-    if (result) {
-      try{
-      final response = await http.get(Uri.parse(
-          'https://api.rawg.io/api/games/$gameId?key=b8d81a8e79074f1eb5c9961a9ffacee6'));
-      if (response.statusCode == 200) {
-        return GameDetails.fromJson(jsonDecode(response.body));
+  void _fetchGameDetails(int gameId) async {
+    try {
+      bool result = await InternetConnection().hasInternetAccess;
+      if (result) {
+        setState(() {
+          _gameDetails = GameService().fetchGameDetails(gameId);
+        });
+      } else {
+       throw ('No internet connection');
       }
-        throw Exception('Failed to load game details');
-      }
-      on SocketException {
-        throw Exception('No Internet connection');
-      }
-    }else {
-      throw Exception('Not connected to the internet');
+    } catch (e)
+    {
+      throw('Error fetching data');
     }
   }
+
 
   Future shareLink(String link, String message) async {
     await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
@@ -69,14 +64,20 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
-        body: FutureBuilder<GameDetails>(
-          future: _gameDetails,
+        body: StreamBuilder<GameDetails>(
+          stream: _gameDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               Navigator.pop(context);
-              return Center();
+               ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text(
+                        "Please check your internet connection"),
+                    backgroundColor: Colors.red.shade300,
+                  ));
+               return const SizedBox.shrink();
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available'));
             } else {
