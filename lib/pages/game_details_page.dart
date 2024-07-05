@@ -19,7 +19,7 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   // late GameDetailsPageModel _model;
-  late Stream<GameDetails> _gameDetails;
+  late Future<GameDetails> _gameDetails;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final wishlist = Wishlist();
@@ -27,16 +27,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   @override
   void initState() {
     super.initState();
-     _fetchGameDetails(widget.gameId);
+     _gameDetails = _fetchGameDetails(widget.gameId);
+
   }
 
-  void _fetchGameDetails(int gameId) async {
+  Future<GameDetails> _fetchGameDetails(int gameId) async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
-        setState(() {
-          _gameDetails = GameService().fetchGameDetails(gameId);
-        });
+        return GameService().fetchGameDetails(gameId);
+
       } else {
        throw ('No internet connection');
       }
@@ -64,8 +64,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: StreamBuilder<GameDetails>(
-          stream: _gameDetails,
+        body: FutureBuilder<GameDetails>(
+          future: _gameDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -148,7 +148,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onSecondary, // Adapt to your theme
+                                                .secondary, // Adapt to your theme
                                             size: 20,
                                           ),
                                           onPressed: () {
@@ -581,7 +581,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
+                                    padding: const EdgeInsets.fromLTRB(4, 2, 2, 2),
                                     child: Icon(
                                       Icons.window_sharp,
                                       color:  Theme.of(context).colorScheme.secondary,

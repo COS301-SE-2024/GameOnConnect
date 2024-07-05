@@ -57,6 +57,7 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   void _navigateToGameDetails(Game game) async {
+    // ignore_for_file: use_build_context_synchronously
     bool result = await InternetConnection().hasInternetAccess;
     if(result) {
       Navigator.push(
