@@ -4,7 +4,6 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
-  String? _username;
   int? _nextNum;
 
   Future<void> getNextNumber() async {
@@ -54,8 +53,8 @@ class AuthService {
       // Check if the user already has a profile
       bool profileExists = await checkUserProfileExists(authResult.user!.uid);
       if (!profileExists) {
-        // if a profile does not exist, then you can create one
-        createDefaultProfile(authResult.user!.uid);
+        // The account has been created, call the createDefaultProfile function
+        createDefaultProfile("Default user");
       }
     }
 
@@ -82,27 +81,43 @@ class AuthService {
     }
   }
 
-  void createDefaultProfile(String uid) {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      final defaultData = <String, dynamic>{
-        "name": "",
-        "surname": "",
-        "age_rating_tags": [],
-        "birthday": null,
-        "genre_interests_tags": [],
-        "profile_picture":
-            "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
-        "social_interests_tags": [],
-        "theme": "light",
-        "userID": currentUser.uid,
-        "username": {"profile_name": _username, "unique_num": _nextNum},
-        "visibility": true,
-        "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg"
-      };
+  Future<void> createDefaultProfile(String? username) async {
+    try {
+      await getNextNumber();
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        final defaultData = <String, dynamic>{
+          "name": "",
+          "surname": "",
+          "age_rating_tags": [],
+          "birthday": null,
+          "genre_interests_tags": [],
+          "profile_picture":
+          "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
+          "social_interests_tags": [],
+          "theme": "light",
+          "userID": currentUser.uid,
+          "username": {"profile_name": username, "unique_num": _nextNum},
+          "visibility": true,
+          "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
+          "wishlist": [],
+          "currently_playing": []
+        };
 
-      db.collection("profile_data").doc(currentUser.uid).set(defaultData);
+        final friendData = <String, dynamic>{
+          "friend_requests": [],
+          "friends": [],
+          "pending": [],
+          "userID": currentUser.uid
+        };
+
+        db.collection("profile_data").doc(currentUser.uid).set(defaultData);
+        db.collection("friends").doc(currentUser.uid).set(friendData);
+      }
+    }catch(e)
+    {
+      //do nothing
     }
   }
 
