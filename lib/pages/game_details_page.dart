@@ -1,3 +1,5 @@
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_details.dart';
@@ -8,6 +10,8 @@ import 'package:gameonconnect/services/currently_playing_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:gameonconnect/components/custom_toast_card.dart';
+
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -833,13 +837,29 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       onPressed: () {
                                         wishlist.addToWishlist(
                                             gameDetails.id.toString());
-                                         ScaffoldMessenger.of(context).showSnackBar(
-                                             SnackBar(
-                                              content: const Text(
-                                                  "Added to wishlist!"),
-                                              backgroundColor:  Theme.of(context).colorScheme.primary,
-                                            ));
                                         //TODO: add functionality to change button text
+                                        DelightToastBar(
+                                                builder: (context) {
+                                                  return CustomToastCard(
+                                                    title: Text(
+                                                      'Added to wishlist!',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                position:
+                                                    DelightSnackbarPosition.top,
+                                                autoDismiss: true,
+                                                snackbarDuration:
+                                                    const Duration(seconds: 3))
+                                            .show(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        );
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
@@ -881,14 +901,29 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       onPressed: () {
                                         currentlyPlaying.addToCurrentlyPlaying(
                                             gameDetails.id.toString());
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                             SnackBar(
-                                              content: const Text(
-                                                  "Successfully added game to "
-                                                      "currently playing list"),
-                                              backgroundColor:  Theme.of(context).colorScheme.primary,
-                                            ));
                                         // TODO : change text to show its added
+                                        DelightToastBar(
+                                                builder: (context) {
+                                                  return CustomToastCard(
+                                                    title: Text(
+                                                      'Successfully added game to currently playing list',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                position:
+                                                    DelightSnackbarPosition.top,
+                                                autoDismiss: true,
+                                                snackbarDuration:
+                                                    const Duration(seconds: 3))
+                                            .show(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        );
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
@@ -1230,15 +1265,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ],
                               ),
                             ),*/
-                           Padding(
-                            padding:
-                                const EdgeInsetsDirectional.fromSTEB(10, 20, 10, 10),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                10, 20, 10, 10),
                             child: Text(
                               'Buy ${gameDetails.name}:',
                               style:  TextStyle(
                                 fontFamily:
                                     'Inter', 
                                 color:  Theme.of(context).colorScheme.secondary,
+
                                 fontSize: 20,
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.bold,
@@ -1266,14 +1302,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       color:  Theme.of(context).colorScheme.primary,
                                     )
                                   ),
-                                  child:  Column(
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       IconButton(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            76, 4, 0, 0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(76, 4, 0, 0),
                                         onPressed: () async {
-                                          final Uri url = Uri.parse(gameDetails.website);
+                                          final Uri url =
+                                              Uri.parse(gameDetails.website);
                                           if (await canLaunchUrl(url)) {
                                             await launchUrl(url);
                                           } else {
@@ -1299,9 +1336,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       //   'STORE',
                                       //   style: TextStyle(
                                       //     fontFamily:
-                                      //         'Readex Pro', 
+                                      //         'Readex Pro',
                                       //     color: Colors
-                                      //         .white, 
+                                      //         .white,
                                       //     fontSize: 12,
                                       //     letterSpacing: 0,
                                       //   ),
