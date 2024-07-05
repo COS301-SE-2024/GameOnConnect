@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
           return Scaffold(
             key: Key('loadingScaffold'),
             appBar: AppBar(
-              title: const Text('Profile'),
+              //title: const Text('Profile'),
             ),
             body: const Center(child: CircularProgressIndicator()),
           );
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
           return Scaffold(
             key: Key('errorScaffold'),
             appBar: AppBar(
-              title: const Text('Profile'),
+              //title: const Text('Profile'),
             ),
             body: Center(child: Text('Error: ${snapshot.error}')),
           );
@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
           return Scaffold(
             key: Key('emptyDataScaffold'),
             appBar: AppBar(
-              title: const Text('Profile'),
+              //title: const Text('Profile'),
             ),
             body: const Center(child: Text('No profile data found.')),
           );
@@ -70,6 +70,7 @@ class _ProfileState extends State<Profile> {
                       return IconButton(
                         key: Key('settings_icon_button'),
                         icon: const Icon(Icons.settings),
+                        color: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
                           //Scaffold.of(context).openEndDrawer();
                           Navigator.pushNamed(context, '/settings');
@@ -143,7 +144,7 @@ class _ProfileState extends State<Profile> {
                               ),
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(),
+                                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary,),
                               ),
                               fadeInDuration: Duration(milliseconds: 0),
                               fadeOutDuration: Duration(milliseconds: 0),
@@ -210,7 +211,7 @@ class _ProfileState extends State<Profile> {
                                       "Connection Requests",
                                       style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color: Colors.blue),
+                                          color: Theme.of(context).colorScheme.secondary),
                                     ),
                                   ),
                                   ListView.separated(
@@ -226,8 +227,7 @@ class _ProfileState extends State<Profile> {
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).colorScheme.surface,
                                             border: Border.all(
-                                              color: Color.fromARGB(
-                                                  255, 128, 216, 50),
+                                              color: Theme.of(context).colorScheme.primary,
                                               width: 1.0,
                                             ),
                                             borderRadius:
@@ -283,18 +283,18 @@ class _ProfileState extends State<Profile> {
                                                       friendProfile[
                                                               'profileName'] ??
                                                           'No Name Found',
-                                                      style: const TextStyle(
+                                                      style:  TextStyle(
                                                         fontFamily: 'Inter',
-                                                        color: Colors.black,
+                                                        color: Theme.of(context).colorScheme.secondary,
                                                       ),
                                                     ),
                                                     Text(
                                                       friendProfile[
                                                               'username'] ??
                                                           'No Username Found',
-                                                      style: const TextStyle(
+                                                      style:  TextStyle(
                                                         fontFamily: 'Inter',
-                                                        color: Colors.black,
+                                                        color: Theme.of(context).colorScheme.secondary,
                                                       ),
                                                     ),
                                                   ],
@@ -335,8 +335,9 @@ class _ProfileState extends State<Profile> {
                         SingleChildScrollView(
                           child: Column(
                             children: <Widget>[
-                              const Text('Game Name',
-                                  style: TextStyle(fontSize: 24)),
+                               Text('Game Name',
+                                  style: TextStyle(fontSize: 24,
+                                      color: Theme.of(context).colorScheme.secondary)),
                               const SizedBox(height: 8),
                               //game tags
                               Row(
@@ -346,22 +347,22 @@ class _ProfileState extends State<Profile> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding:  EdgeInsets.symmetric(
                                             horizontal: 20,
                                             vertical:
                                                 7), // Add some padding around the text
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[300],
+                                          color: Theme.of(context).colorScheme.secondary,
                                           borderRadius: BorderRadius.circular(
                                               25), // The rounded ends of the rectangle
                                         ),
-                                        child: const Row(
+                                        child:  Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Icon(
                                               Icons.circle, // dot icon
                                               size: 8.0,
-                                              color: Colors.black,
+                                              color: Theme.of(context).colorScheme.surface,
                                             ),
                                             SizedBox(
                                                 width:
@@ -375,20 +376,20 @@ class _ProfileState extends State<Profile> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding:  EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 7),
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[300],
+                                          color: Theme.of(context).colorScheme.secondary,
                                           borderRadius:
                                               BorderRadius.circular(25),
                                         ),
-                                        child: const Row(
+                                        child:  Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Icon(
                                               Icons.circle,
                                               size: 8.0,
-                                              color: Colors.black,
+                                              color: Theme.of(context).colorScheme.surface,
                                             ),
                                             SizedBox(width: 8),
                                             Text(
@@ -402,20 +403,20 @@ class _ProfileState extends State<Profile> {
                                   Column(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
+                                        padding:  EdgeInsets.symmetric(
                                             horizontal: 20, vertical: 7),
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[300],
+                                          color: Theme.of(context).colorScheme.secondary,
                                           borderRadius:
                                               BorderRadius.circular(25),
                                         ),
-                                        child: const Row(
+                                        child:  Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
                                             Icon(
                                               Icons.circle,
                                               size: 8.0,
-                                              color: Colors.black,
+                                              color: Theme.of(context).colorScheme.surface,
                                             ),
                                             SizedBox(width: 8),
                                             Text(
@@ -430,12 +431,13 @@ class _ProfileState extends State<Profile> {
                               ),
                               const SizedBox(height: 30),
                               //game description
-                              const Align(
+                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 5),
                                   child: Text('Game Description',
-                                      style: TextStyle(fontSize: 18)),
+                                      style: TextStyle(fontSize: 18,
+                                      color: Theme.of(context).colorScheme.secondary)),
                                 ),
                               ),
                               const SizedBox(height: 10),
