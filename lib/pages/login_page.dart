@@ -227,10 +227,10 @@ class _LoginState extends State<Login> {
                           } else {
                             passwordController.clear();
                             emailController.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Email or password incorrect"),
-                              backgroundColor: Colors.red.shade300,
-                            ));
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //   content: Text("Email or password incorrect"),
+                            //   backgroundColor: Colors.red.shade300,
+                            // ));
                           }
                         }
                       },
