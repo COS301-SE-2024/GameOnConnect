@@ -920,7 +920,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       //             "Added to wishlist!"),
                                       //         backgroundColor: Colors.green,
                                       //       ));
-                                      //   //TODO: add functionality to change button text
+                                      //
                                       // },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
@@ -1028,7 +1028,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     //                   "currently playing list"),
                                     //           backgroundColor: Colors.green,
                                     //         ));
-                                    //     // TODO : change text to show its added
+                                    //
                                     //   },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
