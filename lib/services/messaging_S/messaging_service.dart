@@ -56,5 +56,26 @@ class MessagingService
     }
   }
 
+  // Get messages from a conversation
+  Future<List<Map<String, dynamic>>> getMessages(String conversationID) async 
+  {
+    try 
+    {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('messages')
+          .where('conversationID', isEqualTo: conversationID)
+          .orderBy('timestamp', descending: false)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } 
+    catch (e) 
+    {
+      throw Exception("Failed to get messages: $e");
+    }
+  }
+
   
 }
