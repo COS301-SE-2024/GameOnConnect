@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'game_filter.dart'; 
+import 'game_filter_model.dart'; 
 
 class FilterList {
   List<Filter> storeFilters;

@@ -2,15 +2,15 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:gameonconnect/model/game_details.dart';
-import '../services/game_service.dart';
+import 'package:gameonconnect/model/game_details_model.dart';
+import '../../../services/game_service.dart';
 import 'dart:async';
 import 'package:gameonconnect/services/wishlist_service.dart';
 import 'package:gameonconnect/services/currently_playing_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:gameonconnect/components/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 
 
 class GameDetailsPage extends StatefulWidget {

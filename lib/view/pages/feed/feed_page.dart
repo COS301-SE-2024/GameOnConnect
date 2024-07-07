@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/pages/friends_page.dart';
-import 'package:gameonconnect/pages/game_library_page.dart';
-import 'package:gameonconnect/pages/profile_page.dart';
-import 'package:gameonconnect/pages/events_and_gaming_sessions.dart';
-import 'package:gameonconnect/pages/events_page.dart';
+import 'package:gameonconnect/view/pages/connections/connections_page.dart';
+import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/profile/profile_page.dart';
+import 'package:gameonconnect/view/pages/events/events_and_gaming_sessions.dart';
+import 'package:gameonconnect/view/pages/events/events_page.dart';
 
 
 class HomePage extends StatefulWidget {

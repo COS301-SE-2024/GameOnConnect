@@ -1,7 +1,7 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/model/game_filters.dart';
-import 'package:gameonconnect/model/game_filter.dart';
+import 'package:gameonconnect/model/game_filters_model.dart';
+import 'package:gameonconnect/model/game_filter_model.dart';
 
 class FilterPage extends StatefulWidget {
   final Function(String) apiFunction;

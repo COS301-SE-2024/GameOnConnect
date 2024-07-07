@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class Wishlist {
 
-
   Future<List<String>> getWishlist() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;

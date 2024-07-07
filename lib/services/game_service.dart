@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import '../model/game_details.dart';
+import '../model/game_details_model.dart';
 import 'package:http/http.dart' as http;
 
 class GameService{
