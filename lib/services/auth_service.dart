@@ -50,9 +50,13 @@ class AuthService {
       
 
       if (authResult.user != null) {
+      // Check if the user already has a profile
+      bool profileExists = await checkUserProfileExists(authResult.user!.uid);
+      if (!profileExists) {
         // The account has been created, call the createDefaultProfile function
         createDefaultProfile("Default user");
       }
+    }
 
       return authResult;
       //return await FirebaseAuth.instance.signInWithCredential(credential);
@@ -61,6 +65,20 @@ class AuthService {
       //print("Error signing in with Google: $e");
     }
     return null;
+  }
+
+  Future<bool> checkUserProfileExists(String userId) async {
+    //Go to Firebase, see if there is a profile 
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    
+    DocumentSnapshot profilesnapshot = await db.collection("profile_data").doc(userId).get();
+    // Return true if exists, false otherwise
+    if ( profilesnapshot.exists ) {
+      //print('True'); use this print statement to see if the function gets called
+      return true;
+    } else {
+      return false; 
+    }
   }
 
   Future<void> createDefaultProfile(String? username) async {
