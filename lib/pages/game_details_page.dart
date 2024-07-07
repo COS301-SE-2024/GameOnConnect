@@ -22,17 +22,36 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
-  // late GameDetailsPageModel _model;
   late Future<GameDetails> _gameDetails;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final wishlist = Wishlist();
+
+  final Wishlist wishlist = Wishlist();
+  bool isInWishlist = false;
+  
   final currentlyPlaying = CurrentlyPlaying();
+  bool isInCurrPlaying = false;
+
   @override
   void initState() {
     super.initState();
-     _gameDetails = _fetchGameDetails(widget.gameId);
+    _gameDetails = _fetchGameDetails(widget.gameId);
+    checkWishlistStatus();
+    checkCurrPlayingStatus();
+  }
 
+  Future<void> checkWishlistStatus() async {
+    List<String> currentWishlist = await wishlist.getWishlist();
+    setState(() {
+      isInWishlist = currentWishlist.contains(widget.gameId.toString());
+    });
+  }
+
+  Future<void> checkCurrPlayingStatus() async {
+    List<String> currentCurrPlaying = await currentlyPlaying.getCurrentlyPlaying();
+    setState(() {
+      isInCurrPlaying = currentCurrPlaying.contains(widget.gameId.toString());
+    });
   }
 
   Future<GameDetails> _fetchGameDetails(int gameId) async {
@@ -143,7 +162,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               .colorScheme
                                               .secondary
                                               .withOpacity(
-                                                  0.1), // Adapt to your theme
+                                                  0.6), // Adapt to your theme
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
                                         ),
@@ -198,7 +217,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       padding: const EdgeInsets.fromLTRB(0, 20, 5,
                                           5), // Adjust top, left, right padding as needed
                                       child: Icon(
-                                        Icons.favorite_border,
+                                        Icons.play_circle,
                                         color:  Theme.of(context).colorScheme.primary,
                                         size: 24,
                                       ),
@@ -834,15 +853,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: const EdgeInsets.only(
                                         right: 5), // Space between buttons
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        wishlist.addToWishlist(
-                                            gameDetails.id.toString());
-                                        //TODO: add functionality to change button text
-                                        DelightToastBar(
+                                      onPressed: () async {
+                                        if (isInWishlist) {
+                                          await wishlist.removeFromWishlist(gameDetails.id.toString());
+                                          // ignore: use_build_context_synchronously
+                                          DelightToastBar(
                                                 builder: (context) {
                                                   return CustomToastCard(
                                                     title: Text(
-                                                      'Added to wishlist!',
+                                                      'Removed from Want to Play!',
                                                       style: TextStyle(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -860,7 +879,49 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           // ignore: use_build_context_synchronously
                                           context,
                                         );
+                                        } else {
+                                          await wishlist.addToWishlist(gameDetails.id.toString());
+                                          // ignore: use_build_context_synchronously
+                                          DelightToastBar(
+                                                builder: (context) {
+                                                  return CustomToastCard(
+                                                    title: Text(
+                                                      'Added to Want to Play!',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                position:
+                                                    DelightSnackbarPosition.top,
+                                                autoDismiss: true,
+                                                snackbarDuration:
+                                                    const Duration(seconds: 3))
+                                            .show(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        );
+                                        }
+                                        // setState(() {
+                                        //   isInWishlist = !isInWishlist;
+                                        // });
+                                        checkWishlistStatus(); 
                                       },
+                                    // child: ElevatedButton(
+                                      // onPressed: () {
+                                      //   wishlist.addToWishlist(
+                                      //       gameDetails.id.toString());
+                                      //    ScaffoldMessenger.of(context).showSnackBar(
+                                      //       const SnackBar(
+                                      //         content: Text(
+                                      //             "Added to wishlist!"),
+                                      //         backgroundColor: Colors.green,
+                                      //       ));
+                                      //   //TODO: add functionality to change button text
+                                      // },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
                                             .all<Color>( Theme.of(context).colorScheme.primary),
@@ -879,12 +940,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                         ),
                                       ),
-                                      child: const Text(
-                                        'Add to wishlist',
-                                        style: TextStyle(
+                                      child: Text(
+                                        isInWishlist ? 'Remove from Want to Play' : 'Add to Want to Play',
+                                        // 'Add to wishlist',
+                                        style: const TextStyle(
                                           fontFamily: 'Inter',
                                           color: Colors
-                                              .black, // Replace with your desired text color
+                                              .black, 
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 0,
@@ -898,15 +960,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: const EdgeInsets.only(
                                         left: 5), // Space between buttons
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        currentlyPlaying.addToCurrentlyPlaying(
-                                            gameDetails.id.toString());
-                                        // TODO : change text to show its added
+                                    onPressed: () async {
+                                      if (isInCurrPlaying) {
+                                        await currentlyPlaying.removeFromCurrentlyPlaying(gameDetails.id.toString());
+                                        // ignore: use_build_context_synchronously
                                         DelightToastBar(
                                                 builder: (context) {
                                                   return CustomToastCard(
                                                     title: Text(
-                                                      'Successfully added game to currently playing list',
+                                                      'Removed from My Games!',
                                                       style: TextStyle(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -924,7 +986,50 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           // ignore: use_build_context_synchronously
                                           context,
                                         );
-                                      },
+                                      } else {
+                                        await currentlyPlaying.addToCurrentlyPlaying(gameDetails.id.toString());
+                                        // ignore: use_build_context_synchronously
+                                        DelightToastBar(
+                                                builder: (context) {
+                                                  return CustomToastCard(
+                                                    title: Text(
+                                                      'Added to My Games!',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                position:
+                                                    DelightSnackbarPosition.top,
+                                                autoDismiss: true,
+                                                snackbarDuration:
+                                                    const Duration(seconds: 3))
+                                            .show(
+                                          // ignore: use_build_context_synchronously
+                                          context,
+                                        );
+                                      }
+                                      // setState(() {
+                                      //   isInWishlist = !isInWishlist;
+                                      // });
+                                      checkCurrPlayingStatus(); 
+                                    },
+                                    // child: ElevatedButton(
+                                    //   onPressed: () {
+                                    //     currentlyPlaying.addToCurrentlyPlaying(
+                                    //         gameDetails.id.toString());
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //         const SnackBar(
+                                    //           content: Text(
+                                    //               "Successfully added game to "
+                                    //                   "currently playing list"),
+                                    //           backgroundColor: Colors.green,
+                                    //         ));
+                                    //     // TODO : change text to show its added
+                                    //   },
                                       style: ButtonStyle(
                                         backgroundColor: WidgetStateProperty
                                             .all<Color>( Theme.of(context).colorScheme.secondary,),
@@ -947,8 +1052,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                         ),
                                       ),
-                                      child:  Text(
-                                        'Add to currently playing',
+                                      child: Text(
+                                        isInCurrPlaying ? 'Remove from My Games' : 'Add to My Games',
+                                        // 'Add to currently playing',
                                         style: TextStyle(
                                           fontFamily:
                                               'Inter', // Replace with your desired font family if needed
