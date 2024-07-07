@@ -26,4 +26,35 @@ class MessagingService
       throw Exception("Failed to create conversation: $e");
     }
   }
+
+  // Send a message in a conversation
+  Future<void> sendMessage(String conversationID, String messageText) async 
+  {
+    try 
+    {
+      final User? currentUser = _auth.currentUser;
+      if (currentUser == null) throw Exception("No user logged in");
+
+      final String messageID = _firestore.collection('messages').doc().id;
+      final Timestamp timestamp = Timestamp.now();
+
+      await _firestore.collection('messages').doc(messageID).set({
+        'messageID': messageID,
+        'conversationID': conversationID,
+        'message_text': messageText,
+        'userID': currentUser.uid,
+        'timestamp': timestamp
+      });
+
+      await _firestore.collection('messages_log').doc(conversationID).update({
+        'participant_messages': FieldValue.arrayUnion([messageID])
+      });
+    } 
+    catch (e) 
+    {
+      throw Exception("Failed to send message: $e");
+    }
+  }
+
+  
 }
