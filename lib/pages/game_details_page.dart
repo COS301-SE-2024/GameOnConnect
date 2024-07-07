@@ -1055,7 +1055,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       child: Text(
                                         isInCurrPlaying ? 'Remove from My Games' : 'Add to My Games',
                                         // 'Add to currently playing',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily:
                                               'Inter', // Replace with your desired font family if needed
                                           color:  Theme.of(context).colorScheme.surface, // Replace with your desired text color
