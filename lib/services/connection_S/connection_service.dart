@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gameonconnect/services/user_service.dart';
+import 'package:gameonconnect/services/connection_S/user_service.dart';
 
 class FriendServices {
   //get an instance from FireStore Database

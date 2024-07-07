@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'sign_up_page.dart';
 import '../feed/feed_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '/services/auth_service.dart';
+import '../../../services/authentication_S/auth_service.dart';
 
 class Login extends StatefulWidget {
   // ignore: use_super_parameters

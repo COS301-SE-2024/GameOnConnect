@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/friend_service.dart'; //You can remove this service when replacing with your own
+import 'package:gameonconnect/services/connection_S/connection_service.dart'; //You can remove this service when replacing with your own
 
 class Requests extends StatefulWidget {
   //final String currentUserId;

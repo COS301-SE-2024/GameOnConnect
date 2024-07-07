@@ -4,9 +4,9 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-import '../../../services/user_service.dart';
-import '../../../model/user_model.dart';
-import '../../../model/friend_model.dart';
+import '../../../services/connection_S/connection_request_service.dart';
+import '../../../model/connection_M/user_model.dart';
+import '../../../model/connection_M/friend_model.dart';
 
 class FriendSearch extends StatefulWidget {
   final String currentUserId;

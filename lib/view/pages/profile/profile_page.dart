@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 //import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:gameonconnect/services/friend_service.dart';
-import 'package:gameonconnect/services/profile_service.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatefulWidget {
