@@ -77,5 +77,26 @@ class MessagingService
     }
   }
 
-  
+  // Get conversations for the current user
+  Future<List<Map<String, dynamic>>> getConversations() async 
+  {
+    try 
+    {
+      final User? currentUser = _auth.currentUser;
+      if (currentUser == null) throw Exception("No user logged in");
+
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('messages_log')
+          .where('participants', arrayContains: currentUser.uid)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } 
+    catch (e) 
+    {
+      throw Exception("Failed to get conversations: $e");
+    }
+  }
 }
