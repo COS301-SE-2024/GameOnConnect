@@ -177,7 +177,8 @@ class _FriendSearchState extends State<FriendSearch> {
         title: const Text('Friends'),
       ),
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserFriendsStream(widget.currentUserId),
+        stream: _userService.getCurrentUserFriendsStream(widget.
+        currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

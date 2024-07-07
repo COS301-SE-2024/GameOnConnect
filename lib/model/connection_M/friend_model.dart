@@ -8,7 +8,7 @@ class Friend {
   factory Friend.fromMap(Map<String, dynamic> data) {
     return Friend(
       uid: data['userID'],
-      friends: List<String>.from(data['friends']),
+      friends: List<String>.from(data['connections']),
       pending: List<String>.from(data['pending']),
     );
   }
