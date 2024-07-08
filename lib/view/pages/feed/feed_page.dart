@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
-import 'package:gameonconnect/view/pages/events/events_and_gaming_sessions.dart';
+import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:gameonconnect/view/pages/events/events_page.dart';
 
 
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _pages = <Widget>[
     Center(child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
-    const EventsGamingSessions(), // Placeholder for the Currently Playing Page
+    const CreateEvents(), // create events Page
     const EventsPage(), // Placeholder for the Events Page
     Profile(), // Actual page for the Profile
   ];
