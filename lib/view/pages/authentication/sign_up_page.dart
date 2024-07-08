@@ -242,7 +242,7 @@ class _SignUpState extends State<SignUp> {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Signed Up successfully!")));
                         Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                            builder: (BuildContext context) => HomePage(title: 'GameOnConnect',)),
+                            builder: (BuildContext context) => FeedPage(title: 'GameOnConnect',)),
                               (Route<dynamic> route) => false,
                         );
                       }
@@ -302,7 +302,7 @@ class _SignUpState extends State<SignUp> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => HomePage(
+                            builder: (BuildContext context) => FeedPage(
                               title: 'GameOnConnect',
                             )),
                             (Route<dynamic> route) => false,
