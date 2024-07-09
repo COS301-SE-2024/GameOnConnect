@@ -11,6 +11,7 @@ class CreateEvents extends StatefulWidget {
 class _CreateEventsState extends State<CreateEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
+  bool isChanged = false;
 
   @override
   void initState() {
@@ -24,7 +25,6 @@ class _CreateEventsState extends State<CreateEvents> {
 
   @override
   Widget build(BuildContext context) {
-    bool isChanged = false;
     return GestureDetector(
       child: Scaffold(
         key: scaffoldKey,
@@ -57,7 +57,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     TextFormField(
-                                      autofocus: true,
                                       textCapitalization:
                                           TextCapitalization.words,
                                       obscureText: false,
@@ -191,22 +190,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                               letterSpacing: 0,
                                             ),
                                           ),
-                                          Switch(
-                                            activeColor: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            activeTrackColor: Colors.black,
-                                            inactiveTrackColor:
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                            inactiveThumbColor:
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                                          Switch.adaptive(
+                                            activeTrackColor :Theme.of(context).colorScheme.primary ,
+                                            inactiveTrackColor: Theme.of(context).colorScheme.surface,
+                                            inactiveThumbColor: Theme.of(context).colorScheme.secondary,
                                             value: isChanged,
                                             onChanged: (bool value) {
-                                              isChanged = value;
+                                              setState((){
+                                                isChanged = value;
+                                              });
                                             },
                                           ),
                                           const SizedBox(width: 20),
@@ -219,12 +211,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                       onTap: () async {
                                         Navigator.pop(context);
                                       },
-                                      child: const Row(
+                                      child:  Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Icon(
                                             Icons.add,
-                                            color: Colors.black,
+                                            color: Theme.of(context).colorScheme.secondary,
                                             size: 24,
                                           ),
                                           Text(
@@ -232,6 +224,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               letterSpacing: 0,
+                                              color: Theme.of(context).colorScheme.secondary,
                                             ),
                                           ),
                                         ],
