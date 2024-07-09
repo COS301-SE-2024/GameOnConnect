@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Messaging extends StatefulWidget {
   const Messaging({super.key});
 
-  @override
+   @override
   State<Messaging> createState() => _MessagingState();
 }
 
@@ -13,21 +14,80 @@ class _MessagingState extends State<Messaging> {
   final ProfileService _profileService = ProfileService();
 
   Map<String, dynamic>? profileData;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadProfileData();
+    _loadProfileData(); //load the function upon first load 
   }
 
   void _loadProfileData() {
+    setState(() {
+      isLoading = true; //sets the loading state to true to build the loading widget
+    });
     _profileService.fetchProfileData().then((data) {
       setState(() {
         profileData = data;
+        isLoading = false; //data has been loaded so we cna stop the loading state
       });
     }).catchError((error) {
-      print(profileData);
+      setState(() {
+        isLoading = false;
+      });
     });
+  }
+
+  ////this widget builds the image as a cached network image
+  Widget buildProfilePicture(String? profilePicUrl) {
+    if (isLoading) {
+      return _buildLoadingWidget();
+    } else if (profilePicUrl != null) {
+      return Padding(
+        padding: const EdgeInsets.all(2),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: CachedNetworkImage(
+            imageUrl: profilePicUrl,
+            width: 44,
+            height: 44,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => _buildLoadingWidget(),
+            errorWidget: (context, url, error) => _buildErrorWidget(),
+            fadeInDuration: const Duration(milliseconds: 300),
+            fadeInCurve: Curves.easeIn,
+            memCacheWidth: 88, 
+            memCacheHeight: 88,
+            maxWidthDiskCache: 88,
+            maxHeightDiskCache: 88,
+          ),
+        ),
+      );
+    } else {
+      return _buildErrorWidget();
+    }
+  }
+
+  //this widget builds while the image is still loading
+  Widget _buildLoadingWidget() {
+    return const SizedBox(
+      width: 44,
+      height: 44,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  //this widget builds if there is an error with the image
+  Widget _buildErrorWidget() {
+    return Container(
+      width: 44,
+      height: 44,
+      color: Colors.grey[300],
+      child: const Icon(Icons.error),
+    );
   }
 
   @override
@@ -42,7 +102,7 @@ class _MessagingState extends State<Messaging> {
           'My Messages',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.surface,
             fontSize: 20,
             letterSpacing: 0,
             fontWeight: FontWeight.w900,
@@ -94,67 +154,8 @@ class _MessagingState extends State<Messaging> {
                                         Theme.of(context).colorScheme.primary,
                                     width: 2,
                                   ),
-                                ),
-                                child: FutureBuilder<Map<String, dynamic>?>(
-                                  future: _profileService.fetchProfileData(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<Map<String, dynamic>?>
-                                          snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(2),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                          child: Container(
-                                            width: 44,
-                                            height: 44,
-                                            color: Colors
-                                                .grey[200], 
-                                            child: const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    } else if (snapshot.hasError ||
-                                        snapshot.data == null ||
-                                        !snapshot.data!
-                                            .containsKey('profilePicture')) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(2),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                          child: Container(
-                                            width: 44,
-                                            height: 44,
-                                            color: Colors.grey[300],
-                                            child: const Icon(Icons.error),
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      String profilePicUrl = snapshot
-                                          .data!['profilePicture'] as String;
-                                      return Padding(
-                                        padding: const EdgeInsets.all(2),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                          child: Image.network(
-                                            profilePicUrl,
-                                            width: 44,
-                                            height: 44,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                ),
+                                ), 
+                                child: buildProfilePicture(profileData?['profilePicture'] as String?), //build the profile picture widget
                               ),
                               Expanded(
                                 child: Padding(
@@ -238,16 +239,11 @@ class _MessagingState extends State<Messaging> {
                   ),
                   Divider(
                     height: 1,
-                    thickness: 1,
+                    thickness: 0.5,
                     color: Theme.of(context).colorScheme.secondary,
                   )
                 ],
               ),
-            ),
-            Divider(
-              height: 1,
-              thickness: 1,
-              color: Theme.of(context).colorScheme.secondary,
             ),
           ],
         ),
