@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:gameonconnect/services/events_S/event_service.dart';
 
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
@@ -14,6 +15,14 @@ class _CreateEventsState extends State<CreateEvents> {
   DateTime? _endDatePicked;
 
   bool isChanged = false;
+  final nameController = TextEditingController();
+  int GameID = 1; // hard coding this for now
+  String? type;
+
+  Future create() async {
+    await Events().createEvent(type,
+        _datePicked, nameController.text, _endDatePicked, GameID, isChanged);
+  }
 
   @override
   void initState() {
@@ -59,6 +68,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     TextFormField(
+                                      controller: nameController,
                                       textCapitalization:
                                           TextCapitalization.words,
                                       obscureText: false,
@@ -106,50 +116,58 @@ class _CreateEventsState extends State<CreateEvents> {
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         final datePickedDate =
-                                      await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        lastDate: DateTime(2050),
-                                        firstDate: DateTime.now(),
-                                        builder: (context, child) {
-                                          return Theme(
-                                            data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
-                                            child: child!,
-                                          );
-                                        },
-                                      );
-
-                                         TimeOfDay? datePickedTime;
-                                      if (datePickedDate != null) {
-                                        datePickedTime = await showTimePicker(
-                                          //ignore: use_build_context_synchronously
+                                            await showDatePicker(
                                           context: context,
-                                          initialTime: TimeOfDay.now(),
+                                          initialDate: DateTime.now(),
+                                          lastDate: DateTime(2050),
+                                          firstDate: DateTime.now(),
                                           builder: (context, child) {
                                             return Theme(
-                                              data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                              data: ThemeData.from(
+                                                  colorScheme: Theme.of(context)
+                                                      .colorScheme),
                                               child: child!,
+                                            );
+                                          },
                                         );
-                                      });
-                                      }
 
-                                        if (datePickedDate != null && datePickedTime != null) {
-                                        setState(() {
-                                          _datePicked = DateTime(
-                                            datePickedDate.year,
-                                            datePickedDate.month,
-                                            datePickedDate.day,
-                                            datePickedTime!.hour,
-                                            datePickedTime.minute,
-                                          );
-                                        });
-                                      }
+                                        TimeOfDay? datePickedTime;
+                                        if (datePickedDate != null) {
+                                          datePickedTime = await showTimePicker(
+                                              //ignore: use_build_context_synchronously
+                                              context: context,
+                                              initialTime: TimeOfDay.now(),
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData.from(
+                                                      colorScheme:
+                                                          Theme.of(context)
+                                                              .colorScheme),
+                                                  child: child!,
+                                                );
+                                              });
+                                        }
+
+                                        if (datePickedDate != null &&
+                                            datePickedTime != null) {
+                                          setState(() {
+                                            _datePicked = DateTime(
+                                              datePickedDate.year,
+                                              datePickedDate.month,
+                                              datePickedDate.day,
+                                              datePickedTime!.hour,
+                                              datePickedTime.minute,
+                                            );
+                                          });
+                                        }
                                       },
                                       child: Container(
                                         width: double.infinity,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                           border: Border.all(
@@ -167,8 +185,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 .fromSTEB(12, 0, 0, 0),
                                             child: Text(
                                               _datePicked != null
-                                                  ? DateFormat('d MMMM , hh:mm a').format(_datePicked!)
-                                                  :'Select a date',
+                                                  ? DateFormat(
+                                                          'd MMMM , hh:mm a')
+                                                      .format(_datePicked!)
+                                                  : 'Select a date',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -202,14 +222,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
                                         final datePickedDate2 =
-                                        await showDatePicker(
+                                            await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
                                           lastDate: DateTime(2050),
                                           firstDate: DateTime.now(),
                                           builder: (context, child) {
                                             return Theme(
-                                              data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                              data: ThemeData.from(
+                                                  colorScheme: Theme.of(context)
+                                                      .colorScheme),
                                               child: child!,
                                             );
                                           },
@@ -218,18 +240,22 @@ class _CreateEventsState extends State<CreateEvents> {
                                         TimeOfDay? datePickedTime2;
                                         if (datePickedDate2 != null) {
                                           datePickedTime2 = await showTimePicker(
-                                            //ignore: use_build_context_synchronously
+                                              //ignore: use_build_context_synchronously
                                               context: context,
                                               initialTime: TimeOfDay.now(),
                                               builder: (context, child) {
                                                 return Theme(
-                                                  data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                                  data: ThemeData.from(
+                                                      colorScheme:
+                                                          Theme.of(context)
+                                                              .colorScheme),
                                                   child: child!,
                                                 );
                                               });
                                         }
 
-                                        if (datePickedDate2 != null && datePickedTime2 != null) {
+                                        if (datePickedDate2 != null &&
+                                            datePickedTime2 != null) {
                                           setState(() {
                                             _endDatePicked = DateTime(
                                               datePickedDate2.year,
@@ -245,9 +271,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                         width: double.infinity,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.surface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface,
                                           borderRadius:
-                                          BorderRadius.circular(12),
+                                              BorderRadius.circular(12),
                                           border: Border.all(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -257,14 +285,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                         ),
                                         child: Align(
                                           alignment:
-                                          const AlignmentDirectional(-1, 0),
+                                              const AlignmentDirectional(-1, 0),
                                           child: Padding(
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(12, 0, 0, 0),
                                             child: Text(
                                               _endDatePicked != null
-                                                  ? DateFormat('d MMMM , hh:mm a').format(_endDatePicked!)
-                                                  :'Select a date',
+                                                  ? DateFormat(
+                                                          'd MMMM , hh:mm a')
+                                                      .format(_endDatePicked!)
+                                                  : 'Select a date',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -279,7 +309,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                         ),
                                       ),
                                     ),
-                                    // get the gameID of the game .. for now I'm using the
                                     Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -291,12 +320,20 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           Switch.adaptive(
-                                            activeTrackColor :Theme.of(context).colorScheme.primary ,
-                                            inactiveTrackColor: Theme.of(context).colorScheme.surface,
-                                            inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+                                            activeTrackColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            inactiveTrackColor:
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                            inactiveThumbColor:
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                             value: isChanged,
                                             onChanged: (bool value) {
-                                              setState((){
+                                              setState(() {
                                                 isChanged = value;
                                               });
                                             },
@@ -309,14 +346,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        Navigator.pop(context);
+                                        //Navigator.pop(context);
                                       },
-                                      child:  Row(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Icon(
                                             Icons.add,
-                                            color: Theme.of(context).colorScheme.secondary,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             size: 24,
                                           ),
                                           Text(
@@ -324,7 +363,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               letterSpacing: 0,
-                                              color: Theme.of(context).colorScheme.secondary,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                             ),
                                           ),
                                         ],
@@ -359,7 +400,7 @@ class _CreateEventsState extends State<CreateEvents> {
                         const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
                     child: MaterialButton(
                       onPressed: () {
-                        //print('Button pressed ...');
+                        create();
                       },
                       color: Theme.of(context).colorScheme.primary,
                       child: const Text('Create'),
@@ -373,9 +414,8 @@ class _CreateEventsState extends State<CreateEvents> {
       ),
     );
   }
-
-
 }
+
 // TODO : look into making this a component
 class ChipData {
   final String label;
@@ -385,8 +425,8 @@ class ChipData {
 }
 
 class ChipSelector extends StatefulWidget {
-  const ChipSelector({super.key});
 
+  const ChipSelector({super.key});
   @override
   ChipSelectorState createState() => ChipSelectorState();
 }
@@ -397,6 +437,7 @@ class ChipSelectorState extends State<ChipSelector> {
     ChipData('Tournament', Icons.emoji_events_sharp),
   ];
   String? selectedOption;
+
 
   @override
   Widget build(BuildContext context) {
@@ -414,12 +455,16 @@ class ChipSelectorState extends State<ChipSelector> {
                 fontFamily: 'Inter',
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: selectedOption == option.label ? Colors.black : Theme.of(context).colorScheme.secondary,
+                color: selectedOption == option.label
+                    ? Colors.black
+                    : Theme.of(context).colorScheme.secondary,
               ),
             ),
             avatar: Icon(
               option.icon,
-              color: selectedOption == option.label ?  Colors.black:Theme.of(context).colorScheme.secondary,
+              color: selectedOption == option.label
+                  ? Colors.black
+                  : Theme.of(context).colorScheme.secondary,
               size: 18,
             ),
             selected: selectedOption == option.label,
@@ -428,12 +473,16 @@ class ChipSelectorState extends State<ChipSelector> {
                 selectedOption = selected ? option.label : null;
               });
             },
-            backgroundColor: selectedOption == option.label ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
+            backgroundColor: selectedOption == option.label
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.surface,
             selectedColor: Theme.of(context).colorScheme.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
               side: BorderSide(
-                color: selectedOption == option.label ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.primary,
+                color: selectedOption == option.label
+                    ? Theme.of(context).colorScheme.surface
+                    : Theme.of(context).colorScheme.primary,
                 width: 2,
               ),
             ),
