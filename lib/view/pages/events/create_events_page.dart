@@ -84,7 +84,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    ChipSelector(),
+                                    const ChipSelector(),
                                     Text(
                                       'Date and Time',
                                       style: TextStyle(
@@ -120,6 +120,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                          TimeOfDay? datePickedTime;
                                       if (datePickedDate != null) {
                                         datePickedTime = await showTimePicker(
+                                          //ignore: use_build_context_synchronously
                                           context: context,
                                           initialTime: TimeOfDay.now(),
                                           builder: (context, child) {
@@ -259,7 +260,7 @@ class _CreateEventsState extends State<CreateEvents> {
                         const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
                     child: MaterialButton(
                       onPressed: () {
-                        print('Button pressed ...');
+                        //print('Button pressed ...');
                       },
                       color: Theme.of(context).colorScheme.primary,
                       child: const Text('Create'),
@@ -288,10 +289,10 @@ class ChipSelector extends StatefulWidget {
   const ChipSelector({super.key});
 
   @override
-  _ChipSelectorState createState() => _ChipSelectorState();
+  ChipSelectorState createState() => ChipSelectorState();
 }
 
-class _ChipSelectorState extends State<ChipSelector> {
+class ChipSelectorState extends State<ChipSelector> {
   List<ChipData> options = [
     ChipData('Gaming Session', Icons.videogame_asset_outlined),
     ChipData('Tournament', Icons.emoji_events_sharp),
