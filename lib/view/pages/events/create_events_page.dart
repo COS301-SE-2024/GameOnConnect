@@ -11,6 +11,8 @@ class CreateEvents extends StatefulWidget {
 class _CreateEventsState extends State<CreateEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
+  DateTime? _endDatePicked;
+
   bool isChanged = false;
 
   @override
@@ -86,7 +88,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                     ),
                                     const ChipSelector(),
                                     Text(
-                                      'Date and Time',
+                                      'Start date and time',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         color: Theme.of(context)
@@ -181,6 +183,103 @@ class _CreateEventsState extends State<CreateEvents> {
                                         ),
                                       ),
                                     ),
+                                    Text(
+                                      'End date and time',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        fontSize: 14,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        final datePickedDate2 =
+                                        await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          lastDate: DateTime(2050),
+                                          firstDate: DateTime.now(),
+                                          builder: (context, child) {
+                                            return Theme(
+                                              data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                              child: child!,
+                                            );
+                                          },
+                                        );
+
+                                        TimeOfDay? datePickedTime2;
+                                        if (datePickedDate2 != null) {
+                                          datePickedTime2 = await showTimePicker(
+                                            //ignore: use_build_context_synchronously
+                                              context: context,
+                                              initialTime: TimeOfDay.now(),
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                                  child: child!,
+                                                );
+                                              });
+                                        }
+
+                                        if (datePickedDate2 != null && datePickedTime2 != null) {
+                                          setState(() {
+                                            _endDatePicked = DateTime(
+                                              datePickedDate2.year,
+                                              datePickedDate2.month,
+                                              datePickedDate2.day,
+                                              datePickedTime2!.hour,
+                                              datePickedTime2.minute,
+                                            );
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 48,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.surface,
+                                          borderRadius:
+                                          BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: Align(
+                                          alignment:
+                                          const AlignmentDirectional(-1, 0),
+                                          child: Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(12, 0, 0, 0),
+                                            child: Text(
+                                              _endDatePicked != null
+                                                  ? DateFormat('d MMMM , hh:mm a').format(_endDatePicked!)
+                                                  :'Select a date',
+                                              style: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 14,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // get the gameID of the game .. for now I'm using the
                                     Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
