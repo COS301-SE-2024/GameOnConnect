@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
@@ -9,6 +10,7 @@ class CreateEvents extends StatefulWidget {
 
 class _CreateEventsState extends State<CreateEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  DateTime? _datePicked;
 
   @override
   void initState() {
@@ -102,103 +104,50 @@ class _CreateEventsState extends State<CreateEvents> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        /*final datePickedDate =
+                                        final datePickedDate =
                                       await showDatePicker(
                                         context: context,
+                                        initialDate: DateTime.now(),
                                         lastDate: DateTime(2050),
+                                        firstDate: DateTime.now(),
                                         builder: (context, child) {
-                                          return DatePickerTheme(
-                                            context,
-                                            child!,
-                                            data:
-                                            headerBackgroundColor:
-                                            Color(0xFF00DF68),
-                                            headerForegroundColor:
-                                            Color(0xFF030303),
-                                            headerTextStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .headlineLarge
-                                                .override(
-                                              fontFamily: 'Outfit',
-                                              color: Color(0xFF15161E),
-                                              fontSize: 32,
-                                              letterSpacing: 0,
-                                              fontWeight:
-                                              FontWeight.w600,
-                                            ),
-                                            pickerBackgroundColor: Colors.white,
-                                            pickerForegroundColor:
-                                            Color(0xFF15161E),
-                                            selectedDateTimeBackgroundColor:
-                                            Color(0xFF00DF68),
-                                            selectedDateTimeForegroundColor:
-                                            Color(0xFF030303),
-                                            actionButtonForegroundColor:
-                                            Color(0xFF15161E),
-                                            iconSize: 24,
+                                          return Theme(
+                                            data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                            child: child!,
                                           );
-                                        }, firstDate: DateTime.now(),
-                                      );*/
+                                        },
+                                      );
 
-                                        /* TimeOfDay? _datePickedTime;
-                                      if (_datePickedDate != null) {
-                                        _datePickedTime = await showTimePicker(
+                                         TimeOfDay? datePickedTime;
+                                      if (datePickedDate != null) {
+                                        datePickedTime = await showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now(),
                                           builder: (context, child) {
-                                            return wrapInMaterialTimePickerTheme(
-                                              context,
-                                              child!,
-                                              headerBackgroundColor:
-                                              Color(0xFF00DF68),
-                                              headerForegroundColor:
-                                              Color(0xFF030303),
-                                              headerTextStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .headlineLarge
-                                                  .override(
-                                                fontFamily: 'Outfit',
-                                                color:
-                                                Color(0xFF15161E),
-                                                fontSize: 32,
-                                                letterSpacing: 0,
-                                                fontWeight:
-                                                FontWeight.w600,
-                                              ),
-                                              pickerBackgroundColor:
-                                              Colors.white,
-                                              pickerForegroundColor:
-                                              Color(0xFF15161E),
-                                              selectedDateTimeBackgroundColor:
-                                              Color(0xFF00DF68),
-                                              selectedDateTimeForegroundColor:
-                                              Color(0xFF030303),
-                                              actionButtonForegroundColor:
-                                              Color(0xFF15161E),
-                                              iconSize: 24,
-                                            );
-                                          },
+                                            return Theme(
+                                              data: ThemeData.from(colorScheme: Theme.of(context).colorScheme),
+                                              child: child!,
                                         );
-                                      }*/
+                                      });
+                                      }
 
-                                        /*if (_datePickedDate != null &&
-                                          _datePickedTime != null) {
-                                        safeSetState(() {
-                                          _model.datePicked = DateTime(
-                                            _datePickedDate.year,
-                                            _datePickedDate.month,
-                                            _datePickedDate.day,
-                                            _datePickedTime!.hour,
-                                            _datePickedTime.minute,
+                                        if (datePickedDate != null && datePickedTime != null) {
+                                        setState(() {
+                                          _datePicked = DateTime(
+                                            datePickedDate.year,
+                                            datePickedDate.month,
+                                            datePickedDate.day,
+                                            datePickedTime!.hour,
+                                            datePickedTime.minute,
                                           );
                                         });
-                                      }*/
+                                      }
                                       },
                                       child: Container(
                                         width: double.infinity,
                                         height: 48,
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Theme.of(context).colorScheme.surface,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                           border: Border.all(
@@ -215,7 +164,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(12, 0, 0, 0),
                                             child: Text(
-                                              'Select a date',
+                                              _datePicked != null
+                                                  ? DateFormat('d MMMM , hh:mm a').format(_datePicked!)
+                                                  :'Select a date',
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
