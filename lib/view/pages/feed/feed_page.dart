@@ -7,7 +7,7 @@ import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:gameonconnect/view/pages/events/events_page.dart';
-import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
+// import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -113,7 +113,7 @@ class _FeedPageState extends State<FeedPage> {
 }
 
 class _DevelopmentButtons extends StatelessWidget {
-  final MessagingService messagingService = MessagingService();
+  // final MessagingService messagingService = MessagingService();
 
   @override
   Widget build(BuildContext context) {
