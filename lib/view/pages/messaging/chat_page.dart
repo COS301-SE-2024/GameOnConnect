@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatelessWidget {
-  final String ProfileName;
+  final String profileName;
   const ChatPage({
     super.key,
-    required this.ProfileName,
+    required this.profileName,
   });
 
   @override
@@ -12,7 +12,7 @@ class ChatPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(ProfileName),
+        title: Text(profileName),
       ),
     );
   }

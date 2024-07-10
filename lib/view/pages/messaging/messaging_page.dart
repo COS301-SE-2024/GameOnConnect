@@ -151,7 +151,7 @@ class _MessagingState extends State<Messaging> {
                   Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChatPage(ProfileName: profileData?['profileName'],),
+                    builder: (context) => ChatPage(profileName: profileData?['profileName'],),
                   ),
                 ),
                 },
