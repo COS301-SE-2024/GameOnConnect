@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:gameonconnect/view/pages/profile/profile_page.dart';
+import 'package:gameonconnect/model/profile_M/profile_model.dart';
 
 class ProfileService {
-  //Function to query FireStore
-  Future<Map<String, dynamic>?> fetchProfileData() async {
+
+
+Future<Profile?>  fetchProfile() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
@@ -16,46 +19,27 @@ class ProfileService {
 
         if (doc.exists) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          Map<String, dynamic> userInfo =
-              data['username'] as Map<String, dynamic>;
-          String profileName = data['name'] ?? 'Profile name';
-          String username = userInfo['profile_name'] ?? 'username';
-          String profilePicture = data['profile_picture'] ?? '';
-          String profileBanner = data['banner'];
 
-          String profilePictureUrl = '';
-          String bannerUrl = '';
-
-          if (profilePicture.isNotEmpty) {
-            try {
-              // Use refFromURL for a full URL
-              Reference storageRef =
-                  FirebaseStorage.instance.refFromURL(profilePicture);
-              profilePictureUrl = await storageRef.getDownloadURL();
-
-              Reference storage2 =
-                  FirebaseStorage.instance.refFromURL(profileBanner);
-              bannerUrl = await storage2.getDownloadURL();
-            } catch (e) {
-              return null;
-            }
-          }
-
-          return {
-            'profileName': profileName,
-            'username': username,
-            'profilePicture': profilePictureUrl,
-            'profileBanner': bannerUrl
-          };
+          return Profile(
+          banner: data['banner'] ?? '',
+          bio: data['bio'] ?? '',
+          profilePicture: data['profile_picture'] ?? '',
+          username: Map<String, dynamic>.from(data['username'] ?? {}),
+          currentlyPlaying: data['currently_playing'] ?? '',
+          myGames: List<String>.from(data['my_games'] ?? []),
+          wantToPlay: List<String>.from(data['want_to_play'] ?? []),
+      );
         } else {
-          return null;
+          print('Document not found');
         }
       } else {
-        return null;
+        print('User not found');
       }
     } catch (e) {
-      return null;
+      print('Error fetching profile data: $e');
     }
+    return null;
   }
+
 }
 
