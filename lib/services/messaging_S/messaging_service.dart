@@ -1,37 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class MessagingService 
-{
+class MessagingService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Create a new conversation (group or private chat)
-  Future<String> createConversation(List<String> participants) async 
-  {
-    try 
-    {
-      final String conversationID = _firestore.collection('messages_log').doc().id;
+  Future<String> createConversation(List<String> participants) async {
+    try {
+      final String conversationID = _firestore.collection('message_log').doc().id;
 
-      await _firestore.collection('messages_log').doc(conversationID).set({
+      await _firestore.collection('message_log').doc(conversationID).set({
         'conversationID': conversationID,
         'participants': participants,
         'participant_messages': []
       });
 
       return conversationID;
-    } 
-    catch (e) 
-    {
+    } catch (e) {
+      // print("Error in createConversation: $e");  // Log the error
       throw Exception("Failed to create conversation: $e");
     }
   }
 
   // Send a message in a conversation
-  Future<void> sendMessage(String conversationID, String messageText) async 
-  {
-    try 
-    {
+  Future<void> sendMessage(String conversationID, String messageText) async {
+    try {
       final User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("No user logged in");
 
@@ -46,21 +40,18 @@ class MessagingService
         'timestamp': timestamp
       });
 
-      await _firestore.collection('messages_log').doc(conversationID).update({
+      await _firestore.collection('message_log').doc(conversationID).update({
         'participant_messages': FieldValue.arrayUnion([messageID])
       });
-    } 
-    catch (e) 
-    {
+    } catch (e) {
+      // print("Error in sendMessage: $e");  // Log the error
       throw Exception("Failed to send message: $e");
     }
   }
 
   // Get messages from a conversation
-  Future<List<Map<String, dynamic>>> getMessages(String conversationID) async 
-  {
-    try 
-    {
+  Future<List<Map<String, dynamic>>> getMessages(String conversationID) async {
+    try {
       QuerySnapshot querySnapshot = await _firestore
           .collection('messages')
           .where('conversationID', isEqualTo: conversationID)
@@ -70,32 +61,28 @@ class MessagingService
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-    } 
-    catch (e) 
-    {
+    } catch (e) {
+      // print("Error in getMessages: $e");  // Log the error
       throw Exception("Failed to get messages: $e");
     }
   }
 
   // Get conversations for the current user
-  Future<List<Map<String, dynamic>>> getConversations() async 
-  {
-    try 
-    {
+  Future<List<Map<String, dynamic>>> getConversations() async {
+    try {
       final User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("No user logged in");
 
       QuerySnapshot querySnapshot = await _firestore
-          .collection('messages_log')
+          .collection('message_log')
           .where('participants', arrayContains: currentUser.uid)
           .get();
 
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-    } 
-    catch (e) 
-    {
+    } catch (e) {
+      // print("Error in getConversations: $e");  // Log the error
       throw Exception("Failed to get conversations: $e");
     }
   }
