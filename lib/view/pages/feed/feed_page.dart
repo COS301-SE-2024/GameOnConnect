@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
@@ -27,6 +29,48 @@ class _FeedPageState extends State<FeedPage> {
     const EventsPage(), // Placeholder for the Events Page
     Profile(), // Actual page for the Profile
   ];
+
+   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkProfileAndShowDialog());
+  }
+
+  Future<void> _checkProfileAndShowDialog() async {
+    ProfileService profileService = ProfileService();
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUserID = auth.currentUser?.uid;
+      String userId = currentUserID ?? ''; 
+      String? profileName = await profileService.getProfileName(userId);
+    
+    if (profileName == '' || profileName?.toLowerCase() == 'default user') {
+      _showDialogOnStart();
+    } else if (profileName == null) {
+      //print('Error: Username could not be set');
+    } else {
+      //print('Username is set to: $profileName');
+    }
+}
+
+  void _showDialogOnStart() {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, 
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Please enter a username:'),
+          //add a textFormField under the content to enter text
+          content: Text('This is a test dialog'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () => Navigator.of(dialogContext).pop(), 
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -128,13 +172,13 @@ class _DevelopmentButtons extends StatelessWidget {
           // ),
           MaterialButton(
             onPressed: () {
-              //add code here to go to the messaging page. 
+              //add code here to go to the messaging page.
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Messaging(),
-                  ),
-                );
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Messaging(),
+                ),
+              );
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,

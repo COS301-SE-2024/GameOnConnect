@@ -57,5 +57,19 @@ class ProfileService {
       return null;
     }
   }
+
+  Future<String?> getProfileName(String userId) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+
+    DocumentSnapshot profileSnapshot = await db.collection("profile_data").doc(userId).get(); //get the document
+    Map<String, dynamic> data = profileSnapshot.data() as Map<String, dynamic>; //map the overall data
+    Map<String, dynamic> userInfo = data['username'] as Map<String, dynamic>; //map the username data
+    // Return profile name if exists otherwise give an empty string
+    if (profileSnapshot.exists) {
+      return userInfo['profile_name'];
+    } else {
+      return '';
+    }
+  }
 }
 
