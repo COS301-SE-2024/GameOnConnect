@@ -19,7 +19,6 @@ class Events{
         }
 
       }
-      print(all);
           return all;
     }catch (e)
     {

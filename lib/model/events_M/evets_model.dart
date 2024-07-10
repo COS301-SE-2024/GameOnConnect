@@ -15,8 +15,8 @@ class Event{
   factory Event.fromMap(Map<String,dynamic> data,String id){
     return Event(
         creatorID: data['creatorID'],
-        startDate: data['start_date'],
-        endDate: data['end_date'],
+        startDate: data['start_date'].toDate(),
+        endDate: data['end_date'].toDate(),
         eventType: data['eventType'],
         gameID: data['gameID'],
         name: data['name'],
