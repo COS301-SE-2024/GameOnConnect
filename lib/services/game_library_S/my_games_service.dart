@@ -18,7 +18,7 @@ class CurrentlyPlaying {
       await db.collection('profile_data').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<String> currentlyPlaying = List<String>.from(snapshot.data()!['currently_playing']);
+        List<String> currentlyPlaying = List<String>.from(snapshot.data()!['my_games']);
         return currentlyPlaying;
       } else {
         return [];
@@ -38,7 +38,7 @@ class CurrentlyPlaying {
       List<String> oldList =await  getCurrentlyPlaying();
       if (!oldList.contains(gameID)) {
         oldList.add(gameID);
-        final data = {'currently_playing': oldList};
+        final data = {'my_games': oldList};
         await db
             .collection('profile_data')
             .doc(currentUser?.uid)
@@ -57,7 +57,7 @@ class CurrentlyPlaying {
       db.collection('profile_data')
           .doc(auth.currentUser?.uid)
           .update({
-        'currently_playing': FieldValue.arrayRemove([gameID])
+        'my_games': FieldValue.arrayRemove([gameID])
 
       });
     } catch (e) {

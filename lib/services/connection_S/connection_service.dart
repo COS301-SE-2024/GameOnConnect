@@ -25,19 +25,19 @@ class FriendServices {
     }
 
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('friends').doc(currentUser?.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
         if(who=="friends")
         {
            // Cast the friends array to List<String>
-          List<String> friends = List<String>.from(snapshot.data()!['friends']);
+          List<String> friends = List<String>.from(snapshot.data()!['connections']);
           return friends;
         }
         if(who=="requests")
         {
            // Cast the friends request array to List<String>
-          List<String> requests = List<String>.from(snapshot.data()!['friend_requests']);
+          List<String> requests = List<String>.from(snapshot.data()!['connection_requests']);
           return requests;
         }
         else{
@@ -60,11 +60,11 @@ class FriendServices {
     }
 
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('friends').doc(currentUser?.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
       // Cast the friends array to List<String>
-      List<String> requests = List<String>.from(snapshot.data()!['friend_requests']);
+      List<String> requests = List<String>.from(snapshot.data()!['connection_requests']);
       return requests;
     } else {
       return []; //return an empty array
@@ -80,7 +80,7 @@ class FriendServices {
     try {
       await _userService.acceptFriendRequest(currentUserId, requesterUserId);
     } catch (e) {
-      print('Error accepting friend request: $e');
+      print('Error accepting connection request: $e');
     }
   } 
 
@@ -89,7 +89,7 @@ class FriendServices {
     try {
       await _userService.rejectFriendRequest(currentUserId, requesterUserId);
     } catch (e) {
-      print('Error accepting friend request: $e');
+      print('Error accepting connection request: $e');
     }
   } 
 

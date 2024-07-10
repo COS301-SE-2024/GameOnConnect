@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
@@ -11,7 +12,7 @@ import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
 import 'view/pages/feed/feed_page.dart';
-import 'view/pages/events/events_and_gaming_sessions.dart';
+import 'view/pages/events/create_events_page.dart';
 import 'view/pages/events/events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasData) {
-                  return HomePage(
+                  return FeedPage(
                     title: 'GameOnConnect',
                   );
                 } else {
@@ -89,7 +90,7 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-        '/home': (context) => HomePage(
+        '/home': (context) => FeedPage(
               title: 'GameOnConnect',
             ),
         '/edit-profile': (context) => EditProfilePage(),
@@ -97,13 +98,14 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
-        '/currently_playing': (context) => EventsGamingSessions(),
+        '/create_events': (context) => CreateEvents(),
         '/events': (context) => EventsPage(),
         '/login': (context) => Login(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
-        '/requests' : (context) => Requests()
+        '/requests' : (context) => Requests(),
+        '/messages' : (context) => Messaging(),
       },
       initialRoute: '/',
     );

@@ -174,10 +174,11 @@ class _FriendSearchState extends State<FriendSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Friends'),
+        title: const Text('Connections'),
       ),
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserFriendsStream(widget.currentUserId),
+        stream: _userService.getCurrentUserFriendsStream(widget.
+        currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

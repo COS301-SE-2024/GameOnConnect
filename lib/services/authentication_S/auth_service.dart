@@ -101,19 +101,19 @@ class AuthService {
           "username": {"profile_name": username, "unique_num": _nextNum},
           "visibility": true,
           "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
-          "wishlist": [],
-          "currently_playing": []
+          "want_to_play": [],
+          "my_games": []
         };
 
-        final friendData = <String, dynamic>{
-          "friend_requests": [],
-          "friends": [],
+        final connectionData = <String, dynamic>{
+          "connection_requests": [],
+          "connections": [],
           "pending": [],
           "userID": currentUser.uid
         };
 
         db.collection("profile_data").doc(currentUser.uid).set(defaultData);
-        db.collection("friends").doc(currentUser.uid).set(friendData);
+        db.collection("connections").doc(currentUser.uid).set(connectionData);
       }
     }catch(e)
     {
