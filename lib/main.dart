@@ -11,7 +11,7 @@ import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
 import 'view/pages/feed/feed_page.dart';
-import 'view/pages/events/events_and_gaming_sessions.dart';
+import 'view/pages/events/create_events_page.dart';
 import 'view/pages/events/events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
-        '/currently_playing': (context) => EventsGamingSessions(),
+        '/create_events': (context) => CreateEvents(),
         '/events': (context) => EventsPage(),
         '/login': (context) => Login(),
         '/help': (context) => Help(),
