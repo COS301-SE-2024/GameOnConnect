@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasData) {
-                  return HomePage(
+                  return FeedPage(
                     title: 'GameOnConnect',
                   );
                 } else {
@@ -89,7 +90,7 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-        '/home': (context) => HomePage(
+        '/home': (context) => FeedPage(
               title: 'GameOnConnect',
             ),
         '/edit-profile': (context) => EditProfilePage(),
@@ -103,7 +104,8 @@ class MyApp extends StatelessWidget {
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
-        '/requests' : (context) => Requests()
+        '/requests' : (context) => Requests(),
+        '/messages' : (context) => Messaging(),
       },
       initialRoute: '/',
     );
