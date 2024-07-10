@@ -35,16 +35,6 @@ class _EventCardWidgetState extends State<EventCardWidget> {
         height: 60,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0,
-              color: Theme.of(context).colorScheme.surface,
-              offset: const Offset(
-                0,
-                1,
-              ),
-            )
-          ],
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),

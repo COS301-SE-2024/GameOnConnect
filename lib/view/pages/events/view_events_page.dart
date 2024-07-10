@@ -1,5 +1,5 @@
 import '../../components/card/event_card.dart';
-import '../../components/card/upcoming_event_card.dart';
+import '../../components/card/joined_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
@@ -16,16 +16,16 @@ class _HomePageWidgetState extends State<viewEvents>
     with TickerProviderStateMixin {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+   TabController? tabController;
   @override
   void initState() {
     super.initState();
-
-   /* _model.tabBarController = TabController(
+     tabController = TabController(
       vsync: this,
       length: 3,
       initialIndex: 0,
-    )..addListener(() => setState(() {}));*/
+    )..addListener(() => setState(() {}));
+
   }
 
   @override
@@ -42,7 +42,9 @@ class _HomePageWidgetState extends State<viewEvents>
 
         body: SafeArea(
           top: true,
-          child: Column(
+          child: DefaultTabController(
+            length:3,
+            child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
               Align(
@@ -56,6 +58,7 @@ class _HomePageWidgetState extends State<viewEvents>
                       fontFamily: 'Inter',
                       letterSpacing: 0,
                       color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 22,
                     ),
                   ),
                 ),
@@ -95,7 +98,7 @@ class _HomePageWidgetState extends State<viewEvents>
                     color: Theme.of(context).colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
-                        blurRadius: 4,
+                        blurRadius: 2,
                         color: Theme.of(context).colorScheme.secondary,
                         offset: const Offset(
                           0,
@@ -111,29 +114,7 @@ class _HomePageWidgetState extends State<viewEvents>
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 16, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding:
-                                const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                                child: Text(
-                                  'Events',
-                                  style:TextStyle(
-                                    fontFamily: 'Inter',
-                                    color:Theme.of(context).colorScheme.secondary,
-                                    fontSize: 22,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+
                         Expanded(
                           child: Column(
                             children: [
@@ -142,7 +123,7 @@ class _HomePageWidgetState extends State<viewEvents>
                                 child: ButtonsTabBar(
                                   labelStyle: TextStyle(
                                     fontFamily: 'Inter',
-                                    color: Theme.of(context).colorScheme.surface,
+                                    color: Theme.of(context).colorScheme.secondary,
                                     fontSize: 16,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w500,
@@ -153,6 +134,8 @@ class _HomePageWidgetState extends State<viewEvents>
                                   unselectedBorderColor: Theme.of(context).colorScheme.secondary,
                                   borderWidth: 2,
                                   elevation: 0,
+                                  backgroundColor: Theme.of(context).colorScheme.surface,
+
                                   tabs: const [
                                     Tab(
                                       text: 'Subscribed',
@@ -171,10 +154,12 @@ class _HomePageWidgetState extends State<viewEvents>
                                           () async {}
                                     ][i]();
                                   },
+                                  controller: tabController,
                                 ),
                               ),
                               Expanded(
                                 child: TabBarView(
+                                  controller: tabController,
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: [
                                     ClipRRect(
@@ -248,6 +233,7 @@ class _HomePageWidgetState extends State<viewEvents>
                 ),
               ),
             ],
+          ),
           ),
         ),
       ),

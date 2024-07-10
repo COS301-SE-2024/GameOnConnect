@@ -36,17 +36,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
         height: 155,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0,
-              color: Theme.of(context).colorScheme.surface,
-              offset: const Offset(
-                0,
-                1,
-              ),
-            )
-          ],
           shape: BoxShape.rectangle,
+          borderRadius:  BorderRadius.circular(12),
           border: Border.all(
             color: Theme.of(context).colorScheme.primary,
           ),
