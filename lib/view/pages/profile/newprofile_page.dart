@@ -101,7 +101,7 @@ class Profilenew extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 60), //space 
+                  const SizedBox(height: 20), //space 
                   Container(
                     margin: const EdgeInsets.fromLTRB(18.9, 0, 3, 13),
                     child: Column(
@@ -112,7 +112,7 @@ const Text(
                     'Currently playing ',
                     style:  TextStyle(
                       ////'Inter',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       fontSize: 22,
                       //height: 1.4,
                       //letterSpacing: 0.5,
@@ -128,7 +128,8 @@ const Text(
                           border: Border.all(color: const Color(0xFF00FF75)),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
+                        child: IntrinsicWidth(
+                          child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -213,6 +214,8 @@ const Text(
                             ),
                           ],
                         ),
+                        ),
+                        
                       ),
                     ),
                   ),
