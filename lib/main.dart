@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
@@ -12,7 +13,7 @@ import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
 import 'view/pages/feed/feed_page.dart';
 import 'view/pages/events/create_events_page.dart';
-import 'view/pages/events/events_page.dart';
+import 'view/pages/events/view_events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -98,7 +99,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
         '/create_events': (context) => CreateEvents(),
-        '/events': (context) => EventsPage(),
+        '/events': (context) => viewEvents(),
         '/login': (context) => Login(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),

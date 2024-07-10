@@ -1,11 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
-import 'package:gameonconnect/view/pages/events/events_page.dart';
+import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
-    const EventsPage(), // Placeholder for the Events Page
+    const viewEvents(), // View Events Page
     Profile(), // Actual page for the Profile
   ];
 
@@ -149,7 +149,7 @@ class _DevelopmentButtons extends StatelessWidget {
   },
   color: Theme.of(context).colorScheme.primary,
   textColor: Theme.of(context).colorScheme.surface,
-  child: Text('search friends '),
+  child: const Text('search friends '),
 ),
 
         ],
