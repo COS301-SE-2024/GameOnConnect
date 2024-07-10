@@ -1,31 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../../model/events_M/evets_model.dart';
 
+class EventCardWidget extends StatelessWidget {
+  final Event? e;
 
-
-class EventCardWidget extends StatefulWidget {
-  const EventCardWidget({super.key});
-
-  @override
-  State<EventCardWidget> createState() => _EventCardWidgetState();
-}
-
-class _EventCardWidgetState extends State<EventCardWidget> {
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+  const EventCardWidget({
+    super.key,
+    required this.e
+});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,8 +44,8 @@ class _EventCardWidgetState extends State<EventCardWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Clash Royale',
-                        style:TextStyle(
+                        e!.name,
+                        style: TextStyle(
                           fontFamily: 'Inter',
                           color: Theme.of(context).colorScheme.secondary,
                           fontSize: 16,
@@ -73,9 +55,10 @@ class _EventCardWidgetState extends State<EventCardWidget> {
                       ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '01/07/2024      |     07:30',
+                            '${e!.startDate.day}/${e!.startDate.month}/${e!.startDate.year}      |     ${e!.startDate.hour}:${e!.startDate.minute}',
                             style: TextStyle(
                               fontFamily: 'Inter',
                               color: Theme.of(context).colorScheme.secondary,
@@ -91,7 +74,7 @@ class _EventCardWidgetState extends State<EventCardWidget> {
                 ),
               ),
               Text(
-                'Tournament',
+                e!.eventType,
                 textAlign: TextAlign.end,
                 style: TextStyle(
                   fontFamily: 'Inter',

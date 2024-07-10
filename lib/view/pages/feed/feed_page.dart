@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
-    const viewEvents(), // View Events Page
+    const ViewEvents(), // View Events Page
     Profile(), // Actual page for the Profile
   ];
 
