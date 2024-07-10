@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 
+String? selectedOption="Gaming Session";
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
 
@@ -20,7 +21,7 @@ class _CreateEventsState extends State<CreateEvents> {
   String? type;
 
   Future create() async {
-    await Events().createEvent(type,
+    await Events().createEvent(selectedOption,
         _datePicked, nameController.text, _endDatePicked, GameID, isChanged);
   }
 
@@ -436,7 +437,6 @@ class ChipSelectorState extends State<ChipSelector> {
     ChipData('Gaming Session', Icons.videogame_asset_outlined),
     ChipData('Tournament', Icons.emoji_events_sharp),
   ];
-  String? selectedOption;
 
 
   @override
