@@ -6,6 +6,7 @@ import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/events_and_gaming_sessions.dart';
 import 'package:gameonconnect/view/pages/events/events_page.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -104,54 +105,66 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _DevelopmentButtons extends StatelessWidget {
+  final MessagingService messagingService = MessagingService();
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          // Testing for messaging services - It works - commented out
           // MaterialButton(
-          //   onPressed: () {
-          //     Navigator.pushNamed(context, '/profile');
+          //   onPressed: () async {
+          //     try {
+          //       // Test the messaging service
+          //       String conversationID = await messagingService.createConversation(['10H784yQyufaSb32zpYpWX83UeW2', 'rsYgmKH4bOUmhTFcTyKepTcX2Of2']);
+          //       await messagingService.sendMessage(conversationID, 'Hello, world!');
+          //       List<Map<String, dynamic>> messages = await messagingService.getMessages(conversationID);
+          //       List<Map<String, dynamic>> conversations = await messagingService.getConversations();
+
+          //       // Print the results to the console (or handle as needed)
+          //       // print('Conversation ID: $conversationID');
+          //       // print('Messages: $messages');
+          //       // print('Conversations: $conversations');
+          //     } catch (e) {
+          //       throw Exception("Error during testing: $e");
+          //       // print("Error during testing: $e");  // Log the error
+          //     }
           //   },
-          //   color: const Color.fromARGB(255, 128, 216, 50),
-          //   textColor: Color.fromARGB(255, 24, 24, 24),
-          //   child: Text('Profile Page '),
+          //   color: Theme.of(context).colorScheme.primary,
+          //   textColor: Theme.of(context).colorScheme.surface,
+          //   child: Text('Test Messaging Service'),
           // ),
           MaterialButton(
             onPressed: () {
-              
+              // Navigate to another page
+              Navigator.pushNamed(context, '/profile');
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
             child: Text('Feed Page'),
           ),
           MaterialButton(
-  onPressed: () {
-    // Get the current user's ID
-    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-     //print("current user from home: $currentUserId");
-    if (currentUserId != null) {
-      // Pass the current user's ID to the search friends page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          //builder: (context) => FriendSearchPage(currentUserId),
-         
-          builder: (context) => FriendSearch(currentUserId),
-        ),
-      );
-    } else {
-      // Handle the case where there is no logged-in user
-      // ignore: avoid_print
-      print('No user is currently logged in.');
-    }
-  },
-  color: Theme.of(context).colorScheme.primary,
-  textColor: Theme.of(context).colorScheme.surface,
-  child: Text('search friends '),
-),
-
+            onPressed: () {
+              // Get the current user's ID
+              String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+              if (currentUserId != null) {
+                // Pass the current user's ID to the search friends page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FriendSearch(currentUserId),
+                  ),
+                );
+              } else {
+                print('No user is currently logged in.');
+              }
+            },
+            color: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.surface,
+            child: Text('Search Friends'),
+          ),
         ],
       ),
     );
