@@ -26,12 +26,11 @@ class Events{
           "teams":[],
           "creatorID": currentUser.uid,
         };
-        print(data);
         db.collection("events").doc(id).set(data);
       }
 
     }catch (e){
-      print("ERROR: $e");
+      //print("ERROR: $e");
     }
   }
 }

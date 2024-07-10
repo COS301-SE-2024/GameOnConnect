@@ -17,12 +17,12 @@ class _CreateEventsState extends State<CreateEvents> {
 
   bool isChanged = false;
   final nameController = TextEditingController();
-  int GameID = 1; // hard coding this for now
+  int gameID = 1; // hard coding this for now
   String? type;
 
   Future create() async {
     await Events().createEvent(selectedOption,
-        _datePicked, nameController.text, _endDatePicked, GameID, isChanged);
+        _datePicked, nameController.text, _endDatePicked, gameID, isChanged);
   }
 
   @override
