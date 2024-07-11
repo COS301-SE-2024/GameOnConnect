@@ -132,13 +132,13 @@ class _DevelopmentButtons extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Messaging(),
+                    builder: (context) => const Messaging(),
                   ),
                 );
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('Messaging Page'),
+            child: const Text('Messaging Page'),
           ),
           MaterialButton(
             onPressed: () {
@@ -163,7 +163,7 @@ class _DevelopmentButtons extends StatelessWidget {
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('search friends '),
+            child: const Text('search friends '),
           ),
         ],
       ),
