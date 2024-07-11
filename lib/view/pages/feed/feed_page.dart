@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
     const ViewEvents(), // View Events Page
-    Profile(), // Actual page for the Profile
+    const Profile(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
@@ -124,7 +124,7 @@ class _DevelopmentButtons extends StatelessWidget {
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('Feed Page'),
+            child: const Text('Feed Page'),
           ),
           MaterialButton(
   onPressed: () {

@@ -13,19 +13,23 @@ class ViewEvents extends StatefulWidget {
   State<ViewEvents> createState() => _HomePageWidgetState();
 }
 
-class _HomePageWidgetState extends State<ViewEvents>
-    {
+class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Events events = Events();
-  late List<Event> allEvents;
+  List<Event>? allEvents;
   @override
   void initState() {
     super.initState();
+    getAllEvents();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void getAllEvents() async {
+    allEvents = await events.fetchAllEvents();
   }
 
   @override
@@ -44,7 +48,6 @@ class _HomePageWidgetState extends State<ViewEvents>
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
-                         allEvents = snapshot.data!;
                         return DefaultTabController(
                           length: 3,
                           child: Column(
@@ -279,25 +282,28 @@ class _HomePageWidgetState extends State<ViewEvents>
                                                                     0),
                                                           ),
                                                         ),
-                                                        child: ListView.separated(
+                                                        child:
+                                                            ListView.separated(
                                                           itemCount:
-                                                          allEvents.length,
+                                                              allEvents!.length,
                                                           padding:
-                                                          EdgeInsets.zero,
+                                                              EdgeInsets.zero,
                                                           scrollDirection:
-                                                          Axis.vertical,
+                                                              Axis.vertical,
                                                           itemBuilder:
                                                               (context, index) {
-                                                            Event i = allEvents[
-                                                            index];
-                                                            return EventCardWidget(e: i);
+                                                            Event i =
+                                                                allEvents![
+                                                                    index];
+                                                            return EventCardWidget(
+                                                                e: i);
                                                           },
                                                           separatorBuilder:
                                                               (context,
-                                                              index) =>
-                                                          const SizedBox(
-                                                              height:
-                                                              10),
+                                                                      index) =>
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
                                                         ),
                                                       ),
                                                     ),
@@ -340,12 +346,11 @@ class _HomePageWidgetState extends State<ViewEvents>
                                                                     0),
                                                           ),
                                                         ),
-                                                        child:
-                                                        ListView(
+                                                        child: ListView(
                                                           padding:
-                                                          EdgeInsets.zero,
+                                                              EdgeInsets.zero,
                                                           scrollDirection:
-                                                          Axis.vertical,
+                                                              Axis.vertical,
                                                           /*children: const [
                                                             EventCardWidget(),
                                                             EventCardWidget(),
@@ -369,7 +374,6 @@ class _HomePageWidgetState extends State<ViewEvents>
                           ),
                         );
                       }
-
                     }))));
   }
 }
