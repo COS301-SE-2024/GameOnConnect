@@ -14,24 +14,18 @@ class ViewEvents extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<ViewEvents>
-    with TickerProviderStateMixin {
+    {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  TabController? tabController;
   Events events = Events();
+  late List<Event> allEvents;
   @override
   void initState() {
     super.initState();
-    tabController = TabController(
-      vsync: this,
-      length: 3,
-      initialIndex: 0,
-    )..addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     super.dispose();
-    tabController?.dispose();
   }
 
   @override
@@ -50,7 +44,7 @@ class _HomePageWidgetState extends State<ViewEvents>
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
-                        List<Event> allEvents = snapshot.data!;
+                         allEvents = snapshot.data!;
                         return DefaultTabController(
                           length: 3,
                           child: Column(
@@ -189,12 +183,10 @@ class _HomePageWidgetState extends State<ViewEvents>
                                                       () async {}
                                                     ][i]();
                                                   },
-                                                  controller: tabController,
                                                 ),
                                               ),
                                               Expanded(
                                                 child: TabBarView(
-                                                  controller: tabController,
                                                   physics:
                                                       const NeverScrollableScrollPhysics(),
                                                   children: [
@@ -287,16 +279,25 @@ class _HomePageWidgetState extends State<ViewEvents>
                                                                     0),
                                                           ),
                                                         ),
-                                                        child: ListView(
+                                                        child: ListView.separated(
+                                                          itemCount:
+                                                          allEvents.length,
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
-                                                          /*children: const [
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                          ],*/
+                                                          Axis.vertical,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            Event i = allEvents[
+                                                            index];
+                                                            return EventCardWidget(e: i);
+                                                          },
+                                                          separatorBuilder:
+                                                              (context,
+                                                              index) =>
+                                                          const SizedBox(
+                                                              height:
+                                                              10),
                                                         ),
                                                       ),
                                                     ),
@@ -340,25 +341,16 @@ class _HomePageWidgetState extends State<ViewEvents>
                                                           ),
                                                         ),
                                                         child:
-                                                            ListView.separated(
-                                                          itemCount:
-                                                              allEvents.length,
+                                                        ListView(
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            Event i = allEvents[
-                                                                index];
-                                                            return EventCardWidget(e: i);
-                                                          },
-                                                          separatorBuilder:
-                                                              (context,
-                                                                      index) =>
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
+                                                          Axis.vertical,
+                                                          /*children: const [
+                                                            EventCardWidget(),
+                                                            EventCardWidget(),
+                                                            EventCardWidget(),
+                                                          ],*/
                                                         ),
                                                       ),
                                                     ),
