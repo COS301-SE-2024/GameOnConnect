@@ -4,10 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 class ProfileService {
-
-
+ 
 Future<Profile?>  fetchProfile() async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
@@ -26,14 +26,19 @@ Future<Profile?>  fetchProfile() async {
           double uniqueNum=userInfo['unique_num'] ?? '';
 
   	      // Get number of connections
-        ConnectionService connectionService = ConnectionService();
-         List<String> connections= await ConnectionService().getConnections("connections");
-        int connectionsCount = connections.length;
+          ConnectionService connectionService = ConnectionService();
+          List<String> connections= await ConnectionService().getConnections("connections");
+          int connectionsCount = connections.length;
+
+          // Fetch banner and profile picture URLs
+          StorageService storageService = StorageService();
+          String bannerUrl = await storageService.getBannerUrl(currentUser.uid);
+          String profilePictureUrl = await storageService.getProfilePictureUrl(currentUser.uid);
 
           return Profile(
-          banner: data['banner'] ?? '',
+          banner: bannerUrl,
           bio: data['bio'] ?? '',
-          profilePicture: data['profile_picture'] ?? '',
+          profilePicture: profilePictureUrl,
           userName: data['username'] as Map<String, dynamic>,
           profileName: name, 
           uniqueNumber: uniqueNum,
@@ -56,4 +61,5 @@ Future<Profile?>  fetchProfile() async {
 
 
 }
+
 
