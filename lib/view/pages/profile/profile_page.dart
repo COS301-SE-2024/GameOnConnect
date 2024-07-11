@@ -58,6 +58,7 @@ class _ProfileState extends State<Profile> {
           String username = profileData['username'];
           String profilePicture = profileData['profilePicture'];
           String profileBanner = profileData['profileBanner'];
+          int uniqueNum = profileData['unique_num'];
 
           return DefaultTabController(
             length: 3,
@@ -171,7 +172,7 @@ class _ProfileState extends State<Profile> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 30),
-                      child: Text(username, style: TextStyle(fontSize: 20)),
+                      child: Text('$username#$uniqueNum', style: TextStyle(fontSize: 20)),
                     ),
                   ),
                   const SizedBox(height: 30),

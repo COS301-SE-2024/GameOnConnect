@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 
 class ProfileService {
   //Function to query FireStore
@@ -16,12 +17,12 @@ class ProfileService {
 
         if (doc.exists) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-          Map<String, dynamic> userInfo =
-              data['username'] as Map<String, dynamic>;
+          Map<String, dynamic> userInfo = data['username'] as Map<String, dynamic>;
           String profileName = data['name'] ?? 'Profile name';
           String username = userInfo['profile_name'] ?? 'username';
           String profilePicture = data['profile_picture'] ?? '';
           String profileBanner = data['banner'];
+          int uniqueNum = userInfo['unique_num'] ?? '';
 
           String profilePictureUrl = '';
           String bannerUrl = '';
@@ -45,7 +46,8 @@ class ProfileService {
             'profileName': profileName,
             'username': username,
             'profilePicture': profilePictureUrl,
-            'profileBanner': bannerUrl
+            'profileBanner': bannerUrl,
+            'unique_num': uniqueNum,
           };
         } else {
           return null;
@@ -74,7 +76,6 @@ class ProfileService {
 
   Future<void> editUsername(String username) async
   {
-    //this function needs to be edited to add the unique num for the username
     try{
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
@@ -83,6 +84,13 @@ class ProfileService {
         if (username.isNotEmpty) {
           final data = { "username.profile_name" :username};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
+          await AuthService().getNextNumber();
+          int nextnumber = await AuthService().getNextNum();
+
+          if (nextnumber != 0) {
+            final number = { "username.unique_num" :nextnumber};
+            await db.collection("profile_data").doc(currentUser.uid).update(number); 
+          }
         }
       }
     }catch (e)

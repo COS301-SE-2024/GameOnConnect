@@ -22,6 +22,12 @@ class AuthService {
         .update({"digit": (da + 1)});
   }
 
+  //getter function to return nextnum
+  Future<int> getNextNum() async {
+    await getNextNumber(); 
+    return _nextNum ?? 0; 
+  }
+
   signInWithGoogle() async {
     //start the sign in process
     final GoogleSignIn googleSignIn = GoogleSignIn(
