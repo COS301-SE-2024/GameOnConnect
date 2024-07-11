@@ -187,9 +187,9 @@ class _ProfileState extends State<Profile> {
                       children: [
                         SingleChildScrollView(
                           child: FutureBuilder<List<Map<String, dynamic>?>>(
-                            future: FriendServices().getFriends("friends").then(
+                            future: ConnectionServices().getConnections("connections").then(
                                 (friendIds) => Future.wait(friendIds.map((id) =>
-                                    FriendServices()
+                                    ConnectionServices()
                                         .fetchFriendProfileData(id)))),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
@@ -244,7 +244,7 @@ class _ProfileState extends State<Profile> {
                                                   child: CachedNetworkImage(
                                                     //cacheManager: customCacheManager,
                                                     imageUrl: friendProfile[
-                                                        'profilePicture'],
+                                                        'profile_picture'],
                                                     imageBuilder: (context,
                                                             imageProvider) =>
                                                         Container(
@@ -281,7 +281,7 @@ class _ProfileState extends State<Profile> {
                                                   children: [
                                                     Text(
                                                       friendProfile[
-                                                              'profileName'] ??
+                                                              'profile_name'] ??
                                                           'No Name Found',
                                                       style:  TextStyle(
                                                         fontFamily: 'Inter',

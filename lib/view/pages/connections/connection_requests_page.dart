@@ -27,9 +27,9 @@ class _RequestsState extends State<Requests> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List<Map<String, dynamic>?>>(
-          future: FriendServices().getFriends("requests").then((friendIds) => Future.wait(
+          future: ConnectionServices().getConnections("requests").then((friendIds) => Future.wait(
               friendIds
-                  .map((id) => FriendServices().fetchFriendProfileData(id)))),
+                  .map((id) => ConnectionServices().fetchFriendProfileData(id)))),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -49,7 +49,7 @@ class _RequestsState extends State<Requests> {
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           border: Border.all(
-                            color: const Color.fromARGB(255, 128, 216, 50),
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -64,7 +64,7 @@ class _RequestsState extends State<Requests> {
                                 width: 45,
                                 child: CachedNetworkImage(
                                   imageUrl: friendProfile[
-                                      'profilePicture'], //the actual link to the image needs to go here
+                                      'profile_picture'],
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
@@ -94,11 +94,11 @@ class _RequestsState extends State<Requests> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    friendProfile['profileName'] ??
+                                    friendProfile['profile_name'] ??
                                         'No Name Found',
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Color.fromARGB(255, 128, 216, 50),
+                                      color: Theme.of(context).colorScheme.primary,
                                     ),
                                   ),
                                   Text(
@@ -114,17 +114,17 @@ class _RequestsState extends State<Requests> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.check),
-                              color: const Color.fromARGB(255, 128, 216, 50),
+                              color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
                                 //code to accept the request goes here
-                                FriendServices().acceptFriendRequest(friendProfile['userID'] );
+                                ConnectionServices().acceptFriendRequest(friendProfile['userID'] );
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.close),
-                              color: const Color.fromARGB(255, 128, 216, 50),
+                              color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
-                                FriendServices().rejectFriendRequest(friendProfile['userID'] );
+                                ConnectionServices().rejectFriendRequest(friendProfile['userID'] );
                               },
                             ),
                           ],

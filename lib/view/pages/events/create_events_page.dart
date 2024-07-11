@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import '../../components/card/connection_list_card.dart';
+import '../../../model/connection_M/user_model.dart' as user;
 
 String? selectedOption="Gaming Session";
 class CreateEvents extends StatefulWidget {
@@ -24,6 +26,9 @@ class _CreateEventsState extends State<CreateEvents> {
     await Events().createEvent(selectedOption,
         _datePicked, nameController.text, _endDatePicked, gameID, isChanged);
   }
+
+
+
 
   @override
   void initState() {
@@ -349,7 +354,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                       onTap: () async {
                                         //Navigator.pop(context);
                                       },
-                                      child: Row(
+                                      child:InkWell(
+                                        onTap: () async
+                                        {
+                                          Navigator.pushNamed(context, '/invite_connections');
+                                        },
+                                        child:  Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Icon(
@@ -370,6 +380,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                         ],
+                                      ),
                                       ),
                                     ),
                                     Container(

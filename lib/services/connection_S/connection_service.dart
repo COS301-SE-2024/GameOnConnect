@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 
-class FriendServices {
+class ConnectionServices {
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,17 +18,17 @@ class FriendServices {
   }
 
   //Read friends from database
-  Future<List<String>> getFriends(String who) async {
+  Future<List<String>> getConnections(String who) async {
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
     }
 
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser!.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        if(who=="friends")
+        if(who=="connections")
         {
            // Cast the friends array to List<String>
           List<String> friends = List<String>.from(snapshot.data()!['connections']);
@@ -43,7 +43,7 @@ class FriendServices {
         else{
           return []; //return an empty array
         }
-     
+
     } else {
       return []; //return an empty array
     }
@@ -106,9 +106,8 @@ class FriendServices {
             data['username'] as Map<String, dynamic>;
         String profileName = data['name'] ?? 'Profile name';
         String username = userInfo['profile_name'] ?? 'username';
-        String userID =data['userID']?? '';
+        String userID =userId;
         String profilePicture = data['profile_picture'] ?? '';
-
         String profilePictureUrl = '';
 
         if (profilePicture.isNotEmpty) {
@@ -119,14 +118,20 @@ class FriendServices {
           } catch (e) {
             return null;
           }
+
         }
 
-        return {
-          'profileName': profileName,
+
+        Map<String,dynamic>? d =
+         {
+          'profile_name': profileName,
           'username': username,
-          'profilePicture': profilePictureUrl,
+          'profile_picture': profilePictureUrl,
           'userID': userID,
+          'unique_num': userInfo['unique_num']
         };
+        return d;
+
       } else {
         return null;
       }
