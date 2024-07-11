@@ -7,24 +7,28 @@ class StorageService {
     try {
       return await _storage.ref(path).getDownloadURL();
     } catch (e) {
-      print(e);
       if(imageType=='banner')
       {
-        return await _storage.ref('banners/default_bannner.jpg').getDownloadURL();
+        return await _storage.ref('banners/default_banner.jpg').getDownloadURL();
       }
       else//profile picture 
       {
         return await _storage.ref('profile_pictures/default_image.jpg').getDownloadURL();
       }
-
     }
   }
 
   Future<String> getBannerUrl(String userId) async {
     return _getImageUrl('banner','banners/$userId.jpg');
+
   }
 
   Future<String> getProfilePictureUrl(String userId) async {
     return _getImageUrl('profilePicture','profile_pictures/$userId.jpg');
+    
   }
+
+
+  
+
 }
