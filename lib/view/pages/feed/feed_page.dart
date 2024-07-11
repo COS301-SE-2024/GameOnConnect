@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
@@ -6,7 +6,7 @@ import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
-import 'package:gameonconnect/view/pages/events/events_page.dart';
+import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -24,8 +24,8 @@ class _FeedPageState extends State<FeedPage> {
         child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
-    const EventsPage(), // Placeholder for the Events Page
-    Profile(), // Actual page for the Profile
+    const ViewEvents(), // View Events Page
+    const Profile(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
@@ -132,13 +132,13 @@ class _DevelopmentButtons extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Messaging(),
+                    builder: (context) => const Messaging(),
                   ),
                 );
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('Messaging Page'),
+            child: const Text('Messaging Page'),
           ),
           MaterialButton(
             onPressed: () {
@@ -163,7 +163,7 @@ class _DevelopmentButtons extends StatelessWidget {
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('search friends '),
+            child: const Text('search friends '),
           ),
         ],
       ),
