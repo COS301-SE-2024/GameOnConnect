@@ -49,7 +49,7 @@ class _RequestsState extends State<Requests> {
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           border: Border.all(
-                            color: const Color.fromARGB(255, 128, 216, 50),
+                            color: Theme.of(context).colorScheme.primary,
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),

@@ -13,6 +13,8 @@ import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:gameonconnect/view/pages/events/events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:gameonconnect/view/pages/events/view_events_page.dart';
+
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -34,8 +36,8 @@ class _FeedPageState extends State<FeedPage> {
         child: _DevelopmentButtons()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
-    const EventsPage(), // Placeholder for the Events Page
-    Profile(), // Actual page for the Profile
+    const ViewEvents(), // View Events Page
+    const Profile(), // Actual page for the Profile
   ];
 
   @override
@@ -303,15 +305,15 @@ class _DevelopmentButtons extends StatelessWidget {
             onPressed: () {
               //add code here to go to the messaging page.
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Messaging(),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Messaging(),
+                  ),
+                );
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('Messaging Page'),
+            child: const Text('Messaging Page'),
           ),
           MaterialButton(
             onPressed: () {
@@ -336,7 +338,7 @@ class _DevelopmentButtons extends StatelessWidget {
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: Text('search friends '),
+            child: const Text('search friends '),
           ),
         ],
       ),
