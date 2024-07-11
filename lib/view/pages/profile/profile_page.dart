@@ -1,74 +1,43 @@
-// ignore_for_file: prefer_const_constructors
-import 'package:flutter/material.dart';
-//import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'game_list.dart';
+import 'stats_card.dart';
+import 'profile_section.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class Profilenew extends StatefulWidget {
+  const Profilenew({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<Profilenew> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
-  // Create an instance of ProfileService
-  final profileService = ProfileService();
+//NB rename
+class _ProfileState extends State<Profilenew>  {
 
-  /*static final customCacheManager = CacheManager(
-    Config(
-      'userProfilePicturesCache',
-      stalePeriod: Duration(days: 21),
-    ),
-  );*/
+late Future<GameDetails> _gameDetails;
+
+@override
+ /* void initState() {
+    super.initState();
+  //  _gameDetails = _fetchGameDetails(widget.gameId);
+  }*/
+
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: profileService.fetchProfileData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            key: Key('loadingScaffold'),
-            appBar: AppBar(
-              //title: const Text('Profile'),
-            ),
-            body: const Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Scaffold(
-            key: Key('errorScaffold'),
-            appBar: AppBar(
-              //title: const Text('Profile'),
-            ),
-            body: Center(child: Text('Error: ${snapshot.error}')),
-          );
-        } else if (!snapshot.hasData || snapshot.data == null) {
-          return Scaffold(
-            key: Key('emptyDataScaffold'),
-            appBar: AppBar(
-              //title: const Text('Profile'),
-            ),
-            body: const Center(child: Text('No profile data found.')),
-          );
-        } else {
-          var profileData = snapshot.data!;
-          String profileName = profileData['profileName'];
-          String username = profileData['username'];
-          String profilePicture = profileData['profilePicture'];
-          String profileBanner = profileData['profileBanner'];
-
-          return DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Profile'),
-                actions: [
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Profile'),
+        actions: [ // NB only show if its my own profile
                   Builder(
                     builder: (context) {
                       return IconButton(
-                        key: Key('settings_icon_button'),
+                        key: const Key('settings_icon_button'),
                         icon: const Icon(Icons.settings),
                         color: Theme.of(context).colorScheme.secondary,
                         onPressed: () {
@@ -79,392 +48,233 @@ class _ProfileState extends State<Profile> {
                     },
                   ),
                 ],
-                bottom: const TabBar(
-                  tabs: [
-                    Tab(icon: Icon(Icons.people), text: 'Friends'),
-                    Tab(icon: Icon(Icons.gamepad), text: 'Games'),
-                    Tab(icon: Icon(Icons.event), text: 'Events'),
-                  ],
-                ),
-              ),
-              body: Column(
-                children: <Widget>[
+      ),
+      body: FutureBuilder<Profile?>(
+        future: ProfileService().fetchProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return  Center(child: CircularProgressIndicator()); // Show loading indicator
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null) {
+            return Center(child: Text('Profile data not found.'));
+          } else {
+            final profileData = snapshot.data!;
+      return SingleChildScrollView(
+        child: Column(
+          children: [
                   Stack(
-                    alignment: Alignment.bottomCenter,
                     clipBehavior: Clip.none,
                     children: <Widget>[
-                      //banner
-                      // ignore: sized_box_for_whitespace
-                      Container(
-                        height: 170,
-                        width: double.infinity,
-                        child: CachedNetworkImage(
-                          //cacheManager: customCacheManager,
-                          imageUrl: profileBanner,
-                          imageBuilder: (context, imageProvider) => Container(
-                            decoration: BoxDecoration(
+                      Column(
+                        children: [
+                          // Banner
+                          Container(
+                            height: 170,
+                            width: MediaQuery.of(context).size.width,
+                            /*decoration:  BoxDecoration(
                               image: DecorationImage(
-                                image: imageProvider,
                                 fit: BoxFit.cover,
+                                // ignore: unnecessary_string_interpolations
+                                image:CachedNetworkImageProvider('${profileData.banner}'), // Use banner from storage
                               ),
+                            ),*/
+                            child: CachedNetworkImage(
+                              imageUrl: profileData.banner,
+                              placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          fadeInDuration: Duration(milliseconds: 0),
-                          fadeOutDuration: Duration(milliseconds: 0),
-                          maxHeightDiskCache: 170,
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                        ),
+                          // Bottom container
+                          Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 55), //space 
+                                    Text(
+                                      '${profileData.profileName}',
+                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      '#${profileData.uniqueNumber}',
+                                      style: TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      '${profileData.numberOfconnections} Connections',
+                                      style: TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 15), //space 
+                                    Text(
+                                      '${profileData.bio}',
+                                      style: TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                                              
+                        ],
                       ),
+                      // Profile picture
                       Positioned(
-                        bottom:
-                            -50, // Half of the CircleAvatar's radius to align it properly
-                        left: 50,
-                        //profile picture
+                        top: 120, // Adjust this value to move the profile picture downwards
+                        left: (MediaQuery.of(context).size.width - 100) / 2, // Center the profile picture
                         child: ClipOval(
-                          // ignore: sized_box_for_whitespace
                           child: Container(
                             height: 100,
                             width: 100,
-                            child: CachedNetworkImage(
-                              //cacheManager: customCacheManager,
-                              imageUrl: profilePicture,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle, // Make it circular
+                              border: Border.all(
+                                color:Theme.of(context).colorScheme.primary,  // Set your desired border color
+                                width: 3, // Set the border width
                               ),
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary,),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: CachedNetworkImageProvider('${profileData.profilePicture}'),
                               ),
-                              fadeInDuration: Duration(milliseconds: 0),
-                              fadeOutDuration: Duration(milliseconds: 0),
-                              maxHeightDiskCache: 100,
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
                             ),
+                             /*child: CachedNetworkImage(
+                              imageUrl: profileData.profilePicture,
+                              placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Loading indicator for profile picture
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),*/
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50),
-                  const SizedBox(height: 8),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 30),
-                      child: Text(profileName, style: TextStyle(fontSize: 24)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 30),
-                      child: Text(username, style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  //friends, games, events
-
-                  const Divider(
-                    color: Colors.black54,
-                    thickness: 1.0,
-                  ),
-
-                  Expanded(
-                    child: TabBarView(
+                  const SizedBox(height: 20), //space 
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(18.9, 0, 3, 13),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SingleChildScrollView(
-                          child: FutureBuilder<List<Map<String, dynamic>?>>(
-                            future: FriendServices().getFriends("friends").then(
-                                (friendIds) => Future.wait(friendIds.map((id) =>
-                                    FriendServices()
-                                        .fetchFriendProfileData(id)))),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else if (snapshot.hasData) {
-                                List<Map<String, dynamic>?> friendsProfiles =
-                                    snapshot.data!;
-                                return Column(children: [
-                                  ElevatedButton.icon(
-                                    icon: Icon(Icons.arrow_forward),
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, '/requests');
-                                    },
-                                    label: Text(
-                                      "Connection Requests",
-                                      style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context).colorScheme.secondary),
+                  const Text(
+                    'Currently playing ',
+                    style:  TextStyle(
+                      ////'Inter',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 22,
+                      //height: 1.4,
+                      //letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  Container(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(7, 4, 8.1, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFF00FF75)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: IntrinsicWidth(
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //start of currently playing fortnite
+                            Container(
+                              margin: const EdgeInsets.fromLTRB(0, 0, 3.5, 3),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      '../../../../../assets/images/image_3.png',
                                     ),
                                   ),
-                                  ListView.separated(
-                                    shrinkWrap: true,
-                                    itemCount: friendsProfiles.length,
-                                    itemBuilder: (context, index) {
-                                      var friendProfile =
-                                          friendsProfiles[index];
-                                      if (friendProfile != null) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 20),
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).colorScheme.surface,
-                                            border: Border.all(
-                                              color: Theme.of(context).colorScheme.primary,
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              ClipOval(
-                                                // ignore: sized_box_for_whitespace
-                                                child: Container(
-                                                  height: 45,
-                                                  width: 45,
-                                                  child: CachedNetworkImage(
-                                                    //cacheManager: customCacheManager,
-                                                    imageUrl: friendProfile[
-                                                        'profilePicture'],
-                                                    imageBuilder: (context,
-                                                            imageProvider) =>
-                                                        Container(
-                                                      decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    fit: BoxFit.cover,
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    ),
-                                                    fadeInDuration: Duration(
-                                                        milliseconds: 0),
-                                                    fadeOutDuration: Duration(
-                                                        milliseconds: 0),
-                                                    maxHeightDiskCache: 45,
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Icon(Icons.error),
+                                ),
+                               child: Container(
+                                  width: 147,
+                                  height: 101,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              //margin: const EdgeInsets.fromLTRB(0, 1, 0, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    //margin: const EdgeInsets.fromLTRB(3.5, 0, 3.5, 0),
+                                    child: const Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        'Fortnite',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                          //height: 0.9,
+                                          //color: Color(0xFFC4C4C4),
+                                        ),
+                                          
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.fromLTRB(0, 0, 13.9, 7.3),
+                                    child: SizedBox(
+                                      //width: 138.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          
+                                          Container(
+                                            //margin: const EdgeInsets.fromLTRB(0, 0, 0, 4.7),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFEE1313),
+                                                borderRadius: BorderRadius.circular(3),
+                                              ),
+                                              child: Container(
+                                                padding: const EdgeInsets.fromLTRB(7, 4, 9.5, 3),
+                                                child: const Text(
+                                                  'LIVE',
+                                                  style:  TextStyle(
+                                                    ////'Inter',
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 15,
+                                                    //height: 0.9,
+                                                    //color: Color(0xFF000000),
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(width: 10),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      friendProfile[
-                                                              'profileName'] ??
-                                                          'No Name Found',
-                                                      style:  TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        color: Theme.of(context).colorScheme.secondary,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      friendProfile[
-                                                              'username'] ??
-                                                          'No Username Found',
-                                                      style:  TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        color: Theme.of(context).colorScheme.secondary,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.message),
-                                                onPressed: () {
-                                                  //here the message functionality will come in
-                                                },
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.more_vert),
-                                                onPressed: () {
-                                                  //here the remove friend option should be displayed.
-                                                },
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        );
-                                      } else {
-                                        return Container(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text('Profile not found'),
-                                        );
-                                      }
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(height: 10),
-                                  )
-                                ]);
-                              } else {
-                                return Text('No friends found.');
-                              }
-                            },
-                          ),
-                        ),
-                        SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                               Text('Game Name',
-                                  style: TextStyle(fontSize: 24,
-                                      color: Theme.of(context).colorScheme.secondary)),
-                              const SizedBox(height: 8),
-                              //game tags
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        padding:  EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical:
-                                                7), // Add some padding around the text
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.secondary,
-                                          borderRadius: BorderRadius.circular(
-                                              25), // The rounded ends of the rectangle
-                                        ),
-                                        child:  Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.circle, // dot icon
-                                              size: 8.0,
-                                              color: Theme.of(context).colorScheme.surface,
-                                            ),
-                                            SizedBox(
-                                                width:
-                                                    8), // Space between the icon and the text
-                                            Text('Action'),
-                                          ],
-                                        ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        padding:  EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 7),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        child:  Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.circle,
-                                              size: 8.0,
-                                              color: Theme.of(context).colorScheme.surface,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Sept 2022',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      Container(
-                                        padding:  EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 7),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.secondary,
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        child:  Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.circle,
-                                              size: 8.0,
-                                              color: Theme.of(context).colorScheme.surface,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'MOBA',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+
                                 ],
                               ),
-                              const SizedBox(height: 30),
-                              //game description
-                               Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Text('Game Description',
-                                      style: TextStyle(fontSize: 18,
-                                      color: Theme.of(context).colorScheme.secondary)),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 5),
-                                  child: Text(
-                                      'Game Description Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...',
-                                      style: TextStyle(fontSize: 14)),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Center(
-                            child: Text(
-                                'Events')), // Replace with actual Events content
-                      ],
+                        ),
+                        
+                      ),
                     ),
                   ),
+                      ],
+                    )),
+                  
                 ],
-              ),
-            ),
-          );
-        }
-      },
+        ),
+      );
+      }
+        },
+      ),
     );
   }
 }
