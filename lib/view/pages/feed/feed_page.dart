@@ -11,7 +11,6 @@ import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
-import 'package:gameonconnect/view/pages/events/events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
@@ -100,7 +99,7 @@ class _FeedPageState extends State<FeedPage> {
     try {
       //check the internet connection
       bool result = await InternetConnection().hasInternetAccess;
-      //if the intenet passed then check the username
+      //if the internet passed then check the username
       if (result) {
         if (username.isNotEmpty) {
           await profileService.editUsername(username); //set the username
@@ -188,7 +187,7 @@ class _FeedPageState extends State<FeedPage> {
                             }
                           }
 
-                          //set the stae to false to ensure the 
+                          //set the state to false to ensure the 
                           setState(() {
                             _isSubmitting = false;
                           });
