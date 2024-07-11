@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
@@ -8,6 +10,7 @@ import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:gameonconnect/view/pages/events/events_page.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -21,6 +24,9 @@ class _FeedPageState extends State<FeedPage> {
   int _selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
+  ProfileService profileService = ProfileService();
+  late TextEditingController usernamecontroller;
+
   static final List<Widget> _pages = <Widget>[
     Center(
         child: _DevelopmentButtons()), // Integrate the development buttons here
@@ -33,12 +39,19 @@ class _FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     super.initState();
+    usernamecontroller = TextEditingController();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _checkProfileAndShowDialog());
+    
+  }
+
+  @override
+  void dispose(){
+    usernamecontroller.dispose();
+    super.dispose();
   }
 
   Future<void> _checkProfileAndShowDialog() async {
-    ProfileService profileService = ProfileService();
     final FirebaseAuth auth = FirebaseAuth.instance;
     final currentUserID = auth.currentUser?.uid;
     String userId = currentUserID ?? '';
@@ -50,6 +63,41 @@ class _FeedPageState extends State<FeedPage> {
       //print('Error: Username could not be set');
     } else {
       //print('Username is set to: $profileName');
+    }
+  }
+
+  void _showNoInternetSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('No internet connection'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void _showUsernameSet() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Username has been set successfully'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  Future<void> _saveUsername(String username) async {
+    try {
+      bool result = await InternetConnection().hasInternetAccess;
+      
+      if (result) {        
+        if (username.isNotEmpty) {
+          await profileService.editUsername(username);
+          _showUsernameSet();
+        }
+      } else {
+        _showNoInternetSnackbar();
+      }
+    } on SocketException catch (_) {
+      _showNoInternetSnackbar();
     }
   }
 
@@ -66,6 +114,7 @@ class _FeedPageState extends State<FeedPage> {
             child: TextFormField(
               key: Key('usernameInput'),
               autofocus: true,
+              controller: usernamecontroller,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                 border: OutlineInputBorder(
@@ -100,6 +149,7 @@ class _FeedPageState extends State<FeedPage> {
                 onPressed: () {
                   //the formkey calls the state to run the validator on the TextFormField
                   if (_formKey.currentState!.validate()) {
+                    _saveUsername(usernamecontroller.text);
                     Navigator.of(dialogContext).pop();
                   }
                 }),

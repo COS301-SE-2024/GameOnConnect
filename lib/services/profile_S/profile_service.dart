@@ -71,5 +71,24 @@ class ProfileService {
       return '';
     }
   }
+
+  Future<void> editUsername(String username) async
+  {
+    //this function needs to be edited to add the unique num for the username
+    try{
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+      if (currentUser != null) {
+        if (username.isNotEmpty) {
+          final data = { "username.profile_name" :username};
+          await db.collection("profile_data").doc(currentUser.uid).update(data);
+        }
+      }
+    }catch (e)
+    {
+      //print('username was not updated');
+    }
+  }
 }
 
