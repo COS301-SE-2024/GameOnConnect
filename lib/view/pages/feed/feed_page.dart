@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:io';
-
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
@@ -42,11 +44,10 @@ class _FeedPageState extends State<FeedPage> {
     usernamecontroller = TextEditingController();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _checkProfileAndShowDialog());
-    
   }
 
   @override
-  void dispose(){
+  void dispose() {
     usernamecontroller.dispose();
     super.dispose();
   }
@@ -66,13 +67,22 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
-  void _showNoInternetSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('No internet connection'),
-        backgroundColor: Colors.red,
-      ),
-    );
+  void _showNoInternetToast() {
+    DelightToastBar(
+      builder: (context) {
+        return CustomToastCard(
+          title: Text(
+            'No internet connection', // Changed message here
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        );
+      },
+      position: DelightSnackbarPosition.top,
+      autoDismiss: true,
+      snackbarDuration: const Duration(seconds: 3),
+    ).show(context);
   }
 
   void _showUsernameSet() {
@@ -84,22 +94,28 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  Future<void> _saveUsername(String username) async {
+  Future<bool> _saveUsername(String username) async {
     try {
+      //check the internet connection
       bool result = await InternetConnection().hasInternetAccess;
-      
-      if (result) {        
+      //if the intenet passed then check the username
+      if (result) {
         if (username.isNotEmpty) {
-          await profileService.editUsername(username);
-          _showUsernameSet();
+          await profileService.editUsername(username); //set the username
+          _showUsernameSet(); //show the success of the username set
+          return true;
         }
+        return false;
       } else {
-        _showNoInternetSnackbar();
+        return false;
       }
     } on SocketException catch (_) {
-      _showNoInternetSnackbar();
+      return false;
     }
   }
+
+  //bool is needed for the state of the button
+  bool _isSubmitting = false;
 
   void _showDialogOnStart() {
     showDialog<void>(
@@ -144,15 +160,41 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-                child: Text('Submit'),
-                onPressed: () {
-                  //the formkey calls the state to run the validator on the TextFormField
-                  if (_formKey.currentState!.validate()) {
-                    _saveUsername(usernamecontroller.text);
-                    Navigator.of(dialogContext).pop();
-                  }
-                }),
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return TextButton(
+                  onPressed: _isSubmitting //disables the submit button
+                      ? null
+                      : () async {
+                          //first check if the person has already submitted
+                          setState(() {
+                            _isSubmitting = true;
+                          });
+
+                          //set is submitting to true to disable the button
+                          _isSubmitting = true;
+
+                          //the formkey calls the state to run the validator on the TextFormField
+                          if (_formKey.currentState!.validate()) {
+                            bool internet =
+                                await _saveUsername(usernamecontroller.text);
+                            if (internet != false) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(dialogContext).pop();
+                            } else {
+                              _showNoInternetToast();
+                            }
+                          }
+
+                          //set the stae to false to ensure the 
+                          setState(() {
+                            _isSubmitting = false;
+                          });
+                        },
+                  child: Text('Submit'),
+                );
+              },
+            ),
           ],
         );
       },

@@ -447,8 +447,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               padding: const EdgeInsets.all(10),
                               child: CarouselNetworkImageWithPlaceholder(
                                 imageUrl: gameDetails.backgroundImage,
-                                width: 464, 
-                                height: 200, 
+                                width: 464,
+                                height: 200,
                               ),
                             ),
                           ),
@@ -823,27 +823,24 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               gameDetails.id.toString());
                                           // ignore: use_build_context_synchronously
                                           DelightToastBar(
-                                                  builder: (context) {
-                                                    return CustomToastCard(
-                                                      title: Text(
-                                                        'Removed from Want to Play!',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  position:
-                                                      DelightSnackbarPosition
-                                                          .top,
-                                                  autoDismiss: true,
-                                                  snackbarDuration:
-                                                      const Duration(
-                                                          seconds: 3))
-                                              .show(
+                                            builder: (context) {
+                                              return CustomToastCard(
+                                                title: Text(
+                                                  'Removed from Want to Play!',
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            position:
+                                                DelightSnackbarPosition.top,
+                                            autoDismiss: true,
+                                            snackbarDuration:
+                                                const Duration(seconds: 3),
+                                          ).show(
                                             // ignore: use_build_context_synchronously
                                             context,
                                           );
