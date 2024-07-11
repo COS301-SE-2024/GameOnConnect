@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
@@ -20,6 +19,7 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   int _selectedIndex = 0;
+  final _formKey = GlobalKey<FormState>();
 
   static final List<Widget> _pages = <Widget>[
     Center(
@@ -30,19 +30,20 @@ class _FeedPageState extends State<FeedPage> {
     Profile(), // Actual page for the Profile
   ];
 
-   @override
+  @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkProfileAndShowDialog());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
 
   Future<void> _checkProfileAndShowDialog() async {
     ProfileService profileService = ProfileService();
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUserID = auth.currentUser?.uid;
-      String userId = currentUserID ?? ''; 
-      String? profileName = await profileService.getProfileName(userId);
-    
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUserID = auth.currentUser?.uid;
+    String userId = currentUserID ?? '';
+    String? profileName = await profileService.getProfileName(userId);
+
     if (profileName == '' || profileName?.toLowerCase() == 'default user') {
       _showDialogOnStart();
     } else if (profileName == null) {
@@ -50,22 +51,58 @@ class _FeedPageState extends State<FeedPage> {
     } else {
       //print('Username is set to: $profileName');
     }
-}
+  }
 
   void _showDialogOnStart() {
     showDialog<void>(
       context: context,
-      barrierDismissible: false, 
+      barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text('Please enter a username:'),
-          //add a textFormField under the content to enter text
-          content: Text('This is a test dialog'),
+          //user enters text in the form field
+          content: Form(
+            key: _formKey,
+            child: TextFormField(
+              key: Key('usernameInput'),
+              autofocus: true,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintText: 'Enter any alphabetical username',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a username';
+                }
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Only alphabetical letters are permitted';
+                }
+                return null;
+              },
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('Submit'),
-              onPressed: () => Navigator.of(dialogContext).pop(), 
-            ),
+                child: Text('Submit'),
+                onPressed: () {
+                  //the formkey calls the state to run the validator on the TextFormField
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.of(dialogContext).pop();
+                  }
+                }),
           ],
         );
       },
