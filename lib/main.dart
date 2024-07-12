@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
-        '/invite_connections' : (context) => ConnectionsListWidget()
+        '/invite_connections' : (context) => ConnectionsListWidget(),
         '/messages' : (context) => Messaging(),
 
       },
