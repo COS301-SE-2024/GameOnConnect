@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
-import '../../components/card/connection_list_card.dart';
-import '../../../model/connection_M/user_model.dart' as user;
 
 String? selectedOption="Gaming Session";
 class CreateEvents extends StatefulWidget {
