@@ -52,4 +52,20 @@ class Events{
       //print("ERROR: $e");
     }
   }
+
+  List<Event> getSubscribedEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> subscribed=[];
+    for(var i in allEvents!){
+      for (var j in i.subscribed){
+        if(j == currentUser?.uid)
+          {
+            subscribed.add(i);
+            continue;
+          }
+      }
+    }
+    return subscribed;
+  }
 }
