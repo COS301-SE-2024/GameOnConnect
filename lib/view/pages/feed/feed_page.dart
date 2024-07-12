@@ -6,7 +6,7 @@ import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
-import 'package:gameonconnect/view/pages/events/events_page.dart';
+// import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
