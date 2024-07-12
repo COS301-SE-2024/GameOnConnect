@@ -1,24 +1,26 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gameonconnect/pages/customize_page.dart';
-import 'package:gameonconnect/pages/game_library_page.dart';
-import 'package:gameonconnect/pages/getting_started_page.dart';
-import 'package:gameonconnect/pages/settings.dart';
-import 'package:gameonconnect/theme/theme_provider.dart';
-import 'package:gameonconnect/pages/sign_up.dart';
-import 'package:gameonconnect/pages/profile_page.dart';
-import 'pages/help_page.dart';
+import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
+import 'package:gameonconnect/view/pages/settings/customize_page.dart';
+import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
+import 'package:gameonconnect/view/pages/settings/settings_page.dart';
+import 'package:gameonconnect/view/theme/theme_provider.dart';
+import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
+import 'package:gameonconnect/view/pages/profile/profile_page.dart';
+import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
-import 'pages/home_page.dart';
-import 'pages/events_and_gaming_sessions.dart';
-import 'pages/events_page.dart';
+import 'view/pages/feed/feed_page.dart';
+import 'view/pages/events/create_events_page.dart';
+import 'view/pages/events/view_events_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'pages/login_page.dart';
-import 'pages/edit_profile_page.dart';
-import 'pages/connection_requests.dart';
+import 'view/pages/authentication/login_page.dart';
+import 'view/pages/settings/edit_profile_page.dart';
+import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 
@@ -81,7 +83,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasData) {
-                  return HomePage(
+                  return FeedPage(
                     title: 'GameOnConnect',
                   );
                 } else {
@@ -89,7 +91,7 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-        '/home': (context) => HomePage(
+        '/home': (context) => FeedPage(
               title: 'GameOnConnect',
             ),
         '/edit-profile': (context) => EditProfilePage(),
@@ -97,13 +99,14 @@ class MyApp extends StatelessWidget {
         '/sign_up': (context) => SignUp(),
         '/profile': (context) => Profile(),
         '/game_library': (context) => GameLibrary(),
-        '/currently_playing': (context) => EventsGamingSessions(),
-        '/events': (context) => EventsPage(),
+        '/create_events': (context) => CreateEvents(),
+        '/events': (context) => ViewEvents(),
         '/login': (context) => Login(),
         '/help': (context) => Help(),
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
-        '/requests' : (context) => Requests()
+        '/requests' : (context) => Requests(),
+        '/messages' : (context) => Messaging(),
       },
       initialRoute: '/',
     );
