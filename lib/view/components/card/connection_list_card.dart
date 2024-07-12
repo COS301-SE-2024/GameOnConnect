@@ -82,7 +82,7 @@ class ConnectionCardWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        uniqueNum,
+                        '# $uniqueNum',
                         style:
                        TextStyle(
                           fontFamily: 'Inter',

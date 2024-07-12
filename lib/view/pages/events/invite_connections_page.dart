@@ -97,8 +97,8 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                         user.User? i = list![index];
                         return ConnectionCardWidget(
                             image: i.profilePicture,
-                            username: i.username['profile_name'],
-                            uniqueNum: i.username['unique_num']);
+                            username: i.username,
+                            uniqueNum: i.uniqueNum.toString());
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox();

@@ -94,7 +94,7 @@ class _RequestsState extends State<Requests> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    friendProfile['profile_name'] ??
+                                    friendProfile['name'] ??
                                         'No Name Found',
                                     style:  TextStyle(
                                       fontFamily: 'Inter',
@@ -102,7 +102,7 @@ class _RequestsState extends State<Requests> {
                                     ),
                                   ),
                                   Text(
-                                    friendProfile['username'] ??
+                                    friendProfile['username']['profile_name'] ??
                                         'No Username Found',
                                     style:  TextStyle(
                                       fontFamily: 'Inter',

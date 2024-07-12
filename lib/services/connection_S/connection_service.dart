@@ -105,7 +105,7 @@ class ConnectionServices {
         Map<String, dynamic> userInfo =
             data['username'] as Map<String, dynamic>;
         String profileName = data['name'] ?? 'Profile name';
-        String username = userInfo['profile_name'] ?? 'username';
+        Map<String,dynamic> username = userInfo;
         String userID =userId;
         String profilePicture = data['profile_picture'] ?? '';
         String profilePictureUrl = '';
@@ -124,12 +124,12 @@ class ConnectionServices {
 
         Map<String,dynamic>? d =
          {
-          'profile_name': profileName,
+          'name': profileName,
           'username': username,
           'profile_picture': profilePictureUrl,
           'userID': userID,
-          'unique_num': userInfo['unique_num']
         };
+
         return d;
 
       } else {

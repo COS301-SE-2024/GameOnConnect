@@ -281,7 +281,7 @@ class _ProfileState extends State<Profile> {
                                                   children: [
                                                     Text(
                                                       friendProfile[
-                                                              'profile_name'] ??
+                                                              'name'] ??
                                                           'No Name Found',
                                                       style:  TextStyle(
                                                         fontFamily: 'Inter',
@@ -290,7 +290,7 @@ class _ProfileState extends State<Profile> {
                                                     ),
                                                     Text(
                                                       friendProfile[
-                                                              'username'] ??
+                                                              'username']['profile_name'] ??
                                                           'No Username Found',
                                                       style:  TextStyle(
                                                         fontFamily: 'Inter',

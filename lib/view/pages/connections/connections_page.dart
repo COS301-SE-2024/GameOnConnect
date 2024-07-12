@@ -208,7 +208,7 @@ class _FriendSearchState extends State<FriendSearch> {
           Friend? currentUserFriendData = snapshot.data;
           List<User> filteredUsers = _users
               .where((user) =>
-                  user.profileName
+                  user.username
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase()) &&
                   user.uid != widget.currentUserId) // Exclude current user
@@ -226,7 +226,7 @@ class _FriendSearchState extends State<FriendSearch> {
                       // Update filteredUsers here based on the new search query
                       filteredUsers = _users
                           .where((user) =>
-                              user.profileName
+                              user.username
                                   .toLowerCase()
                                   .contains(_searchQuery.toLowerCase()) &&
                               user.uid != widget.currentUserId)
@@ -281,7 +281,7 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
                       ),*/
-                        title: Text(user.username['profile_name']),
+                        title: Text(user.username),
                         trailing: isFriend
                             ? ElevatedButton.icon(
                                 onPressed: () => _unfollowUser(user.uid),
