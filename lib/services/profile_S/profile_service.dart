@@ -84,13 +84,14 @@ class ProfileService {
         if (username.isNotEmpty) {
           final data = { "username.profile_name" :username};
           await db.collection("profile_data").doc(currentUser.uid).update(data);
-          await AuthService().getNextNumber();
-          int nextnumber = await AuthService().getNextNum();
 
-          if (nextnumber != 0) {
-            final number = { "username.unique_num" :nextnumber};
-            await db.collection("profile_data").doc(currentUser.uid).update(number); 
-          }
+          //Commented out this code to prevent number from updating. 
+          //await AuthService().getNextNumber();
+          //int nextnumber = await AuthService().getNextNum();
+          //if (nextnumber != 0) {
+          //  final number = { "username.unique_num" :nextnumber};
+          //  await db.collection("profile_data").doc(currentUser.uid).update(number); 
+          //}
         }
       }
     }catch (e)
