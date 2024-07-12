@@ -77,7 +77,6 @@ class Events{
         if(i.creatorID == currentUser?.uid)
         {
           myEvents.add(i);
-          print(i.name);
         }
 
     }
