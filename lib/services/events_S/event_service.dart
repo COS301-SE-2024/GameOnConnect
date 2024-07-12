@@ -68,4 +68,19 @@ class Events{
     }
     return subscribed;
   }
+
+  List<Event> getMyEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> myEvents=[];
+    for(var i in allEvents!){
+        if(i.creatorID == currentUser?.uid)
+        {
+          myEvents.add(i);
+          print(i.name);
+        }
+
+    }
+    return myEvents;
+  }
 }

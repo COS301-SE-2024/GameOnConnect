@@ -18,11 +18,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
   Events events = Events();
   List<Event>? allEvents;
   List<Event>? subscribedEvents;
+  List<Event>? myEvents;
   @override
   void initState() {
     super.initState();
     getAllEvents();
-    getSubscribedEvents();
+    /*getSubscribedEvents();
+    getMyEvents();*/
   }
 
   @override
@@ -36,6 +38,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
 
   void getSubscribedEvents(){
     subscribedEvents=events.getSubscribedEvents(allEvents);
+  }
+
+  void getMyEvents()
+  {
+    myEvents = events.getMyEvents(allEvents);
   }
 
 
@@ -57,6 +64,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       } else {
                         allEvents = snapshot.data;
                         getSubscribedEvents();
+                        getMyEvents();
                         return DefaultTabController(
                           length: 3,
                           child: Column(
@@ -369,19 +377,31 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     0),
                                                           ),
                                                         ),
-                                                        child: ListView(
+                                                        child:
+                                                        ListView.separated(
+                                                          itemCount:
+                                                          myEvents!.length,
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
-                                                          /*children: const [
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                          ],*/
+                                                          Axis.vertical,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            Event i =
+                                                            myEvents![
+                                                            index];
+                                                            return EventCardWidget(
+                                                                e: i);
+                                                          },
+                                                          separatorBuilder:
+                                                              (context,
+                                                              index) =>
+                                                          const SizedBox(
+                                                              height:
+                                                              10),
+                                                        ),
                                                         ),
                                                       ),
-                                                    ),
                                                   ],
                                                 ),
                                               ),
