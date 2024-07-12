@@ -205,7 +205,7 @@ class _LoginState extends State<Login> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          HomePage(
+                                          FeedPage(
                                             title: 'GameOnConnect',
                                           )),
                                       (Route<dynamic> route) => false,
@@ -218,7 +218,7 @@ class _LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => HomePage(
+                                  builder: (BuildContext context) => FeedPage(
                                         title: 'GameOnConnect',
                                       )),
                               (Route<dynamic> route) => false,
@@ -287,7 +287,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => HomePage(
+                                builder: (BuildContext context) => FeedPage(
                                       title: 'GameOnConnect',
                                     )),
                             (Route<dynamic> route) => false,
