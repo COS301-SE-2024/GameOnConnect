@@ -1,25 +1,52 @@
 import 'package:flutter/material.dart';
 
-class ConnectionCardWidget extends StatelessWidget {
-  const ConnectionCardWidget(
-  {
-    super.key,
-    required this.image,
-    required this.username,
-    required this.uniqueNum
-}
-      );
-  final String image;
+class ConnectionCardWidget extends StatefulWidget {
+  final String image ;
   final String username;
-  final String uniqueNum;
+  final String uniqueNum ;
+  final String uid ;
+  final void Function(String uid,bool selected) onSelected;
+  const ConnectionCardWidget({super.key,required this.image, required this.username, required this.uid, required this.uniqueNum, required this.onSelected});
+  @override
+  State<ConnectionCardWidget> createState() => _ConnectionCardWidgetState();
+}
+
+class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
+late String image;
+late String username;
+late String uniqueNum;
+late String uid;
+bool selected = false;
+@override
+void initState() {
+  super.initState();
+  image = widget.image;
+  username = widget.username;
+  uniqueNum = widget.uniqueNum;
+  uid = widget.uid;
+}
+
+@override
+void dispose() {
+  super.dispose();
+}
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            selected = !selected;
+          });
+          widget.onSelected(uid,selected);
+        },
+        child: Container(
         width: 388,
         height: 72,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: selected ? Theme.of(context).colorScheme.primary: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               blurRadius: 0,
@@ -100,6 +127,8 @@ class ConnectionCardWidget extends StatelessWidget {
           ),
         ),
 
+    )
     );
   }
+
 }

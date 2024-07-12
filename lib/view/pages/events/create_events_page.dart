@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../components/card/connection_list_card.dart';
@@ -21,10 +22,11 @@ class _CreateEventsState extends State<CreateEvents> {
   final nameController = TextEditingController();
   int gameID = 1; // hard coding this for now
   String? type;
+  List<String>? invites=[];
 
   Future create() async {
     await Events().createEvent(selectedOption,
-        _datePicked, nameController.text, _endDatePicked, gameID, isChanged);
+        _datePicked, nameController.text, _endDatePicked, gameID, isChanged,invites!);
   }
 
 
@@ -352,13 +354,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        //Navigator.pop(context);
+                                        Navigator.pushNamed(context, '/invite_connections').then((invited){
+                                          invites = invited as List<String>?;
+                                        });
                                       },
-                                      child:InkWell(
-                                        onTap: () async
-                                        {
-                                          Navigator.pushNamed(context, '/invite_connections');
-                                        },
                                         child:  Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
@@ -382,7 +381,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                         ],
                                       ),
                                       ),
-                                    ),
                                     Container(
                                       width: 100,
                                       height: 100,

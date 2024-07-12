@@ -13,6 +13,8 @@ class ConnectionsListWidget extends StatefulWidget {
 class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<user.User>? list;
+  List<String> invites=[];
+
 
   @override
   void initState() {
@@ -26,7 +28,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getFiendsForInvite();
+    list = await Events().getConnectionsForInvite();
   }
 
   @override
@@ -37,7 +39,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         body: SafeArea(
           top: true,
           child: FutureBuilder<List<user.User>?>(
-              future: Events().getFiendsForInvite(),
+              future: Events().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -70,41 +72,68 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16, 0, 0, 12),
-                              child: Text(
-                                'Select users to invite:',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 16,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon:
+                                          const Icon(Icons.keyboard_backspace)),
+                                  Text(
+                                    'Select users to invite:',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 16,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Container(
-                      height: 300,
-                    child: ListView.separated(
-                      itemCount: list!.length,
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        user.User? i = list![index];
-                        return ConnectionCardWidget(
-                            image: i.profilePicture,
-                            username: i.username,
-                            uniqueNum: i.uniqueNum.toString());
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox();
-                      },
-                    )
-                    ),
+                    SizedBox(
+                        height: 300,
+                        child: ListView.separated(
+                          itemCount: list!.length,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            user.User? i = list![index];
+
+                            return ConnectionCardWidget(
+                                image: i.profilePicture,
+                                username: i.username,
+                                uniqueNum: i.uniqueNum.toString(),
+                                uid: i.uid,
+                                onSelected: (uid, selected) {
+                                  if (selected) {
+                                    invites.add(uid);
+                                  }else{
+                                    invites.remove(uid);
+                                  }
+                                });
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox();
+                          },
+                        )),
+                    InkWell(
+                        onTap: () {
+                          Navigator.pop(context,invites);
+                        },
+                        child: const Row(children: [
+                          Icon(Icons.add),
+                          Text("Save invites"),
+                        ])),
                   ]);
                 }
               }),

@@ -11,7 +11,7 @@ class Events {
   }*/
 
   Future<void> createEvent(String? type, DateTime? startDate, String name,
-      DateTime? endDate, int gameID, bool privacy) async {
+      DateTime? endDate, int gameID, bool privacy, List<String> invited) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -31,6 +31,7 @@ class Events {
           "conversationID": "",
           "teams": [],
           "creatorID": currentUser.uid,
+          "subscribed": invited,
         };
         db.collection("events").doc(id).set(data);
       }
@@ -40,7 +41,7 @@ class Events {
   }
 
 
-  Future<List<user.User>?> getFiendsForInvite() async
+  Future<List<user.User>?> getConnectionsForInvite() async
   {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -60,4 +61,5 @@ class Events {
       throw('Error: $e');
     }
   }
+
 }
