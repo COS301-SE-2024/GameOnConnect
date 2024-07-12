@@ -83,4 +83,20 @@ class Events{
     }
     return myEvents;
   }
+
+  List<Event> getJoinedEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> joinedEvents=[];
+    for(var i in allEvents!){
+      for (var j in i.participants) {
+        if (j == currentUser?.uid) {
+          joinedEvents.add(i);
+        }
+      }
+
+    }
+    return joinedEvents;
+  }
+
 }
