@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../components/game_library_filter.dart';
+import '../../components/game_library/game_library_filter.dart';
 import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';

@@ -1,11 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../../model/events_M/evets_model.dart';
 class Events{
 
- /* Future<Map<String,dynamic>?> fetchEvents() async{
-    // fetch all events for user
-  }*/
+  Future<List<Event>> fetchAllEvents() async{
+    try{
+
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final currentUser = FirebaseAuth.instance.currentUser;
+      List<Event> all = [];
+      if(currentUser!=null) {
+
+        QuerySnapshot querySnapshot = await db.collection('events').orderBy('start_date', descending: false).get();
+        for (var x in querySnapshot.docs) {
+          var data = x.data() as Map<String, dynamic>;
+          Event event = Event.fromMap(data,x.id);
+          all.add(event);
+        }
+
+      }
+          return all;
+    }catch (e)
+    {
+      throw("Error fetching events: $e");
+    }
+  }
 
   Future<void> createEvent(String? type,DateTime? startDate,String name,
       DateTime? endDate,int gameID, bool privacy)async {
