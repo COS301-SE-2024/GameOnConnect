@@ -65,7 +65,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Align(
                             alignment: const AlignmentDirectional(-1, 0),
@@ -80,8 +80,9 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                       },
                                       icon:
                                           const Icon(Icons.keyboard_backspace)),
+
                                   Text(
-                                    'Select users to invite:',
+                                    'Select users to invite',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
@@ -90,7 +91,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                           .secondary,
                                       fontSize: 16,
                                       letterSpacing: 0,
-                                      fontWeight: FontWeight.normal,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -126,15 +127,15 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             return const SizedBox();
                           },
                         )),
-                    InkWell(
-                        onTap: () {
-                          Navigator.pop(context,invites);
-                        },
+                 Padding(
+                padding:const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
+                    child: MaterialButton(onPressed: () {Navigator.pop(context,invites);},
+                        color: Theme.of(context).colorScheme.primary,
                         child: const Row(children: [
-                          Icon(Icons.add),
                           Text("Save invites"),
                         ])),
-                  ]);
+                  )
+                ]);
                 }
               }),
         ));

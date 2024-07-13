@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 
-String? selectedOption="Gaming Session";
+String? selectedOption = "Gaming Session";
+
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
 
@@ -19,15 +20,12 @@ class _CreateEventsState extends State<CreateEvents> {
   final nameController = TextEditingController();
   int gameID = 1; // hard coding this for now
   String? type;
-  List<String>? invites=[];
+  List<String>? invites = [];
 
   Future create() async {
-    await Events().createEvent(selectedOption,
-        _datePicked, nameController.text, _endDatePicked, gameID, isChanged,invites!);
+    await Events().createEvent(selectedOption, _datePicked, nameController.text,
+        _endDatePicked, gameID, isChanged, invites!);
   }
-
-
-
 
   @override
   void initState() {
@@ -351,11 +349,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        Navigator.pushNamed(context, '/invite_connections').then((invited){
+                                        Navigator.pushNamed(
+                                                context, '/invite_connections')
+                                            .then((invited) {
                                           invites = invited as List<String>?;
                                         });
                                       },
-                                        child:  Row(
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.max,
                                         children: [
                                           Icon(
@@ -377,7 +377,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           ),
                                         ],
                                       ),
-                                      ),
+                                    ),
                                     Container(
                                       width: 100,
                                       height: 100,
@@ -408,6 +408,11 @@ class _CreateEventsState extends State<CreateEvents> {
                     child: MaterialButton(
                       onPressed: () {
                         create();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text("Event created successfully!"),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ));
                       },
                       color: Theme.of(context).colorScheme.primary,
                       child: const Text('Create'),
@@ -432,7 +437,6 @@ class ChipData {
 }
 
 class ChipSelector extends StatefulWidget {
-
   const ChipSelector({super.key});
   @override
   ChipSelectorState createState() => ChipSelectorState();
@@ -443,7 +447,6 @@ class ChipSelectorState extends State<ChipSelector> {
     ChipData('Gaming Session', Icons.videogame_asset_outlined),
     ChipData('Tournament', Icons.emoji_events_sharp),
   ];
-
 
   @override
   Widget build(BuildContext context) {
