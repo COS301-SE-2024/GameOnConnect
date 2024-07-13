@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 
 class GameDetails {
   final int id;
@@ -52,5 +53,83 @@ class GameDetails {
       rating: json['rating'] ?? 0.0,
       website: json['website'] ?? "No website available",
     );
+  }
+
+  List<Widget> getPlatformIcons(BuildContext context) {
+    List<Widget> icons = [];
+    bool pc, xbox, playstation;
+    pc = false;
+    xbox = false;
+    playstation = false;
+
+    for (var platform in platforms) {
+      if (platform.toString().toLowerCase().contains('pc') && !pc) {
+        pc = true;
+        icons.add(Icon(
+          Icons.computer,
+          color: Theme.of(context).colorScheme.secondary,
+        ));
+        icons.add(const SizedBox(
+          width: 10,
+        ));
+      } else if (platform.toString().toLowerCase().contains('xbox') && !xbox) {
+        xbox = true;
+        icons.add(Icon(
+          Icons.gamepad,
+          color: Theme.of(context).colorScheme.secondary,
+        ));
+        icons.add(const SizedBox(
+          width: 10,
+        ));
+      } else if (platform.toString().toLowerCase().contains('playstation') &&
+          !playstation) {
+        playstation = true;
+        icons.add(Icon(
+          Icons.videogame_asset,
+          color: Theme.of(context).colorScheme.secondary,
+        ));
+        icons.add(const SizedBox(
+          width: 10,
+        ));
+      }
+    }
+
+    return icons;
+  }
+
+  List<Widget> getStyledGenres(BuildContext context) {
+    List<Widget> genresWidgets = [];
+
+    if (genres.isNotEmpty) {
+      for (var genre in genres) {
+        genresWidgets.add(Expanded(
+          child: Text(
+            genre['name'],
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              decorationColor: Theme.of(context).colorScheme.secondary,
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ));
+        genresWidgets.add(const SizedBox(
+          width: 10,
+        ));
+      }
+    } else {
+      return [
+        Text(
+          "None",
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          overflow: TextOverflow.ellipsis,
+        )
+      ];
+    }
+    return genresWidgets;
   }
 }
