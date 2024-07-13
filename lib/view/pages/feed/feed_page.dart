@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     const GameLibrary(), // Actual page for the Games Library
     const EventsGamingSessions(), // Placeholder for the Currently Playing Page
     const EventsPage(), // Placeholder for the Events Page
-    Profile(), // Actual page for the Profile
+    Profilenew(), // Actual page for the Profile
   ];
 
   void _onItemTapped(int index) {
@@ -126,6 +126,21 @@ class _DevelopmentButtons extends StatelessWidget {
             textColor: Theme.of(context).colorScheme.surface,
             child: Text('Feed Page'),
           ),
+          /* MaterialButton(
+            onPressed: () {
+               Navigator.push(
+        context,
+        MaterialPageRoute(
+          //builder: (context) => FriendSearchPage(currentUserId),
+         
+          builder: (context) => Profilenew()
+        ),
+      );
+            },
+            color: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.surface,
+            child: Text('new profile'),
+          ),*/
           MaterialButton(
   onPressed: () {
     // Get the current user's ID

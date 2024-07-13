@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-//import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
@@ -26,7 +24,6 @@ Future<Profile?>  fetchProfile() async {
           double uniqueNum=userInfo['unique_num'] ?? '';
 
   	      // Get number of connections
-          ConnectionService connectionService = ConnectionService();
           List<String> connections= await ConnectionService().getConnections("connections");
           int connectionsCount = connections.length;
 
@@ -48,16 +45,17 @@ Future<Profile?>  fetchProfile() async {
           numberOfconnections: connectionsCount,
       );
         } else {
-          print('Document not found');
+          //print('Document not found');
         }
       } else {
-        print('User not found');
+        //print('User not found');
       }
     } catch (e) {
-      print('Error fetching profile data: $e');
+      //print('Error fetching profile data: $e');
     }
     return null;
   }
+
 
 
 }

@@ -1,16 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
-import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
-import 'package:gameonconnect/view/pages/profile/profile_info.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'stats_card.dart';
 
 class Profilenew extends StatefulWidget {
   const Profilenew({super.key});
@@ -47,11 +40,11 @@ class _ProfileState extends State<Profilenew>  {
         future: ProfileService().fetchProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  Center(child: CircularProgressIndicator()); // Show loading indicator
+            return  const Center(child: CircularProgressIndicator()); // Show loading indicator
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.data == null) {
-            return Center(child: Text('Profile data not found.'));
+            return const Center(child: Text('Profile data not found.'));
           } else {
             final profileData = snapshot.data!;
       return SingleChildScrollView(
@@ -63,13 +56,13 @@ class _ProfileState extends State<Profilenew>  {
                       Column(
                         children: [
                           // Banner
-                          Container(
+                          SizedBox(
                             height: 170,
                             width: MediaQuery.of(context).size.width,
                             child: CachedNetworkImage(
                               imageUrl: profileData.banner,
-                              placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -84,16 +77,16 @@ class _ProfileState extends State<Profilenew>  {
                                 children: [
                                   const SizedBox(height: 55), //space 
                                   Text(
-                                    '${profileData.profileName}',
-                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    profileData.profileName,
+                                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     '#${profileData.uniqueNumber}',
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                   Text(
-                                    '${profileData.bio}',
-                                    style: TextStyle(fontSize: 16),
+                                    profileData.bio,
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                                   const SizedBox(height: 10), //space 
                                   RichText(
@@ -101,12 +94,12 @@ class _ProfileState extends State<Profilenew>  {
                                         children: [
                                           TextSpan(
                                             text: '${profileData.numberOfconnections}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          TextSpan(
+                                          const TextSpan(
                                             text: ' Connections',
                                             style: TextStyle(fontSize: 16),
                                           ),
@@ -138,8 +131,8 @@ class _ProfileState extends State<Profilenew>  {
                           child: ClipOval(
                             child: CachedNetworkImage(
                               imageUrl: profileData.profilePicture,
-                              placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Loading indicator for profile picture
-                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for profile picture
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -149,19 +142,22 @@ class _ProfileState extends State<Profilenew>  {
                   ),
                   //display the currely playing widget here
                   //ProfileInfo(),
-                  const SizedBox(height: 20), //space 
-                  CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0),
+                   // Conditionally display the CurrentlyPlaying widget
+                profileData.currentlyPlaying.isNotEmpty
+                    ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
+                    : const SizedBox.shrink(), // You can replace this with any widget or SizedBox.shrink() if you don't want to show anything
+                  
 
                   //search
                    const SizedBox(height: 10), //space 
                   Padding(
                   padding: const EdgeInsets.all(12),
                   child: TextField(
-                    key: Key('searchTextField'),
+                    key: const Key('searchTextField'),
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 15, right: 15),
+                      contentPadding: const EdgeInsets.only(left: 15, right: 15),
                       labelText: 'Search',
-                      suffixIcon: Icon(Icons.search),
+                      suffixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100)),
                     ),
@@ -171,13 +167,13 @@ class _ProfileState extends State<Profilenew>  {
 
                 const SizedBox(height: 15), //space 
                 HorizontalGameList(
-                  myGameIds: profileData.myGames,
+                  gameIds: profileData.myGames,
                   heading: 'My Games',
                 ),
 
                 const SizedBox(height: 15), //space 
                 HorizontalGameList(
-                  myGameIds: profileData.wantToPlay,
+                  gameIds: profileData.wantToPlay,
                   heading: 'Want To Play',
                 ),
                   

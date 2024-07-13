@@ -18,7 +18,7 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
       future: GameService().fetchGameDetails(widget.gameId),
       builder: (context, gameSnapshot) {
         if (gameSnapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (gameSnapshot.hasError) {
           return Text('Error: ${gameSnapshot.error}');
         } else {
@@ -58,13 +58,14 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
                                 height: 101,
                                 child: CachedNetworkImage(
                                   imageUrl: gameDetails.backgroundImage,
-                                  placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                               // Game details
                               Expanded(
+                                // ignore: avoid_unnecessary_containers
                                 child: Container(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -72,7 +73,7 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
                                     children: [
                                       Text(
                                         gameDetails.name,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                           fontSize: 20,
                                         ),
