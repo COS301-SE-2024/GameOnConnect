@@ -174,6 +174,12 @@ class _ProfileState extends State<Profilenew>  {
                   myGameIds: profileData.myGames,
                   heading: 'My Games',
                 ),
+
+                const SizedBox(height: 15), //space 
+                HorizontalGameList(
+                  myGameIds: profileData.wantToPlay,
+                  heading: 'Want To Play',
+                ),
                   
                 ],
         ),
