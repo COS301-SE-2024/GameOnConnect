@@ -203,8 +203,7 @@ class _MessagingState extends State<Messaging> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          profileData!.profileName ??
-                                              'Default Name',
+                                          profileData!.profileName,
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Inter',
