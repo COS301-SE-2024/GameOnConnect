@@ -760,7 +760,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
-                              
+                              const Spacer(),
+                              Flexible(
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: snapshot.data!.getStyledGenres(context),
+                                  )
+                                )
+                              )
                               /*Padding(
                                     padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
                                     child: Text(
