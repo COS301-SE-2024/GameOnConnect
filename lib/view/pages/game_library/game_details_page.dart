@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-
+import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -28,6 +29,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
   final Wishlist wishlist = Wishlist();
   bool isInWishlist = false;
+
   
   final myGames = MyGamesService();
   bool isInMyGames = false;
@@ -47,8 +49,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     });
   }
 
+
   Future<void> checkMyGamesStatus() async {
     List<String> currentMyGames = await myGames.getMyGames();
+
     setState(() {
       isInMyGames = currentMyGames.contains(widget.gameId.toString());
     });
@@ -59,16 +63,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
         return GameService().fetchGameDetails(gameId);
-
       } else {
-       throw ('No internet connection');
+        throw ('No internet connection');
       }
-    } catch (e)
-    {
-      throw('Error fetching data');
+    } catch (e) {
+      throw ('Error fetching data');
     }
   }
-
 
   Future shareLink(String link, String message) async {
     await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
@@ -94,13 +95,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               Navigator.pop(context);
-               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text(
-                        "Please check your internet connection"),
-                    backgroundColor: Colors.red.shade300,
-                  ));
-               return const SizedBox.shrink();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: const Text("Please check your internet connection"),
+                backgroundColor: Colors.red.shade300,
+              ));
+              return const SizedBox.shrink();
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available'));
             } else {
@@ -120,13 +119,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surface,
                               image: DecorationImage(
-                                image: Image.network(
+                                image: CachedNetworkImageProvider(
                                   gameDetails.backgroundImage,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                    return  Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.secondary,));
-                                  },
-                                ).image,
+                                ),
+                                fit: BoxFit.cover,
                               ),
                               boxShadow: const [
                                 BoxShadow(
@@ -201,7 +197,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           .headlineMedium
                                           ?.copyWith(
                                             fontFamily: 'Inter',
-                                            color:  Theme.of(context).colorScheme.secondary,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
                                             fontSize: 32,
                                             letterSpacing: 0,
                                             fontWeight: FontWeight.bold,
@@ -213,12 +211,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 20, 5,
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0,
+                                          20,
+                                          5,
                                           5), // Adjust top, left, right padding as needed
                                       child: Icon(
                                         Icons.play_circle,
-                                        color:  Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         size: 24,
                                       ),
                                     ),
@@ -230,7 +233,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           5), // Adjust top, left, right padding as needed
                                       child: IconButton(
                                         icon: const Icon(Icons.share_outlined),
-                                        color:  Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         onPressed: () {
                                           final String link =
                                               gameDetails.website;
@@ -255,7 +260,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   .bodyMedium
                                   ?.copyWith(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     fontSize: 12,
                                     letterSpacing: 0,
                                   ),
@@ -266,10 +272,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
@@ -291,21 +297,26 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                     shape: BoxShape.rectangle,
                                     border: Border.all(
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                   ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                       Align(
-                                        alignment:const Alignment(0, -1),
+                                      Align(
+                                        alignment: const Alignment(0, -1),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: Text(
                                             'RATINGS',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
-                                              color:  Theme.of(context).colorScheme.primary,                                               fontSize: 14,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              fontSize: 14,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight
                                                   .w500, // Adjust font weight if needed
@@ -321,9 +332,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           child: Text(
                                               gameDetails.rating.toString(),
                                               //ratings
-                                              style:  TextStyle(
+                                              style: TextStyle(
                                                 fontFamily: 'Inter',
-                                                color:  Theme.of(context).colorScheme.secondary,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                                 fontSize: 16,
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.bold,
@@ -348,21 +361,26 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       topRight: Radius.circular(15),
                                     ),
                                     border: Border.all(
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                   ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                       Align(
-                                        alignment: const AlignmentDirectional(0, -1),
+                                      Align(
+                                        alignment:
+                                            const AlignmentDirectional(0, -1),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: Text(
                                             'SCORE',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
-                                              color:  Theme.of(context).colorScheme.primary,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                               fontSize: 14,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
@@ -378,9 +396,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           child: Text(
                                             gameDetails.score.toString(),
                                             //gameDetails.score,
-                                            style:  TextStyle(
+                                            style: TextStyle(
                                               fontFamily: 'Inter',
-                                              color: Theme.of(context).colorScheme.secondary,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                               fontSize: 16,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.bold,
@@ -406,7 +426,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Theme.of(context).colorScheme.surface,
                             ),
                           ),
-                           Align(
+                          Align(
                             alignment: const Alignment(-1, -1),
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
@@ -414,7 +434,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 'About',
                                 style: TextStyle(
                                   fontFamily: 'Inter',
-                                  color:  Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   fontSize: 20,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.bold,
@@ -426,126 +447,52 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             alignment: const AlignmentDirectional(0, -1),
                             child: Padding(
                               padding: const EdgeInsets.all(10),
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                                child: Image.network(
-                                  gameDetails.backgroundImage,
-                                  width: 464,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                    return Container( color:  Theme.of(context).colorScheme.secondary,
-                                        child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));
-                                  },
-                                ),
+                              child: CarouselNetworkImageWithPlaceholder(
+                                imageUrl: gameDetails.backgroundImage,
+                                width: 464, 
+                                height: 200, 
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
+                          const Align(
+                            alignment: AlignmentDirectional(0, 0),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  10, 6, 10, 6),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                        ),
-                                        child: Image.network(
-                                          // TODO : use the get screenshots function for this
-                                          // gameDetails.screenshots[0],
+                                    CarouselNetworkImageWithPlaceholder(
+                                      imageUrl:
                                           'https://picsum.photos/seed/194/600',
-                                          width: 80,
-                                          height: 55,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                            return Container( color:  Theme.of(context).colorScheme.secondary,
-                                                child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));                                          },
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 55,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                        ),
-                                        child: Image.network(
-                                          // gameDetails.screenshots[1],
+                                    CarouselNetworkImageWithPlaceholder(
+                                      imageUrl:
                                           'https://picsum.photos/seed/170/600',
-                                          width: 80,
-                                          height: 55,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                            return Container( color:  Theme.of(context).colorScheme.secondary,
-                                                child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));                                          },
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 55,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          // gameDetails.screenshots[2],
+                                    CarouselNetworkImageWithPlaceholder(
+                                      imageUrl:
                                           'https://picsum.photos/seed/185/600',
-                                          width: 80,
-                                          height: 55,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                            return Container( color:  Theme.of(context).colorScheme.secondary,
-                                                child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));                                          },
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 55,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          // gameDetails.screenshots[3],
+                                    CarouselNetworkImageWithPlaceholder(
+                                      imageUrl:
                                           'https://picsum.photos/seed/137/600',
-                                          width: 80,
-                                          height: 55,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                            return Container( color:  Theme.of(context).colorScheme.secondary,
-                                                child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));                                          },
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 55,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.network(
-                                          // gameDetails.screenshots[4],
+                                    CarouselNetworkImageWithPlaceholder(
+                                      imageUrl:
                                           'https://picsum.photos/seed/962/600',
-                                          width: 80,
-                                          height: 55,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (BuildContext context,Object e,StackTrace? stacktrace) {
-                                            return Container( color:  Theme.of(context).colorScheme.secondary,
-                                                child:Center(child: Icon(Icons.error, color:  Theme.of(context).colorScheme.surface,)));                                          },
-                                        ),
-                                      ),
+                                      width: 80,
+                                      height: 55,
                                     ),
                                   ],
                                 ),
@@ -560,7 +507,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 style: {
                                   "body": Style(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     letterSpacing: 0,
                                     fontSize: FontSize(16.0),
                                     // Adjust font size as needed
@@ -574,14 +522,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
-                           Row(
+                          Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
@@ -590,7 +538,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   'Platforms',
                                   style: TextStyle(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     letterSpacing: 0,
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
@@ -604,14 +553,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(4, 2, 2, 2),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(4, 2, 2, 2),
                                     child: Icon(
                                       Icons.window_sharp,
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       size: 24,
                                     ),
                                   ),
-                                 const Padding(
+                                  const Padding(
                                     padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
                                     child: Icon(
                                       Icons.videogame_asset,
@@ -636,24 +588,27 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                               Flexible(
+                              Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                     'Developer',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       letterSpacing: 0,
                                       fontSize: 14,
                                     ),
@@ -666,9 +621,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 child: Text(
                                   // gameDetails.developer,
                                   gameDetails.publisher[0]['name'],
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     letterSpacing: 0,
                                   ),
                                 ),
@@ -680,24 +636,27 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                               Flexible(
+                              Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                     'Publisher',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       letterSpacing: 0,
                                     ),
                                   ),
@@ -709,9 +668,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 child: Text(
                                   // gameDetails.publisher,
                                   gameDetails.publisher[0]['name'],
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     letterSpacing: 0,
                                   ),
                                 ),
@@ -723,17 +683,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                               Flexible(
+                              Flexible(
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       6, 0, 0, 0),
@@ -741,7 +701,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     'Release Date',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color:  Theme.of(context).colorScheme.secondary ,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       letterSpacing: 0,
                                     ),
                                   ),
@@ -752,9 +714,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     202, 0, 20, 0),
                                 child: Text(
                                   gameDetails.released,
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Inter',
-                                    color:  Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                     letterSpacing: 0,
                                   ),
                                 ),
@@ -766,24 +729,27 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
-                           Row(
+                          Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6, 0, 0, 0),
                                   child: Text(
                                     'Genres',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color:  Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       fontSize: 14,
                                       letterSpacing: 0,
                                     ),
@@ -834,10 +800,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width -
                                   20, // Subtracting 20 for padding on both sides
-                              child:  Divider(
+                              child: Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color:  Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
@@ -855,62 +821,70 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     child: ElevatedButton(
                                       onPressed: () async {
                                         if (isInWishlist) {
-                                          await wishlist.removeFromWishlist(gameDetails.id.toString());
+                                          await wishlist.removeFromWishlist(
+                                              gameDetails.id.toString());
                                           // ignore: use_build_context_synchronously
                                           DelightToastBar(
-                                                builder: (context) {
-                                                  return CustomToastCard(
-                                                    title: Text(
-                                                      'Removed from Want to Play!',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
+                                                  builder: (context) {
+                                                    return CustomToastCard(
+                                                      title: Text(
+                                                        'Removed from Want to Play!',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                                position:
-                                                    DelightSnackbarPosition.top,
-                                                autoDismiss: true,
-                                                snackbarDuration:
-                                                    const Duration(seconds: 3))
-                                            .show(
-                                          // ignore: use_build_context_synchronously
-                                          context,
-                                        );
+                                                    );
+                                                  },
+                                                  position:
+                                                      DelightSnackbarPosition
+                                                          .top,
+                                                  autoDismiss: true,
+                                                  snackbarDuration:
+                                                      const Duration(
+                                                          seconds: 3))
+                                              .show(
+                                            // ignore: use_build_context_synchronously
+                                            context,
+                                          );
                                         } else {
-                                          await wishlist.addToWishlist(gameDetails.id.toString());
+                                          await wishlist.addToWishlist(
+                                              gameDetails.id.toString());
                                           // ignore: use_build_context_synchronously
                                           DelightToastBar(
-                                                builder: (context) {
-                                                  return CustomToastCard(
-                                                    title: Text(
-                                                      'Added to Want to Play!',
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
+                                                  builder: (context) {
+                                                    return CustomToastCard(
+                                                      title: Text(
+                                                        'Added to Want to Play!',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                                position:
-                                                    DelightSnackbarPosition.top,
-                                                autoDismiss: true,
-                                                snackbarDuration:
-                                                    const Duration(seconds: 3))
-                                            .show(
-                                          // ignore: use_build_context_synchronously
-                                          context,
-                                        );
+                                                    );
+                                                  },
+                                                  position:
+                                                      DelightSnackbarPosition
+                                                          .top,
+                                                  autoDismiss: true,
+                                                  snackbarDuration:
+                                                      const Duration(
+                                                          seconds: 3))
+                                              .show(
+                                            // ignore: use_build_context_synchronously
+                                            context,
+                                          );
                                         }
                                         // setState(() {
                                         //   isInWishlist = !isInWishlist;
                                         // });
-                                        checkWishlistStatus(); 
+                                        checkWishlistStatus();
                                       },
-                                    // child: ElevatedButton(
+                                      // child: ElevatedButton(
                                       // onPressed: () {
                                       //   wishlist.addToWishlist(
                                       //       gameDetails.id.toString());
@@ -923,8 +897,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       //
                                       // },
                                       style: ButtonStyle(
-                                        backgroundColor: WidgetStateProperty
-                                            .all<Color>( Theme.of(context).colorScheme.primary),
+                                        backgroundColor:
+                                            WidgetStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary),
                                         padding: WidgetStateProperty.all<
                                             EdgeInsetsGeometry>(
                                           const EdgeInsets.fromLTRB(
@@ -941,12 +918,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ),
                                       child: Text(
-                                        isInWishlist ? 'Remove from Want to Play' : 'Add to Want to Play',
+                                        isInWishlist
+                                            ? 'Remove from Want to Play'
+                                            : 'Add to Want to Play',
                                         // 'Add to wishlist',
                                         style: const TextStyle(
                                           fontFamily: 'Inter',
-                                          color: Colors
-                                              .black, 
+                                          color: Colors.black,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 0,
@@ -960,6 +938,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     padding: const EdgeInsets.only(
                                         left: 5), // Space between buttons
                                     child: ElevatedButton(
+
                                     onPressed: () async {
                                       if (isInMyGames) {
                                         await myGames.removeFromMyGames(gameDetails.id.toString());
@@ -998,20 +977,29 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                         color: Theme.of(context)
                                                             .colorScheme
                                                             .primary,
+                                      ),
                                                       ),
-                                                    ),
-                                                  );
-                                                },
-                                                position:
-                                                    DelightSnackbarPosition.top,
-                                                autoDismiss: true,
-                                                snackbarDuration:
-                                                    const Duration(seconds: 3))
-                                            .show(
+                                                    );
+                                                  },
+                                                  position:
+                                                      DelightSnackbarPosition
+                                                          .top,
+                                                  autoDismiss: true,
+                                                  snackbarDuration:
+                                                      const Duration(
+                                                          seconds: 3))
+                                              .show(
+                                            // ignore: use_build_context_synchronously
+                                            context,
+                                          );
+                                        } /*else {
+                                          await currentlyPlaying
+                                              .addToCurrentlyPlaying(
+                                                  gameDetails.id.toString());
                                           // ignore: use_build_context_synchronously
                                           context,
                                         );
-                                      }
+                                      }*/
                                       // setState(() {
                                       //   isInWishlist = !isInWishlist;
                                       // });
@@ -1030,9 +1018,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     //         ));
                                     //
                                     //   },
+
                                       style: ButtonStyle(
-                                        backgroundColor: WidgetStateProperty
-                                            .all<Color>( Theme.of(context).colorScheme.secondary,),
+                                        backgroundColor:
+                                            WidgetStateProperty.all<Color>(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
                                         padding: WidgetStateProperty.all<
                                             EdgeInsetsGeometry>(
                                           const EdgeInsets.fromLTRB(
@@ -1045,20 +1038,26 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            side:  BorderSide(
-                                              color:  Theme.of(context).colorScheme.primary,
+                                            side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                               width: 1,
                                             ),
                                           ),
                                         ),
                                       ),
                                       child: Text(
+
                                         isInMyGames ? 'Remove from My Games' : 'Add to My Games',
+
                                         // 'Add to currently playing',
                                         style: TextStyle(
                                           fontFamily:
                                               'Inter', // Replace with your desired font family if needed
-                                          color:  Theme.of(context).colorScheme.surface, // Replace with your desired text color
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface, // Replace with your desired text color
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -1376,11 +1375,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 10, 20, 10, 10),
                             child: Text(
                               'Buy ${gameDetails.name}:',
-                              style:  TextStyle(
-                                fontFamily:
-                                    'Inter', 
-                                color:  Theme.of(context).colorScheme.secondary,
-
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 20,
                                 letterSpacing: 0,
                                 fontWeight: FontWeight.bold,
@@ -1396,18 +1393,20 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 child: Container(
                                   width: 100,
                                   height: 100,
-                                  decoration:  BoxDecoration(
-                                    color:  Theme.of(context).colorScheme.surface,
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(10),
-                                      bottomRight: Radius.circular(10),
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                    border: Border.all(
-                                      color:  Theme.of(context).colorScheme.primary,
-                                    )
-                                  ),
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10),
+                                      ),
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      )),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
@@ -1423,18 +1422,22 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             throw 'Could not launch $url';
                                           }
                                         },
-                                        icon:  Icon(
+                                        icon: Icon(
                                           Icons.open_in_new,
-                                          color:  Theme.of(context).colorScheme.secondary,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           size: 12,
                                         ),
                                       ),
-                                       Padding(
-                                        padding:  const EdgeInsetsDirectional.fromSTEB(
-                                            4, 8, 4, 4),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(4, 8, 4, 4),
                                         child: Icon(
                                           Icons.videogame_asset,
-                                          color: Theme.of(context).colorScheme.primary,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                           size: 36,
                                         ),
                                       ),
