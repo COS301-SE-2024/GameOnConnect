@@ -4,7 +4,7 @@ import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 
 class CurrentlyPlaying extends StatefulWidget {
-  const CurrentlyPlaying({Key? key, required this.gameId}) : super(key: key);
+  const CurrentlyPlaying({super.key, required this.gameId});
   final int gameId;
 
   @override
@@ -26,7 +26,7 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
           return Column(
             children: [
               Container(
-                margin: const EdgeInsets.fromLTRB(18.9, 0, 3, 13),
+                margin: const EdgeInsets.fromLTRB(18, 0, 0, 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
