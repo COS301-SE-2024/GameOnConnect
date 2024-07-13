@@ -29,15 +29,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   final Wishlist wishlist = Wishlist();
   bool isInWishlist = false;
   
-  final currentlyPlaying = CurrentlyPlaying();
-  bool isInCurrPlaying = false;
+  final myGames = MyGamesService();
+  bool isInMyGames = false;
 
   @override
   void initState() {
     super.initState();
     _gameDetails = _fetchGameDetails(widget.gameId);
     checkWishlistStatus();
-    checkCurrPlayingStatus();
+    checkMyGamesStatus();
   }
 
   Future<void> checkWishlistStatus() async {
@@ -47,10 +47,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     });
   }
 
-  Future<void> checkCurrPlayingStatus() async {
-    List<String> currentCurrPlaying = await currentlyPlaying.getMyGames();
+  Future<void> checkMyGamesStatus() async {
+    List<String> currentMyGames = await myGames.getMyGames();
     setState(() {
-      isInCurrPlaying = currentCurrPlaying.contains(widget.gameId.toString());
+      isInMyGames = currentMyGames.contains(widget.gameId.toString());
     });
   }
 
@@ -961,8 +961,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         left: 5), // Space between buttons
                                     child: ElevatedButton(
                                     onPressed: () async {
-                                      if (isInCurrPlaying) {
-                                        await currentlyPlaying.removeFromCurrentlyPlaying(gameDetails.id.toString());
+                                      if (isInMyGames) {
+                                        await myGames.removeFromMyGames(gameDetails.id.toString());
                                         // ignore: use_build_context_synchronously
                                         DelightToastBar(
                                                 builder: (context) {
@@ -987,7 +987,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           context,
                                         );
                                       } else {
-                                        await currentlyPlaying.addToMyGames(gameDetails.id.toString());
+                                        await myGames.addToMyGames(gameDetails.id.toString());
                                         // ignore: use_build_context_synchronously
                                         DelightToastBar(
                                                 builder: (context) {
@@ -1015,11 +1015,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       // setState(() {
                                       //   isInWishlist = !isInWishlist;
                                       // });
-                                      checkCurrPlayingStatus(); 
+                                      checkMyGamesStatus(); 
                                     },
                                     // child: ElevatedButton(
                                     //   onPressed: () {
-                                    //     currentlyPlaying.addToCurrentlyPlaying(
+                                    //     myGames.addTomyGames(
                                     //         gameDetails.id.toString());
                                     //     ScaffoldMessenger.of(context).showSnackBar(
                                     //         const SnackBar(
@@ -1053,7 +1053,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         ),
                                       ),
                                       child: Text(
-                                        isInCurrPlaying ? 'Remove from My Games' : 'Add to My Games',
+                                        isInMyGames ? 'Remove from My Games' : 'Add to My Games',
                                         // 'Add to currently playing',
                                         style: TextStyle(
                                           fontFamily:

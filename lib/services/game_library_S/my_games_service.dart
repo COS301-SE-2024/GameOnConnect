@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-class CurrentlyPlaying {
+class MyGamesService {
 
   Future<List<String>> getMyGames() async {
     try {
@@ -16,8 +16,8 @@ class CurrentlyPlaying {
       await db.collection('profile_data').doc(currentUser?.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        List<String> currentlyPlaying = List<String>.from(snapshot.data()!['my_games']);
-        return currentlyPlaying;
+        List<String> myGames = List<String>.from(snapshot.data()!['my_games']);
+        return myGames;
       } else {
         return [];
       }
@@ -47,7 +47,7 @@ class CurrentlyPlaying {
     }
   }
 
-  Future<void> removeFromCurrentlyPlaying(String gameID) async {
+  Future<void> removeFromMyGames(String gameID) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
