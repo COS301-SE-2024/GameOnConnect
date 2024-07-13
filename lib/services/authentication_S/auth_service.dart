@@ -102,7 +102,8 @@ class AuthService {
           "visibility": true,
           "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
           "want_to_play": [],
-          "my_games": []
+          "my_games": [],
+          "currently_playing":"",
         };
 
         final connectionData = <String, dynamic>{
