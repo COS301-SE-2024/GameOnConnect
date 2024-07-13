@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
-import 'game_list.dart';
+import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
+import 'package:gameonconnect/view/pages/profile/profile_info.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'stats_card.dart';
-import 'profile_section.dart';
 
 class Profilenew extends StatefulWidget {
   const Profilenew({super.key});
@@ -19,8 +21,6 @@ class Profilenew extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<Profilenew>  {
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +66,6 @@ class _ProfileState extends State<Profilenew>  {
                           Container(
                             height: 170,
                             width: MediaQuery.of(context).size.width,
-                            /*decoration:  BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                // ignore: unnecessary_string_interpolations
-                                image:CachedNetworkImageProvider('${profileData.banner}'), // Use banner from storage
-                              ),
-                            ),*/
                             child: CachedNetworkImage(
                               imageUrl: profileData.banner,
                               placeholder: (context, url) => Center(child: CircularProgressIndicator()), // Loading indicator for banner
@@ -155,9 +148,28 @@ class _ProfileState extends State<Profilenew>  {
                     ],
                   ),
                   //display the currely playing widget here
+                  //ProfileInfo(),
                   const SizedBox(height: 20), //space 
                   CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0),
-                 
+
+                  //search
+                   const SizedBox(height: 10), //space 
+                  Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: TextField(
+                    key: Key('searchTextField'),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 15, right: 15),
+                      labelText: 'Search',
+                      suffixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100)),
+                    ),
+                    //onSubmitted: _onSearchEntered,
+                  ),
+                ),
+
+
                   
                 ],
         ),
