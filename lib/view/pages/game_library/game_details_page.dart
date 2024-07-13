@@ -48,7 +48,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   }
 
   Future<void> checkCurrPlayingStatus() async {
-    List<String> currentCurrPlaying = await currentlyPlaying.getCurrentlyPlaying();
+    List<String> currentCurrPlaying = await currentlyPlaying.getMyGames();
     setState(() {
       isInCurrPlaying = currentCurrPlaying.contains(widget.gameId.toString());
     });
@@ -987,7 +987,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           context,
                                         );
                                       } else {
-                                        await currentlyPlaying.addToCurrentlyPlaying(gameDetails.id.toString());
+                                        await currentlyPlaying.addToMyGames(gameDetails.id.toString());
                                         // ignore: use_build_context_synchronously
                                         DelightToastBar(
                                                 builder: (context) {
