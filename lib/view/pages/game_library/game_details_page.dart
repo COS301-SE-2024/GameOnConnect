@@ -156,7 +156,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               .colorScheme
                                               .secondary
                                               .withOpacity(
-                                                  0.6), // Adapt to your theme
+                                                  0.6), 
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
                                         ),
@@ -165,7 +165,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .secondary, // Adapt to your theme
+                                                .secondary, 
                                             size: 20,
                                           ),
                                           onPressed: () {
@@ -544,41 +544,44 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
-
                               const Spacer(), // This spacer will push the icons to the right edge
                               Row(
-                                // TODO: get icons for the different platforms
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(4, 2, 2, 2),
-                                    child: Icon(
-                                      Icons.window_sharp,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      size: 24,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
-                                    child: Icon(
-                                      Icons.videogame_asset,
-                                      color: Colors.black,
-                                      size: 24,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 2, 20, 2),
-                                    child: Icon(
-                                      Icons.games_rounded,
-                                      color: Colors.black,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                children: gameDetails.getPlatformIcons(context),
+                              )
+                              // Row(
+                              //   // TODO: get icons for the different platforms
+                              //   mainAxisSize: MainAxisSize.min,
+                              //   children: [
+                              //     Padding(
+                              //       padding:
+                              //           const EdgeInsets.fromLTRB(4, 2, 2, 2),
+                              //       child: Icon(
+                              //         Icons.window_sharp,
+                              //         color: Theme.of(context)
+                              //             .colorScheme
+                              //             .secondary,
+                              //         size: 24,
+                              //       ),
+                              //     ),
+                              //     const Padding(
+                              //       padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
+                              //       child: Icon(
+                              //         Icons.videogame_asset,
+                              //         color: Colors.black,
+                              //         size: 24,
+                              //       ),
+                              //     ),
+                              //     const Padding(
+                              //       padding: EdgeInsets.fromLTRB(4, 2, 20, 2),
+                              //       child: Icon(
+                              //         Icons.games_rounded,
+                              //         color: Colors.black,
+                              //         size: 24,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                           Padding(
@@ -613,9 +616,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(215, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(215, 0, 10, 0),
                                 child: Text(
                                   // gameDetails.developer,
                                   gameDetails.publisher[0]['name'],
@@ -660,9 +664,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(223, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(223, 0, 10, 0),
                                 child: Text(
                                   // gameDetails.publisher,
                                   gameDetails.publisher[0]['name'],
@@ -707,9 +712,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    202, 0, 20, 0),
+                                    202, 0, 10, 0),
                                 child: Text(
                                   gameDetails.released,
                                   style: TextStyle(
@@ -754,6 +760,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              
                               /*Padding(
                                     padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
                                     child: Text(
