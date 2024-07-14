@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -22,9 +23,8 @@ class _GameTimer extends State<GameTimer> {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 241, 241, 241),
-          borderRadius: BorderRadius.circular(15)
-        ),
+            color: const Color.fromARGB(255, 241, 241, 241),
+            borderRadius: BorderRadius.circular(15)),
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
@@ -56,16 +56,56 @@ class _GameTimer extends State<GameTimer> {
                     },
                   ),
                   FilledButton.icon(
-                    icon: _isTiming ?  const Icon(Icons.stop) : const Icon(Icons.play_arrow),
+                    icon: _isTiming
+                        ? const Icon(Icons.stop)
+                        : const Icon(Icons.play_arrow),
                     style: FilledButton.styleFrom(
-                      backgroundColor: _isTiming ? Colors.red : Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.only(left: 25, top: 15, right: 25, bottom: 15),
+                      backgroundColor: _isTiming
+                          ? Colors.red
+                          : Theme.of(context).primaryColor,
+                      padding: const EdgeInsets.only(
+                          left: 25, top: 15, right: 25, bottom: 15),
                     ),
                     onPressed: () {
                       setState(() {
                         if (_isTiming) {
                           _endTime = DateTime.now();
-                          print("Total time was: ${_endTime!.difference(_startTime!).inHours} hours ${_endTime!.difference(_startTime!).inMinutes} minutes ${_endTime!.difference(_startTime!).inSeconds} seconds");
+                          print(
+                              "Total time was: ${_endTime!.difference(_startTime!).inHours} hours ${_endTime!.difference(_startTime!).inMinutes} minutes ${_endTime!.difference(_startTime!).inSeconds} seconds");
+
+                          //show emoji feedback
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    'How was your experience playing this game?'),
+                                content: SizedBox(
+                                  width: double.maxFinite,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      EmojiFeedback(
+                                        inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
+                                        onChanged: (value) {
+                                          print(
+                                              value); //Add this value to database later
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Close'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         } else {
                           _startTime = DateTime.now();
                         }
