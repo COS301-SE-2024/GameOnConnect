@@ -452,51 +452,64 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          const Align(
-                            alignment: AlignmentDirectional(0, 0),
+                          Align(
+                            alignment: const AlignmentDirectional(0, 0),
                             child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
+                              padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/194/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/170/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/185/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/137/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/962/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                  ],
+                                  children: gameDetails.getScreenshots(context),
                                 ),
                               ),
                             ),
                           ),
+                          // const Align(
+                          //   alignment: AlignmentDirectional(0, 0),
+                          //   child: Padding(
+                          //     padding:
+                          //         EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
+                          //     child: SingleChildScrollView(
+                          //       scrollDirection: Axis.horizontal,
+                          //       child: Row(
+                          //         mainAxisSize: MainAxisSize.max,
+                          //         children: [
+                          //           CarouselNetworkImageWithPlaceholder(
+                          //             imageUrl:
+                          //                 'https://picsum.photos/seed/194/600',
+                          //             width: 80,
+                          //             height: 55,
+                          //           ),
+                          //           CarouselNetworkImageWithPlaceholder(
+                          //             imageUrl:
+                          //                 'https://picsum.photos/seed/170/600',
+                          //             width: 80,
+                          //             height: 55,
+                          //           ),
+                          //           CarouselNetworkImageWithPlaceholder(
+                          //             imageUrl:
+                          //                 'https://picsum.photos/seed/185/600',
+                          //             width: 80,
+                          //             height: 55,
+                          //           ),
+                          //           CarouselNetworkImageWithPlaceholder(
+                          //             imageUrl:
+                          //                 'https://picsum.photos/seed/137/600',
+                          //             width: 80,
+                          //             height: 55,
+                          //           ),
+                          //           CarouselNetworkImageWithPlaceholder(
+                          //             imageUrl:
+                          //                 'https://picsum.photos/seed/962/600',
+                          //             width: 80,
+                          //             height: 55,
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.all(12),
                             child: Html(
@@ -550,7 +563,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 children: gameDetails.getPlatformIcons(context),
                               )
                               // Row(
-                              //   // TODO: get icons for the different platforms
                               //   mainAxisSize: MainAxisSize.min,
                               //   children: [
                               //     Padding(
@@ -773,7 +785,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               /*Padding(
                                     padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
                                     child: Text(
-                                      //TODO: we need to get the genres from another request
+                                      
                                        gameDetails.genres[0],
                                       style: const TextStyle(
                                         fontFamily: 'Inter',
