@@ -72,7 +72,6 @@ class _GameTimer extends State<GameTimer> {
                           _endTime = DateTime.now();
                           print(
                               "Total time was: ${_endTime!.difference(_startTime!).inHours} hours ${_endTime!.difference(_startTime!).inMinutes} minutes ${_endTime!.difference(_startTime!).inSeconds} seconds");
-
                           //show emoji feedback
                           showDialog(
                             context: context,
@@ -88,8 +87,7 @@ class _GameTimer extends State<GameTimer> {
                                       EmojiFeedback(
                                         inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
                                         onChanged: (value) {
-                                          print(
-                                              value); //Add this value to database later
+                                          //add value to db
                                         },
                                       ),
                                     ],
@@ -97,7 +95,13 @@ class _GameTimer extends State<GameTimer> {
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Close'),
+                                    child: const Text('Don''t ask me now'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('OK'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
