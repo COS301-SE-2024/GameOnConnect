@@ -27,7 +27,8 @@ class _FeedPageState extends State<FeedPage> {
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
     const ViewEvents(), // View Events Page
-    const Profile(), // Actual page for the Profile
+    const Profilenew(), // Actual page for the Profile
+
   ];
 
   void _onItemTapped(int index) {
@@ -159,6 +160,21 @@ class _DevelopmentButtons extends StatelessWidget {
             textColor: Theme.of(context).colorScheme.surface,
             child: const Text('Messaging Page'),
           ),
+          /* MaterialButton(
+            onPressed: () {
+               Navigator.push(
+        context,
+        MaterialPageRoute(
+          //builder: (context) => FriendSearchPage(currentUserId),
+         
+          builder: (context) => Profilenew()
+        ),
+      );
+            },
+            color: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.surface,
+            child: Text('new profile'),
+          ),*/
           MaterialButton(
             onPressed: () {
               // Get the current user's ID
