@@ -4,7 +4,7 @@ class Profile {
   final String profilePicture;
   final Map<String, dynamic> userName; // { 'profilename': 'JohnDoe', 'uniqueNumber': 123 }
   final String profileName;
-  final double uniqueNumber;// since it has a larger range
+  final int uniqueNumber;// since it has a larger range
   final String currentlyPlaying;
   final List<String> myGames;
   final List<String> wantToPlay;

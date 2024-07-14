@@ -21,7 +21,7 @@ Future<Profile?>  fetchProfile() async {
 
           Map<String, dynamic> userInfo =data['username'] as Map<String, dynamic>;
           String name= userInfo['profile_name'] ?? 'username';
-          double uniqueNum=userInfo['unique_num'] ?? '';
+          int uniqueNum=userInfo['unique_num'] ?? '';
 
   	      // Get number of connections
           List<String> connections= await ConnectionService().getConnections("connections");
