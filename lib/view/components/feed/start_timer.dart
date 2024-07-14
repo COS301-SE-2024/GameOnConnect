@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 
@@ -11,12 +11,19 @@ class GameTimer extends StatefulWidget {
 }
 
 class _GameTimer extends State<GameTimer> {
-  final List<String> _dropdownItems = ['Game 1', 'Game 2', 'Game 3'];
+  final CurrentlyPlaying _currentlyPlaying = CurrentlyPlaying();
+  Future<List<String>>? _userGames;
   String? _selectedItem;
-  static Stopwatch _stopwatch = Stopwatch();
+  static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
 
   static DateTime? _endTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _userGames = _currentlyPlaying.getCurrentlyPlaying();
+  }
 
   @override
   void dispose() {
@@ -34,11 +41,6 @@ class _GameTimer extends State<GameTimer> {
   void _stopStopwatch() {
     _stopwatch.stop();
     _timer?.cancel();
-  }
-
-  void _resetStopwatch() {
-    _stopwatch.reset();
-    setState(() {});
   }
 
   String _formatElapsedTime() {
@@ -84,21 +86,35 @@ class _GameTimer extends State<GameTimer> {
                     ],
                   ) 
                   : 
-                  DropdownButton<String>(
-                    underline: SizedBox(),
-                    value: _selectedItem,
-                    hint: const Text('What are you playing?'),
-                    items: _dropdownItems.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedItem = newValue;
-                      });
-                    },
+                  FutureBuilder<List<String>>(
+                    future: _userGames, 
+                    builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Text('No data found');
+                      } else {
+                        return 
+                        DropdownButton<String>(
+                          underline: SizedBox(),
+                          value: _selectedItem,
+                          hint: const Text('What are you playing?'),
+                          items: snapshot.data!.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedItem = newValue;
+                            });
+                          },
+                        );
+                      }
+                    }
                   ),
                   FilledButton.icon(
                     icon: _stopwatch.isRunning
