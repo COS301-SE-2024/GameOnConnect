@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 
 class GameDetails {
   final int id;
@@ -36,6 +37,11 @@ class GameDetails {
   });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
+    // List screenshots = [];
+    // if (json['screenshots'] != null && json['screenshots']['results'] != null) {
+    //   screenshots = json['screenshots']['results'].map((s) => s['image']).toList();
+    // }
+
     return GameDetails(
       id: json['id'],
       name: json['name'],
@@ -49,6 +55,7 @@ class GameDetails {
       reviewsCount: json['reviews_count'] ?? 0,
       playtime: json['playtime'] ?? 0,
       screenshots: json['screenshots'] ?? [],
+      // screenshots: screenshots,
       publisher: json['publishers'] ?? [],
       rating: json['rating'] ?? 0.0,
       website: json['website'] ?? "No website available",
@@ -131,5 +138,21 @@ class GameDetails {
       ];
     }
     return genresWidgets;
+  }
+
+  List<Widget> getScreenshots(BuildContext context) {
+    List<Widget> screenshotWidgets = [];
+    if (screenshots.isNotEmpty) {
+      for (var screenshot in screenshots) {
+        screenshotWidgets.add(CarouselNetworkImageWithPlaceholder(
+          imageUrl: screenshot['results']['image'],
+          width: 80,
+          height: 55,
+        ));
+        screenshotWidgets.add(const SizedBox(width: 10));
+        
+      }
+    }
+    return screenshotWidgets;
   }
 }
