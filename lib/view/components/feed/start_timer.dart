@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 
@@ -11,10 +13,40 @@ class GameTimer extends StatefulWidget {
 class _GameTimer extends State<GameTimer> {
   final List<String> _dropdownItems = ['Game 1', 'Game 2', 'Game 3'];
   String? _selectedItem;
-  bool _isTiming = false;
+  static Stopwatch _stopwatch = Stopwatch();
+  Timer? _timer;
 
-  static DateTime? _startTime;
   static DateTime? _endTime;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
+  }
+
+  void _startStopWatch() {
+    _stopwatch.start();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {});
+      });
+  }
+
+  void _stopStopwatch() {
+    _stopwatch.stop();
+    _timer?.cancel();
+  }
+
+  void _resetStopwatch() {
+    _stopwatch.reset();
+    setState(() {});
+  }
+
+  String _formatElapsedTime() {
+    final int hours = _stopwatch.elapsed.inHours;
+    final int minutes = (_stopwatch.elapsed.inMinutes % 60);
+    final int seconds = (_stopwatch.elapsed.inSeconds % 60);
+    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +60,9 @@ class _GameTimer extends State<GameTimer> {
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
-            title: const Text(
-              'Start playing',
-              style: TextStyle(
+            title: Text(
+              _stopwatch.isRunning ? 'Done playing?' : "Start playing",
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,7 +72,20 @@ class _GameTimer extends State<GameTimer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  _stopwatch.isRunning ? 
+                  Row(
+                    children: [
+                      const Icon(Icons.radio_button_checked, color: Colors.red,),
+                      const SizedBox(width: 10),
+                      Text(
+                        _formatElapsedTime(),
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    ],
+                  ) 
+                  : 
                   DropdownButton<String>(
+                    underline: SizedBox(),
                     value: _selectedItem,
                     hint: const Text('What are you playing?'),
                     items: _dropdownItems.map((String value) {
@@ -56,11 +101,11 @@ class _GameTimer extends State<GameTimer> {
                     },
                   ),
                   FilledButton.icon(
-                    icon: _isTiming
+                    icon: _stopwatch.isRunning
                         ? const Icon(Icons.stop)
                         : const Icon(Icons.play_arrow),
                     style: FilledButton.styleFrom(
-                      backgroundColor: _isTiming
+                      backgroundColor: _stopwatch.isRunning
                           ? Colors.red
                           : Theme.of(context).primaryColor,
                       padding: const EdgeInsets.only(
@@ -68,10 +113,9 @@ class _GameTimer extends State<GameTimer> {
                     ),
                     onPressed: () {
                       setState(() {
-                        if (_isTiming) {
-                          _endTime = DateTime.now();
-                          print(
-                              "Total time was: ${_endTime!.difference(_startTime!).inHours} hours ${_endTime!.difference(_startTime!).inMinutes} minutes ${_endTime!.difference(_startTime!).inSeconds} seconds");
+                        if (_stopwatch.isRunning) {
+                          _stopStopwatch();
+                          print(_formatElapsedTime());
                           //show emoji feedback
                           showDialog(
                             context: context,
@@ -111,12 +155,11 @@ class _GameTimer extends State<GameTimer> {
                             },
                           );
                         } else {
-                          _startTime = DateTime.now();
+                          _startStopWatch();
                         }
-                        _isTiming = !_isTiming;
                       });
                     },
-                    label: Text(_isTiming ? 'Stop' : 'Start'),
+                    label: Text(_stopwatch.isRunning ? 'Stop' : 'Start'),
                   ),
                 ],
               ),
