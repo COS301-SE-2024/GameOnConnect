@@ -12,7 +12,7 @@ class GameTimer extends StatefulWidget {
 }
 
 class _GameTimer extends State<GameTimer> {
-  final CurrentlyPlaying _currentlyPlaying = CurrentlyPlaying();
+  final MyGamesService _currentlyPlaying = MyGamesService();
   Future<List<String>>? _userGames;
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
@@ -21,7 +21,7 @@ class _GameTimer extends State<GameTimer> {
   @override
   void initState() {
     super.initState();
-    _userGames = _currentlyPlaying.getCurrentlyPlaying();
+    _userGames = _currentlyPlaying.getMyGames();
   }
 
   @override
