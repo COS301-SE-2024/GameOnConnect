@@ -13,7 +13,6 @@ class GameDetails {
   final List genres;
   final int reviewsCount;
   final int playtime;
-  // final List screenshots;
   final List publisher;
   final double rating;
   final String website;
@@ -38,21 +37,6 @@ class GameDetails {
   });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
-    // List screenshots = [];
-    // if (json['screenshots'] != null && json['screenshots']['results'] != null) {
-    //   screenshots = json['screenshots']['results'];
-    // }
-
-    // List screenshots = [];
-    // if (json.containsKey('screenshots')) {
-    //   final screenshotsData = json['screenshots'];
-    //   if (screenshotsData.containsKey('results')) {
-    //     screenshots = screenshotsData['results'];
-    //   }
-    // }
-
-    // print("Parsed screenshots: $screenshots");
-
     return GameDetails(
       id: json['id'],
       name: json['name'],
@@ -65,8 +49,6 @@ class GameDetails {
       genres: json['genres'],
       reviewsCount: json['reviews_count'] ?? 0,
       playtime: json['playtime'] ?? 0,
-      // screenshots: json['screenshots'] ?? [],
-      // screenshots: screenshots,
       screenshots: (json['screenshots'] as List<dynamic>?)
           ?.map((item) => Screenshot.fromJson(item))
           .toList(),
@@ -153,22 +135,6 @@ class GameDetails {
     }
     return genresWidgets;
   }
-
-  // List<Widget> getScreenshots(BuildContext context) {
-  //   List<Widget> screenshotWidgets = [];
-  //   if (screenshots.isNotEmpty) {
-  //     for (var screenshot in screenshots) {
-  //       print("Adding screenshot: ${screenshot['image']}");
-  //       screenshotWidgets.add(CarouselNetworkImageWithPlaceholder(
-  //         imageUrl: screenshot['image'],
-  //         width: 80,
-  //         height: 55,
-  //       ));
-  //       screenshotWidgets.add(const SizedBox(width: 10));
-  //     }
-  //   }
-  //   return screenshotWidgets;
-  // }
 }
 
 class Screenshot {
