@@ -23,7 +23,7 @@ import 'view/pages/settings/edit_profile_page.dart';
 import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-
+import 'view/pages/events/invite_connections_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -106,7 +106,9 @@ class MyApp extends StatelessWidget {
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
+        '/invite_connections' : (context) => ConnectionsListWidget(),
         '/messages' : (context) => Messaging(),
+
       },
       initialRoute: '/',
     );

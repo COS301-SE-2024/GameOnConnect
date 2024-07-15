@@ -96,9 +96,9 @@ class _RequestsState extends State<Requests> {
                                   Text(
                                     connectionProfile['profileName'] ??
                                         'No Name Found',
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Color.fromARGB(255, 128, 216, 50),
+                                      color: Theme.of(context).colorScheme.primary,
                                     ),
                                   ),
                                   Text(
@@ -114,7 +114,7 @@ class _RequestsState extends State<Requests> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.check),
-                              color: const Color.fromARGB(255, 128, 216, 50),
+                              color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
                                 //code to accept the request goes here
                                 ConnectionService().acceptConnectionRequest(connectionProfile['userID'] );
@@ -122,7 +122,7 @@ class _RequestsState extends State<Requests> {
                             ),
                             IconButton(
                               icon: const Icon(Icons.close),
-                              color: const Color.fromARGB(255, 128, 216, 50),
+                              color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
                                 ConnectionService().rejectConnectionRequest(connectionProfile['userID'] );
                               },

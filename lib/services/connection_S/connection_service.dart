@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 
+
 class ConnectionService {
+
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -25,7 +27,7 @@ class ConnectionService {
     }
 
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser!.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
         if(who=="connections")
@@ -43,7 +45,7 @@ class ConnectionService {
         else{
           return []; //return an empty array
         }
-     
+
     } else {
       return []; //return an empty array
     }
@@ -105,10 +107,9 @@ class ConnectionService {
         Map<String, dynamic> userInfo =
             data['username'] as Map<String, dynamic>;
         String profileName = data['name'] ?? 'Profile name';
-        String username = userInfo['profile_name'] ?? 'username';
-        String userID =data['userID']?? '';
+        Map<String,dynamic> username = userInfo;
+        String userID =userId;
         String profilePicture = data['profile_picture'] ?? '';
-
         String profilePictureUrl = '';
 
         if (profilePicture.isNotEmpty) {
@@ -119,14 +120,20 @@ class ConnectionService {
           } catch (e) {
             return null;
           }
+
         }
 
-        return {
-          'profileName': profileName,
+
+        Map<String,dynamic>? d =
+         {
+          'name': profileName,
           'username': username,
-          'profilePicture': profilePictureUrl,
+          'profile_picture': profilePictureUrl,
           'userID': userID,
         };
+
+        return d;
+
       } else {
         return null;
       }

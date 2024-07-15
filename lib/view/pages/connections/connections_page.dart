@@ -33,7 +33,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   Future<void> _fetchUsers() async {
     try {
-      List<User> users = await _userService.fetchAllUsers();
+     List<User> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -208,7 +208,7 @@ class _FriendSearchState extends State<FriendSearch> {
           Friend? currentUserConnectionData = snapshot.data;
           List<User> filteredUsers = _users
               .where((user) =>
-                  user.profileName
+                  user.username
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase()) &&
                   user.uid != widget.currentUserId) // Exclude current user
@@ -226,7 +226,7 @@ class _FriendSearchState extends State<FriendSearch> {
                       // Update filteredUsers here based on the new search query
                       filteredUsers = _users
                           .where((user) =>
-                              user.profileName
+                              user.username
                                   .toLowerCase()
                                   .contains(_searchQuery.toLowerCase()) &&
                               user.uid != widget.currentUserId)
@@ -281,7 +281,7 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
                       ),*/
-                        title: Text(user.profileName),
+                        title: Text(user.username),
                         trailing: isConnection
                             ? ElevatedButton.icon(
                                 onPressed: () => _unfollowUser(user.uid),
@@ -307,28 +307,28 @@ class _FriendSearchState extends State<FriendSearch> {
                                       Icons.hourglass_bottom,
                                       color: Colors.white,
                                     ),
-                                    label: const Text('Pending',
-                                        style: TextStyle(color: Colors.white)),
+                                    label:  Text('Pending',
+                                        style: TextStyle(color:Theme.of(context).colorScheme.secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                            Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   )
                                 : ElevatedButton.icon(
                                     onPressed: () =>
                                         _sendConnectionRequest(user.uid),
-                                    icon: const Icon(
+                                    icon:  Icon(
                                       Icons.person_add,
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
-                                    label: const Text('Connect',
-                                        style: TextStyle(color: Colors.white)),
+                                    label:  Text('Connect',
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                        Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   ),

@@ -29,6 +29,7 @@ class UserService {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
           User currentuser =User.fromMap(data);
+
           //await currentuser.setpicture(data); // Await the result
           users.add(currentuser);
           //users.add(User.fromMap(data));
