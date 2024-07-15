@@ -12,7 +12,6 @@ class GameService {
           'https://api.rawg.io/api/games/$gameId?key=$apiKey'));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        // print('Full JSON response: $jsonResponse'); // Debugging statement
         return GameDetails.fromJson(jsonResponse);
       } else {
         throw Exception('Failed to load game details');
