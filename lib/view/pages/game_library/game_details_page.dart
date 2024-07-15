@@ -501,7 +501,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(10, 0, 2, 0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                          borderRadius: BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
                                             imageUrl: screenshots[index].image,
                                             placeholder: (context, url) => const CircularProgressIndicator(),
@@ -518,52 +518,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               }
                             },
                           ),
-
-                          // const Align(
-                          //   alignment: AlignmentDirectional(0, 0),
-                          //   child: Padding(
-                          //     padding:
-                          //         EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
-                          //     child: SingleChildScrollView(
-                          //       scrollDirection: Axis.horizontal,
-                          //       child: Row(
-                          //         mainAxisSize: MainAxisSize.max,
-                          //         children: [
-                          //           CarouselNetworkImageWithPlaceholder(
-                          //             imageUrl:
-                          //                 'https://picsum.photos/seed/194/600',
-                          //             width: 80,
-                          //             height: 55,
-                          //           ),
-                          //           CarouselNetworkImageWithPlaceholder(
-                          //             imageUrl:
-                          //                 'https://picsum.photos/seed/170/600',
-                          //             width: 80,
-                          //             height: 55,
-                          //           ),
-                          //           CarouselNetworkImageWithPlaceholder(
-                          //             imageUrl:
-                          //                 'https://picsum.photos/seed/185/600',
-                          //             width: 80,
-                          //             height: 55,
-                          //           ),
-                          //           CarouselNetworkImageWithPlaceholder(
-                          //             imageUrl:
-                          //                 'https://picsum.photos/seed/137/600',
-                          //             width: 80,
-                          //             height: 55,
-                          //           ),
-                          //           CarouselNetworkImageWithPlaceholder(
-                          //             imageUrl:
-                          //                 'https://picsum.photos/seed/962/600',
-                          //             width: 80,
-                          //             height: 55,
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
                             padding: const EdgeInsets.all(12),
                             child: Html(
@@ -616,38 +570,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: gameDetails.getPlatformIcons(context),
                               )
-                              // Row(
-                              //   mainAxisSize: MainAxisSize.min,
-                              //   children: [
-                              //     Padding(
-                              //       padding:
-                              //           const EdgeInsets.fromLTRB(4, 2, 2, 2),
-                              //       child: Icon(
-                              //         Icons.window_sharp,
-                              //         color: Theme.of(context)
-                              //             .colorScheme
-                              //             .secondary,
-                              //         size: 24,
-                              //       ),
-                              //     ),
-                              //     const Padding(
-                              //       padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
-                              //       child: Icon(
-                              //         Icons.videogame_asset,
-                              //         color: Colors.black,
-                              //         size: 24,
-                              //       ),
-                              //     ),
-                              //     const Padding(
-                              //       padding: EdgeInsets.fromLTRB(4, 2, 20, 2),
-                              //       child: Icon(
-                              //         Icons.games_rounded,
-                              //         color: Colors.black,
-                              //         size: 24,
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
                             ],
                           ),
                           Padding(
@@ -836,43 +758,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   )
                                 )
                               )
-                              /*Padding(
-                                    padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
-                                    child: Text(
-                                      
-                                       gameDetails.genres[0],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
-                              /* Padding(
-                                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                                    child: Text(
-                                       gameDetails.genres[1],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
-                              /* Padding(
-                                    padding: const EdgeInsets.fromLTRB(4, 0, 20, 0),
-                                    child: Text(
-                                       gameDetails.genres[2],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
                             ],
                           ),
                           Padding(
