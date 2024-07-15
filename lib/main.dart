@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         '/edit-profile': (context) => EditProfilePage(),
         '/customize': (context) => CustomizeProfilePage(),
         '/sign_up': (context) => SignUp(),
-        '/profile': (context) => Profile(),
+        '/profile': (context) => Profilenew(),
         '/game_library': (context) => GameLibrary(),
         '/create_events': (context) => CreateEvents(),
         '/events': (context) => ViewEvents(),

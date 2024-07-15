@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 
-class ConnectionServices {
+
+class ConnectionService {
+
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -31,8 +33,8 @@ class ConnectionServices {
         if(who=="connections")
         {
            // Cast the friends array to List<String>
-          List<String> friends = List<String>.from(snapshot.data()!['connections']);
-          return friends;
+          List<String> connections = List<String>.from(snapshot.data()!['connections']);
+          return connections;
         }
         if(who=="requests")
         {
@@ -53,7 +55,7 @@ class ConnectionServices {
     }
   }
 
-   Future<List<String>> getFriendRequests() async {
+   Future<List<String>> getConnectionRequests() async {
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
@@ -75,19 +77,19 @@ class ConnectionServices {
     }
   }
 
-  void acceptFriendRequest(String requesterUserId) async {
+  void acceptConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
-      await _userService.acceptFriendRequest(currentUserId, requesterUserId);
+      await _userService.acceptConnectionRequest(currentUserId, requesterUserId);
     } catch (e) {
       print('Error accepting connection request: $e');
     }
   } 
 
-  void rejectFriendRequest(String requesterUserId) async {
+  void rejectConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
-      await _userService.rejectFriendRequest(currentUserId, requesterUserId);
+      await _userService.rejectConnectionRequest(currentUserId, requesterUserId);
     } catch (e) {
       print('Error accepting connection request: $e');
     }
