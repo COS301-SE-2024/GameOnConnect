@@ -86,4 +86,35 @@ class MessagingService {
       throw Exception("Failed to get conversations: $e");
     }
   }
+
+  Stream<List<Map<String,dynamic>>> getAllUsers(){
+    //can change this later to get less users
+    return _firestore.collection("profile_data").snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final user = doc.data(); //go through all of the users of the app
+        return user;
+      }).toList();
+    });
+  }
 }
+
+/* 
+Example of map:
+
+{
+  'uid': esldksldsdsdsdsd
+  'email': sdsdlksd@gmail.com
+}
+
+Example of list of map:
+
+{
+  'uid': esldksldsdsdsdsd
+  'email': sdsdlksd@gmail.com
+}
+{
+  'uid': esldksldsdsdsdsd
+  'email': sdsdlksd@gmail.com
+}
+
+*/
