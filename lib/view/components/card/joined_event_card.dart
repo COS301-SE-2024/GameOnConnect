@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
+import '../../../model/events_M/evets_model.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
-  const UpcomingEventCardWidget({super.key});
+   final Event? e;
+
+  const UpcomingEventCardWidget({super.key , required this.e});
 
   @override
   State<UpcomingEventCardWidget> createState() =>
@@ -56,7 +58,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Upcoming: Clash of Clans',
+                        'Upcoming: ${widget.e?.name}',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           color: Theme.of(context).colorScheme.secondary,
@@ -69,7 +71,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '01/07/2024\n07:30',
+                            '${widget.e?.startDate.day}/${widget.e?.startDate.month}/${widget.e?.startDate.year}\n${widget.e?.startDate.hour}:${widget.e?.startDate.minute}',
                             style: TextStyle(
                               fontFamily: 'Inter',
                               color:

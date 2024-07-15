@@ -1,14 +1,21 @@
-
+// ignore_for_file: prefer_const_constructors
+import 'dart:io';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
+
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -20,6 +27,10 @@ class FeedPage extends StatefulWidget {
 
 class _FeedPageState extends State<FeedPage> {
   int _selectedIndex = 0;
+  final _formKey = GlobalKey<FormState>();
+
+  ProfileService profileService = ProfileService();
+  late TextEditingController usernamecontroller;
 
   static final List<Widget> _pages = <Widget>[
     Center(
@@ -30,6 +41,169 @@ class _FeedPageState extends State<FeedPage> {
     const Profilenew(), // Actual page for the Profile
 
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    usernamecontroller = TextEditingController();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _checkProfileAndShowDialog());
+  }
+
+  @override
+  void dispose() {
+    usernamecontroller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _checkProfileAndShowDialog() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUserID = auth.currentUser?.uid;
+    String userId = currentUserID ?? '';
+    String? profileName = await profileService.getProfileName(userId);
+
+    if (profileName == '' || profileName?.toLowerCase() == 'default user') {
+      _showDialogOnStart();
+    } else if (profileName == null) {
+      //print('Error: Username could not be set');
+    } else {
+      //print('Username is set to: $profileName');
+    }
+  }
+
+  void _showNoInternetToast() {
+    DelightToastBar(
+      builder: (context) {
+        return CustomToastCard(
+          title: Text(
+            'No internet connection', // Changed message here
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        );
+      },
+      position: DelightSnackbarPosition.top,
+      autoDismiss: true,
+      snackbarDuration: const Duration(seconds: 3),
+    ).show(context);
+  }
+
+  void _showUsernameSet() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Username has been set successfully'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  Future<bool> _saveUsername(String username) async {
+    try {
+      //check the internet connection
+      bool result = await InternetConnection().hasInternetAccess;
+      //if the internet passed then check the username
+      if (result) {
+        if (username.isNotEmpty) {
+          await profileService.editUsername(username); //set the username
+          _showUsernameSet(); //show the success of the username set
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
+  //bool is needed for the state of the button
+  bool _isSubmitting = false;
+
+  void _showDialogOnStart() {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text('Please enter a username:'),
+          //user enters text in the form field
+          content: Form(
+            key: _formKey,
+            child: TextFormField(
+              key: Key('usernameInput'),
+              autofocus: true,
+              controller: usernamecontroller,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 15, top: 12.5),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintText: 'Enter any alphabetical username',
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a username';
+                }
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Only alphabetical letters are permitted';
+                }
+                return null;
+              },
+            ),
+          ),
+          actions: <Widget>[
+            StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return TextButton(
+                  onPressed: _isSubmitting //disables the submit button
+                      ? null
+                      : () async {
+                          //first check if the person has already submitted
+                          setState(() {
+                            _isSubmitting = true;
+                          });
+
+                          //set is submitting to true to disable the button
+                          _isSubmitting = true;
+
+                          //the formkey calls the state to run the validator on the TextFormField
+                          if (_formKey.currentState!.validate()) {
+                            bool internet =
+                                await _saveUsername(usernamecontroller.text);
+                            if (internet != false) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(dialogContext).pop();
+                            } else {
+                              _showNoInternetToast();
+                            }
+                          }
+
+                          //set the state to false to ensure the 
+                          setState(() {
+                            _isSubmitting = false;
+                          });
+                        },
+                  child: Text('Submit'),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -148,7 +322,7 @@ class _DevelopmentButtons extends StatelessWidget {
           // ),
           MaterialButton(
             onPressed: () {
-              //add code here to go to the messaging page. 
+              //add code here to go to the messaging page.
               Navigator.push(
                   context,
                   MaterialPageRoute(

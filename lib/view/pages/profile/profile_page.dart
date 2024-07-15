@@ -14,7 +14,6 @@ class Profilenew extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<Profilenew>  {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +162,9 @@ class _ProfileState extends State<Profilenew>  {
                     ),
                     //onSubmitted: _onSearchEntered,
                   ),
+                  //friends, games, events
                 ),
+
 
                 const SizedBox(height: 15), //space 
                 HorizontalGameList(
