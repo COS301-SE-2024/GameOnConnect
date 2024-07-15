@@ -78,6 +78,7 @@ class Events{
     } catch (e) {
       throw('Error: $e');
     }
+  }
   List<Event> getSubscribedEvents(List<Event>? allEvents)
   {
     final currentUser = FirebaseAuth.instance.currentUser;
