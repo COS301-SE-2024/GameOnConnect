@@ -24,6 +24,7 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   late Future<GameDetails> _gameDetails;
+  late Future<List<Screenshot>> _gameScreenshots;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -37,6 +38,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   void initState() {
     super.initState();
     _gameDetails = _fetchGameDetails(widget.gameId);
+    _gameScreenshots = _fetchGameScreenshots(widget.gameId);
     checkWishlistStatus();
     checkCurrPlayingStatus();
   }
@@ -61,6 +63,19 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
         return GameService().fetchGameDetails(gameId);
+      } else {
+        throw ('No internet connection');
+      }
+    } catch (e) {
+      throw ('Error fetching data');
+    }
+  }
+
+  Future<List<Screenshot>> _fetchGameScreenshots(int gameId) async {
+    try {
+      bool result = await InternetConnection().hasInternetAccess;
+      if (result) {
+        return GameService().fetchGameScreenshots(gameId);
       } else {
         throw ('No internet connection');
       }
@@ -452,19 +467,58 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: const AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: gameDetails.getScreenshots(context),
-                                ),
-                              ),
-                            ),
+                          // Align(
+                          //   alignment: const AlignmentDirectional(0, 0),
+                          //   child: Padding(
+                          //     padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
+                          //     child: SingleChildScrollView(
+                          //       scrollDirection: Axis.horizontal,
+                          //       child: Row(
+                          //         mainAxisSize: MainAxisSize.max,
+                          //         children: gameDetails.getScreenshots(context),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+
+                          FutureBuilder<List<Screenshot>>(
+                            future: _gameScreenshots,
+                            builder: (context, screenshotSnapshot) {
+                              if (screenshotSnapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (screenshotSnapshot.hasError) {
+                                return const Center(child: Text('Error loading screenshots'));
+                              } else if (!screenshotSnapshot.hasData || screenshotSnapshot.data!.isEmpty) {
+                                return const Center(child: Text('No screenshots available'));
+                              } else {
+                                final screenshots = screenshotSnapshot.data!;
+                                return SizedBox(
+                                  height: 60,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: screenshots.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.fromLTRB(10, 0, 2, 0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+                                          child: CachedNetworkImage(
+                                            imageUrl: screenshots[index].image,
+                                            placeholder: (context, url) => const CircularProgressIndicator(),
+                                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                                            width: 110,
+                                            height: 85,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                            },
                           ),
+
                           // const Align(
                           //   alignment: AlignmentDirectional(0, 0),
                           //   child: Padding(
