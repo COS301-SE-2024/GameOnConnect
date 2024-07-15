@@ -281,7 +281,7 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
                       ),*/
-                        title: Text(user.profileName),
+                        title: Text(user.username),
                         trailing: isConnection
                             ? ElevatedButton.icon(
                                 onPressed: () => _unfollowUser(user.uid),
@@ -319,7 +319,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                 : ElevatedButton.icon(
                                     onPressed: () =>
                                         _sendConnectionRequest(user.uid),
-                                    icon: const Icon(
+                                    icon:  Icon(
                                       Icons.person_add,
                                       color: Theme.of(context).colorScheme.secondary,
                                     ),

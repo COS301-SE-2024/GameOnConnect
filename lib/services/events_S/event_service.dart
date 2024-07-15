@@ -67,11 +67,11 @@ class Events{
       List<user.User> list = [];
 
       if (currentUser != null) {
-        List<String>? connections = await ConnectionServices().getConnections(
+        List<String>? connections = await ConnectionService().getConnections(
             'connections');
         for (var i in connections) {
           user.User u = user.User.fromMap(
-              await ConnectionServices().fetchFriendProfileData(i));
+              await ConnectionService().fetchFriendProfileData(i));
           list.add(u);
         }
       }
