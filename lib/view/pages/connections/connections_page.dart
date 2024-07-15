@@ -33,7 +33,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   Future<void> _fetchUsers() async {
     try {
-      List<User> users = await _userService.fetchAllUsers();
+     List<User> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -89,12 +89,12 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  void _sendFriendRequest(String targetUserId) async {
+  void _sendConnectionRequest(String targetUserId) async {
     try {
-      await _userService.sendFriendRequest(widget.currentUserId, targetUserId);
+      await _userService.sendConnectionRequest(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
-      //Error sending friend request.
+      //Error sending Connection request.
       DelightToastBar(
               builder: (context) {
                 return CustomToastCard(
@@ -116,9 +116,9 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  void _undoFriendRequest(String targetUserId) async {
+  void _undoConnectionRequest(String targetUserId) async {
     try {
-      await _userService.undoFriendRequest(widget.currentUserId, targetUserId);
+      await _userService.undoConnectionRequest(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error canceling friend request'
@@ -145,7 +145,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _unfollowUser(String targetUserId) async {
     try {
-      await _userService.unfollowUser(widget.currentUserId, targetUserId);
+      await _userService.disconnect(widget.currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error unfollowing user'
@@ -177,7 +177,7 @@ class _FriendSearchState extends State<FriendSearch> {
         title: const Text('Connections'),
       ),
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserFriendsStream(widget.
+        stream: _userService.getCurrentUserConnectionsStream(widget.
         currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -205,10 +205,10 @@ class _FriendSearchState extends State<FriendSearch> {
             //return Center(child: Text('Error: ${snapshot.error}')); to see the error in the page
             return const Center(child: Text('Please check your internet connection.'));
           }
-          Friend? currentUserFriendData = snapshot.data;
+          Friend? currentUserConnectionData = snapshot.data;
           List<User> filteredUsers = _users
               .where((user) =>
-                  user.profileName
+                  user.username
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase()) &&
                   user.uid != widget.currentUserId) // Exclude current user
@@ -226,7 +226,7 @@ class _FriendSearchState extends State<FriendSearch> {
                       // Update filteredUsers here based on the new search query
                       filteredUsers = _users
                           .where((user) =>
-                              user.profileName
+                              user.username
                                   .toLowerCase()
                                   .contains(_searchQuery.toLowerCase()) &&
                               user.uid != widget.currentUserId)
@@ -262,11 +262,11 @@ class _FriendSearchState extends State<FriendSearch> {
                     itemCount: filteredUsers.length,
                     itemBuilder: (context, index) {
                       User user = filteredUsers[index];
-                      bool isFriend =
-                          currentUserFriendData?.friends.contains(user.uid) ??
+                      bool isConnection =
+                          currentUserConnectionData?.friends.contains(user.uid) ??
                               false;
                       bool isPending =
-                          currentUserFriendData?.pending.contains(user.uid) ??
+                          currentUserConnectionData?.pending.contains(user.uid) ??
                               false;
 
                       return ListTile(
@@ -281,8 +281,8 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
                       ),*/
-                        title: Text(user.profileName),
-                        trailing: isFriend
+                        title: Text(user.username),
+                        trailing: isConnection
                             ? ElevatedButton.icon(
                                 onPressed: () => _unfollowUser(user.uid),
                                 icon: const Icon(
@@ -302,33 +302,33 @@ class _FriendSearchState extends State<FriendSearch> {
                             : isPending
                                 ? ElevatedButton.icon(
                                     onPressed: () =>
-                                        _undoFriendRequest(user.uid),
+                                        _undoConnectionRequest(user.uid),
                                     icon: const Icon(
                                       Icons.hourglass_bottom,
                                       color: Colors.white,
                                     ),
-                                    label: const Text('Pending',
-                                        style: TextStyle(color: Colors.white)),
+                                    label:  Text('Pending',
+                                        style: TextStyle(color:Theme.of(context).colorScheme.secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                            Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   )
                                 : ElevatedButton.icon(
                                     onPressed: () =>
-                                        _sendFriendRequest(user.uid),
-                                    icon: const Icon(
+                                        _sendConnectionRequest(user.uid),
+                                    icon:  Icon(
                                       Icons.person_add,
-                                      color: Colors.white,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
-                                    label: const Text('Connect',
-                                        style: TextStyle(color: Colors.white)),
+                                    label:  Text('Connect',
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                        Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   ),
