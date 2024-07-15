@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/model/connection_M/friend_model.dart';
 
 class CurrentlyOnlineBar extends StatefulWidget {
   const CurrentlyOnlineBar({super.key});
@@ -14,7 +13,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

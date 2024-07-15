@@ -7,6 +7,7 @@ class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _GameTimer createState() => _GameTimer();
 }
 
@@ -16,8 +17,6 @@ class _GameTimer extends State<GameTimer> {
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
-
-  static DateTime? _endTime;
 
   @override
   void initState() {
@@ -90,15 +89,15 @@ class _GameTimer extends State<GameTimer> {
                     future: _userGames, 
                     builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Text('No data found');
+                        return const Text('No data found');
                       } else {
                         return 
                         DropdownButton<String>(
-                          underline: SizedBox(),
+                          underline: const SizedBox(),
                           value: _selectedItem,
                           hint: const Text('What are you playing?'),
                           items: snapshot.data!.map((String value) {
@@ -131,7 +130,6 @@ class _GameTimer extends State<GameTimer> {
                       setState(() {
                         if (_stopwatch.isRunning) {
                           _stopStopwatch();
-                          print(_formatElapsedTime());
                           //show emoji feedback
                           showDialog(
                             context: context,
