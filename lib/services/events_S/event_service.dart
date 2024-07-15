@@ -1,36 +1,41 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../model/connection_M/user_model.dart' as user;
 import '../connection_S/connection_service.dart';
-import '../../model/events_M/evets_model.dart';
-class Events{
+import '../../model/events_M/events_model.dart';
 
-  Future<List<Event>> fetchAllEvents() async{
-    try{
-
+class Events {
+  Future<List<Event>> fetchAllEvents() async {
+    try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
       List<Event> all = [];
-      if(currentUser!=null) {
-
-        QuerySnapshot querySnapshot = await db.collection('events').orderBy('start_date', descending: false).get();
+      if (currentUser != null) {
+        QuerySnapshot querySnapshot = await db
+            .collection('events')
+            .orderBy('start_date', descending: false)
+            .get();
         for (var x in querySnapshot.docs) {
           var data = x.data() as Map<String, dynamic>;
-          Event event = Event.fromMap(data,x.id);
+          Event event = Event.fromMap(data, x.id);
           all.add(event);
         }
-
       }
-          return all;
-    }catch (e)
-    {
-      throw("Error fetching events: $e");
+      return all;
+    } catch (e) {
+      throw ("Error fetching events: $e");
     }
   }
 
-  Future<void> createEvent(String? type, DateTime? startDate, String name,
-      DateTime? endDate, int gameID, bool privacy, List<String> invited) async {
+  Future<void> createEvent(String? type,
+      DateTime? startDate,
+      String name,
+      DateTime? endDate,
+      int gameID,
+      bool privacy,
+      List<String> invited,
+      String url,
+      String description) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -51,6 +56,8 @@ class Events{
           "teams": [],
           "creatorID": currentUser.uid,
           "subscribed": invited,
+          "image_url": url,
+          "description": description,
         };
         db.collection("events").doc(id).set(data);
       }
@@ -59,15 +66,14 @@ class Events{
     }
   }
 
-  Future<List<user.User>?> getConnectionsForInvite() async
-  {
+  Future<List<user.User>?> getConnectionsForInvite() async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       List<user.User> list = [];
 
       if (currentUser != null) {
-        List<String>? connections = await ConnectionService().getConnections(
-            'connections');
+        List<String>? connections =
+        await ConnectionService().getConnections('connections');
         for (var i in connections) {
           user.User u = user.User.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
@@ -76,52 +82,75 @@ class Events{
       }
       return list;
     } catch (e) {
-      throw('Error: $e');
+      throw ('Error: $e');
     }
   }
-  List<Event> getSubscribedEvents(List<Event>? allEvents)
-  {
+
+  List<Event> getSubscribedEvents(List<Event>? allEvents) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    List<Event> subscribed=[];
-    for(var i in allEvents!){
-      for (var j in i.subscribed){
-        if(j == currentUser?.uid)
-          {
-            subscribed.add(i);
-            continue;
-          }
+    List<Event> subscribed = [];
+    for (var i in allEvents!) {
+      for (var j in i.subscribed) {
+        if (j == currentUser?.uid) {
+          subscribed.add(i);
+          continue;
+        }
       }
     }
     return subscribed;
   }
 
-  List<Event> getMyEvents(List<Event>? allEvents)
-  {
+  List<Event> getMyEvents(List<Event>? allEvents) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    List<Event> myEvents=[];
-    for(var i in allEvents!){
-        if(i.creatorID == currentUser?.uid)
-        {
-          myEvents.add(i);
-        }
-
+    List<Event> myEvents = [];
+    for (var i in allEvents!) {
+      if (i.creatorID == currentUser?.uid) {
+        myEvents.add(i);
+      }
     }
     return myEvents;
   }
 
-  List<Event> getJoinedEvents(List<Event>? allEvents)
-  {
+  List<Event> getJoinedEvents(List<Event>? allEvents) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    List<Event> joinedEvents=[];
-    for(var i in allEvents!){
+    List<Event> joinedEvents = [];
+    for (var i in allEvents!) {
       for (var j in i.participants) {
         if (j == currentUser?.uid) {
           joinedEvents.add(i);
         }
       }
-
     }
     return joinedEvents;
   }
 
+  Future<void> subscribeToEvent(Event subscribed) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      subscribed.subscribed.add(currentUser.uid);
+      print(subscribed.subscribed);
+      db
+          .collection('events')
+          .doc(subscribed.eventID)
+          .set({'subscribed': subscribed.subscribed},SetOptions(merge: true));
+    }
+  }
+
+
+  Future<void> joinEvent(Event joined) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      joined.participants.add(currentUser.uid);
+      db
+          .collection('events')
+          .doc(joined.eventID)
+          .set({'participants': joined.subscribed},SetOptions(merge: true));
+    }
+  }
+
+  int getAmountJoined(Event e) {
+    return e.participants.length;
+  }
 }

@@ -1,4 +1,4 @@
-class Event{
+class Event {
   final String creatorID;
   final DateTime startDate;
   final DateTime endDate;
@@ -8,13 +8,22 @@ class Event{
   final String eventID;
   final List<dynamic> subscribed;
   final List<dynamic> participants;
+  final String description;
   // can later add privacy, conversation id and teams if needed
 
-  Event({required this.creatorID, required this.startDate, required this.endDate
-  ,required this.eventType,required this.gameID,required this.name,
-    required this.eventID, required this.subscribed, required this.participants });
-  
-  factory Event.fromMap(Map<String,dynamic> data,String id){
+  Event(
+      {required this.creatorID,
+      required this.startDate,
+      required this.endDate,
+      required this.eventType,
+      required this.gameID,
+      required this.name,
+      required this.eventID,
+      required this.subscribed,
+      required this.participants,
+      required this.description});
+
+  factory Event.fromMap(Map<String, dynamic> data, String id) {
     return Event(
         creatorID: data['creatorID'],
         startDate: data['start_date'].toDate(),
@@ -24,6 +33,7 @@ class Event{
         name: data['name'],
         eventID: id,
         subscribed: data['subscribed'],
-        participants: data['participants']);
+        participants: data['participants'],
+        description: data['description']);
   }
 }
