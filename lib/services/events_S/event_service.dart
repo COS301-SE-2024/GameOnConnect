@@ -52,4 +52,50 @@ class Events{
       //print("ERROR: $e");
     }
   }
+
+  List<Event> getSubscribedEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> subscribed=[];
+    for(var i in allEvents!){
+      for (var j in i.subscribed){
+        if(j == currentUser?.uid)
+          {
+            subscribed.add(i);
+            continue;
+          }
+      }
+    }
+    return subscribed;
+  }
+
+  List<Event> getMyEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> myEvents=[];
+    for(var i in allEvents!){
+        if(i.creatorID == currentUser?.uid)
+        {
+          myEvents.add(i);
+        }
+
+    }
+    return myEvents;
+  }
+
+  List<Event> getJoinedEvents(List<Event>? allEvents)
+  {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    List<Event> joinedEvents=[];
+    for(var i in allEvents!){
+      for (var j in i.participants) {
+        if (j == currentUser?.uid) {
+          joinedEvents.add(i);
+        }
+      }
+
+    }
+    return joinedEvents;
+  }
+
 }
