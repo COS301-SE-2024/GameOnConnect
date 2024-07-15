@@ -6,7 +6,7 @@ class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
  // Stream for real-time updates
-  Stream<Friend?> getCurrentUserFriendsStream(String uid) {
+  Stream<Friend?> getCurrentUserConnectionsStream(String uid) {
     return _firestore.collection('connections').doc(uid).snapshots().map((snapshot) {
       final data = snapshot.data();
       if (data != null) {
@@ -53,7 +53,7 @@ class UserService {
   }
 
   // Fetch current user's friend data
-  Future<Friend?> fetchCurrentUserFriends(String uid) async {
+  Future<Friend?> fetchCurrentUserConnections(String uid) async {
     try {
       DocumentSnapshot docSnapshot = await _firestore.collection('connections').doc(uid).get();
       var data = docSnapshot.data();
@@ -63,12 +63,12 @@ class UserService {
       throw Exception('EXCEPTION OCCURRED'); 
     }
     } catch (e) {
-      throw Exception('Error fetching friend data: $e');
+      throw Exception('Error fetching connection data: $e');
     }
   }
 
   // Send friend request
-  Future<void> sendFriendRequest(String currentUserId, String targetUserId) async {
+  Future<void> sendConnectionRequest(String currentUserId, String targetUserId) async {
     try {
       await _firestore.collection('connections').doc(currentUserId).set({
         'pending': FieldValue.arrayUnion([targetUserId])
@@ -79,11 +79,11 @@ class UserService {
         'connection_requests': FieldValue.arrayUnion([currentUserId])
       } ,SetOptions(merge: true));
     } catch (e) {
-      throw Exception('Error sending friend request: $e');
+      throw Exception('Error sending connection request: $e');
     }
   }
 
-  Future<void> undoFriendRequest (String currentUserId,  String targetUserId) async {
+  Future<void> undoConnectionRequest (String currentUserId,  String targetUserId) async {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
          'pending': FieldValue.arrayRemove([targetUserId])
@@ -99,8 +99,8 @@ class UserService {
   }
 
 
-  // Accept friend request
-  Future<void> acceptFriendRequest(String? currentUserId , String requesterUserId) async {
+  // Accept Connection request
+  Future<void> acceptConnectionRequest(String? currentUserId , String requesterUserId) async {
     try {
       
       // Add each other to friends list
@@ -119,7 +119,7 @@ class UserService {
   }
 
   //reject friend request
-  Future<void> rejectFriendRequest(String? currentUserId, String requesterUserId) async {
+  Future<void> rejectConnectionRequest(String? currentUserId, String requesterUserId) async {
     try {
       // Add each other to friends list
       await _firestore.collection('connections').doc(currentUserId).update({
@@ -136,7 +136,7 @@ class UserService {
   } 
 
   // Unfollow user
-  Future<void> unfollowUser(String currentUserId, String targetUserId) async {
+  Future<void> disconnect(String currentUserId, String targetUserId) async {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
         'connections': FieldValue.arrayRemove([targetUserId])
