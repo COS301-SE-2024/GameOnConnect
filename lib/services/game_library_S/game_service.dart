@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class GameService {
   final String apiKey = 'b8d81a8e79074f1eb5c9961a9ffacee6';
 
-  Future<GameDetails> fetchGameDetails(int gameId) async {
+  Future<GameDetails> fetchGameDetails( gameId) async {
     try {
       final response = await http.get(Uri.parse(
           'https://api.rawg.io/api/games/$gameId?key=$apiKey'));
