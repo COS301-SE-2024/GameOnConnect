@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
+// import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 
 class GameDetails {
   final int id;
