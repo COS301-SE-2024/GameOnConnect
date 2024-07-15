@@ -1,6 +1,7 @@
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
@@ -17,7 +18,7 @@ class _MessagingState extends State<Messaging> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final ProfileService _profileService = ProfileService();
 
-  Map<String, dynamic>? profileData;
+ Profile? profileData;
   bool isLoading = true;
 
   @override
@@ -31,7 +32,7 @@ class _MessagingState extends State<Messaging> {
       isLoading =
           true; //sets the loading state to true to build the loading widget
     });
-    _profileService.fetchProfileData().then((data) {
+    _profileService.fetchProfile().then((data) {
       setState(() {
         profileData = data;
         isLoading =
@@ -151,7 +152,7 @@ class _MessagingState extends State<Messaging> {
                   Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChatPage(profileName: profileData?['profileName'],),
+                    builder: (context) => ChatPage(profileName: profileData!.profileName,),
                   ),
                 ),
                 },
@@ -190,9 +191,7 @@ class _MessagingState extends State<Messaging> {
                                       width: 2,
                                     ),
                                   ),
-                                  child: buildProfilePicture(profileData?[
-                                          'profilePicture']
-                                      as String?), //build the profile picture widget
+                                  child: buildProfilePicture(profileData?.profilePicture), //build the profile picture widget
                                 ),
                                 Expanded(
                                   child: Padding(
@@ -204,8 +203,7 @@ class _MessagingState extends State<Messaging> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          profileData?['profileName'] ??
-                                              'Default Name',
+                                          profileData!.profileName,
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Inter',

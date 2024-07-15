@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 
-class FriendServices {
+
+class ConnectionService {
+
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -18,21 +20,21 @@ class FriendServices {
   }
 
   //Read friends from database
-  Future<List<String>> getFriends(String who) async {
+  Future<List<String>> getConnections(String who) async {
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
     }
 
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
+      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser!.uid).get();
 
       if (snapshot.exists && snapshot.data() != null) {
-        if(who=="friends")
+        if(who=="connections")
         {
            // Cast the friends array to List<String>
-          List<String> friends = List<String>.from(snapshot.data()!['connections']);
-          return friends;
+          List<String> connections = List<String>.from(snapshot.data()!['connections']);
+          return connections;
         }
         if(who=="requests")
         {
@@ -43,7 +45,7 @@ class FriendServices {
         else{
           return []; //return an empty array
         }
-     
+
     } else {
       return []; //return an empty array
     }
@@ -53,7 +55,7 @@ class FriendServices {
     }
   }
 
-   Future<List<String>> getFriendRequests() async {
+   Future<List<String>> getConnectionRequests() async {
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
@@ -75,19 +77,19 @@ class FriendServices {
     }
   }
 
-  void acceptFriendRequest(String requesterUserId) async {
+  void acceptConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
-      await _userService.acceptFriendRequest(currentUserId, requesterUserId);
+      await _userService.acceptConnectionRequest(currentUserId, requesterUserId);
     } catch (e) {
       print('Error accepting connection request: $e');
     }
   } 
 
-  void rejectFriendRequest(String requesterUserId) async {
+  void rejectConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
-      await _userService.rejectFriendRequest(currentUserId, requesterUserId);
+      await _userService.rejectConnectionRequest(currentUserId, requesterUserId);
     } catch (e) {
       print('Error accepting connection request: $e');
     }
@@ -105,10 +107,9 @@ class FriendServices {
         Map<String, dynamic> userInfo =
             data['username'] as Map<String, dynamic>;
         String profileName = data['name'] ?? 'Profile name';
-        String username = userInfo['profile_name'] ?? 'username';
-        String userID =data['userID']?? '';
+        Map<String,dynamic> username = userInfo;
+        String userID =userId;
         String profilePicture = data['profile_picture'] ?? '';
-
         String profilePictureUrl = '';
 
         if (profilePicture.isNotEmpty) {
@@ -119,14 +120,20 @@ class FriendServices {
           } catch (e) {
             return null;
           }
+
         }
 
-        return {
-          'profileName': profileName,
+
+        Map<String,dynamic>? d =
+         {
+          'name': profileName,
           'username': username,
-          'profilePicture': profilePictureUrl,
+          'profile_picture': profilePictureUrl,
           'userID': userID,
         };
+
+        return d;
+
       } else {
         return null;
       }

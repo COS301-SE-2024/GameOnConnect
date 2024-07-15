@@ -22,6 +22,12 @@ class AuthService {
         .update({"digit": (da + 1)});
   }
 
+  //getter function to return nextnum
+  Future<int> getNextNum() async {
+    await getNextNumber(); 
+    return _nextNum ?? 0; 
+  }
+
   signInWithGoogle() async {
     //start the sign in process
     final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -102,7 +108,8 @@ class AuthService {
           "visibility": true,
           "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
           "want_to_play": [],
-          "my_games": []
+          "my_games": [],
+          "currently_playing":"",
         };
 
         final connectionData = <String, dynamic>{
