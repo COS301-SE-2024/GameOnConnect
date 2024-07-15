@@ -17,8 +17,11 @@ class Events {
             .get();
         for (var x in querySnapshot.docs) {
           var data = x.data() as Map<String, dynamic>;
-          Event event = Event.fromMap(data, x.id);
-          all.add(event);
+
+            Event event = Event.fromMap(data, x.id);
+          if( event.privacy == false) {
+            all.add(event);
+          }
         }
       }
       return all;
@@ -27,7 +30,8 @@ class Events {
     }
   }
 
-  Future<void> createEvent(String? type,
+  Future<void> createEvent(
+      String? type,
       DateTime? startDate,
       String name,
       DateTime? endDate,
@@ -35,15 +39,13 @@ class Events {
       bool privacy,
       List<String> invited,
       String url,
-      String description) async {
+      String description
+      ) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
-        String id = db
-            .collection('events')
-            .doc()
-            .id;
+        String id = db.collection('events').doc().id;
         final data = <String, dynamic>{
           "name": name,
           "eventType": type,
@@ -73,7 +75,7 @@ class Events {
 
       if (currentUser != null) {
         List<String>? connections =
-        await ConnectionService().getConnections('connections');
+            await ConnectionService().getConnections('connections');
         for (var i in connections) {
           user.User u = user.User.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
@@ -128,15 +130,17 @@ class Events {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      subscribed.subscribed.add(currentUser.uid);
-      print(subscribed.subscribed);
-      db
-          .collection('events')
-          .doc(subscribed.eventID)
-          .set({'subscribed': subscribed.subscribed},SetOptions(merge: true));
+      if (subscribed.subscribed.isEmpty) {
+        db.collection('events').doc(subscribed.eventID).set({
+          'subscribed': {currentUser.uid}
+        }, SetOptions(merge: true));
+      } else {
+        subscribed.subscribed.add(currentUser.uid);
+        db.collection('events').doc(subscribed.eventID).set(
+            {'subscribed': subscribed.subscribed}, SetOptions(merge: true));
+      }
     }
   }
-
 
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -146,7 +150,7 @@ class Events {
       db
           .collection('events')
           .doc(joined.eventID)
-          .set({'participants': joined.subscribed},SetOptions(merge: true));
+          .set({'participants': joined.subscribed}, SetOptions(merge: true));
     }
   }
 

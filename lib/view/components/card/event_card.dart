@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../model/events_M/events_model.dart';
+import '../../pages/events/specific_event_details.dart';
 
 class EventCardWidget extends StatelessWidget {
   final Event? e;
@@ -10,7 +11,9 @@ class EventCardWidget extends StatelessWidget {
 });
   @override
   Widget build(BuildContext context) {
-    return Padding(
+      return InkWell( onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ViewEventDetailsWidget(e: e!)));
+    },child: Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
       child: Container(
         width: double.infinity,
@@ -88,6 +91,7 @@ class EventCardWidget extends StatelessWidget {
           ),
         ),
       ),
-    );
+    )
+      );
   }
 }
