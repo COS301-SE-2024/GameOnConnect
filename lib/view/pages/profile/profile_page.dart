@@ -162,14 +162,6 @@ class _ProfileState extends State<Profilenew>  {
                     ),
                     //onSubmitted: _onSearchEntered,
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 30),
-                      child: Text('$username#$uniqueNum', style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
                   //friends, games, events
                 ),
 
