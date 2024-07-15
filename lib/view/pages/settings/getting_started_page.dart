@@ -445,6 +445,67 @@ class GettingStarted extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(
+                                      width: double.infinity,
+                                      child: ExpansionTile(
+                                        key: Key('tutorial_video'),
+                                        title:  Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(
+                                              12, 8, 12, 8),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  'Tutorial Video',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    color: Theme.of(context).colorScheme.secondary,
+                                                    letterSpacing: 0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Container(
+                                                width: double.infinity,
+                                                decoration:  BoxDecoration(
+                                                  color:Theme.of(context).colorScheme.surface,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                decoration:  BoxDecoration(
+                                                  color: Theme.of(context).colorScheme.surface,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfoPage_Tutorial.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                 ]),
                           ],
                         ),
