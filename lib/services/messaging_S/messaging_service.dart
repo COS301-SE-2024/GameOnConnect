@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/model/messages_M/message_modal.dart';
 
 class MessagingService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -8,7 +9,8 @@ class MessagingService {
   // Create a new conversation (group or private chat)
   Future<String> createConversation(List<String> participants) async {
     try {
-      final String conversationID = _firestore.collection('message_log').doc().id;
+      final String conversationID =
+          _firestore.collection('message_log').doc().id;
 
       await _firestore.collection('message_log').doc(conversationID).set({
         'conversationID': conversationID,
@@ -24,7 +26,8 @@ class MessagingService {
   }
 
   // Send a message in a conversation
-  Future<void> sendMessage(String conversationID, String messageText) async {
+  Future<void> sendMessage(
+      String conversationID, String messageText, String receiverID) async {
     try {
       final User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("No user logged in");
@@ -32,13 +35,23 @@ class MessagingService {
       final String messageID = _firestore.collection('messages').doc().id;
       final Timestamp timestamp = Timestamp.now();
 
-      await _firestore.collection('messages').doc(messageID).set({
-        'messageID': messageID,
-        'conversationID': conversationID,
-        'message_text': messageText,
-        'userID': currentUser.uid,
-        'timestamp': timestamp
-      });
+      Message newMessage = Message(
+        messageID: messageID,
+        conversationID: conversationID,
+        messageText: messageText,
+        userID: currentUser.uid,
+        timestamp: timestamp,
+        receiverID: receiverID,
+      );
+
+      //here we set the new message
+      await _firestore
+          .collection('messages')
+          .doc(messageID)
+          .set(newMessage.toMap());
+
+      //might need to add a check here for the message log to make sure the conversation exists before trying to update
+      //ie create a new message_log if a new conversation is being started. 
 
       await _firestore.collection('message_log').doc(conversationID).update({
         'participant_messages': FieldValue.arrayUnion([messageID])
@@ -67,6 +80,14 @@ class MessagingService {
     }
   }
 
+  Stream<QuerySnapshot> getSnapshotMessages(String conversationID) {
+    return _firestore
+        .collection('conversations')
+        .doc(conversationID)
+        .collection('messages')
+        .snapshots();
+  }
+
   // Get conversations for the current user
   Future<List<Map<String, dynamic>>> getConversations() async {
     try {
@@ -87,7 +108,7 @@ class MessagingService {
     }
   }
 
-  Stream<List<Map<String,dynamic>>> getAllUsers(){
+  Stream<List<Map<String, dynamic>>> getAllUsers() {
     //can change this later to get less users
     return _firestore.collection("profile_data").snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -96,6 +117,23 @@ class MessagingService {
       }).toList();
     });
   }
+
+  Future<String> findConversationID(String userID1, String userID2) async {
+    var querySnapshot = await _firestore
+        .collection('message_log')
+        .where('participants', arrayContains: userID1)
+        .get();
+    
+    for (var doc in querySnapshot.docs) {
+    var participants = List<String>.from(doc['participants']);
+    if (participants.contains(userID2) && participants.contains(userID1) && userID1 != userID2) {
+      return doc.id; 
+    }
+  }
+    return 'Not found';
+  }
+
+  
 }
 
 /* 
