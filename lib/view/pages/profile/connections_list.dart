@@ -5,6 +5,7 @@ import 'package:gameonconnect/model/connection_M/user_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
+import 'package:gameonconnect/view/pages/connections/connection_requests_page.dart';
 
 class ConnectionsList extends StatefulWidget {
   const ConnectionsList({super.key, });
@@ -36,7 +37,10 @@ class _ConnectionsListState extends State<ConnectionsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Connections')),
+      appBar: AppBar(
+        title: Text('Connections'),
+    ),
+    
       body:  FutureBuilder<List<user.User>?>(
               future: Events().getConnectionsForInvite(),
               builder: (context, snapshot) {
@@ -46,8 +50,26 @@ class _ConnectionsListState extends State<ConnectionsList> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   list = snapshot.data;
-                  return Column(mainAxisSize: MainAxisSize.max, children: [
-                   
+                  return Column(
+                    mainAxisSize: MainAxisSize.max, 
+                    children: [
+                    GestureDetector(
+          onTap: () {
+            // Navigate to the request page when the text is clicked
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Requests()));
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Requests',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary, // Customize the text color
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
                     SizedBox(
                         height: 300,
                         child: ListView.separated(
@@ -62,6 +84,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
+                                isProfile: true,
                                 onSelected: (uid, selected) {
                                   
                                 });
@@ -76,25 +99,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
               }),
       );
   }
-   //@override
-  /*Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Connections')),
-      body: ListView.builder(
-        itemCount: widget users.length,
-        itemBuilder: (context, index) {
-          final user = users[index];
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(user.profilePicture),
-            ),
-            title: Text(user.profileName),
-            subtitle: Text('#${user.uniqueNum}'),
-          );
-        },
-      ),
-    );
-  }*/
+   
 }
 
 
