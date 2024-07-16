@@ -136,7 +136,6 @@ class UserService {
     }
   } 
 
-  // Unfollow user
   Future<void> disconnect(String currentUserId, String targetUserId) async {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
