@@ -6,6 +6,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 import 'package:gameonconnect/view/pages/connections/connection_requests_page.dart';
+import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 
 class ConnectionsList extends StatefulWidget {
   const ConnectionsList({super.key, });
@@ -56,7 +57,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                     GestureDetector(
           onTap: () {
             // Navigate to the request page when the text is clicked
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Requests()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -84,7 +85,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
-                                isProfile: true,
+                                page: 'connections',
                                 onSelected: (uid, selected) {
                                   
                                 });
