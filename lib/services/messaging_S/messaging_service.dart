@@ -31,6 +31,14 @@ class MessagingService {
     try {
       final User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("No user logged in");
+      print('here is the current user:');
+      print(currentUser);
+      print('here is the message:');
+      print(messageText);
+      print('here is the receiver');
+      print(receiverID);
+      print('here is the conversationID');
+      print(conversationID);
 
       final String messageID = _firestore.collection('messages').doc().id;
       final Timestamp timestamp = Timestamp.now();
@@ -50,14 +58,10 @@ class MessagingService {
           .doc(messageID)
           .set(newMessage.toMap());
 
-      //might need to add a check here for the message log to make sure the conversation exists before trying to update
-      //ie create a new message_log if a new conversation is being started. 
-
       await _firestore.collection('message_log').doc(conversationID).update({
         'participant_messages': FieldValue.arrayUnion([messageID])
       });
     } catch (e) {
-      // print("Error in sendMessage: $e");  // Log the error
       throw Exception("Failed to send message: $e");
     }
   }

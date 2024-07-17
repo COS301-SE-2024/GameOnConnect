@@ -18,15 +18,17 @@ class ChatPage extends StatelessWidget {
   final AuthService _authService = AuthService();
 
   void sendMessage() async {
+    String currentUser = _authService.getCurrentUser()!.uid;
     if (_textEditingController.text.isNotEmpty) {
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
           _textEditingController.text, receiverID);
       //if the conversationID could not be found make a new one
       if (conversationID == 'Not found') {
-        List<String> newList = [_textEditingController.text, receiverID];
-        await _messagingService.createConversation(newList);
+        List<String> newList = [currentUser, receiverID];
+        conversationID =  await _messagingService.createConversation(newList);
       }
+      
       //send a message
       await _messagingService.sendMessage(
           conversationID, _textEditingController.text, receiverID);
