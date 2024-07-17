@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GameService {
-  final String apiKey = 'b8d81a8e79074f1eb5c9961a9ffacee6';
+  final String? apiKey = dotenv.env['RAWG_API_KEY'];
 
   Future<GameDetails> fetchGameDetails( gameId) async {
     try {
