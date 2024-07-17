@@ -16,6 +16,7 @@ class ConnectionCardWidget extends StatefulWidget {
   final String page;
   final void Function(String uid,bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
+  final void Function(String uid)? onAccepted;
 
   const ConnectionCardWidget({
     super.key,
@@ -26,6 +27,7 @@ class ConnectionCardWidget extends StatefulWidget {
     required this.onSelected,
     required this.page,
      this.onDisconnected, 
+     this.onAccepted,
   });
 
   @override
@@ -65,12 +67,11 @@ void _disconnect(String targetUserId) async {
       }
     } catch (e) {
       //'Error unfollowing user'
-      //print('disconnect error meassage: $e');
       DelightToastBar(
               builder: (context) {
                 return CustomToastCard(
                   title: Text(
-                    'Error unfollowing user. Please ensure that you have an active internet connection.',
+                    'Error disconnecting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -86,6 +87,36 @@ void _disconnect(String targetUserId) async {
       );
     }
   }
+
+  void _accept(String targetUserId) async {
+    try {
+      await ConnectionService().acceptConnectionRequest( targetUserId);
+       if (widget.onAccepted != null) {
+        widget.onAccepted!(targetUserId); // Notify parent widget if callback is provided
+      }
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error accepting user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
 
 
   @override
@@ -235,7 +266,7 @@ Widget build(BuildContext context) {
               ],
               onSelected: (value) {
                 if (value == 'accept') {
-                  // Handle accept action
+                  _accept(uid );
                 } else if (value == 'reject') {
                   // Handle reject action
                 } else if (value == 'message') {

@@ -6,6 +6,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 import 'package:gameonconnect/view/pages/connections/connection_requests_page.dart';
+import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 
 class ConnectionRequestList extends StatefulWidget {
   const ConnectionRequestList({super.key, });
@@ -23,7 +24,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
   @override
   void initState() {
     super.initState();
-    getConnectionsInvite();
+    getConnectionRequests();
   }
 
   @override
@@ -31,9 +32,25 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
     super.dispose();
   }
 
-  Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+  Future<void> getConnectionRequests() async {
+    list = await ConnectionService().getConnectionRequests();
+    setState(() {});
   }
+
+  /*void removeUserFromList(String uid) {
+    setState(() {
+      list?.removeWhere((user) => user.uid == uid);
+    });
+  }*/
+  void _handleAcceptance(String uid) {
+    setState(() {
+      list = list?.where((user) => user.uid != uid).toList();
+    });
+  }
+
+ @override
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +67,16 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   list = snapshot.data;
-                  return Column(
+                  if (list!.isEmpty) {
+            // Display "No connections" when the list is empty
+            return Center(
+              child: Text('No connection Requests'),
+            );
+          } else{
+            return Column(
                     mainAxisSize: MainAxisSize.max, 
                     children: [
+                
                     SizedBox(
                         height: 300,
                         child: ListView.separated(
@@ -68,9 +92,11 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'requests',
+                                onDisconnected: _handleAcceptance ,
                                 onSelected: (uid, selected) {
                                   
                                 });
+                                
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox();
@@ -78,11 +104,15 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                         )),
                  
                 ]);
+          }
+                  
                 }
               }),
       );
   }
    
 }
+
+
 
 
