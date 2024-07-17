@@ -1,4 +1,6 @@
 // ignore_for_file: unused_element, avoid_print
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,6 +12,7 @@ import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 class ConnectionService {
 
+
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -17,9 +20,17 @@ class ConnectionService {
   User? currentUser;
   String? currentid='';
 
+  final StreamController<List<user.User>> _connectionsController = StreamController<List<user.User>>.broadcast();
+  Stream<List<user.User>> get connectionsStream => _connectionsController.stream;
+  List<user.User> _connections = [];
+
   void initializeCurrentUser() {
     currentUser = auth.currentUser;
     currentid=currentUser?.uid;
+  }
+
+  void dispose() {
+    _connectionsController.close();
   }
 
   //Read friends from database
@@ -60,27 +71,41 @@ class ConnectionService {
     }
   }
 
-   /*Future<List<String>> getConnectionRequests() async {
-    initializeCurrentUser();
-    if (currentUser == null) {
-      return []; //return an empty array
-    }
-
+  /*Future<List<user.User>?> getConnectionUserlist() async
+  {
     try {
-      DocumentSnapshot<Map<String, dynamic>> snapshot = await db.collection('connections').doc(currentUser?.uid).get();
+      final currentUser = FirebaseAuth.instance.currentUser;
+      List<user.User> list = [];
 
-      if (snapshot.exists && snapshot.data() != null) {
-      // Cast the friends array to List<String>
-      List<String> requests = List<String>.from(snapshot.data()!['connection_requests']);
-      return requests;
-    } else {
-      return []; //return an empty array
-    }
-
+      if (currentUser != null) {
+        List<String>? connections = await getConnections(
+            'connections');
+        for (var i in connections) {
+          user.User u = user.User.fromMap(
+              await ConnectionService().fetchFriendProfileData(i));
+          list.add(u);
+        }
+      }
+      return list;
     } catch (e) {
-      return []; //return an empty array
+      throw('Error: $e');
     }
   }*/
+
+Future<void> getConnectionUserlist() async {
+    List<user.User> list = [];
+    try {
+      List<String> connections = await getConnections('connections');
+      for (var i in connections) {
+        user.User u = user.User.fromMap(await fetchFriendProfileData(i));
+        list.add(u);
+      }
+      _connections = list;
+      _connectionsController.add(_connections);
+    } catch (e) {
+      print('Error fetching connections: $e');
+    }
+  }
 
   void acceptConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
@@ -114,7 +139,7 @@ class ConnectionService {
         String profileName = data['name'] ?? 'Profile name';
         Map<String,dynamic> username = userInfo;
         String userID =userId;
-        String profilePicture = data['profile_picture'] ?? '';
+        /*String profilePicture = data['profile_picture'] ?? '';
         String profilePictureUrl = '';
 
         if (profilePicture.isNotEmpty) {
@@ -126,9 +151,9 @@ class ConnectionService {
             return null;
           }
 
-        }
-        //StorageService storageService = StorageService();
-          //String profilePictureUrl = await storageService.getProfilePictureUrl(userId);
+        }*/
+        StorageService storageService = StorageService();
+        String profilePictureUrl = await storageService.getProfilePictureUrl(userId);
 
 
         Map<String,dynamic>? d =
@@ -167,6 +192,25 @@ class ConnectionService {
       return list;
     } catch (e) {
       throw('Error: $e');
+    }
+    
+  }
+  
+  Future<void> disconnect( String targetUserId) async {
+    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    try {
+      await db.collection('connections').doc(currentUserId).update({
+        'connections': FieldValue.arrayRemove([targetUserId])
+      });
+
+      await db.collection('connections').doc(targetUserId).update({
+        'connections': FieldValue.arrayRemove([currentUserId])
+      });
+
+      _connections.removeWhere((user) => user.uid == targetUserId);
+      _connectionsController.add(_connections);
+    } catch (e) {
+      throw Exception('Error unconnecting user: $e');
     }
   }
 }

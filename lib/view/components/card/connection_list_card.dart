@@ -4,6 +4,7 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 
@@ -14,8 +15,19 @@ class ConnectionCardWidget extends StatefulWidget {
   final String uid ;
   final String page;
   final void Function(String uid,bool selected) onSelected;
-  const ConnectionCardWidget({super.key,required this.image, required this.username, required this.uid, required this.uniqueNum, required this.onSelected, required this.page,
-});
+  final void Function(String uid)? onDisconnected;
+
+  const ConnectionCardWidget({
+    super.key,
+    required this.image,
+    required this.username,
+    required this.uid,
+    required this.uniqueNum,
+    required this.onSelected,
+    required this.page,
+     this.onDisconnected, 
+  });
+
   @override
   State<ConnectionCardWidget> createState() => _ConnectionCardWidgetState();
 }
@@ -44,12 +56,16 @@ void dispose() {
   super.dispose();
 }
 
+
 void _disconnect(String targetUserId) async {
     try {
-      await _userService.disconnect(uid, targetUserId);
-      //_fetchData();
+      await ConnectionService().disconnect( targetUserId);
+       if (widget.onDisconnected != null) {
+        widget.onDisconnected!(targetUserId); // Notify parent widget if callback is provided
+      }
     } catch (e) {
       //'Error unfollowing user'
+      //print('disconnect error meassage: $e');
       DelightToastBar(
               builder: (context) {
                 return CustomToastCard(

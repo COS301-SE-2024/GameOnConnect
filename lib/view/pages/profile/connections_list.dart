@@ -34,7 +34,20 @@ class _ConnectionsListState extends State<ConnectionsList> {
 
   Future<void> getConnectionsInvite() async {
     list = await Events().getConnectionsForInvite();
+    setState(() {});
   }
+
+  void removeUserFromList(String uid) {
+    setState(() {
+      list?.removeWhere((user) => user.uid == uid);
+    });
+  }
+  void _handleDisconnection(String uid) {
+    setState(() {
+      list = list?.where((user) => user.uid != uid).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,9 +99,11 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'connections',
+                                onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   
                                 });
+                                
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox();
