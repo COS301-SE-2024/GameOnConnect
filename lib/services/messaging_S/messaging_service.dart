@@ -31,14 +31,6 @@ class MessagingService {
     try {
       final User? currentUser = _auth.currentUser;
       if (currentUser == null) throw Exception("No user logged in");
-      print('here is the current user:');
-      print(currentUser);
-      print('here is the message:');
-      print(messageText);
-      print('here is the receiver');
-      print(receiverID);
-      print('here is the conversationID');
-      print(conversationID);
 
       final String messageID = _firestore.collection('messages').doc().id;
       final Timestamp timestamp = Timestamp.now();
@@ -85,11 +77,10 @@ class MessagingService {
   }
 
   Stream<QuerySnapshot> getSnapshotMessages(String conversationID) {
-    return _firestore
-        .collection('conversations')
-        .doc(conversationID)
-        .collection('messages')
-        .snapshots();
+  return FirebaseFirestore.instance
+      .collection('messages')
+      .where('conversationID', isEqualTo: conversationID)
+      .snapshots();
   }
 
   // Get conversations for the current user

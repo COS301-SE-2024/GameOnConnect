@@ -22,13 +22,13 @@ class ChatPage extends StatelessWidget {
     if (_textEditingController.text.isNotEmpty) {
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
-          _textEditingController.text, receiverID);
+          currentUser, receiverID);
       //if the conversationID could not be found make a new one
       if (conversationID == 'Not found') {
         List<String> newList = [currentUser, receiverID];
         conversationID =  await _messagingService.createConversation(newList);
       }
-      
+
       //send a message
       await _messagingService.sendMessage(
           conversationID, _textEditingController.text, receiverID);
@@ -55,28 +55,6 @@ class ChatPage extends StatelessWidget {
     );
   }
 
-  /*Widget _buildMessageList() {
-    String senderID = _authService.getCurrentUser()!.uid;
-    Future<String> conversationID = _messagingService.findConversationID(senderID, receiverID);
-    return StreamBuilder(stream: _messagingService.getMessages(conversationID as String), builder: 
-      (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("error");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('loading');
-        }
-
-        return ListView(
-          children: [
-            snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
-          ],
-        )
-
-      }
-    );
-  }*/
-
   Widget _buildMessageList() {
     String senderID = _authService.getCurrentUser()!.uid;
 
@@ -91,7 +69,7 @@ class ChatPage extends StatelessWidget {
             snapshot.data == 'Not found') {
           return const Center(child: Text("No conversation found"));
         } else {
-          String conversationID = snapshot.data!;
+          String conversationID = snapshot.data!;    
           return StreamBuilder<QuerySnapshot>(
             stream: _messagingService.getSnapshotMessages(conversationID),
             builder: (context, snapshot) {
@@ -118,7 +96,7 @@ class ChatPage extends StatelessWidget {
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    return Text(data["message"]);
+    return Text(data["message_text"] ?? "No message");
   }
 
   Widget _buildUserInput() {

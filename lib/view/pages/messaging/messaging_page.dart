@@ -84,7 +84,6 @@ class _MessagingState extends State<Messaging> {
         userData['username'] as Map<String, dynamic>? ?? {};
     String profileName = userInfo['profile_name'] as String? ?? "Unknown";
     String profilePictureUrl = userData['profile_picture'] as String? ?? "default_picture_url";
-    print(userData);
     String receiverID = userData['userID'] as String? ?? "default_user_id";
 
     //we need to get more info here to build the tile successfully
