@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 
 class GameDetails {
   final int id;
@@ -105,8 +104,8 @@ class GameDetails {
 
     if (genres.isNotEmpty) {
       for (var genre in genres) {
-        genresWidgets.add(Expanded(
-          child: Text(
+        genresWidgets.add(
+          Text(
             genre['name'],
             style: TextStyle(
               decoration: TextDecoration.underline,
@@ -114,11 +113,12 @@ class GameDetails {
               fontSize: 14,
               color: Theme.of(context).colorScheme.secondary,
             ),
-            overflow: TextOverflow.ellipsis,
+            // overflow: TextOverflow.fade,
           ),
-        ));
+        );
         genresWidgets.add(const SizedBox(
           width: 10,
+          // overflow: TextOverflow.visible,
         ));
       }
     } else {
