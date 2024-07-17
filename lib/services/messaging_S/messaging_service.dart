@@ -80,6 +80,7 @@ class MessagingService {
   return FirebaseFirestore.instance
       .collection('messages')
       .where('conversationID', isEqualTo: conversationID)
+      .orderBy('timestamp', descending: false)
       .snapshots();
   }
 

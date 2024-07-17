@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
+import 'package:gameonconnect/view/components/messaging/chat_bubble_component.dart';
 
 class ChatPage extends StatelessWidget {
   final String profileName;
@@ -21,12 +22,12 @@ class ChatPage extends StatelessWidget {
     String currentUser = _authService.getCurrentUser()!.uid;
     if (_textEditingController.text.isNotEmpty) {
       //find the conversationID
-      String conversationID = await _messagingService.findConversationID(
-          currentUser, receiverID);
+      String conversationID =
+          await _messagingService.findConversationID(currentUser, receiverID);
       //if the conversationID could not be found make a new one
       if (conversationID == 'Not found') {
         List<String> newList = [currentUser, receiverID];
-        conversationID =  await _messagingService.createConversation(newList);
+        conversationID = await _messagingService.createConversation(newList);
       }
 
       //send a message
@@ -49,7 +50,7 @@ class ChatPage extends StatelessWidget {
           Expanded(
             child: _buildMessageList(),
           ),
-          _buildUserInput(),
+          _buildUserInput(context),
         ],
       ),
     );
@@ -69,7 +70,7 @@ class ChatPage extends StatelessWidget {
             snapshot.data == 'Not found') {
           return const Center(child: Text("No conversation found"));
         } else {
-          String conversationID = snapshot.data!;    
+          String conversationID = snapshot.data!;
           return StreamBuilder<QuerySnapshot>(
             stream: _messagingService.getSnapshotMessages(conversationID),
             builder: (context, snapshot) {
@@ -95,24 +96,56 @@ class ChatPage extends StatelessWidget {
 
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    bool isCurrentuser = data['userID'] == _authService.getCurrentUser()!.uid;
+    
+    var alignment =
+        isCurrentuser ? Alignment.centerRight : Alignment.centerLeft;
 
-    return Text(data["message_text"] ?? "No message");
+    return Container(
+      alignment: alignment,
+      child: ChatBubble(
+          message: data["message_text"], isCurrentuser: isCurrentuser),
+    );
   }
 
-  Widget _buildUserInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _textEditingController,
-            obscureText: false,
+  Widget _buildUserInput(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              controller: _textEditingController,
+              obscureText: false,
+              decoration: InputDecoration(
+                hintText: "Enter your message here",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: sendMessage,
-          icon: const Icon(Icons.arrow_right_alt),
-        ),
-      ],
+          Container(
+            width: 50,
+            height: 50,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: sendMessage,
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                size: 35,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
