@@ -129,28 +129,29 @@ class Events {
   Future<void> subscribeToEvent(Event subscribed) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      if (subscribed.subscribed.isEmpty) {
-        db.collection('events').doc(subscribed.eventID).set({
-          'subscribed': {currentUser.uid}
+    try{
+      if(currentUser != null) {
+        await db.collection('events').doc(subscribed.eventID).set({
+          'subscribed': FieldValue.arrayUnion([currentUser.uid])
         }, SetOptions(merge: true));
-      } else {
-        subscribed.subscribed.add(currentUser.uid);
-        db.collection('events').doc(subscribed.eventID).set(
-            {'subscribed': subscribed.subscribed}, SetOptions(merge: true));
       }
-    }
+    }catch (e){
+      throw("unable to subscribe to event");
+  }
+
   }
 
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      joined.participants.add(currentUser.uid);
-      db
-          .collection('events')
-          .doc(joined.eventID)
-          .set({'participants': joined.subscribed}, SetOptions(merge: true));
+    try{
+      if(currentUser != null) {
+        await db.collection('events').doc(joined.eventID).set({
+          'participants': FieldValue.arrayUnion([currentUser.uid])
+        }, SetOptions(merge: true));
+      }
+    }catch (e){
+      throw("unable to subscribe to event");
     }
   }
 
