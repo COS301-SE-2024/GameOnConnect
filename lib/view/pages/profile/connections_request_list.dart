@@ -37,14 +37,15 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
     setState(() {});
   }
 
-  /*void removeUserFromList(String uid) {
+  void _handleAcceptance(String uid) {
     setState(() {
       list?.removeWhere((user) => user.uid == uid);
     });
-  }*/
-  void _handleAcceptance(String uid) {
+  }
+
+  void _handleRejection(String uid) {
     setState(() {
-      list = list?.where((user) => user.uid != uid).toList();
+      list?.removeWhere((user) => user.uid == uid);
     });
   }
 

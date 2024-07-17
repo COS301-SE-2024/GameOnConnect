@@ -37,16 +37,15 @@ class _ConnectionsListState extends State<ConnectionsList> {
     setState(() {});
   }
 
-  void removeUserFromList(String uid) {
-    setState(() {
-      list?.removeWhere((user) => user.uid == uid);
-    });
-  }
+  
   void _handleDisconnection(String uid) {
     setState(() {
       list = list?.where((user) => user.uid != uid).toList();
     });
   }
+
+ @override
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +63,40 @@ class _ConnectionsListState extends State<ConnectionsList> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   list = snapshot.data;
-                  return Column(
+                  if (list!.isEmpty) {
+            // Display "No connections" when the list is empty
+            return Column(
                     mainAxisSize: MainAxisSize.max, 
                     children: [
                     GestureDetector(
           onTap: () {
             // Navigate to the request page when the text is clicked
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));//go to next page 
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Requests',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary, // Customize the text color
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ), 
+            Center(
+              child: Text('No Connections'),
+            )
+            ]);
+          } else{
+            return Column(
+                    mainAxisSize: MainAxisSize.max, 
+                    children: [
+                    GestureDetector(
+          onTap: () {
+            // Navigate to the request page when the text is clicked
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));//go to next page 
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -111,6 +137,8 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         )),
                  
                 ]);
+          }
+                  
                 }
               }),
       );

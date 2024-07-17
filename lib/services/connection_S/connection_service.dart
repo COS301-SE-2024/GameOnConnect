@@ -1,6 +1,4 @@
 // ignore_for_file: unused_element, avoid_print
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -20,17 +18,9 @@ class ConnectionService {
   User? currentUser;
   String? currentid='';
 
-  final StreamController<List<user.User>> _connectionsController = StreamController<List<user.User>>.broadcast();
-  Stream<List<user.User>> get connectionsStream => _connectionsController.stream;
-  List<user.User> _connections = [];
-
   void initializeCurrentUser() {
     currentUser = auth.currentUser;
     currentid=currentUser?.uid;
-  }
-
-  void dispose() {
-    _connectionsController.close();
   }
 
   //Read friends from database
@@ -71,7 +61,7 @@ class ConnectionService {
     }
   }
 
-  /*Future<List<user.User>?> getConnectionUserlist() async
+  Future<List<user.User>?> getConnectionlist() async
   {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -90,38 +80,44 @@ class ConnectionService {
     } catch (e) {
       throw('Error: $e');
     }
-  }*/
-
-Future<void> getConnectionUserlist() async {
-    List<user.User> list = [];
-    try {
-      List<String> connections = await getConnections('connections');
-      for (var i in connections) {
-        user.User u = user.User.fromMap(await fetchFriendProfileData(i));
-        list.add(u);
-      }
-      _connections = list;
-      _connectionsController.add(_connections);
-    } catch (e) {
-      print('Error fetching connections: $e');
-    }
   }
 
-  void acceptConnectionRequest(String requesterUserId) async {
-    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-    try {
-      await _userService.acceptConnectionRequest(currentUserId, requesterUserId);
-    } catch (e) {
-      print('Error accepting connection request: $e');
-    }
-  } 
 
-  void rejectConnectionRequest(String requesterUserId) async {
+ 
+  Future<void> acceptConnectionRequest( String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
-      await _userService.rejectConnectionRequest(currentUserId, requesterUserId);
+      
+      // Add each other to friends list
+      await db.collection('connections').doc(currentUserId).update({
+        'connections': FieldValue.arrayUnion([requesterUserId]),
+        'connection_requests': FieldValue.arrayRemove([requesterUserId])
+      });
+
+      await db.collection('connections').doc(requesterUserId).update({
+        'connections': FieldValue.arrayUnion([currentUserId]),
+        'pending': FieldValue.arrayRemove([currentUserId])
+      });
     } catch (e) {
-      print('Error accepting connection request: $e');
+      throw Exception('Error accepting connection request: $e');
+    }
+  }
+ 
+
+  Future<void> rejectConnectionRequest( String requesterUserId) async {
+    String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+    try {
+      // Add each other to friends list
+      await db.collection('connections').doc(currentUserId).update({
+        'connection_requests': FieldValue.arrayRemove([requesterUserId])
+      });
+
+      await db.collection('connections').doc(requesterUserId).update({
+        'pending': FieldValue.arrayRemove([currentUserId]) 
+        // later might have to send a notification to let the other user they were rejected
+      });
+    } catch (e) {
+      throw Exception('Error rejecting connection request: $e');
     }
   } 
 
@@ -206,11 +202,10 @@ Future<void> getConnectionUserlist() async {
       await db.collection('connections').doc(targetUserId).update({
         'connections': FieldValue.arrayRemove([currentUserId])
       });
-
-      _connections.removeWhere((user) => user.uid == targetUserId);
-      _connectionsController.add(_connections);
     } catch (e) {
-      throw Exception('Error unconnecting user: $e');
+      throw Exception('Error disconnecting user: $e');
     }
   }
 }
+
+
