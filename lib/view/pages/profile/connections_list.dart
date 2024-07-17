@@ -1,11 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart'as user;
-import 'package:gameonconnect/model/connection_M/user_model.dart';
-import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
-import 'package:gameonconnect/view/pages/connections/connection_requests_page.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 
 class ConnectionsList extends StatefulWidget {
@@ -51,7 +47,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connections'),
+        title: const Text('Connections'),
     ),
     
       body:  FutureBuilder<List<user.User>?>(
@@ -71,10 +67,10 @@ class _ConnectionsListState extends State<ConnectionsList> {
                     GestureDetector(
           onTap: () {
             // Navigate to the request page when the text is clicked
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));//go to next page 
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectionRequestList()));//go to next page 
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.centerRight,
             child: Text(
               'Requests',
@@ -85,7 +81,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
             ),
           ),
         ), 
-            Center(
+            const Center(
               child: Text('No Connections'),
             )
             ]);
@@ -96,10 +92,10 @@ class _ConnectionsListState extends State<ConnectionsList> {
                     GestureDetector(
           onTap: () {
             // Navigate to the request page when the text is clicked
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ConnectionRequestList()));//go to next page 
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectionRequestList()));//go to next page 
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             alignment: Alignment.centerRight,
             child: Text(
               'Requests',

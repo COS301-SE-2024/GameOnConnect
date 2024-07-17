@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
@@ -43,7 +41,6 @@ late String uniqueNum;
 late String uid;
 late String page;
 bool selected = false;
-final UserService _userService = UserService();
 
 @override
 void initState() {
@@ -192,12 +189,7 @@ Widget build(BuildContext context) {
                   padding: const EdgeInsets.all(2),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(44),
-                    /*child: Image.network(
-                      image,
-                      width: 44,
-                      height: 44,
-                      fit: BoxFit.cover,
-                    ),*/
+                    
                     child: CachedNetworkImage(
                               imageUrl: image,
                               placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
@@ -207,7 +199,7 @@ Widget build(BuildContext context) {
                   ),
                 ),
               ),
-              SizedBox(width: 12), // Add spacing between profile picture and name
+              const SizedBox(width: 12), // Add spacing between profile picture and name
               Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,11 +233,11 @@ Widget build(BuildContext context) {
           if (page == 'connections')
             PopupMenuButton<String>(
               itemBuilder: (context) => [
-                PopupMenuItem<String>(
+                const PopupMenuItem<String>(
                   value: 'disconnect',
                   child: Text('Disconnect'),
                 ),
-                PopupMenuItem<String>(
+                const PopupMenuItem<String>(
                   value: 'message',
                   child: Text('Message'),
                 ),
@@ -266,7 +258,7 @@ Widget build(BuildContext context) {
           else if (page == 'requests')
             PopupMenuButton<String>(
               itemBuilder: (context) => [
-                PopupMenuItem<String>(
+                const PopupMenuItem<String>(
                   value: 'accept',
                   child: Row(
                     children: [
@@ -278,7 +270,7 @@ Widget build(BuildContext context) {
                     ],
                   ),
                 ),
-                PopupMenuItem<String>(
+                const PopupMenuItem<String>(
                   value: 'reject',
                   child: Row(
                     children: [
@@ -290,7 +282,7 @@ Widget build(BuildContext context) {
                     ],
                   ),
                 ),
-                PopupMenuItem<String>(
+                const PopupMenuItem<String>(
                   value: 'message',
                   child: Text('Message'),
                 ),

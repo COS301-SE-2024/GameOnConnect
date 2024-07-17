@@ -1,10 +1,8 @@
 // ignore_for_file: unused_element, avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:gameonconnect/model/connection_M/user_model.dart';
 import '../../../model/connection_M/user_model.dart' as user;
-import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 
@@ -14,7 +12,6 @@ class ConnectionService {
   //get an instance from FireStore Database
   FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final UserService _userService = UserService();
   User? currentUser;
   String? currentid='';
 

@@ -1,12 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart'as user;
-import 'package:gameonconnect/model/connection_M/user_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
-import 'package:gameonconnect/view/pages/connections/connection_requests_page.dart';
-import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 
 class ConnectionRequestList extends StatefulWidget {
   const ConnectionRequestList({super.key, });
@@ -56,7 +51,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connection Requests'),
+        title: const Text('Connection Requests'),
     ),
     
       body:  FutureBuilder<List<user.User>?>(
@@ -70,7 +65,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   list = snapshot.data;
                   if (list!.isEmpty) {
             // Display "No connections" when the list is empty
-            return Center(
+            return const Center(
               child: Text('No connection Requests'),
             );
           } else{
@@ -93,7 +88,8 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'requests',
-                                onDisconnected: _handleAcceptance ,
+                                onAccepted: _handleAcceptance ,
+                                onRejected: _handleRejection ,
                                 onSelected: (uid, selected) {
                                   
                                 });
