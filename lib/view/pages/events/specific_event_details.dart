@@ -4,7 +4,7 @@ import '../../../model/events_M/events_model.dart';
 
 class ViewEventDetailsWidget extends StatefulWidget {
   final Event e;
-  const ViewEventDetailsWidget({super.key,required this.e});
+  const ViewEventDetailsWidget({super.key, required this.e});
   @override
   State<ViewEventDetailsWidget> createState() => _ViewEventDetailsWidgetState();
 }
@@ -12,6 +12,7 @@ class ViewEventDetailsWidget extends StatefulWidget {
 class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   late final Event e;
   late String imageUrl;
+  late bool selected ;
 
   @override
   void initState() {
@@ -30,7 +31,8 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(future: Events().getEventImage(e.eventID),
+    return FutureBuilder(
+        future: Events().getEventImage(e.eventID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -38,12 +40,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
             return Text('Error: ${snapshot.error}');
           } else {
             imageUrl = snapshot.data!;
+            selected = Events().isSubscribed(e);
             return GestureDetector(
               child: Scaffold(
-                backgroundColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .surface,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 body: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -53,70 +53,83 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Stack(children: [
-                              Image.network(imageUrl,
+                              Image.network(
+                                imageUrl,
                                 width: double.infinity,
                                 height: 340,
                                 fit: BoxFit.cover,
                               ),
                               Align(
-                                alignment: const AlignmentDirectional(
-                                    0.85, -1.24),
+                                alignment:
+                                    const AlignmentDirectional(0.85, -1.24),
                                 child: Padding(
-                                  padding:
-                                  const EdgeInsetsDirectional.fromSTEB(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 50, 0, 0),
                                   child: CircleAvatar(
                                     radius: 20,
-                                    backgroundColor: Theme
-                                        .of(context)
-                                        .colorScheme
-                                        .surface,
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.surface,
                                     child: IconButton(
                                       onPressed: () async {
                                         Navigator.pop(context);
                                       },
                                       icon: const Icon(Icons.close_outlined),
-                                      color: Theme
-                                          .of(context)
+                                      color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
                                     ),
-
                                   ),
                                 ),
                               ),
                             ]),
-                            Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                              child: Text(
-                                e.name,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .secondary,
-                                  fontSize: 24,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.underline,
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 20, 0, 0),
+                                  child: Text(
+                                    e.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 24,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        selected = !selected;
+                                      });
+                                      if (selected) {
+                                        Events().unsubscribeToEvent(e);
+                                      } else {
+                                        Events().subscribeToEvent(e);
+                                      }
+                                    },
+                                    icon: selected
+                                        ? const Icon(Icons.notification_add)
+                                        : const Icon(
+                                            Icons.notification_add_outlined)),
+                              ],
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 8, 24, 0),
                               child: Text(
                                 e.description,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontFamily: 'Inter',
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                   fontSize: 14,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.normal,
@@ -124,24 +137,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 16, 24, 0),
                               child: Container(
                                 width: double.infinity,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .surface,
+                                  color: Theme.of(context).colorScheme.surface,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 0,
-                                      color: Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .surface,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
                                       offset: const Offset(
                                         0.0,
                                         1,
@@ -158,9 +165,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         'Type of event:',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color:
-                                          Theme
-                                              .of(context)
+                                          color: Theme.of(context)
                                               .colorScheme
                                               .secondary,
                                           fontSize: 16,
@@ -173,8 +178,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       e.eventType,
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         fontSize: 16,
@@ -187,24 +191,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 1, 24, 0),
                               child: Container(
                                 width: double.infinity,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .surface,
+                                  color: Theme.of(context).colorScheme.surface,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 0,
-                                      color: Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .surface,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
                                       offset: const Offset(
                                         0.0,
                                         1,
@@ -221,9 +219,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         'Starting at:',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color:
-                                          Theme
-                                              .of(context)
+                                          color: Theme.of(context)
                                               .colorScheme
                                               .secondary,
                                           fontSize: 16,
@@ -233,14 +229,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       ),
                                     ),
                                     Text(
-                                      '${e.startDate.day}/${e.startDate
-                                          .month}/${e.startDate.year}   |  ${e
-                                          .startDate.hour}:${e.startDate
-                                          .minute}',
+                                      '${e.startDate.day}/${e.startDate.month}/${e.startDate.year}   |  ${e.startDate.hour}:${e.startDate.minute}',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         fontSize: 16,
@@ -253,24 +245,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 1, 24, 0),
                               child: Container(
                                 width: double.infinity,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .surface,
+                                  color: Theme.of(context).colorScheme.surface,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 0,
-                                      color: Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .surface,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
                                       offset: const Offset(
                                         0.0,
                                         1,
@@ -287,9 +273,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         'Ending at:',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color:
-                                          Theme
-                                              .of(context)
+                                          color: Theme.of(context)
                                               .colorScheme
                                               .secondary,
                                           fontSize: 16,
@@ -299,14 +283,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       ),
                                     ),
                                     Text(
-                                      '${e.endDate.day}/${e.endDate.month}/${e
-                                          .startDate.year}   |  ${e.endDate
-                                          .hour}:${e
-                                          .endDate.minute}',
+                                      '${e.endDate.day}/${e.endDate.month}/${e.startDate.year}   |  ${e.endDate.hour}:${e.endDate.minute}',
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         fontSize: 16,
@@ -319,24 +299,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                             ),
                             Padding(
-                              padding:
-                              const EdgeInsetsDirectional.fromSTEB(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 1, 24, 0),
                               child: Container(
                                 width: double.infinity,
                                 height: 60,
                                 decoration: BoxDecoration(
-                                  color: Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .surface,
+                                  color: Theme.of(context).colorScheme.surface,
                                   boxShadow: [
                                     BoxShadow(
                                       blurRadius: 0,
-                                      color: Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .surface,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
                                       offset: const Offset(
                                         0.0,
                                         1,
@@ -353,9 +327,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         '# Joined:',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color:
-                                          Theme
-                                              .of(context)
+                                          color: Theme.of(context)
                                               .colorScheme
                                               .secondary,
                                           fontSize: 16,
@@ -368,8 +340,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       Events().getAmountJoined(e).toString(),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme
-                                            .of(context)
+                                        color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
                                         fontSize: 16,
@@ -385,17 +356,12 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               width: double.infinity,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Theme
-                                    .of(context)
-                                    .colorScheme
-                                    .primary,
+                                color: Theme.of(context).colorScheme.primary,
                                 boxShadow: [
                                   BoxShadow(
                                     blurRadius: 5,
-                                    color: Theme
-                                        .of(context)
-                                        .colorScheme
-                                        .surface,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
                                     offset: const Offset(
                                       0.0,
                                       2,
@@ -405,8 +371,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 borderRadius: BorderRadius.circular(0),
                               ),
                               child: Padding(
-                                padding:
-                                const EdgeInsetsDirectional.fromSTEB(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
                                     0, 12, 0, 0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
@@ -414,18 +379,16 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                     Flexible(
                                       child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(
-                                            0, 0, 0, 4),
+                                            .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            Events().subscribeToEvent(e);
+                                            Events().joinEvent(e);
                                           },
                                           child: Text(
-                                            'Subscribe',
+                                            'Join event',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
-                                              color: Theme
-                                                  .of(context)
+                                              color: Theme.of(context)
                                                   .colorScheme
                                                   .surface,
                                               fontSize: 18,
@@ -449,7 +412,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
               ),
             );
           }
-        }
-    );
+        });
   }
 }

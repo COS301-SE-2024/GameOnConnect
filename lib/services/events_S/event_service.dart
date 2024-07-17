@@ -153,21 +153,53 @@ class Events {
   Future<void> subscribeToEvent(Event subscribed) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
-    try{
-      if(currentUser != null) {
-        await db.collection('events').doc(subscribed.eventID).set({
+    try {
+      if (currentUser != null) {
+        await db.collection('events').doc(subscribed.eventID).update({
           'subscribed': FieldValue.arrayUnion([currentUser.uid])
-        }, SetOptions(merge: true));
+        });
       }
-    }catch (e){
+    } catch (e) {
       throw("unable to subscribe to event");
+    }
   }
 
-  }
+
+    Future<void> unsubscribeToEvent(Event subscribed) async {
+      FirebaseFirestore db = FirebaseFirestore.instance;
+      final currentUser = FirebaseAuth.instance.currentUser;
+      try{
+        if(currentUser != null) {
+          subscribed.subscribed.remove(currentUser.uid);
+          await db.collection('events').doc(subscribed.eventID).update({
+            'subscribed': FieldValue.arrayRemove([currentUser.uid])
+
+          },);
+        }
+      }catch (e){
+        throw("unable to subscribe to event");
+      }
+
+
+    }
+
+    bool isSubscribed(Event e) {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        for (var i in e.subscribed) {
+          if (i == currentUser.uid) {
+            return true;
+          }
+        }
+        return false;
+      }
+      return false;
+    }
 
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
+
     try{
       if(currentUser != null) {
         await db.collection('events').doc(joined.eventID).set({
