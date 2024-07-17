@@ -752,10 +752,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                               const Spacer(),
                               Flexible(
+                                flex: 5,
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
+                                  padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                                  child: Wrap(
+                                    // mainAxisSize: MainAxisSize.min,
+                                    spacing: 1,
+                                    runSpacing: 1,
                                     children: snapshot.data!.getStyledGenres(context),
                                   )
                                 )
