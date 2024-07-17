@@ -8,7 +8,7 @@ class ChatPage extends StatefulWidget {
   final String profileName;
   final String receiverID;
 
-  ChatPage({
+  const ChatPage({
     super.key,
     required this.profileName,
     required this.receiverID,
