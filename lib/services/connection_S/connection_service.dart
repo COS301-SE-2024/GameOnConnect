@@ -2,7 +2,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:gameonconnect/model/connection_M/user_model.dart';
+import '../../../model/connection_M/user_model.dart' as user;
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 
 class ConnectionService {
@@ -21,6 +24,7 @@ class ConnectionService {
 
   //Read friends from database
   Future<List<String>> getConnections(String who) async {
+    print('about to get connections');
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
@@ -43,6 +47,7 @@ class ConnectionService {
           return requests;
         }
         else{
+          print("no snapshot");
           return []; //return an empty array
         }
 
@@ -55,7 +60,7 @@ class ConnectionService {
     }
   }
 
-   Future<List<String>> getConnectionRequests() async {
+   /*Future<List<String>> getConnectionRequests() async {
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
@@ -75,7 +80,7 @@ class ConnectionService {
     } catch (e) {
       return []; //return an empty array
     }
-  }
+  }*/
 
   void acceptConnectionRequest(String requesterUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
@@ -122,6 +127,8 @@ class ConnectionService {
           }
 
         }
+        //StorageService storageService = StorageService();
+          //String profilePictureUrl = await storageService.getProfilePictureUrl(userId);
 
 
         Map<String,dynamic>? d =
@@ -139,6 +146,27 @@ class ConnectionService {
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<List<user.User>?> getConnectionRequests() async
+  {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      List<user.User> list = [];
+
+      if (currentUser != null) {
+        List<String>? connections = await ConnectionService().getConnections(
+            'requests');
+        for (var i in connections) {
+          user.User u = user.User.fromMap(
+              await ConnectionService().fetchFriendProfileData(i));
+          list.add(u);
+        }
+      }
+      return list;
+    } catch (e) {
+      throw('Error: $e');
     }
   }
 }
