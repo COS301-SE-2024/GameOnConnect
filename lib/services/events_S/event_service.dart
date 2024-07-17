@@ -8,7 +8,7 @@ import '../connection_S/connection_service.dart';
 import '../../model/events_M/events_model.dart';
 
 class Events {
-  Future<List<Event>> fetchAllEvents() async {
+  Stream<List<Event>> fetchAllEvents()  async* {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -27,10 +27,23 @@ class Events {
           }
         }
       }
-      return all;
+      yield all;
     } catch (e) {
       throw ("Error fetching events: $e");
     }
+  }
+
+  Future<Event?> getEvent(String id) async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    Event? e;
+    DocumentSnapshot doc= await db.collection('events').doc(id).get();
+    if(doc.exists){
+      Map<String,dynamic> data = doc.data() as Map<String,dynamic>;
+      e = Event.fromMap(data, id);
+    }
+    return e;
+
+
   }
 
   Future<void> createEvent(
@@ -78,7 +91,7 @@ class Events {
         db.collection("events").doc(id).set(data);
       }
     } catch (e) {
-      throw(e);
+      rethrow;
     }
   }
   
@@ -114,7 +127,7 @@ class Events {
 
   List<Event> getSubscribedEvents(List<Event>? allEvents) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    List<Event> subscribed = [];
+    List<Event> subscribed = [] ;
     for (var i in allEvents!) {
       for (var j in i.subscribed) {
         if (j == currentUser?.uid) {
@@ -167,8 +180,7 @@ class Events {
 
     Future<void> unsubscribeToEvent(Event subscribed) async {
       FirebaseFirestore db = FirebaseFirestore.instance;
-      final currentUser = FirebaseAuth.instance.currentUser;
-      try{
+      final currentUser = FirebaseAuth.instance.currentUser;try{
         if(currentUser != null) {
           subscribed.subscribed.remove(currentUser.uid);
           await db.collection('events').doc(subscribed.eventID).update({
@@ -177,7 +189,7 @@ class Events {
           },);
         }
       }catch (e){
-        throw("unable to subscribe to event");
+        throw("unable to unsubscribe from event");
       }
 
 

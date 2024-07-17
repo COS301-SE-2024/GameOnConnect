@@ -10,7 +10,7 @@ class ViewEventDetailsWidget extends StatefulWidget {
 }
 
 class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
-  late final Event e;
+  late Event e;
   late String imageUrl;
   late bool selected ;
 
@@ -24,6 +24,13 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
     imageUrl = await Events().getEventImage(e.eventID);
   }
 
+  void getUpdatedEvent(String id) async{
+    Event updated = (await Events().getEvent(id))!;
+    setState(() {
+      e = updated;
+    });
+
+  }
   @override
   void dispose() {
     super.dispose();
@@ -106,13 +113,17 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        selected = !selected;
+                                        !selected ;
                                       });
                                       if (selected) {
+
                                         Events().unsubscribeToEvent(e);
                                       } else {
+
                                         Events().subscribeToEvent(e);
                                       }
+                                      getUpdatedEvent(e.eventID);
+
                                     },
                                     icon: selected
                                         ? const Icon(Icons.notification_add)
@@ -383,6 +394,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         child: MaterialButton(
                                           onPressed: () {
                                             Events().joinEvent(e);
+                                            getUpdatedEvent(e.eventID);
                                           },
                                           child: Text(
                                             'Join event',
