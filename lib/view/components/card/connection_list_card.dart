@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -113,12 +114,18 @@ Widget build(BuildContext context) {
                   padding: const EdgeInsets.all(2),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(44),
-                    child: Image.network(
+                    /*child: Image.network(
                       image,
                       width: 44,
                       height: 44,
                       fit: BoxFit.cover,
-                    ),
+                    ),*/
+                    child: CachedNetworkImage(
+                              imageUrl: image,
+                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),
                   ),
                 ),
               ),
