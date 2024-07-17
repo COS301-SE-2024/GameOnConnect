@@ -1,4 +1,4 @@
-import '../../../model/events_M/evets_model.dart';
+import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
 import '../../components/card/joined_event_card.dart';
 import 'package:flutter/material.dart';
@@ -72,9 +72,10 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         getSubscribedEvents();
                         getMyEvents();
                         getJoinedEvents();
-                        return DefaultTabController(
+                        return SingleChildScrollView(child:  DefaultTabController(
                           length: 3,
-                          child: Column(
+                          child: Wrap( children: [Column(
+
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Align(
@@ -106,7 +107,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                     itemCount: joinedEvents?.length,
                                     carouselController: CarouselController(),
                                     options: CarouselOptions(
-                                      initialPage: 1,
+                                      initialPage: 0,
                                       viewportFraction: 0.5,
                                       disableCenter: true,
                                       enlargeCenterPage: true,
@@ -156,6 +157,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       children: [
                                         Expanded(
                                           child: Column(
+
                                             children: [
                                               Align(
                                                 alignment:
@@ -423,6 +425,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                               ),
                             ],
                           ),
+                          ],
+                          ),
+                        ),
                         );
                       }
                     }))));

@@ -18,13 +18,14 @@ class _CreateEventsState extends State<CreateEvents> {
 
   bool isChanged = false;
   final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
   int gameID = 1; // hard coding this for now
   String? type;
   List<String>? invites = [];
 
   Future create() async {
     await Events().createEvent(selectedOption, _datePicked, nameController.text,
-        _endDatePicked, gameID, isChanged, invites!);
+        _endDatePicked, gameID, isChanged, invites!,"",descriptionController.text);
   }
 
   @override
@@ -35,6 +36,8 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void dispose() {
     super.dispose();
+    nameController.clear;
+    descriptionController.clear();
   }
 
   @override
@@ -63,6 +66,7 @@ class _CreateEventsState extends State<CreateEvents> {
                               maxWidth: 770,
                             ),
                             decoration: const BoxDecoration(),
+
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16, 12, 16, 0),
@@ -70,32 +74,145 @@ class _CreateEventsState extends State<CreateEvents> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    /*ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.asset(
+                                        'Logo_dark.png',
+                                        width: 359,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),*/
                                     TextFormField(
                                       controller: nameController,
-                                      textCapitalization:
-                                          TextCapitalization.words,
+                                      textCapitalization: TextCapitalization.words,
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                          hintText: 'Event name...',
-                                          hintStyle: TextStyle(
-                                            fontFamily: 'Inter',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 24,
-                                            letterSpacing: 0,
-                                            fontWeight: FontWeight.w500,
-                                          )),
+                                        labelText: 'Event name...',
+                                        labelStyle:TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontSize: 16,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+
+                                        filled: true,
+                                        fillColor: Theme.of(context).colorScheme.surface,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 20, 16, 20),
+                                      ),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 24,
+                                        color: Theme.of(context).colorScheme.secondary,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
                                       ),
+                                      cursorColor: Theme.of(context).colorScheme.primary,
                                     ),
+
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            size: 24,
+                                          ),
+                                          Text(
+                                            'Choose a game to play...',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      controller: descriptionController,
+                                      textCapitalization: TextCapitalization.words,
+                                      obscureText: false,
+                                      decoration: InputDecoration(
+                                        labelText: 'Description...',
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        alignLabelWithHint: true,
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontSize: 14,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        filled: true,
+                                        fillColor: Theme.of(context).colorScheme.surface,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                                      ),
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Theme.of(context).colorScheme.secondary,
+                                        fontSize: 16,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      maxLines: 9,
+                                      minLines: 5,
+                                      cursorColor: Theme.of(context).colorScheme.primary,
+                                    ),
+
                                     const SizedBox(
                                       height: 20,
                                     ),
@@ -407,9 +524,11 @@ class _CreateEventsState extends State<CreateEvents> {
                         const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
                     child: MaterialButton(
                       onPressed: () {
+                        nameController.clear;
                         create();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: const Text("Event created successfully!"),
+
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                         ));

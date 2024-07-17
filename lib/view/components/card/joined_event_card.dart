@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../model/events_M/evets_model.dart';
+import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
+import '../../../model/events_M/events_model.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
    final Event? e;
@@ -12,7 +13,7 @@ class UpcomingEventCardWidget extends StatefulWidget {
 }
 
 class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
-
+  late Event e;
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -21,6 +22,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
   @override
   void initState() {
     super.initState();
+    e = widget.e!;
   }
 
   @override
@@ -31,7 +33,10 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return InkWell( onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ViewEventDetailsWidget(e: e)));
+    },
+      child:Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
       child: Container(
         width: double.infinity,
@@ -91,6 +96,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
           ),
         ),
       ),
+    ),
     );
   }
 }
