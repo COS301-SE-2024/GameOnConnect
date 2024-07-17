@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../../model/connection_M/user_model.dart' as user;
 import '../connection_S/connection_service.dart';
 import '../../model/events_M/events_model.dart';
@@ -43,9 +46,12 @@ class Events {
       ) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
+      final storage = FirebaseStorage.instance.ref();
       final currentUser = FirebaseAuth.instance.currentUser;
+
       if (currentUser != null) {
         String id = db.collection('events').doc().id;
+
         final data = <String, dynamic>{
           "name": name,
           "eventType": type,
@@ -58,13 +64,31 @@ class Events {
           "teams": [],
           "creatorID": currentUser.uid,
           "subscribed": invited,
-          "image_url": url,
+          // image url is in bucket, under events/eventID
           "description": description,
         };
+
+        if(!url.startsWith('assets'))
+          {
+            // default image not stored, there will just not be a event image with the event id
+          final imageStorage = storage.child('events/$id');
+          await imageStorage.putFile(File(url));
+        }
+
         db.collection("events").doc(id).set(data);
       }
     } catch (e) {
-      //print("ERROR: $e");
+      throw(e);
+    }
+  }
+  
+  Future<String> getEventImage(String id) async{
+    final storage = FirebaseStorage.instance.ref();
+    try{
+      return await storage.child('events/$id').getDownloadURL();
+      
+    }catch (e){
+      return await storage.child('events/default_image.jpg').getDownloadURL();
     }
   }
 

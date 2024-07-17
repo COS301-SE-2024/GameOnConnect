@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 
@@ -15,17 +18,28 @@ class _CreateEventsState extends State<CreateEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
-
+   XFile? filePath ;
   bool isChanged = false;
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   int gameID = 1; // hard coding this for now
+
   String? type;
   List<String>? invites = [];
 
   Future create() async {
     await Events().createEvent(selectedOption, _datePicked, nameController.text,
-        _endDatePicked, gameID, isChanged, invites!,"",descriptionController.text);
+        _endDatePicked, gameID, isChanged, invites!,filePath != null? filePath!.path: 'assets/default_images/default_image.jpg' ,descriptionController.text);
+  }
+
+  Future pickImage() async{
+    final image = ImagePicker();
+    final file = await image.pickImage(source: ImageSource.gallery);
+    if(file != null){
+      setState(() {
+        filePath = file;
+      });
+    }
   }
 
   @override
@@ -74,15 +88,25 @@ class _CreateEventsState extends State<CreateEvents> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    /*ClipRRect(
+                                    InkWell(
+                                      onTap: (){pickImage();},
+                                    child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: Image.asset(
-                                        'Logo_dark.png',
-                                        width: 359,
-                                        height: 200,
-                                        fit: BoxFit.cover,
+                                           child: filePath != null ? Image.file(
+                                            File(filePath!.path
+                                            ), width: 359,
+                                             height: 200,
+                                             fit: BoxFit.cover,)
+                                               : Image.asset( 'assets/default_images/default_image.jpg', width: 359,
+                                             height: 200,
+                                             fit: BoxFit.cover,),
+
+
                                       ),
-                                    ),*/
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     TextFormField(
                                       controller: nameController,
                                       textCapitalization: TextCapitalization.words,
@@ -206,7 +230,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                         color: Theme.of(context).colorScheme.secondary,
                                         fontSize: 16,
                                         letterSpacing: 0,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                       maxLines: 9,
                                       minLines: 5,
