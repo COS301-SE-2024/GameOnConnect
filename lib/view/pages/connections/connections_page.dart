@@ -292,7 +292,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                       .white, // Set your desired icon color
                                 ),
                                 label: const Text('Disconnect',
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(color: Colors.black)),
                                 style: ButtonStyle(
                                   backgroundColor:
                                       WidgetStateProperty.all<Color>(
@@ -308,11 +308,9 @@ class _FriendSearchState extends State<FriendSearch> {
                                       Icons.hourglass_bottom,
                                       color: Colors.white,
                                     ),
-                                    label: Text('Pending',
+                                    label: const Text('Pending',
                                         style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary)),
+                                            color: Colors.black)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
@@ -329,11 +327,9 @@ class _FriendSearchState extends State<FriendSearch> {
                                           .colorScheme
                                           .secondary,
                                     ),
-                                    label: Text('Connect',
+                                    label: const Text('Connect',
                                         style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary)),
+                                            color: Colors.black)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
