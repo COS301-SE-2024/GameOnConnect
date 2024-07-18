@@ -5,10 +5,10 @@ class SearchField extends StatefulWidget {
   final Function(String) onSearch;
 
   const SearchField(
-      {Key? key, required this.controller, required this.onSearch})
-      : super(key: key);
+      {super.key, required this.controller, required this.onSearch});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SearchFieldState createState() => _SearchFieldState();
 }
 
@@ -29,7 +29,7 @@ class _SearchFieldState extends State<SearchField> {
             ),
           ),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         IconButton.filled(
           color: Colors.black,
           icon: const Icon(Icons.search),

@@ -10,7 +10,6 @@ import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class GameLibrary extends StatefulWidget {
