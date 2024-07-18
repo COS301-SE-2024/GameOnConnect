@@ -10,7 +10,6 @@ import '../../../model/connection_M/friend_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FriendSearch extends StatefulWidget {
-
   // ignore: use_key_in_widget_constructors
   const FriendSearch();
 
@@ -56,7 +55,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   Future<void> _fetchUsers() async {
     try {
-     List<AppUser> users = await _userService.fetchAllUsers();
+      List<AppUser> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -197,8 +196,7 @@ class _FriendSearchState extends State<FriendSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserConnectionsStream(
-        _currentUserId),
+        stream: _userService.getCurrentUserConnectionsStream(_currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -223,7 +221,8 @@ class _FriendSearchState extends State<FriendSearch> {
               context,
             );
             //return Center(child: Text('Error: ${snapshot.error}')); to see the error in the page
-            return const Center(child: Text('Please check your internet connection.'));
+            return const Center(
+                child: Text('Please check your internet connection.'));
           }
           Friend? currentUserConnectionData = snapshot.data;
           List<AppUser> filteredUsers = _users
@@ -238,38 +237,37 @@ class _FriendSearchState extends State<FriendSearch> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                      // Update filteredUsers here based on the new search query
-                      filteredUsers = _users
-                          .where((user) =>
-                              user.username
-                                  .toLowerCase()
-                                  .contains(_searchQuery.toLowerCase()) &&
-                              user.uid != _currentUserId)
-                          .toList();
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search by profile name',
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.search),
-                    labelText: 'Search',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          // Clear the search query and show all users
-                          _searchQuery = '';
-                          filteredUsers = _users;
-                        });
-                      },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
+                          hintText: 'Search by profile name',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.search),
+                          labelText: 'Search',
+                        ),
+                      ),
                     ),
-                  ),
+                    IconButton.filled(
+                      color: Colors.black,
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        // Update filteredUsers here based on the new search query
+                        setState(() {
+                          _searchQuery = _searchController.text;
+                        });
+                        filteredUsers = _users
+                            .where((user) =>
+                                user.username
+                                    .toLowerCase()
+                                    .contains(_searchQuery.toLowerCase()) &&
+                                user.uid != _currentUserId)
+                            .toList();
+                      },
+                    )
+                  ],
                 ),
               ),
               if (filteredUsers.isEmpty)
@@ -282,12 +280,12 @@ class _FriendSearchState extends State<FriendSearch> {
                     itemCount: filteredUsers.length,
                     itemBuilder: (context, index) {
                       AppUser user = filteredUsers[index];
-                      bool isConnection =
-                          currentUserConnectionData?.friends.contains(user.uid) ??
-                              false;
-                      bool isPending =
-                          currentUserConnectionData?.pending.contains(user.uid) ??
-                              false;
+                      bool isConnection = currentUserConnectionData?.friends
+                              .contains(user.uid) ??
+                          false;
+                      bool isPending = currentUserConnectionData?.pending
+                              .contains(user.uid) ??
+                          false;
 
                       return ListTile(
                         /*leading:  CircleAvatar(
@@ -327,24 +325,32 @@ class _FriendSearchState extends State<FriendSearch> {
                                       Icons.hourglass_bottom,
                                       color: Colors.white,
                                     ),
-                                    label:  Text('Pending',
-                                        style: TextStyle(color:Theme.of(context).colorScheme.secondary)),
+                                    label: Text('Pending',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                            Theme.of(context).colorScheme.primary,
+                                        Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   )
                                 : ElevatedButton.icon(
                                     onPressed: () =>
                                         _sendConnectionRequest(user.uid),
-                                    icon:  Icon(
+                                    icon: Icon(
                                       Icons.person_add,
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
-                                    label:  Text('Connect',
-                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                                    label: Text('Connect',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
