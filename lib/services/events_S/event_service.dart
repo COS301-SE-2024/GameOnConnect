@@ -105,16 +105,17 @@ class Events {
     }
   }
 
-  Future<List<user.User>?> getConnectionsForInvite() async {
+  Future<List<user.AppUser>?> getConnectionsForInvite() async
+  {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
-      List<user.User> list = [];
+      List<user.AppUser> list = [];
 
       if (currentUser != null) {
         List<String>? connections =
             await ConnectionService().getConnections('connections');
         for (var i in connections) {
-          user.User u = user.User.fromMap(
+          user.AppUser u = user.AppUser.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
           list.add(u);
         }

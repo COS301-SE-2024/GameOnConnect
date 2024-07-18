@@ -13,7 +13,7 @@ class ConnectionRequestList extends StatefulWidget {
 
 class _ConnectionRequestListState extends State<ConnectionRequestList> {
 
-  List<user.User>? list;
+  List<user.AppUser>? list;
 
 
   @override
@@ -54,7 +54,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
         title: const Text('Connection Requests'),
     ),
     
-      body:  FutureBuilder<List<user.User>?>(
+      body:  FutureBuilder<List<user.AppUser>?>(
               future: ConnectionService().getConnectionRequests(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -80,7 +80,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            user.User? i = list![index];
+                            user.AppUser? i = list![index];
 
                             return ConnectionCardWidget(
                                 image: i.profilePicture,

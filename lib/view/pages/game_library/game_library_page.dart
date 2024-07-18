@@ -9,6 +9,8 @@ import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:gameonconnect/view/pages/connections/connections_page.dart';
+import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -59,22 +61,19 @@ class _GameLibraryState extends State<GameLibrary> {
   void _navigateToGameDetails(Game game) async {
     // ignore_for_file: use_build_context_synchronously
     bool result = await InternetConnection().hasInternetAccess;
-    if(result) {
+    if (result) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => GameDetailsPage(gameId: game.id),
         ),
       );
-    }else
-      {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  "Unable to fetch data, check internet connection"),
-              backgroundColor: Colors.red,
-            ));
-      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Unable to fetch data, check internet connection"),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
   void _onSearchEntered(String query) {
@@ -101,7 +100,7 @@ class _GameLibraryState extends State<GameLibrary> {
   //   );
   // }
 
-  Future<void> _runApiRequest(String request) async {   
+  Future<void> _runApiRequest(String request) async {
     if (_isLoading) return;
     setState(() {
       _isLoading = true;
@@ -161,37 +160,12 @@ class _GameLibraryState extends State<GameLibrary> {
             appBar: appBar(context),
             body: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: TextField(
-                    key: Key('searchTextField'),
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 15, right: 15),
-                      labelText: 'Search',
-                      suffixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100)),
-                    ),
-                    onSubmitted: _onSearchEntered,
-                  ),
-                ),
-                FilledButton(
-                    onPressed: () => clearFilters(),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text('Clear filters'),
-                        Icon(Icons.clear),
-                      ],
-                    )),
-                sortFilter(context),
-                TabBar.secondary(tabs: const [
-                  Tab(text: 'GAMES'),
-                  Tab(text: 'FRIENDS'),
-                ]),
+                TabBar(tabs: const [
+                    Tab(text: 'GAMES'),
+                    Tab(text: 'GAMERS'),
+                  ]),
                 Expanded(
-                    child: TabBarView(children: [gameList(), friendList()]))
+                    child: TabBarView(children: [games(), FriendSearch()])),
               ],
             )));
   }
@@ -327,8 +301,10 @@ class _GameLibraryState extends State<GameLibrary> {
                 TextButton(
                   onPressed: () {
                     Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => FilterPage(apiFunction: _runApiRequest)),
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              FilterPage(apiFunction: _runApiRequest)),
                     );
                   },
                   child: Row(
@@ -356,14 +332,41 @@ class _GameLibraryState extends State<GameLibrary> {
     return AppBar(
       title: Text("Search",
           style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-      actions: [
-        Icon(
-          Icons.account_circle_outlined,
-          color: Theme.of(context).colorScheme.primary,
-          size: 32,
-        )
-      ],
     );
+  }
+
+  Widget games() {
+    return Column(
+      children: [
+      Padding(
+        padding: const EdgeInsets.all(12),
+        child: SearchField(
+          controller: _searchController,
+          onSearch: (query) {
+            _onSearchEntered(query);
+          },
+        )
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: SizedBox(
+          height: 40,
+          width: 200,
+          child: FilledButton(
+              onPressed: () => clearFilters(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text('Clear filters'),
+                  Icon(Icons.clear),
+                ],
+              )),
+        ),
+      ),
+      sortFilter(context),
+      Expanded(child: gameList(),)
+    ]);
   }
 
   ListView gameList() {
@@ -383,94 +386,92 @@ class _GameLibraryState extends State<GameLibrary> {
             SizedBox(
               height: 120,
               child: InkWell(
-                onTap:  () => {
-
-                  _navigateToGameDetails(game)},
-                child:Row(
-                children: [
-                  // ignore: sized_box_for_whitespace
-                  Container(
-                    height: 120,
-                    width: 134,
-                    child: CachedNetworkImage(
-                      //cacheManager: customCacheManager,
-                      imageUrl: game.backgroundImage,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+                onTap: () => {_navigateToGameDetails(game)},
+                child: Row(
+                  children: [
+                    // ignore: sized_box_for_whitespace
+                    Container(
+                      height: 120,
+                      width: 134,
+                      child: CachedNetworkImage(
+                        //cacheManager: customCacheManager,
+                        imageUrl: game.backgroundImage,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
                         ),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        fadeInDuration: Duration(milliseconds: 0),
+                        fadeOutDuration: Duration(milliseconds: 0),
+                        maxHeightDiskCache: 120,
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      fadeInDuration: Duration(milliseconds: 0),
-                      fadeOutDuration: Duration(milliseconds: 0),
-                      maxHeightDiskCache: 120,
-                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                  ),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          game.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Row(children: game.getPlatformIcons(context)),
-                        Text("Released: ${game.released}"),
-                        Row(
-                          children: [
-                            Text("Genres:"),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: game.getStyledGenres(context),
-                              ),
-                            )
-                          ],
-                        ),
-                        Text("Reviews: ${game.reviewsCount}")
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                            left: 5, top: 3, right: 5, bottom: 3),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        child: Text("${game.score}",
+                    SizedBox(width: 15),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            game.name,
                             style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 12)),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Row(children: game.getPlatformIcons(context)),
+                          Text("Released: ${game.released}"),
+                          Row(
+                            children: [
+                              Text("Genres:"),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: game.getStyledGenres(context),
+                                ),
+                              )
+                            ],
+                          ),
+                          Text("Reviews: ${game.reviewsCount}")
+                        ],
                       ),
-                      Icon(Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.secondary),
-                      SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: 5, top: 3, right: 5, bottom: 3),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          child: Text("${game.score}",
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 12)),
+                        ),
+                        Icon(Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.secondary),
+                        SizedBox(
+                          height: 10,
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ]),

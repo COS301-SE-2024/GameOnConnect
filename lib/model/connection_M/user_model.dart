@@ -1,18 +1,18 @@
-class User {
+class AppUser {
   final String uid;
   String profilePicture;
   final String profileName;
   final String username;
   final String uniqueNum;
-  User(
+  AppUser(
       {required this.uid,
       required this.profilePicture,
       required this.profileName,
       required this.username,
       required this.uniqueNum});
 
-  factory User.fromMap(Map<String, dynamic>? data) {
-    return User(
+  factory AppUser.fromMap(Map<String, dynamic>? data) {
+    return AppUser(
       uid: data?['userID'],
       profilePicture: data?['profile_picture'],
       profileName: data?['name'],

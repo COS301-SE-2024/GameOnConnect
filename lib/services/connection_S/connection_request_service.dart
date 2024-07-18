@@ -21,14 +21,14 @@ class UserService {
 
   // Fetch all users
 
- Future<List<User>> fetchAllUsers() async {
+ Future<List<AppUser>> fetchAllUsers() async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('profile_data').get();
-      List<User> users = [];
+      List<AppUser> users = [];
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
-          User currentuser =User.fromMap(data);
+          AppUser currentuser = AppUser.fromMap(data);
 
           //await currentuser.setpicture(data); // Await the result
           users.add(currentuser);
