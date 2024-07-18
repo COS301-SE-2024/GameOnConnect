@@ -134,7 +134,6 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     bool isCurrentuser = data['userID'] == _authService.getCurrentUser()!.uid;
-    print(data);
     var alignment =
         isCurrentuser ? Alignment.centerRight : Alignment.centerLeft;
 

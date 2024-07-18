@@ -19,23 +19,31 @@ class ChatBubble extends StatelessWidget {
     DateTime dateTime = time.toDate();
     return Container(
       decoration: BoxDecoration(
-        color: isCurrentuser ? Theme.of(context).colorScheme.primary : const Color.fromARGB(255, 107, 188, 255),
+        color: isCurrentuser
+            ? Theme.of(context).colorScheme.primary
+            : const Color.fromARGB(255, 107, 188, 255),
         borderRadius: BorderRadius.circular(17),
       ),
       padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(vertical: 5,horizontal: 25),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       child: Column(
         children: [
-          Text(message),
+          Text(
+            message,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.surface,
+              fontWeight: FontWeight.bold
+            ),
+          ),
           Text(
             DateFormat('hh:mm a').format(dateTime),
             style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.surface,
             ),
           ),
         ],
-        ),
+      ),
     );
   }
 }
