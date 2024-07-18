@@ -143,7 +143,7 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  void _unfollowUser(String targetUserId) async {
+  void _disconnect(String targetUserId) async {
     try {
       await _userService.disconnect(widget.currentUserId, targetUserId);
       _fetchData();
@@ -284,7 +284,7 @@ class _FriendSearchState extends State<FriendSearch> {
                         title: Text(user.username),
                         trailing: isConnection
                             ? ElevatedButton.icon(
-                                onPressed: () => _unfollowUser(user.uid),
+                                onPressed: () => _disconnect(user.uid),
                                 icon: const Icon(
                                   Icons.person_remove,
                                   color: Colors
