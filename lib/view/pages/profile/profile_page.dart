@@ -99,13 +99,17 @@ class _ProfileState extends State<Profilenew>  {
                                               TextSpan(
                                                 text: '${profileData.numberOfconnections}',
                                                 style: const TextStyle(
+                                                  color: Colors.black,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                               const TextSpan(
                                                 text: ' Connections',
-                                                style: TextStyle(fontSize: 16),
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                   color: Colors.black,
+                                                  ),
                                               ),
                                             ],
                                           ),
