@@ -85,6 +85,7 @@ flutter:
   assets:
     - .env
     - "assets/icons/"
+    - "assets/default_images/"
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
