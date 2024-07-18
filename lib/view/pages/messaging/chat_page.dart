@@ -134,14 +134,14 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     bool isCurrentuser = data['userID'] == _authService.getCurrentUser()!.uid;
-
+    print(data);
     var alignment =
         isCurrentuser ? Alignment.centerRight : Alignment.centerLeft;
 
     return Container(
       alignment: alignment,
       child: ChatBubble(
-          message: data["message_text"], isCurrentuser: isCurrentuser),
+          message: data["message_text"], isCurrentuser: isCurrentuser, time: data["timestamp"],),
     );
   }
 
