@@ -100,42 +100,7 @@ class UserService {
   }
 
 
-  // Accept Connection request
-  Future<void> acceptConnectionRequest(String? currentUserId , String requesterUserId) async {
-    try {
-      
-      // Add each other to friends list
-      await _firestore.collection('connections').doc(currentUserId).update({
-        'connections': FieldValue.arrayUnion([requesterUserId]),
-        'connection_requests': FieldValue.arrayRemove([requesterUserId])
-      });
-
-      await _firestore.collection('connections').doc(requesterUserId).update({
-        'connections': FieldValue.arrayUnion([currentUserId]),
-        'pending': FieldValue.arrayRemove([currentUserId])
-      });
-    } catch (e) {
-      throw Exception('Error accepting connection request: $e');
-    }
-  }
-
-  //reject friend request
-  Future<void> rejectConnectionRequest(String? currentUserId, String requesterUserId) async {
-    try {
-      // Add each other to friends list
-      await _firestore.collection('connections').doc(currentUserId).update({
-        'connection_requests': FieldValue.arrayRemove([requesterUserId])
-      });
-
-      await _firestore.collection('connections').doc(requesterUserId).update({
-        'pending': FieldValue.arrayRemove([currentUserId]) 
-        // later might have to send a notification to let the other user they were rejected
-      });
-    } catch (e) {
-      throw Exception('Error rejecting connection request: $e');
-    }
-  } 
-
+  
   // Unfollow user
   Future<void> disconnect(String currentUserId, String targetUserId) async {
     try {
