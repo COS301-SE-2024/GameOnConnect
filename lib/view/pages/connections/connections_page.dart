@@ -7,12 +7,12 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import '../../../services/connection_S/connection_request_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../../model/connection_M/friend_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FriendSearch extends StatefulWidget {
-  final String currentUserId;
 
   // ignore: use_key_in_widget_constructors
-  const FriendSearch(this.currentUserId);
+  const FriendSearch();
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,18 +22,41 @@ class FriendSearch extends StatefulWidget {
 class _FriendSearchState extends State<FriendSearch> {
   final TextEditingController _searchController = TextEditingController();
   final UserService _userService = UserService();
-  List<User> _users = [];
+  List<AppUser> _users = [];
   String _searchQuery = '';
+  String _currentUserId = '';
 
   @override
   void initState() {
     super.initState();
     _fetchUsers();
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      _currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    } else {
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'An error occurred. Try to login again.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
   }
 
   Future<void> _fetchUsers() async {
     try {
-     List<User> users = await _userService.fetchAllUsers();
+     List<AppUser> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -62,7 +85,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   Future<void> _fetchData() async {
     try {
-      List<User> users = await _userService.fetchAllUsers();
+      List<AppUser> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -91,7 +114,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _sendConnectionRequest(String targetUserId) async {
     try {
-      await _userService.sendConnectionRequest(widget.currentUserId, targetUserId);
+      await _userService.sendConnectionRequest(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //Error sending Connection request.
@@ -118,7 +141,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _undoConnectionRequest(String targetUserId) async {
     try {
-      await _userService.undoConnectionRequest(widget.currentUserId, targetUserId);
+      await _userService.undoConnectionRequest(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error canceling friend request'
@@ -145,7 +168,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _unfollowUser(String targetUserId) async {
     try {
-      await _userService.disconnect(widget.currentUserId, targetUserId);
+      await _userService.disconnect(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error unfollowing user'
@@ -174,8 +197,8 @@ class _FriendSearchState extends State<FriendSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserConnectionsStream(widget.
-        currentUserId),
+        stream: _userService.getCurrentUserConnectionsStream(
+        _currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -203,12 +226,12 @@ class _FriendSearchState extends State<FriendSearch> {
             return const Center(child: Text('Please check your internet connection.'));
           }
           Friend? currentUserConnectionData = snapshot.data;
-          List<User> filteredUsers = _users
+          List<AppUser> filteredUsers = _users
               .where((user) =>
                   user.username
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase()) &&
-                  user.uid != widget.currentUserId) // Exclude current user
+                  user.uid != _currentUserId) // Exclude current user
               .toList();
 
           return Column(
@@ -226,7 +249,7 @@ class _FriendSearchState extends State<FriendSearch> {
                               user.username
                                   .toLowerCase()
                                   .contains(_searchQuery.toLowerCase()) &&
-                              user.uid != widget.currentUserId)
+                              user.uid != _currentUserId)
                           .toList();
                     });
                   },
@@ -258,7 +281,7 @@ class _FriendSearchState extends State<FriendSearch> {
                   child: ListView.builder(
                     itemCount: filteredUsers.length,
                     itemBuilder: (context, index) {
-                      User user = filteredUsers[index];
+                      AppUser user = filteredUsers[index];
                       bool isConnection =
                           currentUserConnectionData?.friends.contains(user.uid) ??
                               false;

@@ -165,7 +165,7 @@ class _GameLibraryState extends State<GameLibrary> {
                     Tab(text: 'GAMERS'),
                   ]),
                 Expanded(
-                    child: TabBarView(children: [games(), FriendSearch('oD6vFzqP14MmNNyfWtxPnZVtZQQ2')])),
+                    child: TabBarView(children: [games(), FriendSearch()])),
               ],
             )));
   }
