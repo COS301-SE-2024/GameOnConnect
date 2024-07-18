@@ -173,9 +173,6 @@ class _FriendSearchState extends State<FriendSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Connections'),
-      ),
       body: StreamBuilder<Friend?>(
         stream: _userService.getCurrentUserConnectionsStream(widget.
         currentUserId),

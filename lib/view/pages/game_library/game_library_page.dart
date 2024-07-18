@@ -9,6 +9,8 @@ import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:gameonconnect/view/pages/connections/connections_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -160,10 +162,10 @@ class _GameLibraryState extends State<GameLibrary> {
               children: [
                 TabBar(tabs: const [
                     Tab(text: 'GAMES'),
-                    Tab(text: 'FRIENDS'),
+                    Tab(text: 'GAMERS'),
                   ]),
                 Expanded(
-                    child: TabBarView(children: [games(), friendList()])),
+                    child: TabBarView(children: [games(), FriendSearch('oD6vFzqP14MmNNyfWtxPnZVtZQQ2')])),
               ],
             )));
   }
@@ -342,7 +344,7 @@ class _GameLibraryState extends State<GameLibrary> {
           key: Key('searchTextField'),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.only(left: 15, right: 15),
-            labelText: 'Search',
+            labelText: 'Search games',
             suffixIcon: Icon(Icons.search),
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
@@ -350,16 +352,23 @@ class _GameLibraryState extends State<GameLibrary> {
           onSubmitted: _onSearchEntered,
         ),
       ),
-      FilledButton(
-          onPressed: () => clearFilters(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Text('Clear filters'),
-              Icon(Icons.clear),
-            ],
-          )),
+      Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15),
+        child: SizedBox(
+          height: 40,
+          width: 200,
+          child: FilledButton(
+              onPressed: () => clearFilters(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text('Clear filters'),
+                  Icon(Icons.clear),
+                ],
+              )),
+        ),
+      ),
       sortFilter(context),
       Expanded(child: gameList(),)
     ]);
