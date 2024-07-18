@@ -11,6 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -340,17 +341,12 @@ class _GameLibraryState extends State<GameLibrary> {
       children: [
       Padding(
         padding: const EdgeInsets.all(12),
-        child: TextField(
-          key: Key('searchTextField'),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(left: 15, right: 15),
-            labelText: 'Search games',
-            suffixIcon: Icon(Icons.search),
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
-          ),
-          onSubmitted: _onSearchEntered,
-        ),
+        child: SearchField(
+          controller: _searchController,
+          onSearch: (query) {
+            _onSearchEntered(query);
+          },
+        )
       ),
       Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),

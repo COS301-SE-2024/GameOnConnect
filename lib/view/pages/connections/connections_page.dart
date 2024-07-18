@@ -8,6 +8,7 @@ import '../../../services/connection_S/connection_request_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../../model/connection_M/friend_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class FriendSearch extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
@@ -236,28 +237,12 @@ class _FriendSearchState extends State<FriendSearch> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: const InputDecoration(
-                          hintText: 'Search by profile name',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.search),
-                          labelText: 'Search',
-                        ),
-                      ),
-                    ),
-                    IconButton.filled(
-                      color: Colors.black,
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        // Update filteredUsers here based on the new search query
-                        setState(() {
-                          _searchQuery = _searchController.text;
-                        });
+                  padding: const EdgeInsets.all(8.0),
+                  child: SearchField(
+                    controller: _searchController,
+                    onSearch: (query) {
+                      setState(() {
+                        _searchQuery = query;
                         filteredUsers = _users
                             .where((user) =>
                                 user.username
@@ -265,11 +250,9 @@ class _FriendSearchState extends State<FriendSearch> {
                                     .contains(_searchQuery.toLowerCase()) &&
                                 user.uid != _currentUserId)
                             .toList();
-                      },
-                    )
-                  ],
-                ),
-              ),
+                      });
+                    },
+                  )),
               if (filteredUsers.isEmpty)
                 const Center(
                     child: Text(
