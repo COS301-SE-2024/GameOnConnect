@@ -152,4 +152,8 @@ class AuthService {
     // Sign in the user with Firebase
     return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
   }
+
+  User? getCurrentUser() {
+    return FirebaseAuth.instance.currentUser;
+  }
 }
