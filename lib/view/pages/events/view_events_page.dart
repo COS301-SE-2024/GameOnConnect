@@ -1,4 +1,4 @@
-import '../../../model/events_M/evets_model.dart';
+import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
 import '../../components/card/joined_event_card.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,11 @@ class ViewEvents extends StatefulWidget {
 class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Events events = Events();
-  List<Event>? allEvents;
+  late List<Event>? allEvents;
+  late List<Event>? subscribedEvents;
+  late List<Event>? myEvents;
+  late List<Event>? joinedEvents;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +33,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
   }
 
   void getAllEvents() async {
-    allEvents = await events.fetchAllEvents();
+    //allEvents =  events.fetchAllEvents() as List<Event>?;
+    subscribedEvents= events.getSubscribedEvents(allEvents );
+    myEvents = events.getMyEvents(allEvents );
+    joinedEvents = events.getJoinedEvents(allEvents);
+
   }
 
   @override
@@ -40,17 +48,20 @@ class _HomePageWidgetState extends State<ViewEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
                 top: true,
-                child: FutureBuilder<List<Event>>(
-                    future: events.fetchAllEvents(),
+                child: StreamBuilder<List<Event>?>(
+                    stream: events.fetchAllEvents(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
-                        return DefaultTabController(
+                        allEvents = snapshot.data;
+                        getAllEvents();
+                        return SingleChildScrollView(child:  DefaultTabController(
                           length: 3,
-                          child: Column(
+                          child: Wrap( children: [Column(
+
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Align(
@@ -78,15 +89,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                 child: SizedBox(
                                   width: double.infinity,
                                   height: 150,
-                                  child: CarouselSlider(
-                                    items: const [
-                                      UpcomingEventCardWidget(),
-                                      UpcomingEventCardWidget(),
-                                      UpcomingEventCardWidget(),
-                                    ],
+                                  child: CarouselSlider.builder(
+                                    itemCount: joinedEvents?.length,
                                     carouselController: CarouselController(),
                                     options: CarouselOptions(
-                                      initialPage: 1,
+                                      initialPage: 0,
                                       viewportFraction: 0.5,
                                       disableCenter: true,
                                       enlargeCenterPage: true,
@@ -94,7 +101,12 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       enableInfiniteScroll: false,
                                       scrollDirection: Axis.horizontal,
                                       autoPlay: false,
-                                    ),
+                                    ), itemBuilder: (context,index,realIndex) {
+                                    Event i =
+                                    joinedEvents![index];
+                                    return UpcomingEventCardWidget(
+                                        e: i);
+                                  },
                                   ),
                                 ),
                               ),
@@ -131,6 +143,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       children: [
                                         Expanded(
                                           child: Column(
+
                                             children: [
                                               Align(
                                                 alignment:
@@ -232,14 +245,28 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     0),
                                                           ),
                                                         ),
-                                                        child: ListView(
+                                                        child:
+                                                            ListView.separated(
+                                                          itemCount:
+                                                              subscribedEvents!.length,
                                                           padding:
                                                               EdgeInsets.zero,
                                                           scrollDirection:
                                                               Axis.vertical,
-                                                          /*children: const [
-                                                            EventCardWidget(),
-                                                          ],*/
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            Event i =
+                                                                subscribedEvents![
+                                                                    index];
+                                                            return EventCardWidget(
+                                                                e: i);
+                                                          },
+                                                          separatorBuilder:
+                                                              (context,
+                                                                      index) =>
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
                                                         ),
                                                       ),
                                                     ),
@@ -346,19 +373,31 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     0),
                                                           ),
                                                         ),
-                                                        child: ListView(
+                                                        child:
+                                                        ListView.separated(
+                                                          itemCount:
+                                                          myEvents!.length,
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
-                                                          /*children: const [
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                            EventCardWidget(),
-                                                          ],*/
+                                                          Axis.vertical,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            Event i =
+                                                            myEvents![
+                                                            index];
+                                                            return EventCardWidget(
+                                                                e: i);
+                                                          },
+                                                          separatorBuilder:
+                                                              (context,
+                                                              index) =>
+                                                          const SizedBox(
+                                                              height:
+                                                              10),
+                                                        ),
                                                         ),
                                                       ),
-                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -372,6 +411,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                               ),
                             ],
                           ),
+                          ],
+                          ),
+                        ),
                         );
                       }
                     }))));

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
+import '../../../model/events_M/events_model.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
-  const UpcomingEventCardWidget({super.key});
+   final Event? e;
+
+  const UpcomingEventCardWidget({super.key , required this.e});
 
   @override
   State<UpcomingEventCardWidget> createState() =>
@@ -10,7 +13,7 @@ class UpcomingEventCardWidget extends StatefulWidget {
 }
 
 class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
-
+  late Event e;
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -19,6 +22,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
   @override
   void initState() {
     super.initState();
+    e = widget.e!;
   }
 
   @override
@@ -29,7 +33,10 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return InkWell( onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ViewEventDetailsWidget(e: e)));
+    },
+      child:Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
       child: Container(
         width: double.infinity,
@@ -56,7 +63,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Upcoming: Clash of Clans',
+                        'Upcoming: ${widget.e?.name}',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           color: Theme.of(context).colorScheme.secondary,
@@ -69,7 +76,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         child: Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                           child: Text(
-                            '01/07/2024\n07:30',
+                            '${widget.e?.startDate.day}/${widget.e?.startDate.month}/${widget.e?.startDate.year}\n${widget.e?.startDate.hour}:${widget.e?.startDate.minute}',
                             style: TextStyle(
                               fontFamily: 'Inter',
                               color:
@@ -89,6 +96,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
           ),
         ),
       ),
+    ),
     );
   }
 }

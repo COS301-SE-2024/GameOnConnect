@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 
-String? selectedOption="Gaming Session";
+String? selectedOption = "Gaming Session";
+
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
 
@@ -14,15 +18,28 @@ class _CreateEventsState extends State<CreateEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
-
+   XFile? filePath ;
   bool isChanged = false;
   final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
   int gameID = 1; // hard coding this for now
+
   String? type;
+  List<String>? invites = [];
 
   Future create() async {
-    await Events().createEvent(selectedOption,
-        _datePicked, nameController.text, _endDatePicked, gameID, isChanged);
+    await Events().createEvent(selectedOption, _datePicked, nameController.text,
+        _endDatePicked, gameID, isChanged, invites!,filePath != null? filePath!.path: 'assets/default_images/default_image.jpg' ,descriptionController.text);
+  }
+
+  Future pickImage() async{
+    final image = ImagePicker();
+    final file = await image.pickImage(source: ImageSource.gallery);
+    if(file != null){
+      setState(() {
+        filePath = file;
+      });
+    }
   }
 
   @override
@@ -33,6 +50,8 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void dispose() {
     super.dispose();
+    nameController.clear;
+    descriptionController.clear();
   }
 
   @override
@@ -61,6 +80,7 @@ class _CreateEventsState extends State<CreateEvents> {
                               maxWidth: 770,
                             ),
                             decoration: const BoxDecoration(),
+
                             child: Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16, 12, 16, 0),
@@ -68,32 +88,155 @@ class _CreateEventsState extends State<CreateEvents> {
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    InkWell(
+                                      onTap: (){pickImage();},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                           child: filePath != null ? Image.file(
+                                            File(filePath!.path
+                                            ), width: 359,
+                                             height: 200,
+                                             fit: BoxFit.cover,)
+                                               : Image.asset( 'assets/default_images/default_image.jpg', width: 359,
+                                             height: 200,
+                                             fit: BoxFit.cover,),
+
+
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     TextFormField(
                                       controller: nameController,
-                                      textCapitalization:
-                                          TextCapitalization.words,
+                                      textCapitalization: TextCapitalization.words,
                                       obscureText: false,
                                       decoration: InputDecoration(
-                                          hintText: 'Event name...',
-                                          hintStyle: TextStyle(
-                                            fontFamily: 'Inter',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 24,
-                                            letterSpacing: 0,
-                                            fontWeight: FontWeight.w500,
-                                          )),
+                                        labelText: 'Event name...',
+                                        labelStyle:TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontSize: 16,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+
+                                        filled: true,
+                                        fillColor: Theme.of(context).colorScheme.surface,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 20, 16, 20),
+                                      ),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 24,
+                                        color: Theme.of(context).colorScheme.secondary,
                                         letterSpacing: 0,
                                         fontWeight: FontWeight.w500,
                                       ),
+                                      cursorColor: Theme.of(context).colorScheme.primary,
                                     ),
+
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            size: 24,
+                                          ),
+                                          Text(
+                                            'Choose a game to play...',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              letterSpacing: 0,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      controller: descriptionController,
+                                      textCapitalization: TextCapitalization.words,
+                                      obscureText: false,
+                                      decoration: InputDecoration(
+                                        labelText: 'Description...',
+                                        labelStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        alignLabelWithHint: true,
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Inter',
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontSize: 14,
+                                          letterSpacing: 0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                        filled: true,
+                                        fillColor: Theme.of(context).colorScheme.surface,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                                      ),
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Theme.of(context).colorScheme.secondary,
+                                        fontSize: 16,
+                                        letterSpacing: 0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 9,
+                                      minLines: 5,
+                                      cursorColor: Theme.of(context).colorScheme.primary,
+                                    ),
+
                                     const SizedBox(
                                       height: 20,
                                     ),
@@ -347,7 +490,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        //Navigator.pop(context);
+                                        Navigator.pushNamed(
+                                                context, '/invite_connections')
+                                            .then((invited) {
+                                          invites = invited as List<String>?;
+                                        });
                                       },
                                       child: Row(
                                         mainAxisSize: MainAxisSize.max,
@@ -401,7 +548,14 @@ class _CreateEventsState extends State<CreateEvents> {
                         const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
                     child: MaterialButton(
                       onPressed: () {
+                        nameController.clear;
                         create();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: const Text("Event created successfully!"),
+
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ));
                       },
                       color: Theme.of(context).colorScheme.primary,
                       child: const Text('Create'),
@@ -426,7 +580,6 @@ class ChipData {
 }
 
 class ChipSelector extends StatefulWidget {
-
   const ChipSelector({super.key});
   @override
   ChipSelectorState createState() => ChipSelectorState();
@@ -437,7 +590,6 @@ class ChipSelectorState extends State<ChipSelector> {
     ChipData('Gaming Session', Icons.videogame_asset_outlined),
     ChipData('Tournament', Icons.emoji_events_sharp),
   ];
-
 
   @override
   Widget build(BuildContext context) {

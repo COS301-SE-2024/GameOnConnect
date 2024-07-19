@@ -21,14 +21,15 @@ class UserService {
 
   // Fetch all users
 
- Future<List<User>> fetchAllUsers() async {
+ Future<List<AppUser>> fetchAllUsers() async {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('profile_data').get();
-      List<User> users = [];
+      List<AppUser> users = [];
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
-          User currentuser =User.fromMap(data);
+          AppUser currentuser = AppUser.fromMap(data);
+
           //await currentuser.setpicture(data); // Await the result
           users.add(currentuser);
           //users.add(User.fromMap(data));
@@ -99,42 +100,7 @@ class UserService {
   }
 
 
-  // Accept Connection request
-  Future<void> acceptConnectionRequest(String? currentUserId , String requesterUserId) async {
-    try {
-      
-      // Add each other to friends list
-      await _firestore.collection('connections').doc(currentUserId).update({
-        'connections': FieldValue.arrayUnion([requesterUserId]),
-        'connection_requests': FieldValue.arrayRemove([requesterUserId])
-      });
-
-      await _firestore.collection('connections').doc(requesterUserId).update({
-        'connections': FieldValue.arrayUnion([currentUserId]),
-        'pending': FieldValue.arrayRemove([currentUserId])
-      });
-    } catch (e) {
-      throw Exception('Error accepting connection request: $e');
-    }
-  }
-
-  //reject friend request
-  Future<void> rejectConnectionRequest(String? currentUserId, String requesterUserId) async {
-    try {
-      // Add each other to friends list
-      await _firestore.collection('connections').doc(currentUserId).update({
-        'connection_requests': FieldValue.arrayRemove([requesterUserId])
-      });
-
-      await _firestore.collection('connections').doc(requesterUserId).update({
-        'pending': FieldValue.arrayRemove([currentUserId]) 
-        // later might have to send a notification to let the other user they were rejected
-      });
-    } catch (e) {
-      throw Exception('Error rejecting connection request: $e');
-    }
-  } 
-
+  
   // Unfollow user
   Future<void> disconnect(String currentUserId, String targetUserId) async {
     try {

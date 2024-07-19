@@ -7,12 +7,12 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import '../../../services/connection_S/connection_request_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../../model/connection_M/friend_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class FriendSearch extends StatefulWidget {
-  final String currentUserId;
-
   // ignore: use_key_in_widget_constructors
-  const FriendSearch(this.currentUserId);
+  const FriendSearch();
 
   @override
   // ignore: library_private_types_in_public_api
@@ -22,18 +22,41 @@ class FriendSearch extends StatefulWidget {
 class _FriendSearchState extends State<FriendSearch> {
   final TextEditingController _searchController = TextEditingController();
   final UserService _userService = UserService();
-  List<User> _users = [];
+  List<AppUser> _users = [];
   String _searchQuery = '';
+  String _currentUserId = '';
 
   @override
   void initState() {
     super.initState();
     _fetchUsers();
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      _currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    } else {
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'An error occurred. Try to login again.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
   }
 
   Future<void> _fetchUsers() async {
     try {
-      List<User> users = await _userService.fetchAllUsers();
+      List<AppUser> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -62,7 +85,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   Future<void> _fetchData() async {
     try {
-      List<User> users = await _userService.fetchAllUsers();
+      List<AppUser> users = await _userService.fetchAllUsers();
       setState(() {
         _users = users;
       });
@@ -91,7 +114,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _sendConnectionRequest(String targetUserId) async {
     try {
-      await _userService.sendConnectionRequest(widget.currentUserId, targetUserId);
+      await _userService.sendConnectionRequest(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //Error sending Connection request.
@@ -118,7 +141,7 @@ class _FriendSearchState extends State<FriendSearch> {
 
   void _undoConnectionRequest(String targetUserId) async {
     try {
-      await _userService.undoConnectionRequest(widget.currentUserId, targetUserId);
+      await _userService.undoConnectionRequest(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error canceling friend request'
@@ -143,9 +166,9 @@ class _FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  void _unfollowUser(String targetUserId) async {
+  void _disconnect(String targetUserId) async {
     try {
-      await _userService.disconnect(widget.currentUserId, targetUserId);
+      await _userService.disconnect(_currentUserId, targetUserId);
       _fetchData();
     } catch (e) {
       //'Error unfollowing user'
@@ -173,12 +196,8 @@ class _FriendSearchState extends State<FriendSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Connections'),
-      ),
       body: StreamBuilder<Friend?>(
-        stream: _userService.getCurrentUserConnectionsStream(widget.
-        currentUserId),
+        stream: _userService.getCurrentUserConnectionsStream(_currentUserId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -203,55 +222,37 @@ class _FriendSearchState extends State<FriendSearch> {
               context,
             );
             //return Center(child: Text('Error: ${snapshot.error}')); to see the error in the page
-            return const Center(child: Text('Please check your internet connection.'));
+            return const Center(
+                child: Text('Please check your internet connection.'));
           }
           Friend? currentUserConnectionData = snapshot.data;
-          List<User> filteredUsers = _users
+          List<AppUser> filteredUsers = _users
               .where((user) =>
-                  user.profileName
+                  user.username
                       .toLowerCase()
                       .contains(_searchQuery.toLowerCase()) &&
-                  user.uid != widget.currentUserId) // Exclude current user
+                  user.uid != _currentUserId) // Exclude current user
               .toList();
 
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                      // Update filteredUsers here based on the new search query
-                      filteredUsers = _users
-                          .where((user) =>
-                              user.profileName
-                                  .toLowerCase()
-                                  .contains(_searchQuery.toLowerCase()) &&
-                              user.uid != widget.currentUserId)
-                          .toList();
-                    });
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search by profile name',
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.search),
-                    labelText: 'Search',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          // Clear the search query and show all users
-                          _searchQuery = '';
-                          filteredUsers = _users;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: SearchField(
+                    controller: _searchController,
+                    onSearch: (query) {
+                      setState(() {
+                        _searchQuery = query;
+                        filteredUsers = _users
+                            .where((user) =>
+                                user.username
+                                    .toLowerCase()
+                                    .contains(_searchQuery.toLowerCase()) &&
+                                user.uid != _currentUserId)
+                            .toList();
+                      });
+                    },
+                  )),
               if (filteredUsers.isEmpty)
                 const Center(
                     child: Text(
@@ -261,13 +262,13 @@ class _FriendSearchState extends State<FriendSearch> {
                   child: ListView.builder(
                     itemCount: filteredUsers.length,
                     itemBuilder: (context, index) {
-                      User user = filteredUsers[index];
-                      bool isConnection =
-                          currentUserConnectionData?.friends.contains(user.uid) ??
-                              false;
-                      bool isPending =
-                          currentUserConnectionData?.pending.contains(user.uid) ??
-                              false;
+                      AppUser user = filteredUsers[index];
+                      bool isConnection = currentUserConnectionData?.friends
+                              .contains(user.uid) ??
+                          false;
+                      bool isPending = currentUserConnectionData?.pending
+                              .contains(user.uid) ??
+                          false;
 
                       return ListTile(
                         /*leading:  CircleAvatar(
@@ -281,17 +282,17 @@ class _FriendSearchState extends State<FriendSearch> {
                         //backgroundImage: NetworkImage("https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg")
 
                       ),*/
-                        title: Text(user.profileName),
+                        title: Text(user.username),
                         trailing: isConnection
                             ? ElevatedButton.icon(
-                                onPressed: () => _unfollowUser(user.uid),
+                                onPressed: () => _disconnect(user.uid),
                                 icon: const Icon(
                                   Icons.person_remove,
                                   color: Colors
                                       .white, // Set your desired icon color
                                 ),
                                 label: const Text('Disconnect',
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(color: Colors.black)),
                                 style: ButtonStyle(
                                   backgroundColor:
                                       WidgetStateProperty.all<Color>(
@@ -308,27 +309,31 @@ class _FriendSearchState extends State<FriendSearch> {
                                       color: Colors.white,
                                     ),
                                     label: const Text('Pending',
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: Colors.black)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                        Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   )
                                 : ElevatedButton.icon(
                                     onPressed: () =>
                                         _sendConnectionRequest(user.uid),
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.person_add,
-                                      color: Colors.white,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                     label: const Text('Connect',
-                                        style: TextStyle(color: Colors.white)),
+                                        style: TextStyle(
+                                            color: Colors.black)),
                                     style: ButtonStyle(
                                       backgroundColor:
                                           WidgetStateProperty.all<Color>(
-                                        const Color.fromRGBO(0, 223, 103, 1.0),
+                                        Theme.of(context).colorScheme.primary,
                                       ), // Set your desired color
                                     ),
                                   ),
