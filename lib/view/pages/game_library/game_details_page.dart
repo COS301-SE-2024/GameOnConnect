@@ -506,11 +506,22 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           borderRadius: BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
                                             imageUrl: screenshots[index].image,
-                                            placeholder: (context, url) => const CircularProgressIndicator(),
-                                            errorWidget: (context, url, error) => const Icon(Icons.error),
-                                            width: 110,
-                                            height: 85,
-                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) => Container(
+                                              width: 110, // Set the width of the images
+                                              height: 85, // Set the height of the images
+                                              child: const Center(
+                                                child: SizedBox(
+                                                  width: 30, // Adjust the size of the loader
+                                                  height: 30, // Adjust the size of the loader
+                                                  child: CircularProgressIndicator(),
+                                                ),
+                                              )
+                                            // placeholder: (context, url) => const CircularProgressIndicator(),
+                                            // errorWidget: (context, url, error) => const Icon(Icons.error),
+                                            // width: 110,
+                                            // height: 85,
+                                            // fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       );
