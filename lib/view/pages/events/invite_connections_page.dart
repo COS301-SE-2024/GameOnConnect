@@ -12,7 +12,7 @@ class ConnectionsListWidget extends StatefulWidget {
 
 class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  List<user.User>? list;
+  List<user.AppUser>? list;
   List<String> invites=[];
 
 
@@ -38,7 +38,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           top: true,
-          child: FutureBuilder<List<user.User>?>(
+          child: FutureBuilder<List<user.AppUser>?>(
               future: Events().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -108,13 +108,14 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            user.User? i = list![index];
+                            user.AppUser? i = list![index];
 
                             return ConnectionCardWidget(
                                 image: i.profilePicture,
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
+                                page: 'events',
                                 onSelected: (uid, selected) {
                                   if (selected) {
                                     invites.add(uid);

@@ -1,4 +1,4 @@
-import '../../../model/events_M/evets_model.dart';
+import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
 import '../../components/card/joined_event_card.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +16,15 @@ class ViewEvents extends StatefulWidget {
 class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Events events = Events();
-  List<Event>? allEvents;
-  List<Event>? subscribedEvents;
-  List<Event>? myEvents;
-  List<Event>? joinedEvents;
+  late List<Event>? allEvents;
+  late List<Event>? subscribedEvents;
+  late List<Event>? myEvents;
+  late List<Event>? joinedEvents;
 
   @override
   void initState() {
     super.initState();
     getAllEvents();
-    /*getSubscribedEvents();
-    getMyEvents();*/
   }
 
   @override
@@ -35,22 +33,12 @@ class _HomePageWidgetState extends State<ViewEvents> {
   }
 
   void getAllEvents() async {
-    allEvents = await events.fetchAllEvents();
-  }
-
-  void getSubscribedEvents(){
-    subscribedEvents=events.getSubscribedEvents(allEvents);
-  }
-
-  void getMyEvents()
-  {
-    myEvents = events.getMyEvents(allEvents);
-  }
-
-  void getJoinedEvents(){
+    //allEvents =  events.fetchAllEvents() as List<Event>?;
+    subscribedEvents= events.getSubscribedEvents(allEvents );
+    myEvents = events.getMyEvents(allEvents );
     joinedEvents = events.getJoinedEvents(allEvents);
-  }
 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +48,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
                 top: true,
-                child: FutureBuilder<List<Event>>(
-                    future: events.fetchAllEvents(),
+                child: StreamBuilder<List<Event>?>(
+                    stream: events.fetchAllEvents(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -69,12 +57,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         return Text('Error: ${snapshot.error}');
                       } else {
                         allEvents = snapshot.data;
-                        getSubscribedEvents();
-                        getMyEvents();
-                        getJoinedEvents();
-                        return DefaultTabController(
+                        getAllEvents();
+                        return SingleChildScrollView(child:  DefaultTabController(
                           length: 3,
-                          child: Column(
+                          child: Wrap( children: [Column(
+
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Align(
@@ -106,7 +93,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                     itemCount: joinedEvents?.length,
                                     carouselController: CarouselController(),
                                     options: CarouselOptions(
-                                      initialPage: 1,
+                                      initialPage: 0,
                                       viewportFraction: 0.5,
                                       disableCenter: true,
                                       enlargeCenterPage: true,
@@ -156,6 +143,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       children: [
                                         Expanded(
                                           child: Column(
+
                                             children: [
                                               Align(
                                                 alignment:
@@ -423,6 +411,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                               ),
                             ],
                           ),
+                          ],
+                          ),
+                        ),
                         );
                       }
                     }))));

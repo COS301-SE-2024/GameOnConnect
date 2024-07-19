@@ -360,7 +360,7 @@ class _DevelopmentButtons extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     //builder: (context) => FriendSearchPage(currentUserId),
-                    builder: (context) => FriendSearch(currentUserId),
+                    builder: (context) => FriendSearch(),
                   ),
                 );
               } else {
