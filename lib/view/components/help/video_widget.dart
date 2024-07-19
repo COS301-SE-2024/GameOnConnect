@@ -4,9 +4,10 @@ import 'package:video_player/video_player.dart';
 class TutorialVideo extends StatefulWidget {
   final String videoPath;
 
-  const TutorialVideo({Key? key, required this.videoPath}) : super(key: key);
+  const TutorialVideo({super.key, required this.videoPath});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TutorialVideoState createState() => _TutorialVideoState();
 }
 
@@ -38,8 +39,6 @@ class _TutorialVideoState extends State<TutorialVideo> {
             aspectRatio: _controller.value.aspectRatio,
             child: VideoPlayer(_controller),
           )
-        : Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
+        : const Center(child: CircularProgressIndicator());
   }
 }
