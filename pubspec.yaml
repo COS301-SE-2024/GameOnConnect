@@ -85,8 +85,17 @@ flutter:
   assets:
     - .env
     - "assets/icons/"
-    - assets/videos/GameInfoPage_Tutorial.mp4
-    - assets/videos/GameLibrary_Tutorial.mp4
+    - assets/videos/Connections_1.mp4
+    - assets/videos/Connections_2.mp4
+    - assets/videos/Connections_3.mp4
+    - assets/videos/GameInfo_1.mp4
+    - assets/videos/GameInfo_2.mp4
+    - assets/videos/GameInfo_3.mp4
+    - assets/videos/GameInfo_4.mp4
+    - assets/videos/GameInfo_5.mp4
+    - assets/videos/GameLibrary_1.mp4
+    - assets/videos/GameLibrary_2.mp4
+    - assets/videos/GameLibrary_3.mp4
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
