@@ -216,6 +216,21 @@ class GettingStarted extends StatelessWidget {
                                                     decoration: BoxDecoration(),
                                                   ),
                                                 ),
+
+                                                SizedBox(
+                                                  width: double.infinity,
+                                                  child: Padding(
+                                                    padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                    child: TutorialVideo(videoPath: 'assets/videos/Connections_1.mp4'),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -331,6 +346,20 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/Connections_2.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -439,59 +468,11 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width: double.infinity,
-                                      child: ExpansionTile(
-                                        key: Key('tutorial_video'),
-                                        title:  Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                              12, 8, 12, 8),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  'Tutorial Video',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color:Theme.of(context).colorScheme.surface,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
-                                                ),
-                                              ),
                                               SizedBox(
                                                 width: double.infinity,
                                                 child: Padding(
                                                   padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfoPage_Tutorial.mp4'),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/Connections_3.mp4'),
                                                 ),
                                               ),
                                               Padding(
@@ -506,6 +487,8 @@ class GettingStarted extends StatelessWidget {
                                         ],
                                       ),
                                     ),
+                                  ),
+
                                 ]),
                           ],
                         ),
@@ -682,6 +665,21 @@ class GettingStarted extends StatelessWidget {
                                                   decoration: BoxDecoration(),
                                                 ),
                                               ),
+
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_1.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -783,6 +781,20 @@ class GettingStarted extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                              child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_2.mp4'),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -878,58 +890,11 @@ class GettingStarted extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ExpansionTile(
-                                    key: Key('tutorial_video'),
-                                    title:  Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 8, 12, 8),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              'Tutorial Video',
-                                              style: TextStyle(
-                                                fontFamily: 'Inter',
-                                                color: Theme.of(context).colorScheme.secondary,
-                                                letterSpacing: 0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    children: [
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color:Theme.of(context).colorScheme.surface,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            decoration:  BoxDecoration(
-                                              color: Theme.of(context).colorScheme.surface,
-                                            ),
-                                          ),
                                           SizedBox(
                                             width: double.infinity,
                                             child: Padding(
                                               padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                                              child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_Tutorial.mp4'),
+                                              child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_3.mp4'),
                                             ),
                                           ),
                                           Padding(
@@ -1138,6 +1103,21 @@ class GettingStarted extends StatelessWidget {
                                                       width: double.infinity,
                                                     ),
                                                   ),
+                                                  
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: Padding(
+                                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                      child: TutorialVideo(videoPath: 'assets/videos/GameInfo_1.mp4'),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -1250,6 +1230,20 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_2.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -1358,6 +1352,20 @@ class GettingStarted extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_3.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
                                                 ),
                                               ),
                                             ],
@@ -1476,6 +1484,20 @@ class GettingStarted extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_4.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
                                                 ),
                                               ),
                                             ],
@@ -1605,58 +1627,11 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: ExpansionTile(
-                                        key: Key('tutorial_video'),
-                                        title:  Padding(
-                                          padding: EdgeInsetsDirectional.fromSTEB(
-                                              12, 8, 12, 8),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  'Tutorial Video',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context).colorScheme.secondary,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        children: [
-                                          Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color:Theme.of(context).colorScheme.surface,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: double.infinity,
-                                                decoration:  BoxDecoration(
-                                                  color: Theme.of(context).colorScheme.surface,
-                                                ),
-                                              ),
                                               SizedBox(
                                                 width: double.infinity,
                                                 child: Padding(
                                                   padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfoPage_Tutorial.mp4'),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_5.mp4'),
                                                 ),
                                               ),
                                               Padding(
