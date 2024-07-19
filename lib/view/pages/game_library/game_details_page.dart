@@ -506,10 +506,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           borderRadius: BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
                                             imageUrl: screenshots[index].image,
-                                            placeholder: (context, url) => Container(
+                                            placeholder: (context, url) => const SizedBox(
                                               width: 110, // Set the width of the images
                                               height: 85, // Set the height of the images
-                                              child: const Center(
+                                              child: Center(
                                                 child: SizedBox(
                                                   width: 30, // Adjust the size of the loader
                                                   height: 30, // Adjust the size of the loader
