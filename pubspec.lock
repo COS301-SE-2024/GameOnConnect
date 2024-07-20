@@ -1115,7 +1115,6 @@ packages:
       sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
       url: "https://pub.dev"
     source: hosted
-
     version: "4.4.2"
   vector_graphics:
     dependency: transitive
