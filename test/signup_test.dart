@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/pages/sign_up.dart';
+import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
 
 String? passwordValidator(String? value) {
   if (value == null || value.isEmpty) {
