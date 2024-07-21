@@ -16,6 +16,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/stats/stats_mood.dart';
+import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 
 
 class FeedPage extends StatefulWidget {
@@ -353,6 +354,19 @@ class _DevelopmentButtons extends StatelessWidget {
             textColor: Theme.of(context).colorScheme.surface,
             child: const Text('Stats Mood Page'),
           ),
+          // MaterialButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => GamesWidget(),
+          //       ),
+          //     );
+          //   },
+          //   color: Theme.of(context).colorScheme.primary,
+          //   textColor: Theme.of(context).colorScheme.surface,
+          //   child: const Text('Stats Games Page'),
+          // ),
         ],
       ),
     );
