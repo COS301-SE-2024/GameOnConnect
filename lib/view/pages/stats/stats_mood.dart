@@ -1,13 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
-// import 'package:gameonconnect/model/stats_M/stats_mood_model.dart';
+import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 
 class StatsMoodPage extends StatefulWidget {
   const StatsMoodPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _StatsMoodPageState createState() => _StatsMoodPageState();
 }
 
@@ -48,12 +47,12 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: theme.colorScheme.primary,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: Theme.of(context).colorScheme.secondary,
+            color: theme.colorScheme.secondary,
             size: 30,
           ),
           onPressed: () async {
@@ -64,7 +63,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
           'Mood',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.secondary,
+            color: theme.colorScheme.secondary,
             fontSize: 32,
             letterSpacing: 0,
             fontWeight: FontWeight.w500,
@@ -89,6 +88,30 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                         sectionsSpace: 0,
                         centerSpaceRadius: 0,
                         sections: showingSections(),
+                        pieTouchData: PieTouchData(touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                          if (pieTouchResponse != null && pieTouchResponse.touchedSection != null) {
+                            final touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                            String mood = '';
+                            switch (touchedIndex) {
+                              case 0:
+                                mood = 'joy';
+                                break;
+                              case 1:
+                                mood = 'disgust';
+                                break;
+                              case 2:
+                                mood = 'sad';
+                                break;
+                              case 3:
+                                mood = 'angry';
+                                break;
+                              case 4:
+                                mood = 'fear';
+                                break;
+                            }
+                            _navigateToGamesPage(mood);
+                          }
+                        }),
                       ),
                     ),
                   ),
@@ -109,6 +132,31 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                       SizedBox(height: 10),
                     ],
                   ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Click on any chart segment to view the games',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color: theme.colorScheme.onSurface,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Divider(
+                          thickness: 1,
+                          indent: 10,
+                          endIndent: 10,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -119,7 +167,6 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
     return List.generate(5, (i) {
       const fontSize = 16.0;
       const radius = 100.0;
-      // final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -130,8 +177,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: "inter",
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Inter",
             ),
           );
         case 1:
@@ -143,8 +190,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: "inter",
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Inter",
             ),
           );
         case 2:
@@ -156,8 +203,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: "inter",
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Inter",
             ),
           );
         case 3:
@@ -169,8 +216,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: "inter",
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Inter",
             ),
           );
         case 4:
@@ -182,14 +229,32 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
-              fontFamily: "inter",
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Inter",
             ),
           );
         default:
           throw Error();
       }
     });
+  }
+
+  void _navigateToGamesPage(String mood) async {
+    List<String> gameIDs = await fetchGameIDsByMood(mood);  // Fetch the game IDs based on mood
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GamesWidget(gameIDs: gameIDs),
+      ),
+    );
+  }
+
+  Future<List<String>> fetchGameIDsByMood(String mood) async {
+    try {
+      List<String> gameIDs = await _statsMoodService.fetchGameIDsForMood(mood);
+      return gameIDs;
+    } catch (e) {
+      throw Exception('Error fetching game IDs for mood: $e');
+    }
   }
 }
 
@@ -211,7 +276,7 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Theme.of(context);
+    final theme = Theme.of(context);
     return Row(
       children: <Widget>[
         Container(
@@ -234,18 +299,4 @@ class Indicator extends StatelessWidget {
       ],
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(
-      colorScheme: const ColorScheme.light(
-        surface: Color.fromRGBO(255, 255, 255, 1),
-        primary: Color.fromRGBO(0, 223, 103, 1.0),
-        secondary: Color.fromRGBO(42, 42, 42, 1.0),
-        tertiary: Color.fromRGBO(136, 255, 131, 1.0),
-      ),
-    ),
-    home: const StatsMoodPage(),
-  ));
 }
