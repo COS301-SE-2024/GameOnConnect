@@ -351,7 +351,7 @@ class _DevelopmentButtons extends StatelessWidget {
             },
             color: Theme.of(context).colorScheme.primary,
             textColor: Theme.of(context).colorScheme.surface,
-            child: const Text('Mood'),
+            child: const Text('Stats Mood Page'),
           ),
         ],
       ),

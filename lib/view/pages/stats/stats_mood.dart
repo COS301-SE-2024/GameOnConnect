@@ -48,8 +48,31 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mood Stats'),
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
+          ),
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(
+          'Mood',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 32,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [],
+        centerTitle: false,
+        elevation: 2,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
