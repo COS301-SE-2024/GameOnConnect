@@ -163,7 +163,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
-                  width: 312,
+                  width: 350,
                   height: 98,
                   decoration: BoxDecoration(
                     color: Color(0xFFC74800),
@@ -203,7 +203,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
-                  width: 312,
+                  width: 350,
                   height: 98,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
@@ -243,7 +243,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
-                  width: 312,
+                  width: 350,
                   height: 98,
                   decoration: BoxDecoration(
                     color: Color(0xFF6F00C7),
