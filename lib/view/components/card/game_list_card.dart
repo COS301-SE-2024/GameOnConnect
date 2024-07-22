@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 
 class GameCard extends StatefulWidget {
-  final name;
-  final chosen;
+  final String name;
+  final String chosen;
   final void Function(String gameName) onSelected;
 
   const GameCard({super.key, required this.name,required this.chosen, required this.onSelected});

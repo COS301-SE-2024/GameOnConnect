@@ -237,10 +237,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  ChooseGame(myGames: gameNames,))).then((gameChosen){
                                                     setState(() {
                                                       gameChosen = gameChosen;
-                                                      print(gameChosen);
                                                       getGameID(gameChosen);
-                                                      print(gameID);
-
                                                     });
                                                   });
                                                 },

@@ -3,7 +3,7 @@ import 'package:gameonconnect/view/components/card/game_list_card.dart';
 
 
 class ChooseGame extends StatefulWidget {
-  final myGames;
+  final List<String> myGames;
   const ChooseGame({super.key, required this.myGames});
 
   @override
