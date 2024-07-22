@@ -45,8 +45,28 @@ class EventsService {
       e = Event.fromMap(data, id);
     }
     return e;
+  }
 
+  Future<List<Map<String, dynamic>>> getInvitedEvents() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> invitedEvents = [];
+    final currentUser = FirebaseAuth.instance.currentUser;
 
+    QuerySnapshot snapshot = await db.collection('events').get();
+
+    for (var doc in snapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['id'] = doc.id;
+      if (data['invited_users'] != null && data['invited_users'] is List) {
+        List<dynamic> array = data['invited_users'];
+
+        if (array.contains(currentUser!.uid)) {
+          invitedEvents.add(data);
+        }
+      }
+    }
+
+    return invitedEvents;
   }
 
   Future<void> createEvent(

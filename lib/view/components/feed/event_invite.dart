@@ -5,7 +5,7 @@ import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart';
 
 class EventInvitation extends StatelessWidget {
-  final AppUser inviter;
+  final String inviter;
   final Event event;
   final EventsService _eventsService = EventsService();
 
