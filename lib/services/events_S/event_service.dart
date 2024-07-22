@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import '../../../model/connection_M/user_model.dart' as user;
 import '../connection_S/connection_service.dart';
 import '../../model/events_M/events_model.dart';
+import '../../model/game_library_M/game_details_model.dart';
+import '../../services/game_library_S/my_games_service.dart';
 
 class Events {
   Stream<List<Event>> fetchAllEvents()  async* {
@@ -76,7 +79,8 @@ class Events {
           "conversationID": "",
           "teams": [],
           "creatorID": currentUser.uid,
-          "subscribed": invited,
+          "invited": invited,
+          "subscribed": [],
           // image url is in bucket, under events/eventID
           "description": description,
         };
@@ -227,4 +231,14 @@ class Events {
   int getAmountJoined(Event e) {
     return e.participants.length;
   }
+
+  Future<List<GameDetails>> getMyGames() async{
+    List<String> gameIds = await MyGamesService().getMyGames();
+    List<GameDetails> gameDetails=[];
+    for(var i in gameIds){
+      GameDetails game = await GameService().fetchGameDetails(i);
+      gameDetails.add(game);
+    }
+    return gameDetails;
+}
 }
