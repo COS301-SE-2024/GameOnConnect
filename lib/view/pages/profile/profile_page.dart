@@ -5,6 +5,11 @@ import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
+import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
+import 'package:gameonconnect/view/pages/profile/recent_activity_table.dart';
+import 'package:gameonconnect/view/pages/profile/stats_list.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 
 class Profilenew extends StatefulWidget {
   const Profilenew({super.key});
@@ -175,19 +180,66 @@ class _ProfileState extends State<Profilenew>  {
                       ),
 
 
-                      const SizedBox(height: 15), //space 
+                      const SizedBox(height: 10), //space 
                       HorizontalGameList(
                         gameIds: profileData.myGames,
                         heading: 'My Games',
                       ),
 
 
-                      const SizedBox(height: 15), //space 
+                      const SizedBox(height: 10), //space 
                       HorizontalGameList(
                         gameIds: profileData.wantToPlay,
                         heading: 'Want To Play',
                       ),
-                        
+
+
+                      //change RECENT ACTIVITY 
+                      profileData. recentActivities.isEmpty
+                          ? const SizedBox.shrink()
+                          : //const SizedBox(height: 10), //space 
+                      RecentActivityList(
+                        gameIds: profileData. recentActivities,
+                        heading: 'Recent Activity',
+                      ),
+                      
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RecentActivityTable())); 
+
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(9),
+                              gradient: LinearGradient(
+                                begin: Alignment(-1, 0),
+                                end: Alignment(1, 0),
+                                colors: <Color>[Color(0xFF00FF75), Color(0xFF009946)],
+                                stops: <double>[0, 1],
+                              ),
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(15.3, 0, 16.3, 0),
+                              child: 
+                              Text(
+                                'see more',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                  height: 2.1,
+                                  letterSpacing: 0.5,
+                                  color: Color(0xFFFFFFFF),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ), 
+                      ),
+
+                     
+                              
                       ],
               ),
             );
