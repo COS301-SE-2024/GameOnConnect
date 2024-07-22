@@ -285,10 +285,10 @@ packages:
     dependency: transitive
     description:
       name: file_selector_windows
-      sha256: d3547240c20cabf205c7c7f01a50ecdbc413755814d6677f3cb366f04abcead0
+      sha256: "2ad726953f6e8affbc4df8dc78b77c3b4a060967a291e528ef72ae846c60fb69"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.3+1"
+    version: "0.9.3+2"
   firebase_app_check:
     dependency: "direct main"
     description:
@@ -606,10 +606,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: ff39a10ab4f48f4ac70776d0494a97bf073cd2570892cd46bc8a5cac162c25db
+      sha256: cea2bd5b9fcff039a4901d3b13c67fe747f940be9ba76bde1bcd218d168eeb7f
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.12+4"
+    version: "0.8.12+6"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -1104,10 +1104,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_windows
-      sha256: ecf9725510600aa2bb6d7ddabe16357691b6d2805f66216a97d1b881e21beff7
+      sha256: "49c10f879746271804767cb45551ec5592cdab00ee105c06dddde1a98f73b185"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   uuid:
     dependency: transitive
     description:
