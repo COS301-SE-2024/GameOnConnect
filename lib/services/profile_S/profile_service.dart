@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
@@ -35,6 +36,10 @@ Future<Profile?>  fetchProfile() async {
           String bannerUrl = await storageService.getBannerUrl(currentUser.uid);
           String profilePictureUrl = await storageService.getProfilePictureUrl(currentUser.uid);
 
+          // Fetch recent activities (assuming it's an array of references)
+        final recentActivitiesRefs = List<DocumentReference>.from(data['recent_activity'] ?? []);
+       final recentActivities = await fetchRecentActivities(recentActivitiesRefs);
+
           return Profile(
           banner: bannerUrl,
           bio: data['bio'] ?? '',
@@ -46,6 +51,7 @@ Future<Profile?>  fetchProfile() async {
           myGames: List<String>.from(data['my_games'] ?? []),
           wantToPlay: List<String>.from(data['want_to_play'] ?? []),
           numberOfconnections: connectionsCount,
+          recentActivities: recentActivities, 
       );
         } else {
           //print('Document not found');
@@ -73,6 +79,44 @@ Future<Profile?>  fetchProfile() async {
       return '';
     }
   }
+
+  Future<List<GameStats>> fetchRecentActivities(List<DocumentReference> recentActivitiesRefs) async {
+ final recentActivities = <GameStats>[];
+
+  try {
+    for (final statsRef in recentActivitiesRefs) {
+      final statsSnapshot = await statsRef.get();
+      final statsData = statsSnapshot.data();
+
+      if (statsData is Map<String, dynamic>) {
+        final statsModel = GameStats(
+          gameId: statsData['gameID'] as String? ?? '',
+          lastPlayedDate:  _convertTimestampToString(statsData['last_played']),
+          mood: statsData['mood'] as String? ?? '',
+          timePlayedLast: statsData['time_played_last'] as int? ?? 0, 
+        );
+
+        recentActivities.add(statsModel);
+      } else {
+        // Handle unexpected data format (e.g., log or skip)
+        print('Unexpected data format for statsData: $statsData');
+      }
+    }
+  } catch (e) {
+    // Handle any errors (e.g., log or return an empty list)
+    print('Error fetching recent activities: $e');
+  }
+
+  return recentActivities;
+}
+
+String _convertTimestampToString(Timestamp? timestamp) {
+  if (timestamp != null) {
+    final dateTime = timestamp.toDate(); // Convert to DateTime
+    return dateTime.toString(); // Customize the format as needed
+  }
+  return ''; // Return an empty string if timestamp is null
+}
 
   Future<void> editUsername(String username) async
   {
