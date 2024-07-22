@@ -100,8 +100,10 @@ class _ChooseGame extends State<ChooseGame> {
 
                             return GameCard(
                                 name: i,
-                                onSelected: (name) {
-                                  chosenGame = name;
+                                onSelected: (gameName) {
+                                  setState(() {
+                                    chosenGame = gameName;
+                                  });
                                 });
                           },
                           separatorBuilder: (BuildContext context, int index) {

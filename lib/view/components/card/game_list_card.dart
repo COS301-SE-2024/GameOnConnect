@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class GameCard extends StatefulWidget {
   final name;
-  final void Function(String uid) onSelected;
+  final void Function(String gameName) onSelected;
 
   const GameCard({super.key, required this.name, required this.onSelected});
 
@@ -13,7 +13,7 @@ class GameCard extends StatefulWidget {
 
 class _EventCardWidgetState extends State<GameCard> {
   String name = "";
-  String selectedGame = "";
+  bool selected = false;
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -36,8 +36,10 @@ class _EventCardWidgetState extends State<GameCard> {
     return InkWell(
         onTap: (){
           setState(() {
-            selectedGame = name;
+            selected = !selected;
           });
+          widget.onSelected(name);
+
         },
         child: Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
@@ -45,7 +47,7 @@ class _EventCardWidgetState extends State<GameCard> {
         width: double.infinity,
         height: 60,
         decoration: BoxDecoration(
-          color: name == selectedGame? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
+          color: selected? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               blurRadius: 0,

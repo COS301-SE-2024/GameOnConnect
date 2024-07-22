@@ -26,7 +26,7 @@ class _CreateEventsState extends State<CreateEvents> {
   bool isChanged = false;
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
-  int gameID = 1; // hard coding this for now
+  late int gameID;
   late String gameChosen = "none";
 
   String? type;
@@ -64,6 +64,15 @@ class _CreateEventsState extends State<CreateEvents> {
     }
   }
 
+  void getGameID(String gameName)async {
+    games = await Events().getMyGames();
+    for(var i in games){
+      if(i.name == gameName){
+        gameID = i.id;
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,7 +102,7 @@ class _CreateEventsState extends State<CreateEvents> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    getGames();
+                    //getGames();
                     return Form(
                       autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
@@ -229,6 +238,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     setState(() {
                                                       gameChosen = gameChosen;
                                                       print(gameChosen);
+                                                      getGameID(gameChosen);
+                                                      print(gameID);
 
                                                     });
                                                   });

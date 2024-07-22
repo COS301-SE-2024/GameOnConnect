@@ -79,7 +79,8 @@ class Events {
           "conversationID": "",
           "teams": [],
           "creatorID": currentUser.uid,
-          "subscribed": invited,
+          "invited": invited,
+          "subscribed": [],
           // image url is in bucket, under events/eventID
           "description": description,
         };
