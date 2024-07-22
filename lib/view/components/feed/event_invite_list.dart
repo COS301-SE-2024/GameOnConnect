@@ -16,7 +16,7 @@ class _EventInvitesListState extends State<EventInvitesList> {
   List<Event> _invitedEvents = [];
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     fetchInvitedEvents();
   }
@@ -31,17 +31,21 @@ class _EventInvitesListState extends State<EventInvitesList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        _invitedEvents.isEmpty ? (Center(child: CircularProgressIndicator())) :
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: _invitedEvents.length,
-          itemBuilder: (context, index) {
-            return EventInvitation(inviter: _invitedEvents[index].creatorID, event: _invitedEvents[index]);
-          },
-        )
-      ]     
+    return Expanded(
+      child: _invitedEvents.isEmpty ? Center(child: CircularProgressIndicator()) : 
+      Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _invitedEvents.length,
+              itemBuilder: (context, index) {
+                return EventInvitation(inviter: _invitedEvents[index].creatorID, event: _invitedEvents[index]);
+              },
+            ),
+          )
+        ]     
+      ),
     );
   }
 }

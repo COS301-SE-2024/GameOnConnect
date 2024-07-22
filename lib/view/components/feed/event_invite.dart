@@ -13,8 +13,8 @@ class EventInvitation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ExpansionTile(
+    return Expanded(
+      child: ExpansionTile(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
