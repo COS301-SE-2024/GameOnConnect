@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 class GameCard extends StatefulWidget {
   final name;
+  final chosen;
   final void Function(String gameName) onSelected;
 
-  const GameCard({super.key, required this.name, required this.onSelected});
+  const GameCard({super.key, required this.name,required this.chosen, required this.onSelected});
 
   @override
   State<GameCard> createState() => _EventCardWidgetState();
@@ -14,6 +15,7 @@ class GameCard extends StatefulWidget {
 class _EventCardWidgetState extends State<GameCard> {
   String name = "";
   bool selected = false;
+  String chosen="";
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -23,6 +25,8 @@ class _EventCardWidgetState extends State<GameCard> {
   void initState() {
     super.initState();
     name = widget.name;
+    chosen = widget.chosen;
+
   }
 
   @override
@@ -33,6 +37,7 @@ class _EventCardWidgetState extends State<GameCard> {
 
   @override
   Widget build(BuildContext context) {
+    selected = ( name == widget.chosen);
     return InkWell(
         onTap: (){
           setState(() {

@@ -100,6 +100,7 @@ class _ChooseGame extends State<ChooseGame> {
 
                             return GameCard(
                                 name: i,
+                                chosen: chosenGame,
                                 onSelected: (gameName) {
                                   setState(() {
                                     chosenGame = gameName;
