@@ -1,5 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/event_service.dart';
 
 class EventInvitation extends StatelessWidget {
   final String inviter;
@@ -35,7 +36,7 @@ class EventInvitation extends StatelessWidget {
             children: [
               FilledButton(
                 onPressed: () {
-      
+                  
                 }, 
                 child: const Text('Accept')),
               FilledButton(
