@@ -2,14 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+
+import '../../../model/Stats_M/game_stats.dart';
 
 
 class RecentActivityList extends StatefulWidget {
-  const RecentActivityList({super.key, 
+  RecentActivityList({super.key, 
     required this. gameIds,
     required this.heading,
   }) ;
-  final List<String>  gameIds;
+  //final List<String>  gameIds;
+  List<GameStats> gameIds;
   final String heading;
 
   @override
@@ -17,7 +22,28 @@ class RecentActivityList extends StatefulWidget {
 }
 
 class _RecentActivityListState extends State<RecentActivityList> {
-  @override
+
+ void _navigateToGameDetails(int game) async {
+    // ignore_for_file: use_build_context_synchronously
+    bool result = await InternetConnection().hasInternetAccess;
+    if(result) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameDetailsPage(gameId: game),
+        ),
+      );
+    }else
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Unable to fetch data, check internet connection"),
+              backgroundColor: Colors.red,
+            ));
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -73,7 +99,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
               itemCount: widget.gameIds.length,
               itemBuilder: (context, index) {
                 return FutureBuilder<GameDetails>(
-                  future: GameService().fetchGameDetails(widget.gameIds[index]),
+                  future: GameService().fetchGameDetails(widget.gameIds[index].gameId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -85,7 +111,12 @@ class _RecentActivityListState extends State<RecentActivityList> {
                       final gameDetails = snapshot.data!;
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
+                        child:InkWell(
+                          onTap: () {
+                            _navigateToGameDetails(gameDetails.id);
+                            
+                          },
+                          child: Container(
                           height: 150,
                           width: 150,
                   //margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -144,6 +175,13 @@ class _RecentActivityListState extends State<RecentActivityList> {
                 color: Color(0xFFFFFFFF),
               ),
             ),
+            Text(
+              ' Time: 19:30 ',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFFFFFFF),
+              ),
+            ),
         ],
       ),
       
@@ -152,6 +190,8 @@ class _RecentActivityListState extends State<RecentActivityList> {
 ),
 
                 ),
+                          ),
+                        
                       );
                       
                       
