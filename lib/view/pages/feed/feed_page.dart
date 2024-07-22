@@ -16,7 +16,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/stats/stats_mood.dart';
-import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 
 
 class FeedPage extends StatefulWidget {
