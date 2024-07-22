@@ -88,30 +88,34 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                         sectionsSpace: 0,
                         centerSpaceRadius: 0,
                         sections: showingSections(),
-                        pieTouchData: PieTouchData(touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          if (pieTouchResponse != null && pieTouchResponse.touchedSection != null) {
-                            final touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                            String mood = '';
-                            switch (touchedIndex) {
-                              case 0:
-                                mood = 'joy';
-                                break;
-                              case 1:
-                                mood = 'disgust';
-                                break;
-                              case 2:
-                                mood = 'sad';
-                                break;
-                              case 3:
-                                mood = 'angry';
-                                break;
-                              case 4:
-                                mood = 'fear';
-                                break;
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            if (event is FlLongPressEnd || event is FlTapUpEvent) {
+                              final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
+                              if (touchedIndex != null) {
+                                String mood = '';
+                                switch (touchedIndex) {
+                                  case 0:
+                                    mood = 'joy';
+                                    break;
+                                  case 1:
+                                    mood = 'disgust';
+                                    break;
+                                  case 2:
+                                    mood = 'sad';
+                                    break;
+                                  case 3:
+                                    mood = 'angry';
+                                    break;
+                                  case 4:
+                                    mood = 'fear';
+                                    break;
+                                }
+                                _navigateToGamesPage(mood);
+                              }
                             }
-                            _navigateToGamesPage(mood);
-                          }
-                        }),
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -240,7 +244,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
   }
 
   void _navigateToGamesPage(String mood) async {
-    List<String> gameIDs = await fetchGameIDsByMood(mood);  // Fetch the game IDs based on mood
+    List<String> gameIDs = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameIDs: gameIDs),
@@ -276,7 +280,7 @@ class Indicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // Theme.of(context);
     return Row(
       children: <Widget>[
         Container(
