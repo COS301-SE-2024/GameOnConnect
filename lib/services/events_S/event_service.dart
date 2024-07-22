@@ -10,7 +10,7 @@ import '../../model/events_M/events_model.dart';
 import '../../model/game_library_M/game_details_model.dart';
 import '../../services/game_library_S/my_games_service.dart';
 
-class Events {
+class EventsService {
   Stream<List<Event>> fetchAllEvents()  async* {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
@@ -106,6 +106,21 @@ class Events {
       
     }catch (e){
       return await storage.child('events/default_image.jpg').getDownloadURL();
+    }
+  }
+
+  Future<void> declineEventInvitation(Event event) async {
+    final DocumentReference docRef = FirebaseFirestore.instance.collection('events').doc(event.eventID);
+
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        await docRef.update({
+          'invited_users': FieldValue.arrayRemove([currentUser.uid])
+        });
+      }
+    } catch (e) {
+      throw ('Error: $e');
     }
   }
 

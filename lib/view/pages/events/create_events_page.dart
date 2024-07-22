@@ -33,7 +33,7 @@ class _CreateEventsState extends State<CreateEvents> {
   List<String>? invites = [];
 
   Future create() async {
-    await Events().createEvent(
+    await EventsService().createEvent(
         selectedOption,
         _datePicked,
         nameController.text,
@@ -58,14 +58,14 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 
   void getGames() async {
-    games = await Events().getMyGames();
+    games = await EventsService().getMyGames();
     for (var i in games) {
       gameNames.add(i.name);
     }
   }
 
   void getGameID(String gameName)async {
-    games = await Events().getMyGames();
+    games = await EventsService().getMyGames();
     for(var i in games){
       if(i.name == gameName){
         gameID = i.id;
@@ -95,7 +95,7 @@ class _CreateEventsState extends State<CreateEvents> {
             body: SafeArea(
               top: true,
               child: FutureBuilder<List<GameDetails>>(
-                future: Events().getMyGames(),
+                future: EventsService().getMyGames(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

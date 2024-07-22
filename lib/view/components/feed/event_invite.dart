@@ -1,12 +1,15 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import 'package:gameonconnect/model/events_M/events_model.dart';
+import 'package:gameonconnect/model/connection_M/user_model.dart';
 
 class EventInvitation extends StatelessWidget {
-  final String inviter;
-  final String eventName;
+  final AppUser inviter;
+  final Event event;
+  final EventsService _eventsService = EventsService();
 
-  const EventInvitation({super.key, required this.inviter, required this.eventName});
+  EventInvitation({super.key, required this.inviter, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,8 @@ class EventInvitation extends StatelessWidget {
               )
             ),
             Text(
-              eventName,
-              style: TextStyle(
+              event.name,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.green
               )
@@ -36,17 +39,18 @@ class EventInvitation extends StatelessWidget {
             children: [
               FilledButton(
                 onPressed: () {
-                  
+                  _eventsService.joinEvent(event);
                 }, 
                 child: const Text('Accept')),
               FilledButton(
                 onPressed: () {
-      
+                  _eventsService.declineEventInvitation(event);
                 }, 
                 child: const Text('Decline')),
               FilledButton(
                 onPressed: () {
-      
+                  _eventsService.declineEventInvitation(event);
+                  _eventsService.subscribeToEvent(event);
                 }, 
                 child: const Text('Stay notified')),
             ],

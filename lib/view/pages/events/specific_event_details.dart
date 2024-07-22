@@ -21,11 +21,11 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   }
 
   void getImage(String id) async {
-    imageUrl = await Events().getEventImage(e.eventID);
+    imageUrl = await EventsService().getEventImage(e.eventID);
   }
 
   void getUpdatedEvent(String id) async{
-    Event updated = (await Events().getEvent(id))!;
+    Event updated = (await EventsService().getEvent(id))!;
     setState(() {
       e = updated;
     });
@@ -39,7 +39,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Events().getEventImage(e.eventID),
+        future: EventsService().getEventImage(e.eventID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -47,7 +47,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
             return Text('Error: ${snapshot.error}');
           } else {
             imageUrl = snapshot.data!;
-            selected = Events().isSubscribed(e);
+            selected = EventsService().isSubscribed(e);
             return GestureDetector(
               child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -117,10 +117,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       });
                                       if (selected) {
 
-                                        Events().unsubscribeToEvent(e);
+                                        EventsService().unsubscribeToEvent(e);
                                       } else {
 
-                                        Events().subscribeToEvent(e);
+                                        EventsService().subscribeToEvent(e);
                                       }
                                       getUpdatedEvent(e.eventID);
 
@@ -348,7 +348,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       ),
                                     ),
                                     Text(
-                                      Events().getAmountJoined(e).toString(),
+                                      EventsService().getAmountJoined(e).toString(),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         color: Theme.of(context)
@@ -393,7 +393,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            Events().joinEvent(e);
+                                            EventsService().joinEvent(e);
                                             getUpdatedEvent(e.eventID);
                                           },
                                           child: Text(
