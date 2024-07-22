@@ -108,7 +108,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                                 int rodIndex,
                               ) {
                                 return BarTooltipItem(
-                                  '${genrePlayTime.keys.elementAt(groupIndex)}: ${rod.toY.round()} mins',
+                                  '${genrePlayTime.keys.elementAt(groupIndex)}: ${rod.toY.round()} time(s)',
                                   TextStyle(
                                     color: Theme.of(context).colorScheme.surface,
                                     fontWeight: FontWeight.bold,
