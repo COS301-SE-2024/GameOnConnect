@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 //import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 //import 'package:gameonconnect/services/profile_S/storage_service.dart';
 //import 'package:gameonconnect/services/profile_S/profile_service.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
@@ -23,6 +24,7 @@ class _MessagingState extends State<Messaging> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final MessagingService _messagingService = MessagingService();
   final AuthService _authService = AuthService();
+  final StorageService storageService = StorageService();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class _MessagingState extends State<Messaging> {
 
         return ListView(
           children: snapshot.data!
-              .map<Widget>((userData) => _buildUserListItem(userData, context))
+              .map<Widget>((userData) => _buildUserListItem(context, userData))
               .toList(),
         );
       },
@@ -77,13 +79,74 @@ class _MessagingState extends State<Messaging> {
   }
 
   Widget _buildUserListItem(
-      //the profilepicture is getting really slowly we can speed this up by getting it via storage
-      Map<String, dynamic> userData,
-      BuildContext context) {
+      BuildContext context, Map<String, dynamic> userData) {
     Map<String, dynamic> userInfo =
         userData['username'] as Map<String, dynamic>? ?? {};
     String profileName = userInfo['profile_name'] as String? ?? "Unknown";
-    String profilePictureUrl = userData['profile_picture'] as String? ?? "default_picture_url";
+    String userID = userData['userID'] as String? ?? "default_picture_url";
+    String receiverID = userData['userID'] as String? ?? "default_user_id";
+    return FutureBuilder<String>(
+      future: storageService
+          .getProfilePictureUrl(userID), 
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) { //this is the loading state
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Center(
+                child: SizedBox(
+                  width: 65,
+                  height: 65,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              Divider( //added divider here to induce the same loading
+                    height: 1,
+                    thickness: 0.5,
+                    color: Theme.of(context).colorScheme.secondary,
+              ), 
+            ],
+          );
+        } else if (snapshot.hasError) {
+          //add a possible toastbar to check the connection
+          return const Icon(Icons.error_outline); 
+          //Text('Error: ${snapshot.error}'
+        } else { //this widget means that the data loaded successfully
+          String profilePictureUrl = snapshot.data!;
+          if (userData['userID'] != _authService.getCurrentUser()!.uid) {
+            return UserTile(
+              profilepictureURL: profilePictureUrl,
+              text: profileName,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                      profileName: profileName,
+                      receiverID: receiverID,
+                    ),
+                  ),
+                );
+              },
+            );
+          } else {
+            return Container();
+          }
+        }
+      },
+    );
+  }
+}
+
+/*
+  Old code for _buildUserListItem
+  Widget _buildUserListItem(
+      Map<String, dynamic> userData, BuildContext context) {
+    Map<String, dynamic> userInfo =
+        userData['username'] as Map<String, dynamic>? ?? {};
+    String profileName = userInfo['profile_name'] as String? ?? "Unknown";
+    String profilePictureUrl =
+        userData['profile_picture'] as String? ?? "default_picture_url";
     String receiverID = userData['userID'] as String? ?? "default_user_id";
 
     //we need to get more info here to build the tile successfully
@@ -106,5 +169,4 @@ class _MessagingState extends State<Messaging> {
     } else {
       return Container();
     }
-  }
-}
+  }*/

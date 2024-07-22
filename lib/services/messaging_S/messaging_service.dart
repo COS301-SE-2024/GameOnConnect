@@ -5,7 +5,7 @@ import 'package:gameonconnect/model/messages_M/message_modal.dart';
 class MessagingService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  
   // Create a new conversation (group or private chat)
   Future<String> createConversation(List<String> participants) async {
     try {
