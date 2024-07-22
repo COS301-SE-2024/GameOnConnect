@@ -4,12 +4,14 @@ class AppUser {
   final String profileName;
   final String username;
   final String uniqueNum;
+  final String currentlyPlaying;
   AppUser(
       {required this.uid,
       required this.profilePicture,
       required this.profileName,
       required this.username,
-      required this.uniqueNum});
+      required this.uniqueNum,
+      required this.currentlyPlaying});
 
   factory AppUser.fromMap(Map<String, dynamic>? data) {
     return AppUser(
@@ -18,6 +20,7 @@ class AppUser {
       profileName: data?['name'],
       username: data?['username']['profile_name'],
       uniqueNum: data!['username']['unique_num'].toString(),
+      currentlyPlaying: data['currently-playing']
     );
   }
 

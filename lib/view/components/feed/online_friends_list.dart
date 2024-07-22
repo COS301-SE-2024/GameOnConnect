@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
 
 class CurrentlyOnlineBar extends StatefulWidget {
   const CurrentlyOnlineBar({super.key});
@@ -8,8 +10,14 @@ class CurrentlyOnlineBar extends StatefulWidget {
 }
 
 class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
-  final List<String> _friends = ['user_1', 'user_2', 'user_3', 'user_4', 'user_5', 'user_6', 'user_7'];
+  List<user.AppUser>? _friends = [];
   final List<String> _images = ['https://placehold.co/70x70']; //change to friend objects later
+  final ConnectionService _connectionService = ConnectionService();
+
+  Future<void> init() async {
+    _friends = await _connectionService.getOnlineConnections();
+    print(_friends);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
       height: 120,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _friends.length,
+        itemCount: _friends!.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(5),
@@ -35,7 +43,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
                         backgroundImage: NetworkImage(_images[0]),
                   ),
                 ),
-                Text(_friends[index])
+                Text(_friends![index].username)
               ],
             ),
           );
