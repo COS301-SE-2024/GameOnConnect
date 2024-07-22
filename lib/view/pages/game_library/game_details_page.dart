@@ -1366,14 +1366,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 6, 5, 6),
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
+                                padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 5, 6),
+                                child: InkWell(
+                                  onTap: () async {
+                                    final Uri url = Uri.parse(gameDetails.website);
+                                    if (await canLaunch(url.toString())) {
+                                      await launch(url.toString(), forceSafariVC: false, forceWebView: false);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.surface,
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(10),
                                         bottomRight: Radius.circular(10),
@@ -1381,56 +1388,42 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         topRight: Radius.circular(10),
                                       ),
                                       border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      )),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      IconButton(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(76, 4, 0, 0),
-                                        onPressed: () async {
-                                          final Uri url =
-                                              Uri.parse(gameDetails.website);
-                                          if (await canLaunchUrl(url)) {
-                                            await launchUrl(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
-                                        },
-                                        icon: Icon(
-                                          Icons.open_in_new,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          size: 12,
-                                        ),
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(4, 8, 4, 4),
-                                        child: Icon(
-                                          Icons.videogame_asset,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          size: 36,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(76, 4, 0, 0),
+                                          child: Icon(
+                                            Icons.open_in_new,
+                                            color: Theme.of(context).colorScheme.secondary,
+                                            size: 12,
+                                          ),
                                         ),
-                                      ),
-                                      // Text(
-                                      //   'STORE',
-                                      //   style: TextStyle(
-                                      //     fontFamily:
-                                      //         'Readex Pro',
-                                      //     color: Colors
-                                      //         .white,
-                                      //     fontSize: 12,
-                                      //     letterSpacing: 0,
-                                      //   ),
-                                      // ),
-                                    ],
+                                        Padding(
+                                          padding: const EdgeInsetsDirectional.fromSTEB(4, 8, 4, 4),
+                                          child: Icon(
+                                            Icons.videogame_asset,
+                                            color: Theme.of(context).colorScheme.primary,
+                                            size: 36,
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
+                                          child: Text(
+                                            'STORE',
+                                            style: TextStyle(
+                                              fontFamily: 'Readex Pro',
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              letterSpacing: 0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
