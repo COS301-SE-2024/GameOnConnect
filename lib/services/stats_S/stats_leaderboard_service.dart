@@ -48,6 +48,65 @@ class StatsLeaderboardService {
       };
     }
   }
+
+  Future<List<Map<String, dynamic>>> fetchGameIDsAndTimestamps(String position) async {    //change to get the correct positions' games
+    User? currentUser = auth.currentUser;
+    if (currentUser == null) {
+      return [];
+    }
+
+    final snapshot = await _firestore
+      .collection('leaderboard')
+      .where('positions', arrayContains: currentUser.uid)
+      .get();
+
+    List<Map<String, dynamic>> eventData = [];
+
+    for (final doc in snapshot.docs) {
+      final List<dynamic> positions = doc['positions'];
+      final positionIndex = _getPositionIndex(position);
+
+      if (positions.length > positionIndex && positions[positionIndex] == currentUser.uid) {
+        final eventID = doc['eventID'];
+        final eventSnapshot = await _firestore
+            .collection('events')
+            .doc(eventID)
+            .get();
+
+        if (eventSnapshot.exists) {
+          final data = eventSnapshot.data();
+          if (data != null) {
+            final gameID = data['gameID'];
+            final startDate = data['start_date'];
+            eventData.add({
+              'gameID': gameID,
+              'last_played': startDate
+            });
+          }
+        }
+      }
+    }
+
+    return eventData;
+  }
+
+  int _getPositionIndex(String position) {
+    switch (position) {
+      case '1st':
+        return 0;
+      case '2nd':
+        return 1;
+      case '3rd':
+        return 2;
+      case 'Top 5':
+        return 3;
+      case 'Top 10':
+        return 4;
+      default:
+        throw ArgumentError('Invalid position: $position');
+    }
+  }
+
 }
 
 
