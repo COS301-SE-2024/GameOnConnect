@@ -99,6 +99,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       0, 20, 0, 0),
                                   child: Text(
                                     e.name,
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       color: Theme.of(context)
