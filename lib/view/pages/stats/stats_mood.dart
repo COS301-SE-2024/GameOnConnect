@@ -2,11 +2,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
+import 'package:gameonconnect/model/stats_M/stats_mood_model.dart';
 
 class StatsMoodPage extends StatefulWidget {
   const StatsMoodPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _StatsMoodPageState createState() => _StatsMoodPageState();
 }
 
@@ -259,48 +261,5 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
     } catch (e) {
       throw Exception('Error fetching game IDs for mood: $e');
     }
-  }
-}
-
-class Indicator extends StatelessWidget {
-  final Color color;
-  final String text;
-  final bool isSquare;
-  final double size;
-  final Color textColor;
-
-  const Indicator({
-    super.key,
-    required this.color,
-    required this.text,
-    this.isSquare = true,
-    this.size = 16,
-    this.textColor = const Color(0xff505050),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Theme.of(context);
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        )
-      ],
-    );
   }
 }
