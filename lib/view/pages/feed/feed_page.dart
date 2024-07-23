@@ -15,7 +15,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -237,8 +236,7 @@ class _FeedPageState extends State<FeedPage> {
           ),
         ],
       ),
-      //body: _pages[_selectedIndex], // Display the selected page
-      body: EventInvitesList(),
+      body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
