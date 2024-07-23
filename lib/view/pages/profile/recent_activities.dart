@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
+import 'package:gameonconnect/view/pages/profile/recent_activity_table.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../../../model/Stats_M/game_stats.dart';
@@ -121,119 +122,154 @@ String _getMonthName(int month) {
           )
 
         else
-          SizedBox(
-            height: 200, // Adjust the height as needed
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.gameStats.length,
-              itemBuilder: (context, index) {
-                return FutureBuilder<GameDetails>(
-                  future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData) {
-                      return const Center(child: Text('No data'));
-                    } else {
-                      final gameDetails = snapshot.data!;
-                      final gameStats = widget.gameStats[index];
-                      final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child:InkWell(
-                          onTap: () {
-                            _navigateToGameDetails(gameDetails.id);
-                            
-                          },
-                          child: Container(
-                          height: 150,
-                          width: 150,
-                  //margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  decoration: BoxDecoration(
-  //border: Border.all(color: const Color(0xFF00FF75)),
-  borderRadius: BorderRadius.circular(10),
-  color: Colors.grey[850],
-  image: DecorationImage(
-    fit: BoxFit.cover,
-    image: NetworkImage(
-      //'assets/images/image_3.png',
-      gameDetails.backgroundImage, // cache
-    ),
-    
-    colorFilter: ColorFilter.mode(
-        Colors.black.withOpacity(0.2), // Adjust opacity here
-        BlendMode.dstATop, // Use dstATop for transparency
-      ),
-    
-  ),
-),
+          Column(
+            children: [
+              SizedBox(
+                height: 200, // Adjust the height as needed
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.gameStats.length,
+                  itemBuilder: (context, index) {
+                    return FutureBuilder<GameDetails>(
+                      future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text('Error: ${snapshot.error}'));
+                        } else if (!snapshot.hasData) {
+                          return const Center(child: Text('No data'));
+                        } else {
+                          final gameDetails = snapshot.data!;
+                          final gameStats = widget.gameStats[index];
+                          final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:InkWell(
+                              onTap: () {
+                                _navigateToGameDetails(gameDetails.id);
+                                
+                              },
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                //margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                decoration: BoxDecoration(
+                                  //border: Border.all(color: const Color(0xFF00FF75)),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey[850],
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      //'assets/images/image_3.png',
+                                      gameDetails.backgroundImage, // cache
+                                    ),
+                                    
+                                    colorFilter: ColorFilter.mode(
+                                        Colors.black.withOpacity(0.2), // Adjust opacity here
+                                        BlendMode.dstATop, // Use dstATop for transparency
+                                      ),
+                                    
+                                  ),
+                                ),
 
-                  child:Column(
-  children: [
-    Container(
-      padding: const EdgeInsets.fromLTRB(18, 11, 3.2, 5.3),
-      child:  Column(
-        children: [
-          Text(
-            gameDetails.name,
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
+                                child:Column(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.fromLTRB(18, 11, 3.2, 5.3),
+                                      child:  Column(
+                                        children: [
+                                          Text(
+                                            gameDetails.name,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
 
-                color: Color(0xFFFFFFFF),
-              ),
-              textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Time played(h): ${gameStats.timePlayedLast}',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-            Text(
-              ' Mood: ${gameStats.mood} ',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-            
-            Text(
-              ' Date: ${_formatDate(lastPlayedDateTime)}',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-            Text(
-              ' Time: ${_formatTime(lastPlayedDateTime)} ',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-        ],
-      ),
-      
-    ),
-  ],
-),
-
-                ),
-                          ),
-                        
-                      );
-                      
-                      
-                    }
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                              textAlign: TextAlign.center,
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Time played(h): ${gameStats.timePlayedLast}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Mood: ${gameStats.mood} ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                            ),
+                                            
+                                            Text(
+                                              ' Date: ${_formatDate(lastPlayedDateTime)}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Time: ${_formatTime(lastPlayedDateTime)} ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                         );
+                        }
+                      },
+                    );
                   },
-                );
-              },
-            ),
+                ),
+              ),
+
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RecentActivityTable())); 
+
+                },
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9),
+                      gradient: LinearGradient(
+                        begin: Alignment(-1, 0),
+                        end: Alignment(1, 0),
+                        colors: <Color>[Color(0xFF00FF75), Color(0xFF009946)],
+                        stops: <double>[0, 1],
+                      ),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(15.3, 0, 16.3, 0),
+                      child: 
+                      Text(
+                        'see more',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                          height: 2.1,
+                          letterSpacing: 0.5,
+                          color: Color(0xFFFFFFFF),
+                        ),
+                      ),
+                    ),
+                  ),
+                ), 
+              ),
+            ],
           ),
+          
       ],
     );
   }
