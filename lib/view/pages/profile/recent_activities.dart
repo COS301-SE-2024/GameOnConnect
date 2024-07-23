@@ -10,11 +10,11 @@ import '../../../model/Stats_M/game_stats.dart';
 
 class RecentActivityList extends StatefulWidget {
   RecentActivityList({super.key, 
-    required this. gameIds,
+    required this. gameStats,
     required this.heading,
   }) ;
   //final List<String>  gameIds;
-  List<GameStats> gameIds;
+  List<GameStats> gameStats;
   final String heading;
 
   @override
@@ -44,6 +44,35 @@ class _RecentActivityListState extends State<RecentActivityList> {
       }
   }
 
+ DateTime _parseTimestampString(String timestampString) {
+  try {
+    return DateTime.parse(timestampString);
+  } catch (e) {
+    print('Error parsing timestamp string: $e');
+    return DateTime.now(); // Return current date/time as a fallback
+  }
+}
+
+// Format DateTime as date (e.g., "17 July 2024")
+String _formatDate(DateTime dateTime) {
+  return '${dateTime.day} ${_getMonthName(dateTime.month)} ${dateTime.year}';
+}
+
+// Format DateTime as time (e.g., "19:30")
+String _formatTime(DateTime dateTime) {
+  return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+}
+
+// Helper function to get month name
+String _getMonthName(int month) {
+  const monthNames = [
+    '', // Placeholder for index 0
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  return monthNames[month];
+}
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,7 +85,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
-        if (widget.gameIds.isEmpty)
+        if (widget.gameStats.isEmpty)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -93,13 +122,13 @@ class _RecentActivityListState extends State<RecentActivityList> {
 
         else
           SizedBox(
-            height: 150, // Adjust the height as needed
+            height: 200, // Adjust the height as needed
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.gameIds.length,
+              itemCount: widget.gameStats.length,
               itemBuilder: (context, index) {
                 return FutureBuilder<GameDetails>(
-                  future: GameService().fetchGameDetails(widget.gameIds[index].gameId),
+                  future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -109,6 +138,8 @@ class _RecentActivityListState extends State<RecentActivityList> {
                       return const Center(child: Text('No data'));
                     } else {
                       final gameDetails = snapshot.data!;
+                      final gameStats = widget.gameStats[index];
+                      final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child:InkWell(
@@ -143,40 +174,42 @@ class _RecentActivityListState extends State<RecentActivityList> {
   children: [
     Container(
       padding: const EdgeInsets.fromLTRB(18, 11, 3.2, 5.3),
-      child: const Column(
+      child:  Column(
         children: [
           Text(
-            'Fornite',
+            gameDetails.name,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
 
                 color: Color(0xFFFFFFFF),
               ),
+              textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
-            'Time played:30 ',
+            'Time played(h): ${gameStats.timePlayedLast}',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Color(0xFFFFFFFF),
               ),
             ),
             Text(
-              ' Mood: Joy ',
+              ' Mood: ${gameStats.mood} ',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Color(0xFFFFFFFF),
+              ),
+            ),
+            
+            Text(
+              ' Date: ${_formatDate(lastPlayedDateTime)}',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Color(0xFFFFFFFF),
               ),
             ),
             Text(
-              ' Date: 17 July 2024 ',
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Color(0xFFFFFFFF),
-              ),
-            ),
-            Text(
-              ' Time: 19:30 ',
+              ' Time: ${_formatTime(lastPlayedDateTime)} ',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Color(0xFFFFFFFF),
