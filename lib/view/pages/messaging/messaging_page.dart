@@ -59,6 +59,7 @@ class _MessagingState extends State<Messaging> {
   //build user list
   Widget _buildUserList() {
     return StreamBuilder(
+      //stream: _messagingService.getAllChatsForCurrentUser(), possible fix
       stream: _messagingService.getAllUsers(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {

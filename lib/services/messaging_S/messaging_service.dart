@@ -114,6 +114,24 @@ class MessagingService {
     });
   }
 
+  /*Stream<List<Map<String, dynamic>>> getAllChatsForCurrentUser() async* {
+  final User? currentUser = _auth.currentUser;
+  var allUsersSnapshot = await _firestore.collection("profile_data").get();
+  List<Map<String, dynamic>> allUsers = allUsersSnapshot.docs
+      .map((doc) => doc.data())
+      .toList();
+
+  List<Map<String, dynamic>> usersWithConversations = [];
+  for (var user in allUsers) {
+    String conversationID = await findConversationID( user['userID'],currentUser!.uid,);
+    if (conversationID != 'Not found') {
+      usersWithConversations.add(user);
+    }
+  }
+
+  yield usersWithConversations;
+}*/
+
   Future<String> findConversationID(String userID1, String userID2) async {
     var querySnapshot = await _firestore
         .collection('message_log')
