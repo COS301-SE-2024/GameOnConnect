@@ -13,6 +13,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   late Event e;
   late String imageUrl;
   late bool selected ;
+  late bool isJoined;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
           } else {
             imageUrl = snapshot.data!;
             selected = Events().isSubscribed(e);
+            isJoined = Events().isJoined(e);
             return GestureDetector(
               child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -372,7 +374,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               width: double.infinity,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primary,
+                                color: isJoined? Theme.of(context).colorScheme.secondary:Theme.of(context).colorScheme.primary,
                                 boxShadow: [
                                   BoxShadow(
                                     blurRadius: 5,
@@ -398,11 +400,14 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            Events().joinEvent(e);
-                                            getUpdatedEvent(e.eventID);
+                                            if(!isJoined) {
+                                              Events().joinEvent(e);
+                                              getUpdatedEvent(e.eventID);
+                                              isJoined = true;
+                                            }
                                           },
-                                          child: Text(
-                                            'Join event',
+                                          child: Text( isJoined?
+                                             'Joined event!': 'Join event',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)

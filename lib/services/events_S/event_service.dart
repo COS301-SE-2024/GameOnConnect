@@ -213,6 +213,19 @@ class Events {
       return false;
     }
 
+  bool isJoined(Event e) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      for (var i in e.participants) {
+        if (i == currentUser.uid) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return false;
+  }
+
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
