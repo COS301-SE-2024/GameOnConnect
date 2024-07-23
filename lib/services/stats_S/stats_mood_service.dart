@@ -53,18 +53,4 @@ class StatsMoodService {
 
     return gameData;
   }
-
-  // Future<List<String>> fetchGameIDsForMood(String mood) async {
-  //   try {
-  //     QuerySnapshot querySnapshot = await _firestore
-  //         .collection('stats')
-  //         .where('mood', isEqualTo: mood)
-  //         .get();
-
-  //     List<String> gameIDs = querySnapshot.docs.map((doc) => doc['gameID'] as String).toList();
-  //     return gameIDs;
-  //   } catch (e) {
-  //     throw Exception('Error fetching game IDs for mood: $e');
-  //   }
-  // }
 }
