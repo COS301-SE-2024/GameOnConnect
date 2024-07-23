@@ -127,7 +127,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
 
                                     },
                                     icon: selected
-                                        ? const Icon(Icons.notification_add)
+                                        ? const Icon(Icons.notifications)
                                         : const Icon(
                                             Icons.notification_add_outlined)),
                               ],
