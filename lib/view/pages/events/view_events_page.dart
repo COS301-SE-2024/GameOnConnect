@@ -183,10 +183,10 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           .surface,
                                                   tabs: const [
                                                     Tab(
-                                                      text: 'Subscribed',
+                                                      text: 'All',
                                                     ),
                                                     Tab(
-                                                      text: 'All',
+                                                      text: 'Subscribed',
                                                     ),
                                                     Tab(
                                                       text: 'My events',
@@ -246,27 +246,27 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           ),
                                                         ),
                                                         child:
-                                                            ListView.separated(
+                                                        ListView.separated(
                                                           itemCount:
-                                                              subscribedEvents!.length,
+                                                          allEvents!.length,
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
+                                                          Axis.vertical,
                                                           itemBuilder:
                                                               (context, index) {
                                                             Event i =
-                                                                subscribedEvents![
-                                                                    index];
+                                                            allEvents![
+                                                            index];
                                                             return EventCardWidget(
                                                                 e: i);
                                                           },
                                                           separatorBuilder:
                                                               (context,
-                                                                      index) =>
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
+                                                              index) =>
+                                                          const SizedBox(
+                                                              height:
+                                                              10),
                                                         ),
                                                       ),
                                                     ),
@@ -310,27 +310,27 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           ),
                                                         ),
                                                         child:
-                                                            ListView.separated(
+                                                        ListView.separated(
                                                           itemCount:
-                                                              allEvents!.length,
+                                                          subscribedEvents!.length,
                                                           padding:
-                                                              EdgeInsets.zero,
+                                                          EdgeInsets.zero,
                                                           scrollDirection:
-                                                              Axis.vertical,
+                                                          Axis.vertical,
                                                           itemBuilder:
                                                               (context, index) {
                                                             Event i =
-                                                                allEvents![
-                                                                    index];
+                                                            subscribedEvents![
+                                                            index];
                                                             return EventCardWidget(
                                                                 e: i);
                                                           },
                                                           separatorBuilder:
                                                               (context,
-                                                                      index) =>
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          10),
+                                                              index) =>
+                                                          const SizedBox(
+                                                              height:
+                                                              10),
                                                         ),
                                                       ),
                                                     ),
