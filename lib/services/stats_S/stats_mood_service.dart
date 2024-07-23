@@ -33,17 +33,38 @@ class StatsMoodService {
     };
   }
 
-  Future<List<String>> fetchGameIDsForMood(String mood) async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('stats')
-          .where('mood', isEqualTo: mood)
-          .get();
-
-      List<String> gameIDs = querySnapshot.docs.map((doc) => doc['gameID'] as String).toList();
-      return gameIDs;
-    } catch (e) {
-      throw Exception('Error fetching game IDs for mood: $e');
+  Future<List<Map<String, dynamic>>> fetchGameIDsAndTimestamps(String mood) async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      return [];
     }
+
+    final snapshot = await _firestore
+        .collection('stats')
+        .where('userID', isEqualTo: currentUser.uid).where('mood', isEqualTo: mood)
+        .get();
+
+    final gameData = snapshot.docs.map((doc) {
+      return {
+        'gameID': doc['gameID'].toString(),
+        'last_played': doc['last_played'] as Timestamp,
+      };
+    }).toList();
+
+    return gameData;
   }
+
+  // Future<List<String>> fetchGameIDsForMood(String mood) async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await _firestore
+  //         .collection('stats')
+  //         .where('mood', isEqualTo: mood)
+  //         .get();
+
+  //     List<String> gameIDs = querySnapshot.docs.map((doc) => doc['gameID'] as String).toList();
+  //     return gameIDs;
+  //   } catch (e) {
+  //     throw Exception('Error fetching game IDs for mood: $e');
+  //   }
+  // }
 }
