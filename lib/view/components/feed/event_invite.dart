@@ -1,15 +1,37 @@
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
-import 'package:gameonconnect/model/connection_M/user_model.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
 
-class EventInvitation extends StatelessWidget {
-  final String inviter;
+class EventInvitation extends StatefulWidget {
+  final String inviterId;
   final Event event;
-  final EventsService _eventsService = EventsService();
+  String inviterName = "";
 
-  EventInvitation({super.key, required this.inviter, required this.event});
+  EventInvitation({super.key, required this.inviterId, required this.event});
+
+  @override
+  State<EventInvitation> createState() => _EventInvitationState();
+}
+
+class _EventInvitationState extends State<EventInvitation> {
+  final EventsService _eventsService = EventsService();
+  final ProfileService _profileService = ProfileService();
+
+  @override
+  void initState() {
+    super.initState();
+    _changeIdToName();
+  }
+
+  Future<void> _changeIdToName() async {
+    String? inviterName =
+        await _profileService.getProfileName(widget.inviterId);
+
+    setState(() {
+      widget.inviterName = inviterName!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,41 +40,44 @@ class EventInvitation extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$inviter invited you to join',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold
-              )
-            ),
-            Text(
-              event.name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.green
-              )
-            )
+            Text('${widget.inviterName} invited you to join',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(widget.event.name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.green)),
           ],
         ),
-        children: <Widget> [
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Description: ${widget.event.description}',
+              ),
+              Text(
+                'Date: ${widget.event.startDate}',
+              )
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               FilledButton(
-                onPressed: () {
-                  _eventsService.joinEvent(event);
-                }, 
-                child: const Text('Accept')),
+                  onPressed: () {
+                    _eventsService.joinEvent(widget.event);
+                  },
+                  child: const Text('Accept')),
               FilledButton(
-                onPressed: () {
-                  _eventsService.declineEventInvitation(event);
-                }, 
-                child: const Text('Decline')),
+                  onPressed: () {
+                    _eventsService.declineEventInvitation(widget.event);
+                  },
+                  child: const Text('Decline')),
               FilledButton(
-                onPressed: () {
-                  _eventsService.declineEventInvitation(event);
-                  _eventsService.subscribeToEvent(event);
-                }, 
-                child: const Text('Stay notified')),
+                  onPressed: () {
+                    _eventsService.declineEventInvitation(widget.event);
+                    _eventsService.subscribeToEvent(widget.event);
+                  },
+                  child: const Text('Stay notified')),
             ],
           )
         ],
