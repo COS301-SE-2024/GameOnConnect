@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
+import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -17,6 +18,8 @@ class _GameTimer extends State<GameTimer> {
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
+  final SessionStatsService _sessionStatsService = SessionStatsService();
+  String _mood = "No mood";
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _GameTimer extends State<GameTimer> {
 
   void _stopStopwatch() {
     _stopwatch.stop();
+    _stopwatch.reset();
     _timer?.cancel();
   }
 
@@ -145,7 +149,22 @@ class _GameTimer extends State<GameTimer> {
                                       EmojiFeedback(
                                         inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
                                         onChanged: (value) {
-                                          //add value to db
+                                          setState(() {
+                                            switch (value) {
+                                              case 1:
+                                                _mood = "Terrible";
+                                              case 2:
+                                                _mood = "Bad";
+                                              case 3:
+                                                _mood = "Good";
+                                              case 4:
+                                                _mood = "Very good";
+                                              case 5:
+                                                _mood = "Awesome";
+                                              default:
+                                                _mood = "No mood";
+                                            }
+                                          });
                                         },
                                       ),
                                     ],
@@ -153,15 +172,11 @@ class _GameTimer extends State<GameTimer> {
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Don''t ask me now'),
+                                    child: const Text('Okay'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
+                                      //add data to the database
+                                      _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood);
                                     },
                                   ),
                                 ],
