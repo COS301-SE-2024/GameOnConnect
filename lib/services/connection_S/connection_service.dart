@@ -22,7 +22,6 @@ class ConnectionService {
 
   //Read friends from database
   Future<List<String>> getConnections(String who) async {
-    print('about to get connections');
     initializeCurrentUser();
     if (currentUser == null) {
       return []; //return an empty array
