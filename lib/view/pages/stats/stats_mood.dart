@@ -71,7 +71,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 2,
       ),
@@ -140,7 +140,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                   ),
                   const SizedBox(height: 16),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -247,6 +247,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   void _navigateToGamesPage(String mood) async {
     List<Map<String, dynamic>> gameData = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),
