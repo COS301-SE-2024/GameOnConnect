@@ -57,8 +57,8 @@ class EventsService {
     for (var doc in snapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       data['id'] = doc.id;
-      if (data['invited_users'] != null && data['invited_users'] is List) {
-        List<dynamic> array = data['invited_users'];
+      if (data['invited'] != null && data['invited'] is List) {
+        List<dynamic> array = data['invited'];
 
         if (array.contains(currentUser!.uid)) {
           invitedEvents.add(data);
@@ -136,7 +136,7 @@ class EventsService {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         await docRef.update({
-          'invited_users': FieldValue.arrayRemove([currentUser.uid])
+          'invited': FieldValue.arrayRemove([currentUser.uid])
         });
       }
     } catch (e) {
