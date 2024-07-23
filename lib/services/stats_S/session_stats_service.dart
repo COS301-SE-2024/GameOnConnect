@@ -10,21 +10,18 @@ class SessionStatsService {
       final String? currentUser = _auth.currentUser?.uid;
 
       if (currentUser != null) {
-        print('$gameId $mood $timePlayed $currentUser');
         await _firestore.collection('game_session_stats').add({
         'game_id': gameId,
         'mood': mood,
         'time_played': timePlayed,
         'user_id': currentUser
         });
-        print("Document added succesfully");
       } else {
         throw Exception("No user logged in.");
       }
 
     } catch (e) {
-      print('Error adding document: $e');
-      throw(e);
+      rethrow;
     }
   }
 }

@@ -44,7 +44,7 @@ class _GameTimer extends State<GameTimer> {
         _userGames = Future.value(gameDetails);
       });
     } catch (e) {
-      print('Error fetching game details: $e');
+      rethrow;
     }
   }
 
