@@ -17,8 +17,8 @@ class CreateEvents extends StatefulWidget {
 }
 
 class _CreateEventsState extends State<CreateEvents> {
-  late  List<String> gameNames = [];
-  late  List<GameDetails> games;
+  late List<String> gameNames = [];
+  late List<GameDetails> games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
@@ -64,10 +64,10 @@ class _CreateEventsState extends State<CreateEvents> {
     }
   }
 
-  void getGameID(String gameName)async {
+  void getGameID(String gameName) async {
     games = await Events().getMyGames();
-    for(var i in games){
-      if(i.name == gameName){
+    for (var i in games) {
+      if (i.name == gameName) {
         gameID = i.id;
       }
     }
@@ -83,7 +83,7 @@ class _CreateEventsState extends State<CreateEvents> {
   void dispose() {
     super.dispose();
     nameController.clear;
-    descriptionController.clear();
+    descriptionController.clear;
   }
 
   @override
@@ -130,26 +130,35 @@ class _CreateEventsState extends State<CreateEvents> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  pickImage();
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  child: filePath != null
-                                                      ? Image.file(
-                                                          File(filePath!.path),
-                                                          width: 359,
-                                                          height: 200,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/default_images/default_image.jpg',
-                                                          width: 359,
-                                                          height: 200,
-                                                          fit: BoxFit.cover,
-                                                        ),
+                                              SizedBox(
+                                        width: MediaQuery.of(context).size.width,
+                                        child:
+                                              FittedBox(
+                                                  fit: BoxFit.cover,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      pickImage();
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: filePath != null
+                                                          ? Image.file(
+                                                              File(filePath!
+                                                                  .path),
+                                                              width: 359,
+                                                              height: 200,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/default_images/default_image.jpg',
+                                                              width: 359,
+                                                              height: 200,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(
@@ -234,7 +243,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  ChooseGame(myGames: gameNames,))).then((gameChosen){
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChooseGame(
+                                                                myGames:
+                                                                    gameNames,
+                                                              ))).then(
+                                                      (gameChosen) {
                                                     setState(() {
                                                       gameChosen = gameChosen;
                                                       getGameID(gameChosen);
