@@ -93,6 +93,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Flexible( child: Column(children: [
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 20, 0, 0),
@@ -131,6 +132,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             Icons.notification_add_outlined)),
                               ],
                             ),
+                                ),
+              ],
+            ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 8, 24, 0),
