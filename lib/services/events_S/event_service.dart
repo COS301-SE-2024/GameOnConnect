@@ -225,6 +225,14 @@ class Events {
     }
     return false;
   }
+  bool isCreator (Event e) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.uid == e.creatorID) {
+
+      return true;
+    }
+    return false;
+  }
 
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;

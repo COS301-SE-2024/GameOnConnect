@@ -12,9 +12,9 @@ class ViewEventDetailsWidget extends StatefulWidget {
 class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   late Event e;
   late String imageUrl;
-  late bool selected ;
+  late bool selected;
   late bool isJoined;
-
+  late bool isCreator;
   @override
   void initState() {
     super.initState();
@@ -25,13 +25,13 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
     imageUrl = await Events().getEventImage(e.eventID);
   }
 
-  void getUpdatedEvent(String id) async{
+  void getUpdatedEvent(String id) async {
     Event updated = (await Events().getEvent(id))!;
     setState(() {
       e = updated;
     });
-
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -50,6 +50,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
             imageUrl = snapshot.data!;
             selected = Events().isSubscribed(e);
             isJoined = Events().isJoined(e);
+            isCreator = Events().isCreator(e);
             return GestureDetector(
               child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -95,49 +96,49 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Flexible( child: Column(children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 20, 0, 0),
-                                  child: Text(
-                                    e.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontSize: 24,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.underline,
-                                    ),
+                                Flexible(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0, 20, 0, 0),
+                                        child: Text(
+                                          e.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            fontSize: 24,
+                                            letterSpacing: 0,
+                                            fontWeight: FontWeight.w500,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              !selected;
+                                            });
+                                            if (selected) {
+                                              Events().unsubscribeToEvent(e);
+                                            } else {
+                                              Events().subscribeToEvent(e);
+                                            }
+                                            getUpdatedEvent(e.eventID);
+                                          },
+                                          icon: selected
+                                              ? const Icon(Icons.notifications)
+                                              : const Icon(Icons
+                                                  .notification_add_outlined)),
+                                    ],
                                   ),
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        !selected ;
-                                      });
-                                      if (selected) {
-
-                                        Events().unsubscribeToEvent(e);
-                                      } else {
-
-                                        Events().subscribeToEvent(e);
-                                      }
-                                      getUpdatedEvent(e.eventID);
-
-                                    },
-                                    icon: selected
-                                        ? const Icon(Icons.notifications)
-                                        : const Icon(
-                                            Icons.notification_add_outlined)),
                               ],
                             ),
-                                ),
-              ],
-            ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 8, 24, 0),
@@ -374,7 +375,13 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               width: double.infinity,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: isJoined? Theme.of(context).colorScheme.secondary:Theme.of(context).colorScheme.primary,
+                                color: isCreator
+                                    ? Theme.of(context).colorScheme.primary
+                                    : isJoined
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                        : Theme.of(context).colorScheme.primary,
                                 boxShadow: [
                                   BoxShadow(
                                     blurRadius: 5,
@@ -400,14 +407,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            if(!isJoined) {
+                                            if (!isJoined) {
                                               Events().joinEvent(e);
                                               getUpdatedEvent(e.eventID);
                                               isJoined = true;
                                             }
                                           },
-                                          child: Text( isJoined?
-                                             'Joined event!': 'Join event',
+                                          child: Text(
+                                            isCreator
+                                                ? 'Edit event'
+                                                : isJoined
+                                                    ? 'Joined event!'
+                                                    : 'Join event',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
