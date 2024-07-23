@@ -244,18 +244,18 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
   }
 
   void _navigateToGamesPage(String mood) async {
-    List<String> gameIDs = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
+    List<Map<String, dynamic>> gameData = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => GamesWidget(gameIDs: gameIDs),
+        builder: (context) => GamesWidget(gameData: gameData),
       ),
     );
   }
 
-  Future<List<String>> fetchGameIDsByMood(String mood) async {
+  Future<List<Map<String, dynamic>>> fetchGameIDsByMood(String mood) async {
     try {
-      List<String> gameIDs = await _statsMoodService.fetchGameIDsForMood(mood);
-      return gameIDs;
+      List<Map<String, dynamic>> gameData = await _statsMoodService.fetchGameIDsAndTimestamps(mood);
+      return gameData;
     } catch (e) {
       throw Exception('Error fetching game IDs for mood: $e');
     }
