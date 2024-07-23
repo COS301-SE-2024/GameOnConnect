@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -14,7 +16,8 @@ class GameTimer extends StatefulWidget {
 
 class _GameTimer extends State<GameTimer> {
   final MyGamesService _currentlyPlaying = MyGamesService();
-  Future<List<String>>? _userGames;
+  final GameService _gameService = GameService();
+  Future<List<GameDetails>>? _userGames;
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
@@ -24,7 +27,25 @@ class _GameTimer extends State<GameTimer> {
   @override
   void initState() {
     super.initState();
-    _userGames = _currentlyPlaying.getMyGames();
+    _fetchUserGames();
+  }
+
+  Future<void> _fetchUserGames() async {
+    try {
+      List<String> myGameIds = await _currentlyPlaying.getMyGames();
+      
+      Future<List<GameDetails>> gameDetailsFutures = Future.wait(
+        myGameIds.map((id) => _gameService.fetchGameDetails(id)),
+      );
+
+      List<GameDetails> gameDetails = await gameDetailsFutures;
+
+      setState(() {
+        _userGames = Future.value(gameDetails);
+      });
+    } catch (e) {
+      print('Error fetching game details: $e');
+    }
   }
 
   @override
@@ -34,6 +55,7 @@ class _GameTimer extends State<GameTimer> {
   }
 
   void _startStopWatch() {
+    _stopwatch.reset();
     _stopwatch.start();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
@@ -42,7 +64,6 @@ class _GameTimer extends State<GameTimer> {
 
   void _stopStopwatch() {
     _stopwatch.stop();
-    _stopwatch.reset();
     _timer?.cancel();
   }
 
@@ -89,9 +110,9 @@ class _GameTimer extends State<GameTimer> {
                     ],
                   ) 
                   : 
-                  FutureBuilder<List<String>>(
+                  FutureBuilder<List<GameDetails>>(
                     future: _userGames, 
-                    builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<List<GameDetails>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
@@ -104,10 +125,10 @@ class _GameTimer extends State<GameTimer> {
                           underline: const SizedBox(),
                           value: _selectedItem,
                           hint: const Text('What are you playing?'),
-                          items: snapshot.data!.map((String value) {
+                          items: snapshot.data!.map((GameDetails game) {
                             return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
+                              value: game.id.toString(),
+                              child: Text(game.name),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
