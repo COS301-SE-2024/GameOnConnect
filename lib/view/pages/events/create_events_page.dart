@@ -131,9 +131,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               SizedBox(
-                                        width: MediaQuery.of(context).size.width,
-                                        child:
-                                              FittedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: FittedBox(
                                                   fit: BoxFit.cover,
                                                   child: InkWell(
                                                     onTap: () {
@@ -165,6 +166,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 height: 10,
                                               ),
                                               TextFormField(
+                                                onTapOutside: (event) {
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                },
                                                 controller: nameController,
                                                 textCapitalization:
                                                     TextCapitalization.words,
@@ -286,6 +292,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 height: 10,
                                               ),
                                               TextFormField(
+                                                onTapOutside: (event) {
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                },
                                                 controller:
                                                     descriptionController,
                                                 textCapitalization:
