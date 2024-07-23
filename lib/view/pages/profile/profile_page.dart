@@ -199,7 +199,7 @@ class _ProfileState extends State<Profilenew>  {
                           ? const SizedBox.shrink()
                           : //const SizedBox(height: 10), //space 
                       RecentActivityList(
-                        gameIds: profileData. recentActivities,
+                        gameStats: profileData. recentActivities,
                         heading: 'Recent Activity',
                       ),
                       
@@ -238,7 +238,10 @@ class _ProfileState extends State<Profilenew>  {
                         ), 
                       ),
 
-                     
+                      const SizedBox(height: 10), //space 
+                      StatsList (
+                        heading: 'Stats',
+                      ),
                               
                       ],
               ),
