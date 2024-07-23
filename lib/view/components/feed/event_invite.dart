@@ -3,6 +3,7 @@ import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 
+// ignore: must_be_immutable
 class EventInvitation extends StatefulWidget {
   final String inviterId;
   final Event event;
