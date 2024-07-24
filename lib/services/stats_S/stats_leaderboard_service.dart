@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:logger/logger.dart'; // Add this line for logging
+
+// final logger = Logger(); // Initialize the logger
 
 class StatsLeaderboardService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -60,29 +63,64 @@ class StatsLeaderboardService {
       .where('positions', arrayContains: currentUser.uid)
       .get();
 
+    // logger.i('Query snapshot size: ${snapshot.docs.length}');
+    // Check if data is available
+      if (snapshot.docs.isEmpty) {
+        throw Exception('No data found for the selected position');
+      }
+
     List<Map<String, dynamic>> eventData = [];
 
     for (final doc in snapshot.docs) {
       final List<dynamic> positions = doc['positions'];
-      final positionIndex = _getPositionIndex(position);
+      bool isUserInPosition = false;
 
-      if (positions.length > positionIndex && positions[positionIndex] == currentUser.uid) {
-        final eventID = doc['eventID'];
-        final eventSnapshot = await _firestore
-            .collection('events')
-            .doc(eventID)
-            .get();
+      switch (position) {
+        case '1st':
+          isUserInPosition = positions.length > 0 && positions[0] == currentUser.uid;
+          break;
+        case '2nd':
+          isUserInPosition = positions.length > 1 && positions[1] == currentUser.uid;
+          break;
+        case '3rd':
+          isUserInPosition = positions.length > 2 && positions[2] == currentUser.uid;
+          break;
+        case 'Top 5':
+          isUserInPosition = positions.length > 4 && (positions.sublist(0, 5).contains(currentUser.uid));
+          break;
+        case 'Top 10':
+          isUserInPosition = positions.length > 9 && (positions.sublist(0, 10).contains(currentUser.uid));
+          break;
+      }
 
-        if (eventSnapshot.exists) {
-          final data = eventSnapshot.data();
-          if (data != null) {
-            final gameID = data['gameID'];
-            final startDate = data['start_date'];
-            eventData.add({
-              'gameID': gameID,
-              'last_played': startDate
-            });
+      // logger.i('Fetching data for position: $position');
+
+      if (isUserInPosition) {
+        // Check if user's position matches the specified position
+        int userIndex = positions.indexOf(currentUser.uid);
+        if (_getPositionString(userIndex) == position) {
+          final eventID = doc['eventID'];
+          final eventSnapshot = await _firestore
+              .collection('events')
+              .doc(eventID)
+              .get();
+          
+          // logger.i('Query snapshot size: ${eventSnapshot}');
+
+          if (eventSnapshot.exists) {
+            final data = eventSnapshot.data();
+            if (data != null) {
+              final gameID = data['gameID'];
+              final startDate = data['start_date'];
+              eventData.add({
+                'gameID': gameID,
+                'last_played': startDate
+              });
+              // logger.i('Query snapshot size: ${gameID}');
+              // logger.i('Query snapshot size: ${startDate}');
+            }
           }
+          // logger.i('Query snapshot size: ${eventData}');
         }
       }
     }
@@ -90,20 +128,30 @@ class StatsLeaderboardService {
     return eventData;
   }
 
-  int _getPositionIndex(String position) {
-    switch (position) {
-      case '1st':
-        return 0;
-      case '2nd':
-        return 1;
-      case '3rd':
-        return 2;
-      case 'Top 5':
-        return 3;
-      case 'Top 10':
-        return 4;
+  String _getPositionString(int index) {
+    switch (index) {
+      case 0:
+        return '1st';
+      case 1:
+        return '2nd';
+      case 2:
+        return '3rd';
+      case 3:
+        return 'Top 5';
+      case 4:
+        return 'Top 5';
+      case 5:
+        return 'Top 10';
+      case 6:
+        return 'Top 10';
+      case 7:
+        return 'Top 10';
+      case 8:
+        return 'Top 10';
+      case 9:
+        return 'Top 10';
       default:
-        throw ArgumentError('Invalid position: $position');
+        return '';
     }
   }
 
