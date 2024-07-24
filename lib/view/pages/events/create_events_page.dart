@@ -64,6 +64,8 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 
   void getGames() async {
+    gameNames = [];
+    gameImages = [];
     if(games != null) {
       for (var i in games!) {
         gameNames.add(i.name);
