@@ -18,6 +18,7 @@ class EventInvitation extends StatefulWidget {
 class _EventInvitationState extends State<EventInvitation> {
   final EventsService _eventsService = EventsService();
   final ProfileService _profileService = ProfileService();
+  bool _isWidgetVisible = true;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _EventInvitationState extends State<EventInvitation> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isWidgetVisible) {
     return Expanded(
       child: ExpansionTile(
         title: Column(
@@ -65,18 +67,28 @@ class _EventInvitationState extends State<EventInvitation> {
             children: [
               FilledButton(
                   onPressed: () {
+                    _eventsService.declineEventInvitation(widget.event);
                     _eventsService.joinEvent(widget.event);
+                    setState(() {
+                      _isWidgetVisible = false;
+                    });
                   },
                   child: const Text('Accept')),
               FilledButton(
                   onPressed: () {
                     _eventsService.declineEventInvitation(widget.event);
+                    setState(() {
+                      _isWidgetVisible = false;
+                    });
                   },
                   child: const Text('Decline')),
               FilledButton(
                   onPressed: () {
                     _eventsService.declineEventInvitation(widget.event);
                     _eventsService.subscribeToEvent(widget.event);
+                    setState(() {
+                      _isWidgetVisible = false;
+                    });
                   },
                   child: const Text('Stay notified')),
             ],
@@ -84,5 +96,8 @@ class _EventInvitationState extends State<EventInvitation> {
         ],
       ),
     );
+    } else {
+      return const SizedBox(height: 0);
+    }
   }
 }
