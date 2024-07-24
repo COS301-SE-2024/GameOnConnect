@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
+import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 
@@ -75,7 +76,7 @@ class _HorizontalGameListState extends State<HorizontalGameList> {
                           child: IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () {
-                              // Add your function here
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const GameLibrary()));
                             },
                           ),
                         ),

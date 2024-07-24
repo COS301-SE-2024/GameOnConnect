@@ -188,7 +188,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
                                             ),
                                             
                                             Text(
-                                              ' Date: $formattedRelativeDate',
+                                              ' $formattedRelativeDate',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 color: Color(0xFFFFFFFF),

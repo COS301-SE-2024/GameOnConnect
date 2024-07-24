@@ -186,7 +186,7 @@ class _ProfileState extends State<Profilenew>  {
                       ),
 
 
-                      const SizedBox(height: 10), //space 
+                      const SizedBox(height: 5), //space 
                       HorizontalGameList(
                         gameIds: profileData.wantToPlay,
                         heading: 'Want To Play',
@@ -196,13 +196,12 @@ class _ProfileState extends State<Profilenew>  {
                       //change RECENT ACTIVITY 
                       profileData. recentActivities.isEmpty
                           ? const SizedBox.shrink()
-                          : //const SizedBox(height: 10), //space 
-                      RecentActivityList(
+                          : RecentActivityList(
                         gameStats: profileData. recentActivities,
                         heading: 'Recent Activity',
                       ),
                                            
-                      const SizedBox(height: 10), //space 
+                      const SizedBox(height: 20), //space 
                       StatsList (
                         heading: 'Stats',
                       ),
