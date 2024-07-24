@@ -58,6 +58,7 @@ dependencies:
   video_player: ^2.3.0
   flutter_emoji_feedback: ^0.3.0
   fl_chart: ^0.68.0
+  timeago: ^3.7.0
 
 
 
