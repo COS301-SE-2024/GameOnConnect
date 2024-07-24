@@ -49,7 +49,7 @@ class ConnectionService {
         return []; //return an empty array
       }
     } catch (e) {
-      return []; //return an empty array
+      throw Exception("Error fetching users: $e");
     }
   }
 
@@ -68,7 +68,8 @@ class ConnectionService {
       }
       return list;
     } catch (e) {
-      throw ('Error: $e');
+      print("Error: $e");
+      return null;
     }
   }
 
@@ -77,6 +78,7 @@ class ConnectionService {
 
     try {
       List<user.AppUser>? connections = await getConnectionlist();
+      print(connections);
 
       if (connections != null) {
         for (var connection in connections) {
@@ -86,12 +88,11 @@ class ConnectionService {
         }
       }
 
-      print(onlineConnections);
       return onlineConnections;
     } catch (e) {
-      print(e);
+      print('Error getting online connections: $e');
+      return null;
     }
-    return null;
   }
 
   Future<void> acceptConnectionRequest(String requesterUserId) async {
@@ -172,7 +173,8 @@ class ConnectionService {
         return null;
       }
     } catch (e) {
-      return null;
+      print ("Error fetching profile data: $e");
+      throw Exception('Error fetching profile data: $e');
     }
   }
 
