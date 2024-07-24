@@ -6,7 +6,6 @@ import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
-import 'package:gameonconnect/view/pages/profile/recent_activity_table.dart';
 import 'package:gameonconnect/view/pages/profile/stats_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
