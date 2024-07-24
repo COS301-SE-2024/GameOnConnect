@@ -28,7 +28,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+    list = await EventsService().getConnectionsForInvite();
   }
 
   @override
@@ -39,7 +39,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         body: SafeArea(
           top: true,
           child: FutureBuilder<List<user.AppUser>?>(
-              future: Events().getConnectionsForInvite(),
+              future: EventsService().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
