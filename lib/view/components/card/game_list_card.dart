@@ -71,7 +71,7 @@ class _EventCardWidgetState extends State<GameCard> {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Container(width: 60,
+              SizedBox(width: 60,
                 height: 60, child:
                ClipRRect(
                 borderRadius: BorderRadius.circular(44),

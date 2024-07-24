@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
+import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
@@ -89,8 +90,8 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void dispose() {
     super.dispose();
-    nameController.clear();
-    descriptionController.clear();
+    nameController.dispose();
+    descriptionController.dispose();
   }
 
   @override
@@ -596,7 +597,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             context)
                                                             .showSnackBar(
                                                             const SnackBar(
-                                                                content: const Text(
+                                                                content:  Text(
                                                                     "Invalid end date/time."),
                                                                 backgroundColor: Colors
                                                                     .red));
@@ -782,6 +783,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                     ));
                                     nameController.clear();
                                     descriptionController.clear();
+                                    gameChosen = "";
+                                    invites = [];
+                                    validEndDate = false;
+                                    validName = false;
+                                    validStartDate = false;
                                   }else{
                                     if(!validName) {
                                       ScaffoldMessenger.of(context)
@@ -799,11 +805,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                           backgroundColor:
                                           Colors.red
                                       ));
-                                    } else if( !validEndDate){
+                                    } else if( !validStartDate){
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                           content: Text(
-                                              "Please ensure you entered a valid end date "),
+                                              "Please ensure you entered a valid start date and time "),
                                           backgroundColor:
                                           Colors.red
                                       ));
@@ -811,7 +817,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                           content: Text(
-                                              "Please ensure you entered start date and time "),
+                                              "Please ensure you entered a valid end date and time "),
                                           backgroundColor:
                                           Colors.red
                                       ));
