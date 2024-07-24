@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
-import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
