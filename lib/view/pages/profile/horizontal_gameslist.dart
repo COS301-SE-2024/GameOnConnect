@@ -114,7 +114,7 @@ class _HorizontalGameListState extends State<HorizontalGameList> {
                             _navigateToGameDetails(gameDetails.id);
 
                           },
-                          child:Container(
+                          child:SizedBox(
                           width: 150, // Adjust the width as needed
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-//import 'package:flutter_app/utils.dart';
 
 class StatsList extends StatefulWidget {
   const StatsList({super.key ,required this.heading}) ;
@@ -13,10 +11,10 @@ class StatsList extends StatefulWidget {
 class _StatsListState extends State<StatsList > {
 final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
   final List<Color> greenShades = [
-    Color(0xFF3E8469),
-    Color(0xFF6AAE72),
-    Color(0xFFA9D571),
-    Color(0xFF69B09C),
+    const Color(0xFF3E8469),
+    const Color(0xFF6AAE72),
+    const Color(0xFFA9D571),
+    const Color(0xFF69B09C),
   ];
   final List<IconData> icons = [
     Icons.psychology,
@@ -48,7 +46,7 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
 
         return Container(
           width: 150,
-          margin: EdgeInsets.symmetric(horizontal: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(10),
@@ -57,10 +55,10 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 40, color: Colors.white),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 labels[index],
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ],
           ),

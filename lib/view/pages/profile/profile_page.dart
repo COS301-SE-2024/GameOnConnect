@@ -7,7 +7,6 @@ import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
 import 'package:gameonconnect/view/pages/profile/stats_list.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 class Profilenew extends StatefulWidget {
@@ -202,7 +201,7 @@ class _ProfileState extends State<Profilenew>  {
                       ),
                                            
                       const SizedBox(height: 20), //space 
-                      StatsList (
+                      const StatsList (
                         heading: 'Stats',
                       ),
                               

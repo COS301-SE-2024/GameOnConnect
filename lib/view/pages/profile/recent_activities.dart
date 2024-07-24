@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
@@ -9,6 +7,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../model/Stats_M/game_stats.dart';
 
 
+// ignore: must_be_immutable
 class RecentActivityList extends StatefulWidget {
   RecentActivityList({super.key, 
     required this. gameStats,
@@ -49,7 +48,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
   try {
     return DateTime.parse(timestampString);
   } catch (e) {
-    print('Error parsing timestamp string: $e');
+    //print('Error parsing timestamp string: $e');
     return DateTime.now(); // Return current date/time as a fallback
   }
 }
@@ -164,7 +163,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
                                         children: [
                                           Text(
                                             gameDetails.name,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w700,
 
                                                 color: Color(0xFFFFFFFF),
@@ -174,14 +173,14 @@ class _RecentActivityListState extends State<RecentActivityList> {
                                           const SizedBox(height: 8),
                                           Text(
                                             'Time played(h): ${gameStats.timePlayedLast}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 color: Color(0xFFFFFFFF),
                                               ),
                                             ),
                                             Text(
                                               ' Mood: ${gameStats.mood} ',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 color: Color(0xFFFFFFFF),
                                               ),
@@ -189,7 +188,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
                                             
                                             Text(
                                               ' $formattedRelativeDate',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 color: Color(0xFFFFFFFF),
                                               ),

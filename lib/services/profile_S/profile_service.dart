@@ -99,12 +99,12 @@ Future<Profile?>  fetchProfile() async {
         recentActivities.add(statsModel);
       } else {
         // Handle unexpected data format (e.g., log or skip)
-        print('Unexpected data format for statsData: $statsData');
+        //print('Unexpected data format for statsData: $statsData');
       }
     }
   } catch (e) {
     // Handle any errors (e.g., log or return an empty list)
-    print('Error fetching recent activities: $e');
+    //print('Error fetching recent activities: $e');
   }
 
   return recentActivities;
