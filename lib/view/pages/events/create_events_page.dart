@@ -36,7 +36,7 @@ class _CreateEventsState extends State<CreateEvents> {
   bool validEndDate = false;
 
   String? type;
-  List<String>? invites = [];
+  List<String> invites = [];
 
   Future create() async {
     await EventsService().createEvent(
@@ -46,7 +46,7 @@ class _CreateEventsState extends State<CreateEvents> {
         _endDatePicked,
         gameID,
         isChanged,
-        invites!,
+        invites,
         filePath != null
             ? filePath!.path
             : 'assets/default_images/default_image.jpg',
@@ -64,9 +64,11 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 
   void getGames() async {
-    for (var i in games!) {
-      gameNames.add(i.name);
-      gameImages.add(i.backgroundImage);
+    if(games != null) {
+      for (var i in games!) {
+        gameNames.add(i.name);
+        gameImages.add(i.backgroundImage);
+      }
     }
   }
 
@@ -81,7 +83,6 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void initState() {
     super.initState();
-    getGames();
   }
 
   @override
@@ -100,13 +101,15 @@ class _CreateEventsState extends State<CreateEvents> {
             body: SafeArea(
               top: true,
               child: StreamBuilder<List<GameDetails>>(
-                stream: Events().getMyGames(),
+                stream: EventsService().getMyGames(),
                 builder: (context, snapshot) {
-                 if (snapshot.hasError) {
+                  if (snapshot.connectionState == ConnectionState.waiting ) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     games = snapshot.data;
-                    //getGames();
+                    getGames();
                     return Form(
                       autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
@@ -279,9 +282,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               ))).then(
                                                       (gameChosen) {
                                                     setState(() {
-                                                      this.gameChosen =
-                                                          gameChosen;
-                                                      getGameID(gameChosen);
+                                                      if( gameChosen != null) {
+                                                        this.gameChosen =
+                                                            gameChosen;
+                                                        getGameID(gameChosen);
+                                                      }
                                                     });
                                                   });
                                                 },
@@ -696,12 +701,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           builder: (context) =>
                                                               ConnectionsListWidget(
                                                                 chosenInvites:
-                                                                    invites!,
+                                                                    invites,
                                                               ))).then(
                                                       (invited) {
                                                     setState(() {
                                                       invites = invited
-                                                          as List<String>?;
+                                                          as List<String>;
                                                     });
                                                   });
                                                 },
@@ -710,10 +715,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      invites!.isEmpty || invites == null
+                                                         invites.isEmpty
                                                           ? Icons.add
                                                           : Icons.check,
-                                                      color: invites!.isEmpty || invites == null
+                                                      color:  invites.isEmpty
                                                           ? Theme.of(context)
                                                               .colorScheme
                                                               .secondary

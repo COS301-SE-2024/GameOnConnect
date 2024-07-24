@@ -124,9 +124,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                               !selected;
                                             });
                                             if (selected) {
-                                              Events().unsubscribeToEvent(e);
+                                              EventsService().unsubscribeToEvent(e);
                                             } else {
-                                              Events().subscribeToEvent(e);
+                                              EventsService().subscribeToEvent(e);
                                             }
                                             getUpdatedEvent(e.eventID);
                                           },

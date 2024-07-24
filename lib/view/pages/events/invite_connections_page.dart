@@ -45,7 +45,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         body: SafeArea(
           top: true,
           child: FutureBuilder<List<AppUser>?>(
-              future: Events().getConnectionsForInvite(),
+              future: EventsService().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
