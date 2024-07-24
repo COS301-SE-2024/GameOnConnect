@@ -11,6 +11,7 @@ class StatsLeaderboardPage extends StatefulWidget {
   const StatsLeaderboardPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _StatsLeaderboardPageState createState() => _StatsLeaderboardPageState();
 }
 
@@ -40,7 +41,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
         _isLoading = false;
       });
     } catch (e) {
-      print("Error fetching leaderboard data: $e");
+      // print("Error fetching leaderboard data: $e");
       setState(() {
         _isLoading = false;
       });
@@ -74,7 +75,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 2,
       ),
@@ -180,7 +181,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: Color.fromRGBO(200, 235, 197, 1.0),
+            color: const Color.fromRGBO(200, 235, 197, 1.0),
             value: leaderboardData['1st']!.toDouble(),
             title: '${leaderboardData['1st']}',
             radius: radius,
@@ -194,7 +195,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
           );
         case 1:
           return PieChartSectionData(
-            color: Color.fromRGBO(5, 94, 3, 1.0),
+            color: const Color.fromRGBO(5, 94, 3, 1.0),
             value: leaderboardData['2nd']!.toDouble(),
             title: '${leaderboardData['2nd']}',
             radius: radius,
@@ -208,7 +209,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
           );
         case 2:
           return PieChartSectionData(
-            color: Color.fromRGBO(0, 182, 40, 1.0),
+            color: const Color.fromRGBO(0, 182, 40, 1.0),
             value: leaderboardData['3rd']!.toDouble(),
             title: '${leaderboardData['3rd']}',
             radius: radius,
@@ -222,7 +223,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
           );
         case 3:
           return PieChartSectionData(
-            color: Color.fromRGBO(0, 216, 35, 1.0),
+            color: const Color.fromRGBO(0, 216, 35, 1.0),
             value: leaderboardData['Top 5']!.toDouble(),
             title: '${leaderboardData['Top 5']}',
             radius: radius,
@@ -236,7 +237,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
           );
         case 4:
           return PieChartSectionData(
-            color: Color.fromRGBO(72, 228, 88, 1.0),
+            color: const Color.fromRGBO(72, 228, 88, 1.0),
             value: leaderboardData['Top 10']!.toDouble(),
             title: '${leaderboardData['Top 10']}',
             radius: radius,
@@ -255,17 +256,14 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
   }
 
   void _navigateToGamesPage(String position) async {
-    try {
-      List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position); // Fetch the game IDs based on position
-      // logger.i('Query snapshot size: ${gameData}');
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => GamesWidget(gameData: gameData),
-        ),
-      );
-    } catch (e) {
-      print("Error: $e");
-    }
+    List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position); // Fetch the game IDs based on position
+    // logger.i('Query snapshot size: ${gameData}');
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GamesWidget(gameData: gameData),
+      ),
+    );
   }
 
   Future<List<Map<String, dynamic>>> fetchGameIDsByPosition(String position) async {
