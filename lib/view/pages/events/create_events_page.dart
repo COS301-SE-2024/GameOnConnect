@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
@@ -653,11 +654,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  Navigator.pushNamed(context,
-                                                          '/invite_connections')
+                                                  Navigator.push(context , MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ConnectionsListWidget(
+                                                            chosenInvites: invites!,
+                                                          )))
                                                       .then((invited) {
-                                                    invites = invited
-                                                        as List<String>?;
+                                                        setState(() {
+                                                          invites = invited
+                                                          as List<String>?;
+                                                        });
+
                                                   });
                                                 },
                                                 child: Row(

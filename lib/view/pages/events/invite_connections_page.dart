@@ -6,8 +6,8 @@ import '../../../model/connection_M/user_model.dart';
 import '../../components/search/search_field.dart';
 
 class ConnectionsListWidget extends StatefulWidget {
-  const ConnectionsListWidget({super.key});
-
+  final List<String> chosenInvites;
+  const ConnectionsListWidget({super.key, required this.chosenInvites});
   @override
   State<ConnectionsListWidget> createState() => _ConnectionsListWidgetState();
 }
@@ -25,6 +25,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
     super.initState();
     getConnectionsInvite();
     _currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    invites = widget.chosenInvites;
   }
 
   @override
@@ -143,6 +144,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             AppUser? i = filteredUsers[index];
 
                             return ConnectionCardWidget(
+                              invited: invites,
                                 image: i.profilePicture,
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),

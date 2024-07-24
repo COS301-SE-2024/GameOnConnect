@@ -12,6 +12,7 @@ class ConnectionCardWidget extends StatefulWidget {
   final String uniqueNum ;
   final String uid ;
   final String page;
+  final List<String>? invited;
   final void Function(String uid,bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
@@ -28,6 +29,7 @@ class ConnectionCardWidget extends StatefulWidget {
      this.onDisconnected, 
      this.onAccepted,
      this.onRejected,
+    this.invited,
   });
 
   @override
@@ -35,7 +37,8 @@ class ConnectionCardWidget extends StatefulWidget {
 }
 
 class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
-late String image;
+   late List<String>? invited;
+   late String image;
 late String username;
 late String uniqueNum;
 late String uid;
@@ -50,6 +53,14 @@ void initState() {
   uniqueNum = widget.uniqueNum;
   uid = widget.uid;
   page=widget.page;
+  invited = widget.invited;
+  if(invited == null)
+    {
+      selected = false;
+    }else {
+    selected = invited!.contains(uid);
+  }
+
 }
 
 @override
@@ -149,7 +160,7 @@ void _disconnect(String targetUserId) async {
 
   @override
 Widget build(BuildContext context) {
-  Widget cardContent = Container(
+    Widget cardContent = Container(
     width: 388,
     height: 72,
     decoration: BoxDecoration(
