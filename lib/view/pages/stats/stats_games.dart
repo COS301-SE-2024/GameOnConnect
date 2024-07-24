@@ -24,12 +24,12 @@ class _GamesWidgetState extends State<GamesWidget> {
   }
 
   void _fetchGameData() async {
-    _gameData = StatsGamesService().fetchGameImages(widget.gameData);
-    // setState(() {
-    //   _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
-    //   logger.i('Data received on GamesWidget: ${widget.gameData}');
-    //   logger.i('Data received on GamesWidget: ${_gameData}');
-    // });
+    // _gameData = StatsGamesService().fetchGameImages(widget.gameData);
+    setState(() {
+      _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
+      // logger.i('Data received on GamesWidget: ${widget.gameData}');
+      // logger.i('Data received on GamesWidget: ${_gameData}');
+    });
   }
 
   @override
