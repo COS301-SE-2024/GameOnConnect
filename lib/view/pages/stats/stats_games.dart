@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_games_service.dart';
+import 'package:timeago/timeago.dart' as timeago;
+// import 'package:logger/logger.dart'; // Add this line for logging
+
+// final logger = Logger(); // Initialize the logger
+
 
 class GamesWidget extends StatefulWidget {
   const GamesWidget({super.key, required this.gameData});
@@ -19,9 +24,12 @@ class _GamesWidgetState extends State<GamesWidget> {
   }
 
   void _fetchGameData() async {
-    setState(() {
-      _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
-    });
+    _gameData = StatsGamesService().fetchGameImages(widget.gameData);
+    // setState(() {
+    //   _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
+    //   logger.i('Data received on GamesWidget: ${widget.gameData}');
+    //   logger.i('Data received on GamesWidget: ${_gameData}');
+    // });
   }
 
   @override
@@ -56,9 +64,11 @@ class _GamesWidgetState extends State<GamesWidget> {
       body: FutureBuilder<List<Map<String, String>>>(
         future: _gameData,
         builder: (context, snapshot) {
+          // logger.i('GamesWidget snapshot: hasData=${snapshot.hasData} hasError=${snapshot.hasError}');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
+            // logger.e('GamesWidget error: ${snapshot.error}');
             return const Center(child: Text('Error loading game data'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No game data available'));
@@ -72,6 +82,9 @@ class _GamesWidgetState extends State<GamesWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: gameData.map((game) {
+                    DateTime lastPlayed = DateTime.parse(game['lastPlayed']!);
+                    String timeAgo = timeago.format(lastPlayed);
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(
@@ -89,7 +102,8 @@ class _GamesWidgetState extends State<GamesWidget> {
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
                             child: Text(
-                              game['lastPlayed']!,
+                              timeAgo,
+                              // game['lastPlayed']!,
                               style: TextStyle(
                                 fontFamily: 'inter',
                                 letterSpacing: 0,
