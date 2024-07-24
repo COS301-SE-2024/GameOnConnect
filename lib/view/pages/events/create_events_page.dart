@@ -32,6 +32,8 @@ class _CreateEventsState extends State<CreateEvents> {
   final descriptionController = TextEditingController();
   late int gameID;
   late String gameChosen = "";
+  bool validStartDate = false;
+  bool validEndDate = false;
 
   String? type;
   List<String>? invites = [];
@@ -460,6 +462,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   if (datePickedDate != null &&
                                                       datePickedTime != null) {
                                                     setState(() {
+                                                      validStartDate = true;
                                                       _datePicked = DateTime(
                                                         datePickedDate.year,
                                                         datePickedDate.month,
@@ -481,9 +484,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         BorderRadius.circular(
                                                             12),
                                                     border: Border.all(
-                                                      color: Theme.of(context)
+                                                      color: validStartDate ?Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                   ),
@@ -585,6 +588,19 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         datePickedTime2!.hour,
                                                         datePickedTime2.minute,
                                                       );
+                                                      if (_datePicked!.isBefore(
+                                                          _endDatePicked!)) {
+                                                        validEndDate = true;
+                                                      } else {
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                            .showSnackBar(
+                                                            const SnackBar(
+                                                                content: const Text(
+                                                                    "Invalid end date/time."),
+                                                                backgroundColor: Colors
+                                                                    .red));
+                                                      }
                                                     });
                                                   }
                                                 },
@@ -599,9 +615,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         BorderRadius.circular(
                                                             12),
                                                     border: Border.all(
-                                                      color: Theme.of(context)
+                                                      color: validEndDate ?Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                   ),
@@ -615,7 +631,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               .fromSTEB(
                                                               12, 0, 0, 0),
                                                       child: Text(
-                                                        _endDatePicked != null
+                                                        _endDatePicked != null && validEndDate
                                                             ? DateFormat(
                                                                     'd MMMM , hh:mm a')
                                                                 .format(
@@ -753,7 +769,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                 onPressed: () {
                                   nameController.clear;
                                   // TODO: error handling here
-                                  if(validName && gameChosen.isNotEmpty) {
+                                  if(validName && gameChosen.isNotEmpty && validEndDate) {
                                     create();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
