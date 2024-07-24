@@ -90,10 +90,10 @@ Future<Profile?>  fetchProfile() async {
 
       if (statsData is Map<String, dynamic>) {
         final statsModel = GameStats(
-          gameId: statsData['gameID'] as String? ?? '',
+          gameId: statsData['game_id'] as String? ?? '',
           lastPlayedDate:  _convertTimestampToString(statsData['last_played']),
           mood: statsData['mood'] as String? ?? '',
-          timePlayedLast: statsData['time_played_last'] as int? ?? 0, 
+          timePlayedLast: statsData['time_played'] as int? ?? 0, 
         );
 
         recentActivities.add(statsModel);
