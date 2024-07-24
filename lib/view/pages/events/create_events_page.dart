@@ -103,7 +103,7 @@ class _CreateEventsState extends State<CreateEvents> {
               child: StreamBuilder<List<GameDetails>>(
                 stream: EventsService().getMyGames(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting ) {
+                  if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
@@ -705,8 +705,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               ))).then(
                                                       (invited) {
                                                     setState(() {
-                                                      invites = invited
-                                                          as List<String>;
+                                                      if( invited != null) {
+                                                        invites = invited
+                                                        as List<String>;
+                                                      }
                                                     });
                                                   });
                                                 },
