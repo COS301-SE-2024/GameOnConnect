@@ -1,15 +1,14 @@
-//import 'package:delightful_toast/delight_toast.dart';
-//import 'package:delightful_toast/toast/utils/enums.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 //import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
-//import 'package:gameonconnect/services/profile_S/storage_service.dart';
 //import 'package:gameonconnect/services/profile_S/profile_service.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
-//import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/messaging/user_tile.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 
@@ -59,15 +58,39 @@ class _MessagingState extends State<Messaging> {
   //build user list
   Widget _buildUserList() {
     return StreamBuilder(
-      //stream: _messagingService.getAllChatsForCurrentUser(), possible fix
-      stream: _messagingService.getAllUsers(),
+      stream: _messagingService
+          .getAllChatsForCurrentUser(), //get the existing chats
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('error');
+          DelightToastBar( 
+                  builder: (context) {
+                    return CustomToastCard(
+                      title: Text(
+                        'Check your internet connection',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    );
+                  },
+                  position: DelightSnackbarPosition.top,
+                  autoDismiss: true,
+                  snackbarDuration: const Duration(seconds: 3))
+              .show(
+            context,
+          );
+          return const Text('An unexpected error occurred.');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('loading');
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(), //put a circular progress bar in the center
+              ],
+            ),
+          );
         }
 
         return ListView(
@@ -87,10 +110,10 @@ class _MessagingState extends State<Messaging> {
     String userID = userData['userID'] as String? ?? "default_picture_url";
     String receiverID = userData['userID'] as String? ?? "default_user_id";
     return FutureBuilder<String>(
-      future: storageService
-          .getProfilePictureUrl(userID), 
+      future: storageService.getProfilePictureUrl(userID),
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) { //this is the loading state
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          //this is the loading state
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -101,18 +124,20 @@ class _MessagingState extends State<Messaging> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-              Divider( //added divider here to induce the same loading
-                    height: 1,
-                    thickness: 0.5,
-                    color: Theme.of(context).colorScheme.secondary,
-              ), 
+              Divider(
+                //added divider here to induce the same loading
+                height: 1,
+                thickness: 0.5,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ],
           );
         } else if (snapshot.hasError) {
           //add a possible toastbar to check the connection
-          return const Icon(Icons.error_outline); 
+          return const Icon(Icons.error_outline);
           //Text('Error: ${snapshot.error}'
-        } else { //this widget means that the data loaded successfully
+        } else {
+          //this widget means that the data loaded successfully
           String profilePictureUrl = snapshot.data!;
           if (userData['userID'] != _authService.getCurrentUser()!.uid) {
             return UserTile(

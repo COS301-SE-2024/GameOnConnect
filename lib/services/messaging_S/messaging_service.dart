@@ -5,7 +5,7 @@ import 'package:gameonconnect/model/messages_M/message_modal.dart';
 class MessagingService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
+
   // Create a new conversation (group or private chat)
   Future<String> createConversation(List<String> participants) async {
     try {
@@ -77,11 +77,11 @@ class MessagingService {
   }
 
   Stream<QuerySnapshot> getSnapshotMessages(String conversationID) {
-  return FirebaseFirestore.instance
-      .collection('messages')
-      .where('conversationID', isEqualTo: conversationID)
-      .orderBy('timestamp', descending: false)
-      .snapshots();
+    return FirebaseFirestore.instance
+        .collection('messages')
+        .where('conversationID', isEqualTo: conversationID)
+        .orderBy('timestamp', descending: false)
+        .snapshots();
   }
 
   // Get conversations for the current user
@@ -114,40 +114,42 @@ class MessagingService {
     });
   }
 
-  /*Stream<List<Map<String, dynamic>>> getAllChatsForCurrentUser() async* {
-  final User? currentUser = _auth.currentUser;
-  var allUsersSnapshot = await _firestore.collection("profile_data").get();
-  List<Map<String, dynamic>> allUsers = allUsersSnapshot.docs
-      .map((doc) => doc.data())
-      .toList();
+  Stream<List<Map<String, dynamic>>> getAllChatsForCurrentUser() async* {
+    final User? currentUser = _auth.currentUser; //get the current user
+    var allUsersSnapshot = await _firestore.collection("profile_data").get();
+    List<Map<String, dynamic>> allUsers =
+        allUsersSnapshot.docs.map((doc) => doc.data()).toList(); //map the users t a list
 
-  List<Map<String, dynamic>> usersWithConversations = [];
-  for (var user in allUsers) {
-    String conversationID = await findConversationID( user['userID'],currentUser!.uid,);
-    if (conversationID != 'Not found') {
-      usersWithConversations.add(user);
+    List<Map<String, dynamic>> usersWithConversations = [];
+    for (var user in allUsers) {
+      String conversationID = await findConversationID(
+        user['userID'],
+        currentUser!.uid,
+      ); //find the conversationID between all the users and the person logged in
+      if (conversationID != 'Not found') {
+        usersWithConversations.add(user);
+      }
     }
-  }
 
-  yield usersWithConversations;
-}*/
+    yield usersWithConversations; //yield the results
+  }
 
   Future<String> findConversationID(String userID1, String userID2) async {
     var querySnapshot = await _firestore
         .collection('message_log')
         .where('participants', arrayContains: userID1)
         .get();
-    
+
     for (var doc in querySnapshot.docs) {
-    var participants = List<String>.from(doc['participants']);
-    if (participants.contains(userID2) && participants.contains(userID1) && userID1 != userID2) {
-      return doc.id; 
+      var participants = List<String>.from(doc['participants']);
+      if (participants.contains(userID2) &&
+          participants.contains(userID1) &&
+          userID1 != userID2) {
+        return doc.id;
+      }
     }
-  }
     return 'Not found';
   }
-
-  
 }
 
 /* 
