@@ -12,7 +12,7 @@ class StatsGamesService {
     String? apikey = dotenv.env['RAWG_API_KEY'];
 
     for (Map<String, dynamic> game in gameData) {
-      String gameID = game['gameID'];
+      String gameID = game['gameID'].toString();
       String lastPlayed = (game['last_played'] as Timestamp).toDate().toString();
 
       try {
