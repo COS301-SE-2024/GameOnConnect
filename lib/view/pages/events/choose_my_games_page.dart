@@ -4,7 +4,8 @@ import 'package:gameonconnect/view/components/card/game_list_card.dart';
 
 class ChooseGame extends StatefulWidget {
   final List<String> myGames;
-  const ChooseGame({super.key, required this.myGames});
+  final String chosenGame;
+  const ChooseGame({super.key, required this.myGames, required this.chosenGame});
 
   @override
   State<ChooseGame> createState() => _ChooseGame();
@@ -20,7 +21,7 @@ class _ChooseGame extends State<ChooseGame> {
   void initState() {
     super.initState();
     myGames = widget.myGames;
-
+    chosenGame = widget.chosenGame;
   }
 
   @override

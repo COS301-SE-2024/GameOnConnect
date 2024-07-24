@@ -171,6 +171,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       .instance.primaryFocus
                                                       ?.unfocus();
                                                 },
+                                                maxLength: 50,
                                                 controller: nameController,
                                                 textCapitalization:
                                                     TextCapitalization.words,
@@ -256,10 +257,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               ChooseGame(
                                                                 myGames:
                                                                     gameNames,
+                                                                chosenGame: gameChosen,
                                                               ))).then(
                                                       (gameChosen) {
                                                     setState(() {
-                                                      gameChosen = gameChosen;
+                                                      this.gameChosen = gameChosen;
                                                       getGameID(gameChosen);
                                                     });
                                                   });
@@ -297,6 +299,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       .instance.primaryFocus
                                                       ?.unfocus();
                                                 },
+                                                maxLength: 100,
                                                 controller:
                                                     descriptionController,
                                                 textCapitalization:
