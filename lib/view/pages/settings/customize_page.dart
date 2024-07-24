@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -36,10 +37,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   dynamic _profileBanner;
   String testBannerurl = '';
 
+  final String? apiKey = dotenv.env['RAWG_API_KEY'];
+
   Future<void> _fetchGenresFromAPI() async {
     try {
       var url = Uri.parse(
-          'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+          'https://api.rawg.io/api/genres?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -59,7 +62,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Future<void> _fetchTagsFromAPI() async {
     try {
       var url = Uri.parse(
-          'https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+          'https://api.rawg.io/api/tags?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
