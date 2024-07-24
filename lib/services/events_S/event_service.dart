@@ -10,7 +10,7 @@ import '../../model/events_M/events_model.dart';
 import '../../model/game_library_M/game_details_model.dart';
 import '../../services/game_library_S/my_games_service.dart';
 
-class Events {
+class EventsService {
   Stream<List<Event>> fetchAllEvents()  async* {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
@@ -45,8 +45,28 @@ class Events {
       e = Event.fromMap(data, id);
     }
     return e;
+  }
 
+  Future<List<Map<String, dynamic>>> getInvitedEvents() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> invitedEvents = [];
+    final currentUser = FirebaseAuth.instance.currentUser;
 
+    QuerySnapshot snapshot = await db.collection('events').get();
+
+    for (var doc in snapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['id'] = doc.id;
+      if (data['invited'] != null && data['invited'] is List) {
+        List<dynamic> array = data['invited'];
+
+        if (array.contains(currentUser!.uid)) {
+          invitedEvents.add(data);
+        }
+      }
+    }
+
+    return invitedEvents;
   }
 
   Future<void> createEvent(
@@ -106,6 +126,21 @@ class Events {
       
     }catch (e){
       return await storage.child('events/default_image.jpg').getDownloadURL();
+    }
+  }
+
+  Future<void> declineEventInvitation(Event event) async {
+    final DocumentReference docRef = FirebaseFirestore.instance.collection('events').doc(event.eventID);
+
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        await docRef.update({
+          'invited': FieldValue.arrayRemove([currentUser.uid])
+        });
+      }
+    } catch (e) {
+      throw ('Error: $e');
     }
   }
 

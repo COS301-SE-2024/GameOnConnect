@@ -39,7 +39,7 @@ class _CreateEventsState extends State<CreateEvents> {
   List<String>? invites = [];
 
   Future create() async {
-    await Events().createEvent(
+    await EventsService().createEvent(
         selectedOption,
         _datePicked,
         name,

@@ -11,6 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/components/search/search_field.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class GameLibrary extends StatefulWidget {
   const GameLibrary({super.key});
@@ -106,8 +107,10 @@ class _GameLibraryState extends State<GameLibrary> {
       _isLoading = true;
     });
 
+    String? apikey = dotenv.env['RAWG_API_KEY'];
+
     final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=b8d81a8e79074f1eb5c9961a9ffacee6$request'));
+        'https://api.rawg.io/api/games?key=$apikey$request'));
 
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);

@@ -34,7 +34,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+    list = await EventsService().getConnectionsForInvite();
   }
 
   @override

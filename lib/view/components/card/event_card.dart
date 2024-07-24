@@ -27,7 +27,7 @@ class EventCard extends State<EventCardWidget> {
   }
 
   void getEvent() async{
-    Event? updated = await Events().getEvent(e.eventID);
+    Event? updated = await EventsService().getEvent(e.eventID);
     setState(() {
       e = updated!;
     });

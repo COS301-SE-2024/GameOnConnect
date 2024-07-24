@@ -22,11 +22,11 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   }
 
   void getImage(String id) async {
-    imageUrl = await Events().getEventImage(e.eventID);
+    imageUrl = await EventsService().getEventImage(e.eventID);
   }
 
-  void getUpdatedEvent(String id) async {
-    Event updated = (await Events().getEvent(id))!;
+  void getUpdatedEvent(String id) async{
+    Event updated = (await EventsService().getEvent(id))!;
     setState(() {
       e = updated;
     });
@@ -40,7 +40,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Events().getEventImage(e.eventID),
+        future: EventsService().getEventImage(e.eventID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -48,9 +48,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
             return Text('Error: ${snapshot.error}');
           } else {
             imageUrl = snapshot.data!;
-            selected = Events().isSubscribed(e);
-            isJoined = Events().isJoined(e);
-            isCreator = Events().isCreator(e);
+            selected = EventsService().isSubscribed(e);
+            isJoined = EventsService().isJoined(e);
+            isCreator = EventsService().isCreator(e);
             return GestureDetector(
               child: Scaffold(
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -137,6 +137,25 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                     ],
                                   ),
                                 ),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        !selected ;
+                                      });
+                                      if (selected) {
+
+                                        EventsService().unsubscribeToEvent(e);
+                                      } else {
+
+                                        EventsService().subscribeToEvent(e);
+                                      }
+                                      getUpdatedEvent(e.eventID);
+
+                                    },
+                                    icon: selected
+                                        ? const Icon(Icons.notification_add)
+                                        : const Icon(
+                                            Icons.notification_add_outlined)),
                               ],
                             ),
                             Padding(
@@ -356,7 +375,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       ),
                                     ),
                                     Text(
-                                      Events().getAmountJoined(e).toString(),
+                                      EventsService().getAmountJoined(e).toString(),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         color: Theme.of(context)
@@ -408,10 +427,11 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         child: MaterialButton(
                                           onPressed: () {
                                             if (!isJoined) {
-                                              Events().joinEvent(e);
+                                              EventsService().joinEvent(e);
                                               getUpdatedEvent(e.eventID);
                                               isJoined = true;
                                             }
+
                                           },
                                           child: Text(
                                             isCreator
