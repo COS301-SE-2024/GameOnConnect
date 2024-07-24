@@ -14,7 +14,7 @@ class ConnectionsList extends StatefulWidget {
 
 class _ConnectionsListState extends State<ConnectionsList> {
 
-  List<user.User>? list;
+  List<user.AppUser>? list;
 
 
   @override
@@ -29,7 +29,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+    list = await EventsService().getConnectionsForInvite();
     setState(() {});
   }
 
@@ -50,8 +50,8 @@ class _ConnectionsListState extends State<ConnectionsList> {
         title: const Text('Connections'),
     ),
     
-      body:  FutureBuilder<List<user.User>?>(
-              future: Events().getConnectionsForInvite(),
+      body:  FutureBuilder<List<user.AppUser>?>(
+              future: EventsService().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -113,7 +113,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            user.User? i = list![index];
+                            user.AppUser? i = list![index];
 
                             return ConnectionCardWidget(
                                 image: i.profilePicture,

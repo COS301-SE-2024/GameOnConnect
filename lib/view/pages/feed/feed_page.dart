@@ -16,7 +16,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
-
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
   final String title;
@@ -39,7 +38,6 @@ class _FeedPageState extends State<FeedPage> {
     const CreateEvents(), // create events Page
     const ViewEvents(), // View Events Page
     const Profilenew(), // Actual page for the Profile
-
   ];
 
   @override
@@ -190,7 +188,7 @@ class _FeedPageState extends State<FeedPage> {
                             }
                           }
 
-                          //set the state to false to ensure the 
+                          //set the state to false to ensure the
                           setState(() {
                             _isSubmitting = false;
                           });
@@ -218,6 +216,25 @@ class _FeedPageState extends State<FeedPage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.title,
             style: TextStyle(color: Theme.of(context).colorScheme.surface)),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Messaging(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.message,
+                color: Theme.of(context).colorScheme.surface,
+                ),
+            ),
+          ),
+        ],
       ),
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
@@ -297,58 +314,6 @@ class _DevelopmentButtons extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // Testing for messaging services - It works - commented out
-          // MaterialButton(
-          //   onPressed: () async {
-          //     try {
-          //       // Test the messaging service
-          //       String conversationID = await messagingService.createConversation(['10H784yQyufaSb32zpYpWX83UeW2', 'rsYgmKH4bOUmhTFcTyKepTcX2Of2']);
-          //       await messagingService.sendMessage(conversationID, 'Hello, world!');
-          //       List<Map<String, dynamic>> messages = await messagingService.getMessages(conversationID);
-          //       List<Map<String, dynamic>> conversations = await messagingService.getConversations();
-
-          //       // Print the results to the console (or handle as needed)
-          //       // print('Conversation ID: $conversationID');
-          //       // print('Messages: $messages');
-          //       // print('Conversations: $conversations');
-          //     } catch (e) {
-          //       throw Exception("Error during testing: $e");
-          //       // print("Error during testing: $e");  // Log the error
-          //     }
-          //   },
-          //   color: Theme.of(context).colorScheme.primary,
-          //   textColor: Theme.of(context).colorScheme.surface,
-          //   child: Text('Test Messaging Service'),
-          // ),
-          MaterialButton(
-            onPressed: () {
-              //add code here to go to the messaging page.
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Messaging(),
-                  ),
-                );
-            },
-            color: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).colorScheme.surface,
-            child: const Text('Messaging Page'),
-          ),
-          /* MaterialButton(
-            onPressed: () {
-               Navigator.push(
-        context,
-        MaterialPageRoute(
-          //builder: (context) => FriendSearchPage(currentUserId),
-         
-          builder: (context) => Profilenew()
-        ),
-      );
-            },
-            color: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).colorScheme.surface,
-            child: Text('new profile'),
-          ),*/
           MaterialButton(
             onPressed: () {
               // Get the current user's ID
@@ -360,7 +325,7 @@ class _DevelopmentButtons extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     //builder: (context) => FriendSearchPage(currentUserId),
-                    builder: (context) => FriendSearch(currentUserId),
+                    builder: (context) => FriendSearch(),
                   ),
                 );
               } else {

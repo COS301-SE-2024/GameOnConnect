@@ -23,4 +23,20 @@ class GameService {
     }
   }
 
+  Future<List<Screenshot>> fetchGameScreenshots(int gameId) async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://api.rawg.io/api/games/$gameId/screenshots?key=$apiKey'));
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        List<dynamic> screenshotJson = jsonResponse['results'];
+        return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load game screenshots');
+      }
+    } on SocketException {
+      throw Exception('No Internet connection');
+    }
+  }
 }
+

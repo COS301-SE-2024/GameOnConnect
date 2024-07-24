@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/help/video_widget.dart';
 
 class GettingStarted extends StatelessWidget {
   const GettingStarted({super.key});
@@ -215,6 +216,21 @@ class GettingStarted extends StatelessWidget {
                                                     decoration: BoxDecoration(),
                                                   ),
                                                 ),
+
+                                                SizedBox(
+                                                  width: double.infinity,
+                                                  child: Padding(
+                                                    padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                    child: TutorialVideo(videoPath: 'assets/videos/Connections_1.mp4'),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -330,6 +346,20 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/Connections_2.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -438,12 +468,27 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/Connections_3.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
+
                                 ]),
                           ],
                         ),
@@ -620,6 +665,21 @@ class GettingStarted extends StatelessWidget {
                                                   decoration: BoxDecoration(),
                                                 ),
                                               ),
+
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_1.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -721,6 +781,20 @@ class GettingStarted extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                              child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_2.mp4'),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -814,6 +888,20 @@ class GettingStarted extends StatelessWidget {
                                                   ],
                                                 ),
                                               ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                              child: TutorialVideo(videoPath: 'assets/videos/GameLibrary_3.mp4'),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                            child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(),
                                             ),
                                           ),
                                         ],
@@ -1015,6 +1103,21 @@ class GettingStarted extends StatelessWidget {
                                                       width: double.infinity,
                                                     ),
                                                   ),
+                                                  
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: Padding(
+                                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                      child: TutorialVideo(videoPath: 'assets/videos/GameInfo_1.mp4'),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(),
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ],
@@ -1127,6 +1230,20 @@ class GettingStarted extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_2.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -1235,6 +1352,20 @@ class GettingStarted extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_3.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
                                                 ),
                                               ),
                                             ],
@@ -1353,6 +1484,20 @@ class GettingStarted extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_4.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
                                                 ),
                                               ),
                                             ],
@@ -1480,6 +1625,20 @@ class GettingStarted extends StatelessWidget {
                                                       ],
                                                     ),
                                                   ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: double.infinity,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
+                                                  child: TutorialVideo(videoPath: 'assets/videos/GameInfo_5.mp4'),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(),
                                                 ),
                                               ),
                                             ],
