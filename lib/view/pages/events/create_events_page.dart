@@ -22,7 +22,7 @@ class _CreateEventsState extends State<CreateEvents> {
   bool validName = false;
   late List<String> gameNames = [];
   late List<String> gameImages = [];
-  late List<GameDetails> games;
+  late List<GameDetails>? games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
@@ -64,16 +64,14 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 
   void getGames() async {
-    games = await Events().getMyGames();
-    for (var i in games) {
+    for (var i in games!) {
       gameNames.add(i.name);
       gameImages.add(i.backgroundImage);
     }
   }
 
   void getGameID(String gameName) async {
-    games = await Events().getMyGames();
-    for (var i in games) {
+    for (var i in games!) {
       if (i.name == gameName) {
         gameID = i.id;
       }
@@ -101,14 +99,13 @@ class _CreateEventsState extends State<CreateEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
               top: true,
-              child: FutureBuilder<List<GameDetails>>(
-                future: Events().getMyGames(),
+              child: StreamBuilder<List<GameDetails>>(
+                stream: Events().getMyGames(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
+                 if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
+                    games = snapshot.data;
                     //getGames();
                     return Form(
                       autovalidateMode: AutovalidateMode.disabled,
@@ -782,11 +779,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                     ));
                                     nameController.clear();
                                     descriptionController.clear();
-                                    gameChosen = "";
-                                    invites = [];
-                                    validEndDate = false;
-                                    validName = false;
-                                    validStartDate = false;
+                                    setState(() {
+                                      gameChosen = "";
+                                      invites = [];
+                                      validEndDate = false;
+                                      validName = false;
+                                      validStartDate = false;
+                                      _endDatePicked = null;
+                                      _datePicked = null;
+
+                                    });
+
                                   }else{
                                     if(!validName) {
                                       ScaffoldMessenger.of(context)
