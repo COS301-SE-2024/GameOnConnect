@@ -29,7 +29,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+    list = await EventsService().getConnectionsForInvite();
     setState(() {});
   }
 
@@ -51,7 +51,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
     ),
     
       body:  FutureBuilder<List<user.AppUser>?>(
-              future: Events().getConnectionsForInvite(),
+              future: EventsService().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

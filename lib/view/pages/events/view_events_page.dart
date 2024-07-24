@@ -15,7 +15,7 @@ class ViewEvents extends StatefulWidget {
 
 class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  Events events = Events();
+  EventsService events = EventsService();
   late List<Event>? allEvents;
   late List<Event>? subscribedEvents;
   late List<Event>? myEvents;
