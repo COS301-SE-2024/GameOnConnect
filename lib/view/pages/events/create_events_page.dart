@@ -18,6 +18,8 @@ class CreateEvents extends StatefulWidget {
 }
 
 class _CreateEventsState extends State<CreateEvents> {
+  String name="";
+  bool validName = false;
   late List<String> gameNames = [];
   late List<GameDetails> games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -28,7 +30,7 @@ class _CreateEventsState extends State<CreateEvents> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   late int gameID;
-  late String gameChosen = "none";
+  late String gameChosen = "";
 
   String? type;
   List<String>? invites = [];
@@ -37,7 +39,7 @@ class _CreateEventsState extends State<CreateEvents> {
     await Events().createEvent(
         selectedOption,
         _datePicked,
-        nameController.text,
+        name,
         _endDatePicked,
         gameID,
         isChanged,
@@ -168,6 +170,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                               TextFormField(
                                                 onTapOutside: (event) {
+                                                  name = nameController.text;
+                                                  if( name.isNotEmpty){
+                                                    setState(() {
+                                                      validName = true;
+                                                    });
+                                                  }else
+                                                    {
+                                                      setState(() {
+                                                        validName = false;
+                                                      });
+                                                    }
                                                   FocusManager
                                                       .instance.primaryFocus
                                                       ?.unfocus();
@@ -199,9 +212,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   enabledBorder:
                                                       OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                      color: Theme.of(context)
+                                                      color: validName?
+                                                      Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                     borderRadius:
@@ -258,11 +272,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               ChooseGame(
                                                                 myGames:
                                                                     gameNames,
-                                                                chosenGame: gameChosen,
+                                                                chosenGame:
+                                                                    gameChosen,
                                                               ))).then(
                                                       (gameChosen) {
                                                     setState(() {
-                                                      this.gameChosen = gameChosen;
+                                                      this.gameChosen =
+                                                          gameChosen;
                                                       getGameID(gameChosen);
                                                     });
                                                   });
@@ -272,10 +288,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      Icons.add,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
+                                                      gameChosen.isEmpty
+                                                          ? Icons.add
+                                                          : Icons.check,
+                                                      color: gameChosen.isEmpty
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
                                                       size: 24,
                                                     ),
                                                     Text(
@@ -654,17 +676,19 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  Navigator.push(context , MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ConnectionsListWidget(
-                                                            chosenInvites: invites!,
-                                                          )))
-                                                      .then((invited) {
-                                                        setState(() {
-                                                          invites = invited
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ConnectionsListWidget(
+                                                                chosenInvites:
+                                                                    invites!,
+                                                              ))).then(
+                                                      (invited) {
+                                                    setState(() {
+                                                      invites = invited
                                                           as List<String>?;
-                                                        });
-
+                                                    });
                                                   });
                                                 },
                                                 child: Row(
@@ -672,10 +696,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      Icons.add,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
+                                                      invites!.isEmpty || invites == null
+                                                          ? Icons.add
+                                                          : Icons.check,
+                                                      color: invites!.isEmpty || invites == null
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
                                                       size: 24,
                                                     ),
                                                     Text(
@@ -721,6 +751,7 @@ class _CreateEventsState extends State<CreateEvents> {
                               child: MaterialButton(
                                 onPressed: () {
                                   nameController.clear;
+                                  // TODO: error handling here
                                   create();
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
