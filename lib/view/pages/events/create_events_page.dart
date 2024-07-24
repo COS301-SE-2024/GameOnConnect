@@ -21,6 +21,7 @@ class _CreateEventsState extends State<CreateEvents> {
   String name="";
   bool validName = false;
   late List<String> gameNames = [];
+  late List<String> gameImages = [];
   late List<GameDetails> games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
@@ -64,6 +65,7 @@ class _CreateEventsState extends State<CreateEvents> {
     games = await Events().getMyGames();
     for (var i in games) {
       gameNames.add(i.name);
+      gameImages.add(i.backgroundImage);
     }
   }
 
@@ -274,6 +276,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                     gameNames,
                                                                 chosenGame:
                                                                     gameChosen,
+                                                                images: gameImages,
                                                               ))).then(
                                                       (gameChosen) {
                                                     setState(() {
@@ -292,9 +295,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           ? Icons.add
                                                           : Icons.check,
                                                       color: gameChosen.isEmpty
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary
+                                                          ? Colors.red
                                                           : Theme.of(context)
                                                               .colorScheme
                                                               .primary,
@@ -752,14 +753,27 @@ class _CreateEventsState extends State<CreateEvents> {
                                 onPressed: () {
                                   nameController.clear;
                                   // TODO: error handling here
-                                  create();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        "Event created successfully!"),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
-                                  ));
+                                  if(validName && gameChosen.isNotEmpty) {
+                                    create();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          "Event created successfully!"),
+                                      backgroundColor:
+                                      Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .primary,
+                                    ));
+                                  }else{
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                        content: Text(
+                                        "Please ensure you entered a name and selected a game"),
+                                  backgroundColor:
+                                  Colors.red
+                                    ));
+                                  }
                                 },
                                 color: Theme.of(context).colorScheme.primary,
                                 child: const Text('Create'),
