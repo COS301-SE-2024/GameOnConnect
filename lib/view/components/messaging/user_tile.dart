@@ -5,19 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-//import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 
 class UserTile extends StatefulWidget {
   final String text;
   final void Function()? onTap;
   final String profilepictureURL;
+  final String lastMessage;
+  final String time;
 
-  //here we will require more data to be passed in. 
   const UserTile({
     super.key,
     required this.text,
     required this.onTap,
     required this.profilepictureURL,
+    required this.lastMessage,
+    required this.time,
   });
 
   @override
@@ -137,7 +139,7 @@ class _UserTileState extends State<UserTile> {
                                         padding: const EdgeInsetsDirectional
                                             .fromSTEB(0, 4, 0, 0),
                                         child: Text(
-                                          'This was really great, i\'m so glad that we could  catchup this weekend.',
+                                          widget.lastMessage, //this text needs to change to the passed in text
                                           textAlign: TextAlign.start,
                                           style: TextStyle(
                                             fontFamily: 'Inter',
@@ -159,7 +161,7 @@ class _UserTileState extends State<UserTile> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(0, 4, 0, 0),
                                             child: Text(
-                                              '9:55pm',
+                                              widget.time,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 fontFamily: 'Inter',

@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 //import 'package:gameonconnect/model/profile_M/profile_model.dart';
@@ -11,6 +11,7 @@ import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/messaging/user_tile.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
+import 'package:intl/intl.dart';
 
 class Messaging extends StatefulWidget {
   const Messaging({super.key});
@@ -102,7 +103,115 @@ class _MessagingState extends State<Messaging> {
     );
   }
 
+Widget _buildUserListItem(BuildContext context, Map<String, dynamic> userData) {
+  String currentUserID = _authService.getCurrentUser()!.uid;
+  String userID = userData['userID'] as String? ?? "default_user_id";
+  Future<DocumentSnapshot<Object?>> lastMessage = _messagingService.getLastMessage(currentUserID,userID); //get the lastmessage
+
+  return FutureBuilder<List<dynamic>>(
+    future: Future.wait([
+      storageService.getProfilePictureUrl(userID),
+      lastMessage,
+    ]),
+    builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Center(
+              child: SizedBox(
+                width: 65,
+                height: 65,
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            Divider(
+              height: 1,
+              thickness: 0.5,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ],
+        );
+      } else if (snapshot.hasError) {
+        return const Icon(Icons.error_outline);
+      } else {
+        var documentSnapshot = snapshot.data![1]; 
+        Map<String, dynamic>? lastMessageSnapshot = documentSnapshot.data() as Map<String, dynamic>?; //use the last message
+        String lastMessage = lastMessageSnapshot?['message_text'] ?? 'No message';  //use the text
+        Timestamp timestamp = lastMessageSnapshot?['timestamp']; //get the time
+        DateTime messageDateTime = timestamp.toDate(); //use date and time from the stored time
+        String messageTime = DateFormat('yyyy-MM-dd – kk:mm').format(messageDateTime); //convert the time to string for now
+        String profilePictureUrl = snapshot.data![0]; //get the profile picture
+        String profileName = userData['username']['profile_name'] as String? ?? "Not found";
+        String receiverID = userID;
+
+        //print('here is the last message and time');
+        //print(lastMessage);
+        //print(messageTime);
+
+        if (userID != _authService.getCurrentUser()!.uid) {
+          return UserTile(
+            profilepictureURL: profilePictureUrl,
+            text: profileName,
+            lastMessage: lastMessage, 
+            time: messageTime, 
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    profileName: profileName,
+                    receiverID: receiverID,
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Container();
+        }
+      }
+    },
+  );
+} 
+}
+
+/*
+  Old code for _buildUserListItem
   Widget _buildUserListItem(
+      Map<String, dynamic> userData, BuildContext context) {
+    Map<String, dynamic> userInfo =
+        userData['username'] as Map<String, dynamic>? ?? {};
+    String profileName = userInfo['profile_name'] as String? ?? "Unknown";
+    String profilePictureUrl =
+        userData['profile_picture'] as String? ?? "default_picture_url";
+    String receiverID = userData['userID'] as String? ?? "default_user_id";
+
+    //we need to get more info here to build the tile successfully
+    if (userData['userID'] != _authService.getCurrentUser()!.uid) {
+      return UserTile(
+        profilepictureURL: profilePictureUrl,
+        text: profileName,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                profileName: profileName,
+                receiverID: receiverID,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return Container();
+    }
+  }*/
+
+/* More old code
+
+Widget _buildUserListItem(
       BuildContext context, Map<String, dynamic> userData) {
     Map<String, dynamic> userInfo =
         userData['username'] as Map<String, dynamic>? ?? {};
@@ -162,37 +271,4 @@ class _MessagingState extends State<Messaging> {
       },
     );
   }
-}
-
-/*
-  Old code for _buildUserListItem
-  Widget _buildUserListItem(
-      Map<String, dynamic> userData, BuildContext context) {
-    Map<String, dynamic> userInfo =
-        userData['username'] as Map<String, dynamic>? ?? {};
-    String profileName = userInfo['profile_name'] as String? ?? "Unknown";
-    String profilePictureUrl =
-        userData['profile_picture'] as String? ?? "default_picture_url";
-    String receiverID = userData['userID'] as String? ?? "default_user_id";
-
-    //we need to get more info here to build the tile successfully
-    if (userData['userID'] != _authService.getCurrentUser()!.uid) {
-      return UserTile(
-        profilepictureURL: profilePictureUrl,
-        text: profileName,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                profileName: profileName,
-                receiverID: receiverID,
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      return Container();
-    }
-  }*/
+}*/

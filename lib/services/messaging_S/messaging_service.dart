@@ -104,6 +104,51 @@ class MessagingService {
     }
   }
 
+  Future<DocumentSnapshot> getLastMessage(String userID, String otherUserID) async {
+  try {
+    //check that the userid and otheruser is not empty
+    if (userID.isEmpty || otherUserID.isEmpty || otherUserID == 'Not Found' || userID == 'Not Found') {
+      throw Exception("No user logged in");
+    }
+    String conversationID = await findConversationID(userID, otherUserID); //now get the conversationID
+    DocumentSnapshot conversationSnapshot = await _firestore //get the conversation from the messagelog
+        .collection('message_log')
+        .doc(conversationID)
+        .get();
+    
+    //ensure the conversation is found
+    if (!conversationSnapshot.exists) {
+      throw Exception("Conversation was not found");
+    }
+
+    //map the data so that the participant messages can be extracted
+    Map<String, dynamic> conversationData = conversationSnapshot.data() as Map<String, dynamic>;
+    List<dynamic> participantMessages = conversationData['participant_messages']; //store messages in a list
+
+    //ensure the participant messages are not empty 
+    if (participantMessages.isEmpty) {
+      throw Exception("No messages in conversation found");
+    }
+
+    //take the last messageID available
+    String lastMessageID = participantMessages.last;
+    //get a snapshot 
+    DocumentSnapshot messageSnapshot = await _firestore
+        .collection('messages')
+        .doc(lastMessageID)
+        .get();
+
+    //check that the snapshot exists
+    if (!messageSnapshot.exists) {
+      throw Exception("Message was not found");
+    }
+    //return the last message as a snapshot
+    return messageSnapshot;
+  } catch (e) {
+    throw Exception("Failed to get last message: $e");
+  }
+}
+
   Stream<List<Map<String, dynamic>>> getAllUsers() {
     //can change this later to get less users
     return _firestore.collection("profile_data").snapshots().map((snapshot) {
@@ -117,8 +162,9 @@ class MessagingService {
   Stream<List<Map<String, dynamic>>> getAllChatsForCurrentUser() async* {
     final User? currentUser = _auth.currentUser; //get the current user
     var allUsersSnapshot = await _firestore.collection("profile_data").get();
-    List<Map<String, dynamic>> allUsers =
-        allUsersSnapshot.docs.map((doc) => doc.data()).toList(); //map the users t a list
+    List<Map<String, dynamic>> allUsers = allUsersSnapshot.docs
+        .map((doc) => doc.data())
+        .toList(); //map the users to a list
 
     List<Map<String, dynamic>> usersWithConversations = [];
     for (var user in allUsers) {
