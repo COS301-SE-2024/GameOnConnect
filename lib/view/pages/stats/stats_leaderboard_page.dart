@@ -1,9 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart'; // Adjust the import based on your file structure
+import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+import 'package:gameonconnect/view/pages/stats/stats_games.dart';
+import 'package:gameonconnect/model/stats_M/stats_mood_model.dart';
+// import 'package:logger/logger.dart'; // Add this line for logging
+
+// final logger = Logger(); // Initialize the logger
 
 class StatsLeaderboardPage extends StatefulWidget {
-  const StatsLeaderboardPage({Key? key}) : super(key: key);
+  const StatsLeaderboardPage({super.key});
 
   @override
   _StatsLeaderboardPageState createState() => _StatsLeaderboardPageState();
@@ -88,6 +93,35 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                         sectionsSpace: 0,
                         centerSpaceRadius: 0,
                         sections: showingSections(),
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            if (event is FlLongPressEnd || event is FlTapUpEvent) {
+                              final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
+                              if (touchedIndex != null) {
+                                String position = '';
+                                switch (touchedIndex) {
+                                  case 0:
+                                    position = '1st';
+                                    break;
+                                  case 1:
+                                    position = '2nd';
+                                    break;
+                                  case 2:
+                                    position = '3rd';
+                                    break;
+                                  case 3:
+                                    position = 'top5';
+                                    break;
+                                  case 4:
+                                    position = 'top10';
+                                    break;
+                                }
+                                // logger.i('Toched section index: $touchedIndex');
+                                _navigateToGamesPage(position);
+                              }
+                            }
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -109,7 +143,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                    padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -142,7 +176,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
     return List.generate(5, (i) {
       const fontSize = 16.0;
       const radius = 100.0;
-      final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
+      // final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -153,7 +187,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               // shadows: shadows,
               fontFamily: "inter",
             ),
@@ -167,7 +201,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               // shadows: shadows,
               fontFamily: "inter",
             ),
@@ -181,7 +215,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               // shadows: shadows,
               fontFamily: "inter",
             ),
@@ -195,7 +229,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               // shadows: shadows,
               fontFamily: "inter",
             ),
@@ -209,7 +243,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               // shadows: shadows,
               fontFamily: "inter",
             ),
@@ -219,50 +253,32 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
       }
     });
   }
-}
 
-class Indicator extends StatelessWidget {
-  final Color color;
-  final String text;
-  final bool isSquare;
-  final double size;
-  final Color textColor;
-
-  const Indicator({
-    super.key,
-    required this.color,
-    required this.text,
-    this.isSquare = true,
-    this.size = 16,
-    this.textColor = const Color(0xff505050),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Theme.of(context);
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
-            color: color,
-          ),
+  void _navigateToGamesPage(String position) async {
+    try {
+      List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position); // Fetch the game IDs based on position
+      // logger.i('Query snapshot size: ${gameData}');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => GamesWidget(gameData: gameData),
         ),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        )
-      ],
-    );
+      );
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchGameIDsByPosition(String position) async {
+    try {
+      List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position);
+      return gameData;
+    } catch (e) {
+      throw Exception('Error fetching game IDs for mood: $e');
+    }
   }
 }
+
+
 
 
 
