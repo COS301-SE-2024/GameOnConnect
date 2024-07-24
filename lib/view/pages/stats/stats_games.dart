@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_games_service.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class GamesWidget extends StatefulWidget {
   const GamesWidget({super.key, required this.gameData});
@@ -72,6 +73,9 @@ class _GamesWidgetState extends State<GamesWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: gameData.map((game) {
+                    DateTime lastPlayed = DateTime.parse(game['lastPlayed']!);
+                    String timeAgo = timeago.format(lastPlayed);
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Column(
@@ -89,7 +93,8 @@ class _GamesWidgetState extends State<GamesWidget> {
                           Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
                             child: Text(
-                              game['lastPlayed']!,
+                              timeAgo,
+                              // game['lastPlayed']!,
                               style: TextStyle(
                                 fontFamily: 'inter',
                                 letterSpacing: 0,
