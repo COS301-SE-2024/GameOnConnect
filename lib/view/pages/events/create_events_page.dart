@@ -89,8 +89,8 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void dispose() {
     super.dispose();
-    nameController.clear;
-    descriptionController.clear;
+    nameController.clear();
+    descriptionController.clear();
   }
 
   @override
@@ -767,9 +767,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                   16, 12, 16, 12),
                               child: MaterialButton(
                                 onPressed: () {
-                                  nameController.clear;
                                   // TODO: error handling here
-                                  if(validName && gameChosen.isNotEmpty && validEndDate) {
+                                  if(validName && gameChosen.isNotEmpty && validEndDate && validStartDate) {
                                     create();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
@@ -781,14 +780,42 @@ class _CreateEventsState extends State<CreateEvents> {
                                           .colorScheme
                                           .primary,
                                     ));
+                                    nameController.clear();
+                                    descriptionController.clear();
                                   }else{
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                        content: Text(
-                                        "Please ensure you entered a name and selected a game"),
-                                  backgroundColor:
-                                  Colors.red
-                                    ));
+                                    if(!validName) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered an event name "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }else if (gameChosen.isEmpty){
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you chose a game to play "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    } else if( !validEndDate){
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered a valid end date "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }else{
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered start date and time "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }
                                   }
                                 },
                                 color: Theme.of(context).colorScheme.primary,
