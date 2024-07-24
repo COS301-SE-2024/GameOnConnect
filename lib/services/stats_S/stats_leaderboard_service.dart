@@ -40,7 +40,7 @@ class StatsLeaderboardService {
 
       return positionCounts;
     } catch (e) {
-      print("Error fetching leaderboard data: $e");
+      // print("Error fetching leaderboard data: $e");
       // Return an empty map in case of error
       return {
         '1st': 0,
@@ -77,7 +77,7 @@ class StatsLeaderboardService {
 
       switch (position) {
         case '1st':
-          isUserInPosition = positions.length > 0 && positions[0] == currentUser.uid;
+          isUserInPosition = positions.isNotEmpty && positions[0] == currentUser.uid;
           break;
         case '2nd':
           isUserInPosition = positions.length > 1 && positions[1] == currentUser.uid;
