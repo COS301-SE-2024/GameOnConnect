@@ -144,27 +144,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           final age = List<String>.from(data?["age_rating_tags"] ?? []);
           final interests =
               List<String>.from(data?["social_interests_tags"] ?? []);
-          /*final profileImageUrl = data?["profile_picture"] ?? '';
-          final profileBannerUrl = data?["banner"] ?? '';
-
-          String? bannerDownloadUrl;
-          String? profileDownloadUrl;
-
-          if (profileBannerUrl.isNotEmpty) {
-            bannerDownloadUrl = await FirebaseStorage.instance
-                .refFromURL(profileBannerUrl)
-                .getDownloadURL();
-          }
-          if (profileImageUrl.isNotEmpty) {
-            profileDownloadUrl = await FirebaseStorage.instance
-                .refFromURL(profileImageUrl)
-                .getDownloadURL();
-          }*/
 
           StorageService storageService = StorageService();
            String bannerDownloadUrl  = await storageService.getBannerUrl(currentUser.uid);
           String profileDownloadUrl = await storageService.getProfilePictureUrl(currentUser.uid);
-          print(bannerDownloadUrl);
 
           setState(() {
             _selectedGenres = genres;
@@ -393,7 +376,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             child: Stack(
               alignment: Alignment.center, // Change to Alignment.center
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 150,
                   child: CachedNetworkImage(
