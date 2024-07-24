@@ -202,42 +202,7 @@ class _ProfileState extends State<Profilenew>  {
                         gameStats: profileData. recentActivities,
                         heading: 'Recent Activity',
                       ),
-                      
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => RecentActivityTable())); 
-
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              gradient: LinearGradient(
-                                begin: Alignment(-1, 0),
-                                end: Alignment(1, 0),
-                                colors: <Color>[Color(0xFF00FF75), Color(0xFF009946)],
-                                stops: <double>[0, 1],
-                              ),
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(15.3, 0, 16.3, 0),
-                              child: 
-                              Text(
-                                'see more',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 13,
-                                  height: 2.1,
-                                  letterSpacing: 0.5,
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ), 
-                      ),
-
+                                           
                       const SizedBox(height: 10), //space 
                       StatsList (
                         heading: 'Stats',
