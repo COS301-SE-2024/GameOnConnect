@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
-import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
+import 'package:gameonconnect/model/Stats_M/stats_chart_model.dart';
 // import 'package:logger/logger.dart'; // Add this line for logging
 
 // final logger = Logger(); // Initialize the logger
