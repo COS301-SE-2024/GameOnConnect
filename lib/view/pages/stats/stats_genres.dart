@@ -3,7 +3,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 
 class GenresStatsPage extends StatefulWidget {
+  const GenresStatsPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _GenresStatsPageState createState() => _GenresStatsPageState();
 }
 
@@ -26,6 +29,8 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool allZero = genrePlayTime.values.every((element) => element == 0);
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -50,7 +55,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 2,
         ),
@@ -60,7 +65,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(5, 15, 5, 5),
+                padding: const EdgeInsetsDirectional.fromSTEB(5, 15, 5, 5),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -74,7 +79,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                       child: Icon(
                         Icons.filter_alt,
                         color: Theme.of(context).colorScheme.primary,
@@ -91,7 +96,19 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
               Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
               child: genrePlayTime.isEmpty
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
+                  : allZero
+                      ? Center(
+                          child: Text(
+                            'No playing sessions recorded',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
                   : AspectRatio(
                       aspectRatio: 1.5,
                       child: BarChart(
@@ -186,7 +203,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                               );
                             },
                           ),
-                          gridData: FlGridData(show: false),
+                          gridData: const FlGridData(show: false),
                           alignment: BarChartAlignment.spaceEvenly,
                           maxY: genrePlayTime.values.isNotEmpty ? genrePlayTime.values.reduce((a, b) => a > b ? a : b) : 0,
                         ),
