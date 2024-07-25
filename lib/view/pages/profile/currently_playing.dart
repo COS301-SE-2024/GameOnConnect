@@ -32,12 +32,12 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Currently playing ',
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
+                    'Currently playing ',
+                    style: TextStyle(
+                      fontSize: 20, 
+                      fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
@@ -74,8 +74,8 @@ class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
                                       Text(
                                         gameDetails.name,
                                         style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
                                         ),
                                         softWrap: true,
                                       ),

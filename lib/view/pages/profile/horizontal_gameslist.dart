@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
+import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 
 class HorizontalGameList extends StatefulWidget {
@@ -17,7 +20,27 @@ class HorizontalGameList extends StatefulWidget {
 }
 
 class _HorizontalGameListState extends State<HorizontalGameList> {
-  @override
+   void _navigateToGameDetails(int game) async {
+    // ignore_for_file: use_build_context_synchronously
+    bool result = await InternetConnection().hasInternetAccess;
+    if(result) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GameDetailsPage(gameId: game),
+        ),
+      );
+    }else
+      {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Unable to fetch data, check internet connection"),
+              backgroundColor: Colors.red,
+            ));
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +76,7 @@ class _HorizontalGameListState extends State<HorizontalGameList> {
                           child: IconButton(
                             icon: const Icon(Icons.add),
                             onPressed: () {
-                              // Add your function here
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const GameLibrary()));
                             },
                           ),
                         ),
@@ -86,7 +109,12 @@ class _HorizontalGameListState extends State<HorizontalGameList> {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         // ignore: sized_box_for_whitespace
-                        child: Container(
+                        child:InkWell(
+                          onTap: () {
+                            _navigateToGameDetails(gameDetails.id);
+
+                          },
+                          child:SizedBox(
                           width: 150, // Adjust the width as needed
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,6 +142,8 @@ class _HorizontalGameListState extends State<HorizontalGameList> {
                             ],
                           ),
                         ),
+                      ), 
+                        
                       );
                     }
                   },

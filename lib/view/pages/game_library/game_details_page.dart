@@ -24,6 +24,7 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   late Future<GameDetails> _gameDetails;
+  late Future<List<Screenshot>> _gameScreenshots;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -38,6 +39,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   void initState() {
     super.initState();
     _gameDetails = _fetchGameDetails(widget.gameId);
+    _gameScreenshots = _fetchGameScreenshots(widget.gameId);
     checkWishlistStatus();
     checkMyGamesStatus();
   }
@@ -63,6 +65,19 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
         return GameService().fetchGameDetails(gameId);
+      } else {
+        throw ('No internet connection');
+      }
+    } catch (e) {
+      throw ('Error fetching data');
+    }
+  }
+
+  Future<List<Screenshot>> _fetchGameScreenshots(int gameId) async {
+    try {
+      bool result = await InternetConnection().hasInternetAccess;
+      if (result) {
+        return GameService().fetchGameScreenshots(gameId);
       } else {
         throw ('No internet connection');
       }
@@ -158,7 +173,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               .colorScheme
                                               .secondary
                                               .withOpacity(
-                                                  0.6), // Adapt to your theme
+                                                  0.6), 
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
                                         ),
@@ -167,7 +182,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .secondary, // Adapt to your theme
+                                                .secondary, 
                                             size: 20,
                                           ),
                                           onPressed: () {
@@ -454,50 +469,67 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          const Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/194/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/170/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/185/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/137/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                    CarouselNetworkImageWithPlaceholder(
-                                      imageUrl:
-                                          'https://picsum.photos/seed/962/600',
-                                      width: 80,
-                                      height: 55,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                          // Align(
+                          //   alignment: const AlignmentDirectional(0, 0),
+                          //   child: Padding(
+                          //     padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
+                          //     child: SingleChildScrollView(
+                          //       scrollDirection: Axis.horizontal,
+                          //       child: Row(
+                          //         mainAxisSize: MainAxisSize.max,
+                          //         children: gameDetails.getScreenshots(context),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+
+                          FutureBuilder<List<Screenshot>>(
+                            future: _gameScreenshots,
+                            builder: (context, screenshotSnapshot) {
+                              if (screenshotSnapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (screenshotSnapshot.hasError) {
+                                return const Center(child: Text('Error loading screenshots'));
+                              } else if (!screenshotSnapshot.hasData || screenshotSnapshot.data!.isEmpty) {
+                                return const Center(child: Text('No screenshots available'));
+                              } else {
+                                final screenshots = screenshotSnapshot.data!;
+                                return SizedBox(
+                                  height: 60,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: screenshots.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.fromLTRB(10, 0, 2, 0),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          child: CachedNetworkImage(
+                                            imageUrl: screenshots[index].image,
+                                            placeholder: (context, url) => const SizedBox(
+                                              width: 110, // Set the width of the images
+                                              height: 85, // Set the height of the images
+                                              child: Center(
+                                                child: SizedBox(
+                                                  width: 30, // Adjust the size of the loader
+                                                  height: 30, // Adjust the size of the loader
+                                                  child: CircularProgressIndicator(),
+                                                ),
+                                              )
+                                            // placeholder: (context, url) => const CircularProgressIndicator(),
+                                            // errorWidget: (context, url, error) => const Icon(Icons.error),
+                                            // width: 110,
+                                            // height: 85,
+                                            // fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
@@ -546,41 +578,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
-
                               const Spacer(), // This spacer will push the icons to the right edge
                               Row(
-                                // TODO: get icons for the different platforms
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(4, 2, 2, 2),
-                                    child: Icon(
-                                      Icons.window_sharp,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      size: 24,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
-                                    child: Icon(
-                                      Icons.videogame_asset,
-                                      color: Colors.black,
-                                      size: 24,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(4, 2, 20, 2),
-                                    child: Icon(
-                                      Icons.games_rounded,
-                                      color: Colors.black,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                children: gameDetails.getPlatformIcons(context),
+                              )
                             ],
                           ),
                           Padding(
@@ -615,9 +617,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(215, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(215, 0, 10, 0),
                                 child: Text(
                                   // gameDetails.developer,
                                   gameDetails.publisher[0]['name'],
@@ -662,9 +665,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(223, 0, 20, 0),
+                                    const EdgeInsets.fromLTRB(223, 0, 10, 0),
                                 child: Text(
                                   // gameDetails.publisher,
                                   gameDetails.publisher[0]['name'],
@@ -709,9 +713,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
+                              const Spacer(),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    202, 0, 20, 0),
+                                    202, 0, 10, 0),
                                 child: Text(
                                   gameDetails.released,
                                   style: TextStyle(
@@ -756,43 +761,19 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                               ),
-                              /*Padding(
-                                    padding: const EdgeInsets.fromLTRB(120, 0, 4, 0),
-                                    child: Text(
-                                      //TODO: we need to get the genres from another request
-                                       gameDetails.genres[0],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
-                              /* Padding(
-                                    padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                                    child: Text(
-                                       gameDetails.genres[1],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
-                              /* Padding(
-                                    padding: const EdgeInsets.fromLTRB(4, 0, 20, 0),
-                                    child: Text(
-                                       gameDetails.genres[2],
-                                      style: const TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Colors.black, // Direct color value or use Theme.of(context).colorScheme.onBackground
-                                        letterSpacing: 0,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                    ),
-                                  ),*/
+                              const Spacer(),
+                              Flexible(
+                                flex: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(100, 0, 0, 0),
+                                  child: Wrap(
+                                    // mainAxisSize: MainAxisSize.min,
+                                    spacing: 1,
+                                    runSpacing: 1,
+                                    children: snapshot.data!.getStyledGenres(context),
+                                  )
+                                )
+                              )
                             ],
                           ),
                           Padding(

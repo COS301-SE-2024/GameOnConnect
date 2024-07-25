@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
+import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
+import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -13,15 +17,37 @@ class GameTimer extends StatefulWidget {
 
 class _GameTimer extends State<GameTimer> {
   final MyGamesService _currentlyPlaying = MyGamesService();
-  Future<List<String>>? _userGames;
+  final GameService _gameService = GameService();
+  Future<List<GameDetails>>? _userGames;
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
+  final SessionStatsService _sessionStatsService = SessionStatsService();
+  String _mood = "No mood";
+  DateTime _startTime = DateTime.timestamp();
 
   @override
   void initState() {
     super.initState();
-    _userGames = _currentlyPlaying.getMyGames();
+    _fetchUserGames();
+  }
+
+  Future<void> _fetchUserGames() async {
+    try {
+      List<String> myGameIds = await _currentlyPlaying.getMyGames();
+      
+      Future<List<GameDetails>> gameDetailsFutures = Future.wait(
+        myGameIds.map((id) => _gameService.fetchGameDetails(id)),
+      );
+
+      List<GameDetails> gameDetails = await gameDetailsFutures;
+
+      setState(() {
+        _userGames = Future.value(gameDetails);
+      });
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -31,6 +57,8 @@ class _GameTimer extends State<GameTimer> {
   }
 
   void _startStopWatch() {
+    _startTime = DateTime.timestamp();
+    _stopwatch.reset();
     _stopwatch.start();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
@@ -85,9 +113,9 @@ class _GameTimer extends State<GameTimer> {
                     ],
                   ) 
                   : 
-                  FutureBuilder<List<String>>(
+                  FutureBuilder<List<GameDetails>>(
                     future: _userGames, 
-                    builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<List<GameDetails>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
@@ -100,10 +128,10 @@ class _GameTimer extends State<GameTimer> {
                           underline: const SizedBox(),
                           value: _selectedItem,
                           hint: const Text('What are you playing?'),
-                          items: snapshot.data!.map((String value) {
+                          items: snapshot.data!.map((GameDetails game) {
                             return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
+                              value: game.id.toString(),
+                              child: Text(game.name),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -143,9 +171,51 @@ class _GameTimer extends State<GameTimer> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       EmojiFeedback(
+                                        emojiPreset: const [
+                                          EmojiModel(
+                                            src:Assets.classicTerrible,
+                                            label: 'Scared',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.classicBad,
+                                            label: 'Disgusted',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatTerrible,
+                                            label: 'Angry',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatBad,
+                                            label: 'Sad',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatVeryGood,
+                                            label: 'Happy',
+                                            package: 'flutter_emoji_feedback',
+                                          )
+                                        ],
                                         inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
                                         onChanged: (value) {
-                                          //add value to db
+                                          setState(() {
+                                            switch (value) {
+                                              case 1:
+                                                _mood = "Scared";
+                                              case 2:
+                                                _mood = "Disgusted";
+                                              case 3:
+                                                _mood = "Angry";
+                                              case 4:
+                                                _mood = "Sad";
+                                              case 5:
+                                                _mood = "Happy";
+                                              default:
+                                                _mood = "No mood";
+                                            }
+                                          });
                                         },
                                       ),
                                     ],
@@ -153,15 +223,16 @@ class _GameTimer extends State<GameTimer> {
                                 ),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Don''t ask me now'),
-                                    onPressed: () {
+                                    child: const Text('Okay'),
+                                    onPressed: () async {
                                       Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
+                                      //add data to the database
+                                      if (_userGames != null && _selectedItem != null) {
+                                        List<GameDetails> games = await _userGames!;
+                                        GameDetails? selectedGame = games.firstWhere((game) => game.id.toString() == _selectedItem);
+                                        List genres = selectedGame.genres;
+                                        _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood, genres, _startTime);
+                                      }
                                     },
                                   ),
                                 ],

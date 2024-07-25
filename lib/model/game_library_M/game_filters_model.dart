@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'game_filter_model.dart'; 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FilterList {
   List<Filter> storeFilters;
@@ -24,10 +25,12 @@ class FilterList {
   }
 
   static Future<FilterList> _createFilterList() async {
-    final storeFilters = await _fetchFilters('https://api.rawg.io/api/stores?key=b8d81a8e79074f1eb5c9961a9ffacee6');
-    final genreFilters = await _fetchFilters('https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
-    final tagFilters = await _fetchFilters('https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
-    final platformFilters = await _fetchFilters('https://api.rawg.io/api/platforms?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+    String? apikey = dotenv.env['RAWG_API_KEY'];
+
+    final storeFilters = await _fetchFilters('https://api.rawg.io/api/stores?key=$apikey');
+    final genreFilters = await _fetchFilters('https://api.rawg.io/api/genres?key=$apikey');
+    final tagFilters = await _fetchFilters('https://api.rawg.io/api/tags?key=$apikey');
+    final platformFilters = await _fetchFilters('https://api.rawg.io/api/platforms?key=$apikey');
 
     return FilterList(
       storeFilters: storeFilters,
