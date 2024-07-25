@@ -27,7 +27,7 @@ class EventCard extends State<EventCardWidget> {
   }
 
   void getEvent() async{
-    Event? updated = await Events().getEvent(e.eventID);
+    Event? updated = await EventsService().getEvent(e.eventID);
     setState(() {
       e = updated!;
     });
@@ -85,6 +85,8 @@ class EventCard extends State<EventCardWidget> {
                               letterSpacing: 0,
                               fontWeight: FontWeight.w500,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           Expanded(
                             child: Padding(

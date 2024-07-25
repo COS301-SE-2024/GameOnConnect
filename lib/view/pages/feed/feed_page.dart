@@ -213,30 +213,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title,
-            style: TextStyle(color: Theme.of(context).colorScheme.surface)),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Messaging(),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.message,
-                color: Theme.of(context).colorScheme.surface,
-                ),
-            ),
-          ),
-        ],
-      ),
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
@@ -311,33 +287,26 @@ class _DevelopmentButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          MaterialButton(
-            onPressed: () {
-              // Get the current user's ID
-              String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-              //print("current user from home: $currentUserId");
-              if (currentUserId != null) {
-                // Pass the current user's ID to the search friends page
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Feed'),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    //builder: (context) => FriendSearchPage(currentUserId),
-                    builder: (context) => FriendSearch(),
+                    builder: (context) => const Messaging(),
                   ),
                 );
-              } else {
-                // Handle the case where there is no logged-in user
-                // ignore: avoid_print
-                print('No user is currently logged in.');
-              }
-            },
-            color: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).colorScheme.surface,
-            child: const Text('search friends '),
+              },
+              icon: Icon(
+                Icons.message,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
           ),
           MaterialButton(
             onPressed: () {
@@ -353,6 +322,37 @@ class _DevelopmentButtons extends StatelessWidget {
             child: const Text('Stats Leaderboard Page'),
           ),
         ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                // Get the current user's ID
+                String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                //print("current user from home: $currentUserId");
+                if (currentUserId != null) {
+                  // Pass the current user's ID to the search friends page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      //builder: (context) => FriendSearchPage(currentUserId),
+                      builder: (context) => FriendSearch(),
+                    ),
+                  );
+                } else {
+                  // Handle the case where there is no logged-in user
+                  // ignore: avoid_print
+                  print('No user is currently logged in.');
+                }
+              },
+              color: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).colorScheme.surface,
+              child: const Text('search friends '),
+            ),
+          ],
+        ),
       ),
     );
   }

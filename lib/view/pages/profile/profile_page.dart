@@ -5,6 +5,9 @@ import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
+import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
+import 'package:gameonconnect/view/pages/profile/stats_list.dart';
+
 
 class Profilenew extends StatefulWidget {
   const Profilenew({super.key});
@@ -175,19 +178,33 @@ class _ProfileState extends State<Profilenew>  {
                       ),
 
 
-                      const SizedBox(height: 15), //space 
+                      const SizedBox(height: 10), //space 
                       HorizontalGameList(
                         gameIds: profileData.myGames,
                         heading: 'My Games',
                       ),
 
 
-                      const SizedBox(height: 15), //space 
+                      const SizedBox(height: 5), //space 
                       HorizontalGameList(
                         gameIds: profileData.wantToPlay,
                         heading: 'Want To Play',
                       ),
-                        
+
+
+                      //change RECENT ACTIVITY 
+                      profileData. recentActivities.isEmpty
+                          ? const SizedBox.shrink()
+                          : RecentActivityList(
+                        gameStats: profileData. recentActivities,
+                        heading: 'Recent Activity',
+                      ),
+                                           
+                      const SizedBox(height: 20), //space 
+                      const StatsList (
+                        heading: 'Stats',
+                      ),
+                              
                       ],
               ),
             );
