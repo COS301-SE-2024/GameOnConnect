@@ -3,7 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
-import 'package:gameonconnect/model/Stats_M/stats_chart_model.dart';
+import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
+//test comment
 
 class StatsMoodPage extends StatefulWidget {
   const StatsMoodPage({super.key});
