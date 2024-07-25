@@ -351,6 +351,19 @@ class _DevelopmentButtons extends StatelessWidget {
               textColor: Theme.of(context).colorScheme.surface,
               child: const Text('search friends '),
             ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StatsLeaderboardPage(),
+                  ),
+                );
+              },
+              color: Theme.of(context).colorScheme.primary,
+              textColor: Theme.of(context).colorScheme.surface,
+              child: const Text('Stats Leaderboard Page'),
+            ),
           ],
         ),
       ),
