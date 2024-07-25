@@ -85,6 +85,8 @@ class EventCard extends State<EventCardWidget> {
                               letterSpacing: 0,
                               fontWeight: FontWeight.w500,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           Expanded(
                             child: Padding(

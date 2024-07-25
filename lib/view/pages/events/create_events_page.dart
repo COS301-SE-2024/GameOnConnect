@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
@@ -17,8 +18,11 @@ class CreateEvents extends StatefulWidget {
 }
 
 class _CreateEventsState extends State<CreateEvents> {
-  late  List<String> gameNames = [];
-  late  List<GameDetails> games;
+  String name="";
+  bool validName = false;
+  late List<String> gameNames = [];
+  late List<String> gameImages = [];
+  late List<GameDetails>? games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
@@ -27,20 +31,22 @@ class _CreateEventsState extends State<CreateEvents> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   late int gameID;
-  late String gameChosen = "none";
+  late String gameChosen = "";
+  bool validStartDate = false;
+  bool validEndDate = false;
 
   String? type;
-  List<String>? invites = [];
+  List<String> invites = [];
 
   Future create() async {
     await EventsService().createEvent(
         selectedOption,
         _datePicked,
-        nameController.text,
+        name,
         _endDatePicked,
         gameID,
         isChanged,
-        invites!,
+        invites,
         filePath != null
             ? filePath!.path
             : 'assets/default_images/default_image.jpg',
@@ -58,16 +64,19 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 
   void getGames() async {
-    games = await EventsService().getMyGames();
-    for (var i in games) {
-      gameNames.add(i.name);
+    gameNames = [];
+    gameImages = [];
+    if(games != null) {
+      for (var i in games!) {
+        gameNames.add(i.name);
+        gameImages.add(i.backgroundImage);
+      }
     }
   }
 
-  void getGameID(String gameName)async {
-    games = await EventsService().getMyGames();
-    for(var i in games){
-      if(i.name == gameName){
+  void getGameID(String gameName) async {
+    for (var i in games!) {
+      if (i.name == gameName) {
         gameID = i.id;
       }
     }
@@ -76,14 +85,13 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void initState() {
     super.initState();
-    getGames();
   }
 
   @override
   void dispose() {
     super.dispose();
-    nameController.clear;
-    descriptionController.clear();
+    nameController.dispose();
+    descriptionController.dispose();
   }
 
   @override
@@ -94,15 +102,16 @@ class _CreateEventsState extends State<CreateEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
               top: true,
-              child: FutureBuilder<List<GameDetails>>(
-                future: EventsService().getMyGames(),
+              child: StreamBuilder<List<GameDetails>>(
+                stream: EventsService().getMyGames(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    //getGames();
+                    games = snapshot.data;
+                    getGames();
                     return Form(
                       autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
@@ -130,32 +139,59 @@ class _CreateEventsState extends State<CreateEvents> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  pickImage();
-                                                },
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  child: filePath != null
-                                                      ? Image.file(
-                                                          File(filePath!.path),
-                                                          width: 359,
-                                                          height: 200,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/default_images/default_image.jpg',
-                                                          width: 359,
-                                                          height: 200,
-                                                          fit: BoxFit.cover,
-                                                        ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: FittedBox(
+                                                  fit: BoxFit.cover,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      pickImage();
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      child: filePath != null
+                                                          ? Image.file(
+                                                              File(filePath!
+                                                                  .path),
+                                                              width: 359,
+                                                              height: 200,
+                                                              fit: BoxFit.cover,
+                                                            )
+                                                          : Image.asset(
+                                                              'assets/default_images/default_image.jpg',
+                                                              width: 359,
+                                                              height: 200,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(
                                                 height: 10,
                                               ),
                                               TextFormField(
+                                                onTapOutside: (event) {
+                                                  name = nameController.text;
+                                                  if( name.isNotEmpty){
+                                                    setState(() {
+                                                      validName = true;
+                                                    });
+                                                  }else
+                                                    {
+                                                      setState(() {
+                                                        validName = false;
+                                                      });
+                                                    }
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                },
+                                                maxLength: 50,
                                                 controller: nameController,
                                                 textCapitalization:
                                                     TextCapitalization.words,
@@ -182,9 +218,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   enabledBorder:
                                                       OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                      color: Theme.of(context)
+                                                      color: validName?
+                                                      Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                     borderRadius:
@@ -234,10 +271,24 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  ChooseGame(myGames: gameNames,))).then((gameChosen){
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChooseGame(
+                                                                myGames:
+                                                                    gameNames,
+                                                                chosenGame:
+                                                                    gameChosen,
+                                                                images: gameImages,
+                                                              ))).then(
+                                                      (gameChosen) {
                                                     setState(() {
-                                                      gameChosen = gameChosen;
-                                                      getGameID(gameChosen);
+                                                      if( gameChosen != null) {
+                                                        this.gameChosen =
+                                                            gameChosen;
+                                                        getGameID(gameChosen);
+                                                      }
                                                     });
                                                   });
                                                 },
@@ -246,10 +297,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      Icons.add,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
+                                                      gameChosen.isEmpty
+                                                          ? Icons.add
+                                                          : Icons.check,
+                                                      color: gameChosen.isEmpty
+                                                          ? Colors.red
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
                                                       size: 24,
                                                     ),
                                                     Text(
@@ -269,6 +324,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 height: 10,
                                               ),
                                               TextFormField(
+                                                onTapOutside: (event) {
+                                                  FocusManager
+                                                      .instance.primaryFocus
+                                                      ?.unfocus();
+                                                },
+                                                maxLength: 100,
                                                 controller:
                                                     descriptionController,
                                                 textCapitalization:
@@ -405,6 +466,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   if (datePickedDate != null &&
                                                       datePickedTime != null) {
                                                     setState(() {
+                                                      validStartDate = true;
                                                       _datePicked = DateTime(
                                                         datePickedDate.year,
                                                         datePickedDate.month,
@@ -426,9 +488,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         BorderRadius.circular(
                                                             12),
                                                     border: Border.all(
-                                                      color: Theme.of(context)
+                                                      color: validStartDate ?Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                   ),
@@ -530,6 +592,19 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         datePickedTime2!.hour,
                                                         datePickedTime2.minute,
                                                       );
+                                                      if (_datePicked!.isBefore(
+                                                          _endDatePicked!)) {
+                                                        validEndDate = true;
+                                                      } else {
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                            .showSnackBar(
+                                                            const SnackBar(
+                                                                content:  Text(
+                                                                    "Invalid end date/time."),
+                                                                backgroundColor: Colors
+                                                                    .red));
+                                                      }
                                                     });
                                                   }
                                                 },
@@ -544,9 +619,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         BorderRadius.circular(
                                                             12),
                                                     border: Border.all(
-                                                      color: Theme.of(context)
+                                                      color: validEndDate ?Theme.of(context)
                                                           .colorScheme
-                                                          .primary,
+                                                          .primary: Colors.red,
                                                       width: 2,
                                                     ),
                                                   ),
@@ -560,7 +635,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                               .fromSTEB(
                                                               12, 0, 0, 0),
                                                       child: Text(
-                                                        _endDatePicked != null
+                                                        _endDatePicked != null && validEndDate
                                                             ? DateFormat(
                                                                     'd MMMM , hh:mm a')
                                                                 .format(
@@ -622,11 +697,21 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 highlightColor:
                                                     Colors.transparent,
                                                 onTap: () async {
-                                                  Navigator.pushNamed(context,
-                                                          '/invite_connections')
-                                                      .then((invited) {
-                                                    invites = invited
-                                                        as List<String>?;
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ConnectionsListWidget(
+                                                                chosenInvites:
+                                                                    invites,
+                                                              ))).then(
+                                                      (invited) {
+                                                    setState(() {
+                                                      if( invited != null) {
+                                                        invites = invited
+                                                        as List<String>;
+                                                      }
+                                                    });
                                                   });
                                                 },
                                                 child: Row(
@@ -634,10 +719,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      Icons.add,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
+                                                         invites.isEmpty
+                                                          ? Icons.add
+                                                          : Icons.check,
+                                                      color:  invites.isEmpty
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
                                                       size: 24,
                                                     ),
                                                     Text(
@@ -682,15 +773,67 @@ class _CreateEventsState extends State<CreateEvents> {
                                   16, 12, 16, 12),
                               child: MaterialButton(
                                 onPressed: () {
-                                  nameController.clear;
-                                  create();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: const Text(
-                                        "Event created successfully!"),
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
-                                  ));
+                                  // TODO: error handling here
+                                  if(validName && gameChosen.isNotEmpty && validEndDate && validStartDate) {
+                                    create();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: const Text(
+                                          "Event created successfully!"),
+                                      backgroundColor:
+                                      Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .primary,
+                                    ));
+                                    nameController.clear();
+                                    descriptionController.clear();
+                                    setState(() {
+                                      gameChosen = "";
+                                      invites = [];
+                                      validEndDate = false;
+                                      validName = false;
+                                      validStartDate = false;
+                                      _endDatePicked = null;
+                                      _datePicked = null;
+
+                                    });
+
+                                  }else{
+                                    if(!validName) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered an event name "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }else if (gameChosen.isEmpty){
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you chose a game to play "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    } else if( !validStartDate){
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered a valid start date and time "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }else{
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                          content: Text(
+                                              "Please ensure you entered a valid end date and time "),
+                                          backgroundColor:
+                                          Colors.red
+                                      ));
+                                    }
+                                  }
                                 },
                                 color: Theme.of(context).colorScheme.primary,
                                 child: const Text('Create'),

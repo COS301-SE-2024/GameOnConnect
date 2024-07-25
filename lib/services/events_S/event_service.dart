@@ -248,6 +248,27 @@ class EventsService {
       return false;
     }
 
+  bool isJoined(Event e) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      for (var i in e.participants) {
+        if (i == currentUser.uid) {
+          return true;
+        }
+      }
+      return false;
+    }
+    return false;
+  }
+  bool isCreator (Event e) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.uid == e.creatorID) {
+
+      return true;
+    }
+    return false;
+  }
+
   Future<void> joinEvent(Event joined) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -267,13 +288,13 @@ class EventsService {
     return e.participants.length;
   }
 
-  Future<List<GameDetails>> getMyGames() async{
+  Stream<List<GameDetails>> getMyGames() async*{
     List<String> gameIds = await MyGamesService().getMyGames();
     List<GameDetails> gameDetails=[];
     for(var i in gameIds){
       GameDetails game = await GameService().fetchGameDetails(i);
       gameDetails.add(game);
     }
-    return gameDetails;
+    yield gameDetails;
 }
 }
