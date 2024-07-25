@@ -15,7 +15,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-import 'package:gameonconnect/view/pages/stats/stats_genres.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key, required this.title});
@@ -307,19 +306,6 @@ class _DevelopmentButtons extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
-          ),
-          MaterialButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GenresStatsPage(),
-                ),
-              );
-            },
-            color: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).colorScheme.surface,
-            child: const Text('Genres Stats Page'),
           ),
         ],
       ),
