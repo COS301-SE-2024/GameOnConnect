@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/pages/stats/stats_leaderboard_page.dart';
 
 class StatsList extends StatefulWidget {
   const StatsList({super.key ,required this.heading}) ;
@@ -23,6 +24,35 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
     Icons.local_offer,
   ];
 
+  void _navigateToPage(int index) {
+    switch (index) {
+      case 0:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsMoodPage()),
+        // );
+        break;
+      case 1:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsGenresPage()),
+        // );
+        break;
+      case 2:
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsTotalTimePage()),
+        // );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const StatsLeaderboardPage()),
+        );
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,23 +74,26 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
         final color = greenShades[index];
         final icon = icons[index];
 
-        return Container(
-          width: 150,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 40, color: Colors.white),
-              const SizedBox(height: 8),
-              Text(
-                labels[index],
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ],
+        return GestureDetector(
+          onTap: () => _navigateToPage(index),
+          child: Container(
+            width: 150,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 40, color: Colors.white),
+                const SizedBox(height: 8),
+                Text(
+                  labels[index],
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
         );
       },

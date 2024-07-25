@@ -23,6 +23,8 @@ import 'view/pages/settings/edit_profile_page.dart';
 import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+// import 'view/pages/events/invite_connections_page.dart';
+import 'view/pages/stats/stats_leaderboard_page.dart';
 import 'globals.dart' as globals;
 
 void main() async {
@@ -107,7 +109,7 @@ class MyApp extends StatelessWidget {
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
         '/messages' : (context) => Messaging(),
-
+        '/stats_leaderboard' : (context) => StatsLeaderboardPage(),
       },
       initialRoute: '/',
     );

@@ -15,6 +15,83 @@ jobs:
         with:
           flutter-version: '3.22.0'
 
+      - name: Create index.html file with secrets
+        run: |
+          cat <<EOF > index.html
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <script type="text/javascript">
+              function init() {
+                gapi.load('client:auth2', function() {
+                  gapi.client.init({
+                    apiKey: '${{ secrets.WEB_API_KEY }}',
+                    clientId: '${{ secrets.WEB_APP_ID }}',
+                    scope: 'profile email',
+                    discoveryDocs: ['https://people.googleapis.com/$discovery/rest?version=v1']
+                  }).then(function () {
+                    // Now you can use gapi.client
+                  });
+                });
+              }
+            </script>
+            <script src="https://apis.google.com/js/api.js?onload=init"></script>
+            <base href="$FLUTTER_BASE_HREF">
+            <meta charset="UTF-8">
+            <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-firestore.js"></script>
+            <script>
+              const firebaseConfig = {
+                apiKey: "${{ secrets.WEB_API_KEY }}",
+                authDomain: "${{ secrets.AUTH_DOMAIN }}",
+                projectId: "${{ secrets.PROJECT_ID }}",
+                storageBucket: "${{ secrets.STORAGE_BUCKET }}",
+                messagingSenderId: "${{ secrets.MESSAGE_SENDER_ID }}",
+                appId: "${{ secrets.WEB_APP_ID }}",
+                measurementId: "${{ secrets.MEASUREMENT_ID }}"
+              };
+              firebase.initializeApp(firebaseConfig);
+            </script>
+            <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+            <meta name="description" content="A new Flutter project.">
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <meta name="google-signin-client_id" content="${{ secrets.GOOGLE_SIGNIN_CLIENT_ID }}">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+            <meta name="apple-mobile-web-app-title" content="gameonconnect">
+            <link rel="apple-touch-icon" href="icons/Icon-192.png">
+            <link rel="icon" type="image/png" href="favicon.png"/>
+            <title>gameonconnect</title>
+            <link rel="manifest" href="manifest.json">
+            <script>
+              const serviceWorkerVersion = null;
+            </script>
+            <script src="flutter.js" defer></script>
+            <script type="text/javascript">
+              window.flutterWebRenderer = "html";
+            </script>
+          </head>
+          <body>
+            <script>
+              window.addEventListener('load', function(ev) {
+                _flutter.loader.loadEntrypoint({
+                  serviceWorker: {
+                    serviceWorkerVersion: serviceWorkerVersion,
+                  },
+                  onEntrypointLoaded: function(engineInitializer) {
+                    engineInitializer.initializeEngine().then(function(appRunner) {
+                      appRunner.runApp();
+                    });
+                   }
+                });
+              });
+            </script>
+          </body>
+          </html>
+          EOF
+        shell: bash
+      
       - name: Build Flutter web app
         run: |
           flutter config --enable-web
