@@ -1,3 +1,5 @@
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
+
 class Profile {
   final String banner;
   final String bio;
@@ -8,6 +10,7 @@ class Profile {
   final String currentlyPlaying;
   final List<String> myGames;
   final List<String> wantToPlay;
+  final List<GameStats> recentActivities;
   final int numberOfconnections; 
 
   Profile({
@@ -20,6 +23,7 @@ class Profile {
     required this.currentlyPlaying,
     required this.myGames,
     required this.wantToPlay,
+    required this.recentActivities,
     required this.numberOfconnections,
   });
 }

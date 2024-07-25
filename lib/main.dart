@@ -23,13 +23,16 @@ import 'view/pages/settings/edit_profile_page.dart';
 import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'view/pages/events/invite_connections_page.dart';
+// import 'view/pages/events/invite_connections_page.dart';
+import 'view/pages/stats/stats_leaderboard_page.dart';
+import 'globals.dart' as globals;
 import 'view/pages/stats/stats_mood.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load();
-
+  globals.apiKey = dotenv.env['RAWG_API_KEY'];
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -106,8 +109,8 @@ class MyApp extends StatelessWidget {
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
-        '/invite_connections' : (context) => ConnectionsListWidget(),
         '/messages' : (context) => Messaging(),
+        '/stats_leaderboard' : (context) => StatsLeaderboardPage(),
         '/stats_mood' : (context) => StatsMoodPage(),
       },
       initialRoute: '/',
