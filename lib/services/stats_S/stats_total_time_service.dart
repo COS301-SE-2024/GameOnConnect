@@ -161,7 +161,7 @@ class StatsTotalTimeService {
 
       if (totalTimePlayedByAllUsers == 0.0) return 0.0;
 
-      double percentage = (totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100;
+      double percentage = 100 - ((totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100);
       // print("Percentage time played compared to others: $percentage%");
       return percentage;
     } catch (e) {
