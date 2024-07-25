@@ -212,11 +212,6 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title,
-            style: TextStyle(color: Theme.of(context).colorScheme.surface)),
-      ),
       body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
