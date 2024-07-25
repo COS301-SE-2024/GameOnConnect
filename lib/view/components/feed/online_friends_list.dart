@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
+import 'package:pulsator/pulsator.dart';
 
 class CurrentlyOnlineBar extends StatefulWidget {
   const CurrentlyOnlineBar({super.key});
@@ -12,7 +13,6 @@ class CurrentlyOnlineBar extends StatefulWidget {
 
 class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
   List<user.AppUser>? _friends = [];
-  final List<String> _images = ['https://placehold.co/70x70'];
   final ConnectionService _connectionService = ConnectionService();
 
   @override
@@ -22,8 +22,8 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
   }
 
   Future<void> _fetchOnlineFriends() async {
-    List<AppUser>? onlineUsers = await _connectionService.getOnlineConnections();
-    print(onlineUsers);
+    List<AppUser>? onlineUsers =
+        await _connectionService.getOnlineConnections();
 
     setState(() {
       _friends = onlineUsers;
@@ -32,34 +32,43 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _friends!.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Theme.of(context).colorScheme.primary, width: 4),
+          scrollDirection: Axis.horizontal,
+          itemCount: _friends!.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Pulsator(
+                        style: PulseStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                        count: 3,
+                        duration: const Duration(seconds: 2),
+                        autoStart: true,
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: CircleAvatar(
+                            backgroundImage:
+                                NetworkImage(_friends![index].profilePicture),
+                          ),
+                        )),
                   ),
-                  child: CircleAvatar(
-                        backgroundImage: NetworkImage(_images[0]),
-                  ),
-                ),
-                Text(_friends![index].username)
-              ],
-            ),
-          );
-        }
-      )
+                  Text(_friends![index].username, style: TextStyle(fontSize: 10)),
+                ],
+              ),
+            );
+          }),
     );
   }
 }

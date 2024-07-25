@@ -166,6 +166,7 @@ class ConnectionService {
           'username': username,
           'profile_picture': profilePictureUrl,
           'userID': userID,
+          'currently_playing': data['currently_playing']
         };
 
         return d;

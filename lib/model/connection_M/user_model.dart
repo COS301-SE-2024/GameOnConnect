@@ -20,7 +20,7 @@ class AppUser {
       profileName: data?['name'],
       username: data?['username']['profile_name'],
       uniqueNum: data!['username']['unique_num'].toString(),
-      currentlyPlaying: data['currently-playing']
+      currentlyPlaying: data['currently_playing']
     );
   }
 
