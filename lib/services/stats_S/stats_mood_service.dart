@@ -9,27 +9,27 @@ class StatsMoodService {
     User? currentUser = _auth.currentUser;
     if (currentUser == null) {
       return {
-        'joy': 0,
-        'disgust': 0,
-        'sad': 0,
-        'angry': 0,
-        'fear': 0,
+        'Happy': 0,
+        'Disgusted': 0,
+        'Sad': 0,
+        'Angry': 0,
+        'Scared': 0,
       };
     }
 
     final snapshot = await _firestore
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid)
+        .collection('game_session_stats')
+        .where('user_id', isEqualTo: currentUser.uid)
         .get();
 
     final moods = snapshot.docs.map((doc) => doc['mood']).toList();
 
     return {
-      'joy': moods.where((mood) => mood == 'joy').length,
-      'disgust': moods.where((mood) => mood == 'disgust').length,
-      'sad': moods.where((mood) => mood == 'sad').length,
-      'angry': moods.where((mood) => mood == 'angry').length,
-      'fear': moods.where((mood) => mood == 'fear').length,
+      'Happy': moods.where((mood) => mood == 'Happy').length,
+      'Disgusted': moods.where((mood) => mood == 'Disgusted').length,
+      'Sad': moods.where((mood) => mood == 'Sad').length,
+      'Angry': moods.where((mood) => mood == 'Angry').length,
+      'Scared': moods.where((mood) => mood == 'Scared').length,
     };
   }
 
@@ -40,13 +40,13 @@ class StatsMoodService {
     }
 
     final snapshot = await _firestore
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid).where('mood', isEqualTo: mood)
+        .collection('game_session_stats')
+        .where('user_id', isEqualTo: currentUser.uid).where('mood', isEqualTo: mood)
         .get();
 
     final gameData = snapshot.docs.map((doc) {
       return {
-        'gameID': doc['gameID'].toString(),
+        'gameID': doc['game_id'].toString(),
         'last_played': doc['last_played'] as Timestamp,
       };
     }).toList();
