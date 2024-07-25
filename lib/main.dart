@@ -23,12 +23,13 @@ import 'view/pages/settings/edit_profile_page.dart';
 import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'globals.dart' as globals;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load();
-
+  globals.apiKey = dotenv.env['RAWG_API_KEY'];
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
