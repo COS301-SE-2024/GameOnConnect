@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
-// import 'package:provider/provider.dart';
 
 class GenresStatsPage extends StatefulWidget {
   @override
