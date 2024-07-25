@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
 class StatsGenresService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -15,22 +15,24 @@ class StatsGenresService {
         return {};
       }
 
-      final snapshot = await _db.collection('stats')
-          .where('userID', isEqualTo: currentUser.uid)
+      final snapshot = await _db.collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
           .get();
 
       Map<String, double> genrePlayTime = {};
 
       for (var doc in snapshot.docs) {
         final data = doc.data();
-        final genres = List<String>.from(data['genre'] ?? []);
-        final timePlayed = data['time_played']?.toDouble() ?? 0.0;
+        final genres = List<Map<String, dynamic>>.from(data['genres'] ?? []);
+        // final timePlayed = data['time_played']?.toDouble() ?? 0.0;
 
         for (var genre in genres) {
-          if (genrePlayTime.containsKey(genre)) {
-            genrePlayTime[genre] = genrePlayTime[genre]! + 1; //timePlayed;
+          final genreName = genre['name'] ?? 'Unknown Genre';
+          
+          if (genrePlayTime.containsKey(genreName)) {
+            genrePlayTime[genreName] = genrePlayTime[genreName]! + 1; //timePlayed;
           } else {
-            genrePlayTime[genre] = 1;  //timePlayed;
+            genrePlayTime[genreName] = 1;  //timePlayed;
           }
         }
       }
@@ -38,7 +40,7 @@ class StatsGenresService {
       return genrePlayTime;
     } catch (e) {
       // Handle errors
-      print('Error fetching genre play time: $e');
+      // print('Error fetching genre play time: $e');
       return {};
     }
   }
