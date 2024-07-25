@@ -36,7 +36,7 @@ class _FeedPageState extends State<FeedPage> {
 
   static final List<Widget> _pages = <Widget>[
     Center(
-        child: _DevelopmentButtons()), // Integrate the development buttons here
+        child: _FeedPageDisplay()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
     const ViewEvents(), // View Events Page
@@ -215,45 +215,8 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title,
-            style: TextStyle(color: Theme.of(context).colorScheme.surface)),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Messaging(),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.message,
-                color: Theme.of(context).colorScheme.surface,
-                ),
-            ),
-          ),
-        ],
-      ),
-      //body: _pages[_selectedIndex], // Display the selected page
-      body: _feedBody(),
+      body: _pages[_selectedIndex], // Display the selected page
       bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _feedBody() {
-    return Column(
-      children: const [
-        GameTimer(),
-        Text("Friends currently online", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        CurrentlyOnlineBar(),
-        Text("Event Invites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        EventInvitesList()
-      ]
     );
   }
 
@@ -321,14 +284,42 @@ class _FeedPageState extends State<FeedPage> {
   }
 }
 
-class _DevelopmentButtons extends StatelessWidget {
+class _FeedPageDisplay extends StatelessWidget {
   // final MessagingService messagingService = MessagingService();
+  Widget _feedBody() {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          GameTimer(),
+          SizedBox(height: 30),
+          Text("Friends currently online", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          SizedBox(height: 15),
+          CurrentlyOnlineBar(),
+          SizedBox(height: 30),
+          Text("Event Invites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          SizedBox(height: 15),
+          EventInvitesList()
+        ]
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Feed',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -348,8 +339,10 @@ class _DevelopmentButtons extends StatelessWidget {
             ),
           ),
         ],
+        centerTitle: false,
+        elevation: 0,
       ),
-      body: Placeholder()
+      body: _feedBody()
     );
   }
 }

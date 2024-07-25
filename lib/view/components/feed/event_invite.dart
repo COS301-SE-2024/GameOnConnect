@@ -39,13 +39,13 @@ class _EventInvitationState extends State<EventInvitation> {
   Widget build(BuildContext context) {
     if (_isWidgetVisible) {
       return Padding(
-          padding: const EdgeInsets.only(right: 15, left: 15, top: 5, bottom: 5),
+          padding: const EdgeInsets.only(top: 5, bottom: 5),
           child: Expanded(
               child: Container(
             padding:
                 const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 243, 243, 243),
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(15),
             ),
             child: Theme(
@@ -81,6 +81,7 @@ class _EventInvitationState extends State<EventInvitation> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 15),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -106,6 +107,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                         Theme.of(context).colorScheme.primary))
                           ],
                         ),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -122,16 +124,17 @@ class _EventInvitationState extends State<EventInvitation> {
                               child: Container(
                                   alignment: Alignment.center,
                                   height: 30,
-                                  width: 85,
+                                  width: 100,
                                   decoration: BoxDecoration(
                                     color:
                                         Theme.of(context).colorScheme.primary,
                                     borderRadius: BorderRadius.circular(7),
                                   ),
-                                  child: const Text('Accept',
+                                  child: Text('Accept',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
+                                        color: Theme.of(context).colorScheme.surface
                                       ))),
                             ),
                             InkWell(
@@ -146,16 +149,17 @@ class _EventInvitationState extends State<EventInvitation> {
                                 child: Container(
                                     alignment: Alignment.center,
                                     height: 30,
-                                    width: 85,
+                                    width: 100,
                                     decoration: BoxDecoration(
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.circular(7),
                                     ),
-                                    child: const Text('Decline',
+                                    child: Text('Decline',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12,
+                                          color: Theme.of(context).colorScheme.surface
                                         )))),
                             InkWell(
                                 //stay notified
@@ -170,7 +174,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                 child: Container(
                                     alignment: Alignment.center,
                                     height: 30,
-                                    width: 85,
+                                    width: 100,
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Theme.of(context)
