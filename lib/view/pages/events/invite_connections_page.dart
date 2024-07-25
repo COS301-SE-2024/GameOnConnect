@@ -1,25 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../components/card/connection_list_card.dart';
 import '../../../services/events_S/event_service.dart';
-import '../../../model/connection_M/user_model.dart' as user;
+import '../../../model/connection_M/user_model.dart';
+import '../../components/search/search_field.dart';
 
 class ConnectionsListWidget extends StatefulWidget {
-  const ConnectionsListWidget({super.key});
-
+  final List<String> chosenInvites;
+  const ConnectionsListWidget({super.key, required this.chosenInvites});
   @override
   State<ConnectionsListWidget> createState() => _ConnectionsListWidgetState();
 }
 
 class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  List<user.AppUser>? list;
-  List<String> invites=[];
-
+  List<AppUser>? list;
+  List<String> invites = [];
+  final TextEditingController searchController = TextEditingController();
+  String _searchQuery = '';
+  String _currentUserId = '';
 
   @override
   void initState() {
     super.initState();
     getConnectionsInvite();
+    _currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    invites = widget.chosenInvites;
   }
 
   @override
@@ -28,7 +34,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await Events().getConnectionsForInvite();
+    list = await EventsService().getConnectionsForInvite();
   }
 
   @override
@@ -38,8 +44,8 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           top: true,
-          child: FutureBuilder<List<user.AppUser>?>(
-              future: Events().getConnectionsForInvite(),
+          child: FutureBuilder<List<AppUser>?>(
+              future: EventsService().getConnectionsForInvite(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -47,7 +53,14 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   list = snapshot.data;
-                  return Column(mainAxisSize: MainAxisSize.max, children: [
+                  List<AppUser> filteredUsers = list!
+                      .where((user) =>
+                          user.username
+                              .toLowerCase()
+                              .contains(_searchQuery.toLowerCase()) &&
+                          user.uid != _currentUserId) // Exclude current user
+                      .toList();
+                  return  Column(mainAxisSize: MainAxisSize.max, children: [
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -80,7 +93,6 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                       },
                                       icon:
                                           const Icon(Icons.keyboard_backspace)),
-
                                   Text(
                                     'Select users to invite',
                                     textAlign: TextAlign.start,
@@ -101,16 +113,38 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    SearchField(
+                        controller: searchController,
+                        onSearch: (query) {
+                          setState(() {
+                            _searchQuery = query;
+                            filteredUsers = list!
+                                .where((user) =>
+                                    user.username
+                                        .toLowerCase()
+                                        .contains(_searchQuery.toLowerCase()) &&
+                                    user.uid != _currentUserId)
+                                .toList();
+                          });
+                        }),
+                    if( filteredUsers.isEmpty)
+                      const Center(
+                          child: Text(
+                              'No results found.'))
+                    else
+
                     SizedBox(
                         height: 300,
                         child: ListView.separated(
-                          itemCount: list!.length,
+                          itemCount: filteredUsers.length,
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            user.AppUser? i = list![index];
+                            AppUser? i = filteredUsers[index];
 
                             return ConnectionCardWidget(
+                              invited: invites,
                                 image: i.profilePicture,
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
@@ -119,7 +153,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                 onSelected: (uid, selected) {
                                   if (selected) {
                                     invites.add(uid);
-                                  }else{
+                                  } else {
                                     invites.remove(uid);
                                   }
                                 });
@@ -128,15 +162,26 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             return const SizedBox();
                           },
                         )),
-                 Padding(
-                padding:const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
-                    child: MaterialButton(onPressed: () {Navigator.pop(context,invites);},
-                        color: Theme.of(context).colorScheme.primary,
-                        child: const Row(children: [
-                          Text("Save invites"),
-                        ])),
-                  )
-                ]);
+                    Container(
+                      constraints: const BoxConstraints(
+                        maxWidth: 770,
+                      ),
+                      decoration: const BoxDecoration(),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            16, 12, 16, 12),
+                        child: MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context, invites);
+                            },
+                            color: Theme.of(context).colorScheme.primary,
+                            child: const Row(children: [
+                              Text("Save invites"),
+                            ])),
+                      ),
+                    )
+                  ]
+                  );
                 }
               }),
         ));
