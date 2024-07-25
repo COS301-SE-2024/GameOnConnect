@@ -288,7 +288,8 @@ class _DevelopmentButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: Text('Feed',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),

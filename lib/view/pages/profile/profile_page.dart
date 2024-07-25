@@ -22,7 +22,8 @@ class _ProfileState extends State<Profilenew>  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profile',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
         actions: [ // NB only show if its my own profile
                   Builder(
                     builder: (context) {
