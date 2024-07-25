@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
+import 'package:gameonconnect/view/components/feed/start_timer.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
@@ -236,8 +238,18 @@ class _FeedPageState extends State<FeedPage> {
           ),
         ],
       ),
-      body: _pages[_selectedIndex], // Display the selected page
+      //body: _pages[_selectedIndex], // Display the selected page
+      body: _feedBody(),
       bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _feedBody() {
+    return Column(
+      children: const [
+        GameTimer(),
+        EventInvitesList(),
+      ]
     );
   }
 
