@@ -5,7 +5,7 @@ class SessionStatsService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> addSession(int timePlayed, String gameId, String mood) async {
+  Future<void> addSession(int timePlayed, String gameId, String mood, List genres, DateTime lastPlayed) async {
     try {
       final String? currentUser = _auth.currentUser?.uid;
 
@@ -14,7 +14,9 @@ class SessionStatsService {
         'game_id': gameId,
         'mood': mood,
         'time_played': timePlayed,
-        'user_id': currentUser
+        'user_id': currentUser,
+        'genres': genres,
+        'last_played': lastPlayed
         });
       } else {
         throw Exception("No user logged in.");

@@ -2,12 +2,15 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -36,10 +39,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   dynamic _profileBanner;
   String testBannerurl = '';
 
+  final String? apiKey = dotenv.env['RAWG_API_KEY'];
+
   Future<void> _fetchGenresFromAPI() async {
     try {
       var url = Uri.parse(
-          'https://api.rawg.io/api/genres?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+          'https://api.rawg.io/api/genres?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -59,7 +64,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Future<void> _fetchTagsFromAPI() async {
     try {
       var url = Uri.parse(
-          'https://api.rawg.io/api/tags?key=b8d81a8e79074f1eb5c9961a9ffacee6');
+          'https://api.rawg.io/api/tags?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -136,32 +141,20 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (docSnapshot.exists) {
           final data = docSnapshot.data();
           final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
-          final age = List<String>.from(data?["age_rating_tag"] ?? []);
+          final age = List<String>.from(data?["age_rating_tags"] ?? []);
           final interests =
               List<String>.from(data?["social_interests_tags"] ?? []);
-          final profileImageUrl = data?["profile_picture"] ?? '';
-          final profileBannerUrl = data?["banner"] ?? '';
 
-          String? bannerDownloadUrl;
-          String? profileDownloadUrl;
-
-          if (profileBannerUrl.isNotEmpty) {
-            bannerDownloadUrl = await FirebaseStorage.instance
-                .refFromURL(profileBannerUrl)
-                .getDownloadURL();
-          }
-          if (profileImageUrl.isNotEmpty) {
-            profileDownloadUrl = await FirebaseStorage.instance
-                .refFromURL(profileImageUrl)
-                .getDownloadURL();
-          }
+          StorageService storageService = StorageService();
+           String bannerDownloadUrl  = await storageService.getBannerUrl(currentUser.uid);
+          String profileDownloadUrl = await storageService.getProfilePictureUrl(currentUser.uid);
 
           setState(() {
             _selectedGenres = genres;
             _selectedAge = age;
             _selectedInterests = interests;
-            _profileBannerUrl = bannerDownloadUrl ?? '';
-            _profileImageUrl = profileDownloadUrl ?? '';
+            _profileBannerUrl = bannerDownloadUrl;
+            _profileImageUrl = profileDownloadUrl ;
           });
         }
       }
@@ -383,23 +376,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             child: Stack(
               alignment: Alignment.center, // Change to Alignment.center
               children: [
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: _profileBanner != null
-                          ? (kIsWeb
-                              ? NetworkImage(_profileBanner!.path)
-                              : FileImage(_profileBanner!)) as ImageProvider
-                          : _profileBannerUrl.isNotEmpty
-                              ? NetworkImage(_profileBannerUrl) as ImageProvider
-                              : const NetworkImage(
-                                      'https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1')
-                                  as ImageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  child: CachedNetworkImage(
+                                    imageUrl:_profileBannerUrl,
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fit: BoxFit.cover,
+                                  ),
                 ),
                 Container(
                   height: 30,
@@ -428,15 +413,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage: _profileImage != null
-                        ? (kIsWeb
-                            ? NetworkImage(_profileImage!.path)
-                            : FileImage(_profileImage!)) as ImageProvider
-                        : _profileImageUrl.isNotEmpty
-                            ? NetworkImage(_profileImageUrl) as ImageProvider
-                            : const NetworkImage(
-                                    'https://th.bing.com/th/id/OIP.W7SwNSuA3OfLVlwh7euftgHaHk?pid=ImgDet&w=474&h=484&rs=1')
-                                as ImageProvider,
+                    backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
                   ),
                   Container(
                     height: 30,
