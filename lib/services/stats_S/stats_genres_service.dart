@@ -11,7 +11,7 @@ class StatsGenresService {
       User? currentUser = _auth.currentUser;
 
       if (currentUser == null) {
-        print("User not logged in");
+        // print("User not logged in");
         return {};
       }
 
