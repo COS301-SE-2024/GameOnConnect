@@ -1,8 +1,9 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
-import 'package:gameonconnect/model/stats_M/stats_mood_model.dart';
+import 'package:gameonconnect/model/Stats_M/stats_chart_model.dart';
 
 class StatsMoodPage extends StatefulWidget {
   const StatsMoodPage({super.key});
@@ -15,11 +16,11 @@ class StatsMoodPage extends StatefulWidget {
 class _StatsMoodPageState extends State<StatsMoodPage> {
   final StatsMoodService _statsMoodService = StatsMoodService();
   Map<String, int> moodCounts = {
-    'joy': 0,
-    'disgust': 0,
-    'sad': 0,
-    'angry': 0,
-    'fear': 0,
+    'Happy': 0,
+    'Disgusteded': 0,
+    'Sad': 0,
+    'Angry': 0,
+    'Scared': 0,
   };
   bool _isLoading = true;
 
@@ -37,7 +38,6 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         _isLoading = false;
       });
     } catch (e) {
-      // print("Error fetching mood data: $e");
       setState(() {
         _isLoading = false;
       });
@@ -46,15 +46,15 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    bool allZero = moodCounts.values.every((count) => count == 0);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: theme.colorScheme.secondary,
+            color: Theme.of(context).colorScheme.secondary,
             size: 30,
           ),
           onPressed: () async {
@@ -65,7 +65,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
           'Mood',
           style: TextStyle(
             fontFamily: 'Inter',
-            color: theme.colorScheme.secondary,
+            color: Theme.of(context).colorScheme.secondary,
             fontSize: 32,
             letterSpacing: 0,
             fontWeight: FontWeight.w500,
@@ -82,59 +82,71 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: 1.8,
-                    child: PieChart(
-                      PieChartData(
-                        borderData: FlBorderData(show: false),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 0,
-                        sections: showingSections(),
-                        pieTouchData: PieTouchData(
-                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                            if (event is FlLongPressEnd || event is FlTapUpEvent) {
-                              final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
-                              if (touchedIndex != null) {
-                                String mood = '';
-                                switch (touchedIndex) {
-                                  case 0:
-                                    mood = 'joy';
-                                    break;
-                                  case 1:
-                                    mood = 'disgust';
-                                    break;
-                                  case 2:
-                                    mood = 'sad';
-                                    break;
-                                  case 3:
-                                    mood = 'angry';
-                                    break;
-                                  case 4:
-                                    mood = 'fear';
-                                    break;
+                  allZero 
+                      ? Center(
+                          child: Text(
+                            'You have not rated a gaming session yet',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : AspectRatio(
+                        aspectRatio: 1.8,
+                        child: PieChart(
+                          PieChartData(
+                            borderData: FlBorderData(show: false),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 0,
+                            sections: showingSections(),
+                            pieTouchData: PieTouchData(
+                              touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                if (event is FlLongPressEnd || event is FlTapUpEvent) {
+                                  final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
+                                  if (touchedIndex != null) {
+                                    String mood = '';
+                                    switch (touchedIndex) {
+                                      case 0:
+                                        mood = 'Happy';
+                                        break;
+                                      case 1:
+                                        mood = 'Disgusted';
+                                        break;
+                                      case 2:
+                                        mood = 'Sad';
+                                        break;
+                                      case 3:
+                                        mood = 'Angry';
+                                        break;
+                                      case 4:
+                                        mood = 'Scared';
+                                        break;
+                                    }
+                                    _navigateToGamesPage(mood);
+                                  }
                                 }
-                                _navigateToGamesPage(mood);
-                              }
-                            }
-                          },
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                   const SizedBox(height: 16),
                   const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Indicator(color: Colors.yellow, text: 'Joy', isSquare: false, size: 30),
+                      Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 30),
                       SizedBox(height: 10),
-                      Indicator(color: Colors.green, text: 'Disgust', isSquare: false, size: 30),
+                      Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 30),
                       SizedBox(height: 10),
                       Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 30),
                       SizedBox(height: 10),
                       Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 30),
                       SizedBox(height: 10),
-                      Indicator(color: Colors.purple, text: 'Fear', isSquare: false, size: 30),
+                      Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 30),
                       SizedBox(height: 10),
                     ],
                   ),
@@ -149,7 +161,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                           'Click on any chart segment to view the games',
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            color: theme.colorScheme.onSurface,
+                            color: Theme.of(context).colorScheme.onSurface,
                             letterSpacing: 0,
                             fontWeight: FontWeight.w500,
                           ),
@@ -158,7 +170,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                           thickness: 1,
                           indent: 10,
                           endIndent: 10,
-                          color: theme.colorScheme.onSurface,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ],
                     ),
@@ -177,8 +189,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         case 0:
           return PieChartSectionData(
             color: Colors.yellow,
-            value: moodCounts['joy']!.toDouble(),
-            title: '${moodCounts['joy']}',
+            value: moodCounts['Happy']!.toDouble(),
+            title: '${moodCounts['Happy']}',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -190,8 +202,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         case 1:
           return PieChartSectionData(
             color: Colors.green,
-            value: moodCounts['disgust']!.toDouble(),
-            title: '${moodCounts['disgust']}',
+            value: moodCounts['Disgusted']!.toDouble(),
+            title: '${moodCounts['Disgusted']}',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -203,8 +215,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         case 2:
           return PieChartSectionData(
             color: Colors.blue,
-            value: moodCounts['sad']!.toDouble(),
-            title: '${moodCounts['sad']}',
+            value: moodCounts['Sad']!.toDouble(),
+            title: '${moodCounts['Sad']}',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -216,8 +228,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         case 3:
           return PieChartSectionData(
             color: Colors.red,
-            value: moodCounts['angry']!.toDouble(),
-            title: '${moodCounts['angry']}',
+            value: moodCounts['Angry']!.toDouble(),
+            title: '${moodCounts['Angry']}',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -229,8 +241,8 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         case 4:
           return PieChartSectionData(
             color: Colors.purple,
-            value: moodCounts['fear']!.toDouble(),
-            title: '${moodCounts['fear']}',
+            value: moodCounts['Scared']!.toDouble(),
+            title: '${moodCounts['Scared']}',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
