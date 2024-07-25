@@ -15,7 +15,6 @@ class ConnectionCardWidget extends StatefulWidget {
   final String page;
   final List<String>? invited;
   final void Function(String uid,bool selected) onSelected;
-  final void Function(String uid, bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
   final void Function(String uid)? onRejected;
@@ -70,12 +69,6 @@ void initState() {
 void dispose() {
   super.dispose();
 }
-
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   void _disconnect(String targetUserId) async {
     try {
