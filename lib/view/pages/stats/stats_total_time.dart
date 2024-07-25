@@ -68,7 +68,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 2,
         ),
@@ -78,7 +78,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 15),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 30, 0, 15),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -95,7 +95,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               'Today',
                               style: TextStyle(
@@ -107,7 +107,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               '${todayTime.toStringAsFixed(1)} hours',
                               style: TextStyle(
@@ -124,7 +124,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                       width: 140,
                       height: 140,
                       decoration: BoxDecoration(
-                        color: Color(0xFFC7A700),
+                        color: const Color(0xFFC7A700),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -132,7 +132,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               'Past Week',
                               style: TextStyle(
@@ -144,7 +144,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               '${pastWeekTime.toStringAsFixed(1)} hours',
                               style: TextStyle(
@@ -161,12 +161,12 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
                   width: 350,
                   height: 98,
                   decoration: BoxDecoration(
-                    color: Color(0xFFC74800),
+                    color: const Color(0xFFC74800),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -174,7 +174,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           'Past Month',
                           style: TextStyle(
@@ -186,7 +186,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           '${pastMonthTime.toStringAsFixed(1)} hours',
                           style: TextStyle(
@@ -201,7 +201,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
                   width: 350,
                   height: 98,
@@ -214,7 +214,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           'Past Year',
                           style: TextStyle(
@@ -226,7 +226,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           '${pastYearTime.toStringAsFixed(1)} hours',
                           style: TextStyle(
@@ -241,12 +241,12 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 0, 15),
                 child: Container(
                   width: 350,
                   height: 98,
                   decoration: BoxDecoration(
-                    color: Color(0xFF6F00C7),
+                    color: const Color(0xFF6F00C7),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -254,7 +254,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(
                           'You are in the top ${playPercentage.toStringAsFixed(1)}% of users based on play time',
                           style: TextStyle(
