@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
+import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
 import 'package:gameonconnect/view/components/feed/start_timer.dart';
 import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
@@ -248,7 +249,10 @@ class _FeedPageState extends State<FeedPage> {
     return Column(
       children: const [
         GameTimer(),
-        EventInvitesList(),
+        Text("Friends currently online", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        CurrentlyOnlineBar(),
+        Text("Event Invites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        EventInvitesList()
       ]
     );
   }
