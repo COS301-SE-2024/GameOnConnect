@@ -81,7 +81,7 @@ class _EventInvitationState extends State<EventInvitation> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

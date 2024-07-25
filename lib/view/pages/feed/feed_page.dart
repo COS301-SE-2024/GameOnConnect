@@ -9,7 +9,6 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
 import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
 import 'package:gameonconnect/view/components/feed/start_timer.dart';
-import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
