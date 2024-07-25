@@ -6,114 +6,167 @@ class StatsTotalTimeService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<User?> getCurrentUser() async {
-    return auth.currentUser;
+    // print("Fetching current user...");
+    User? user = auth.currentUser;
+    // print("Current user: ${user?.uid}");
+    return user;
   }
 
   Future<double> getTotalTimePlayedToday() async {
-    User? currentUser = await getCurrentUser();
-    if (currentUser == null) return 0.0;
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
 
-    DateTime now = DateTime.now();
-    DateTime startOfDay = DateTime(now.year, now.month, now.day);
+      DateTime now = DateTime.now();
+      DateTime startOfDay = DateTime(now.year, now.month, now.day);
+      // print("Fetching data for today: $startOfDay to $now");
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await db
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid)
-        .where('last_played', isGreaterThanOrEqualTo: startOfDay)
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
+          .where('last_played', isGreaterThanOrEqualTo: startOfDay)
+          .get();
 
-    double totalTimePlayedToday = 0.0;
-    for (var doc in snapshot.docs) {
-      totalTimePlayedToday += doc.data()['time_played_last'] / 60;
+      double totalTimePlayedToday = 0.0;
+      // print("Documents found for today: ${snapshot.docs.length}");
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        // print("Adding time: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedToday += timePlayed;
+      }
+
+      // print("Total time played today: $totalTimePlayedToday hours");
+      return totalTimePlayedToday;
+    } catch (e) {
+      // print("Error fetching today's data: $e");
+      return 0.0;
     }
-
-    return totalTimePlayedToday;
   }
 
   Future<double> getTotalTimePlayedLastWeek() async {
-    User? currentUser = await getCurrentUser();
-    if (currentUser == null) return 0.0;
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
 
-    DateTime now = DateTime.now();
-    DateTime startOfWeek = now.subtract(Duration(days: now.weekday));
+      DateTime now = DateTime.now();
+      DateTime startOfWeek = now.subtract(Duration(days: now.weekday));
+      // print("Fetching data for last week: $startOfWeek to $now");
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await db
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid)
-        .where('last_played', isGreaterThanOrEqualTo: startOfWeek)
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
+          .where('last_played', isGreaterThanOrEqualTo: startOfWeek)
+          .get();
 
-    double totalTimePlayedLastWeek = 0.0;
-    for (var doc in snapshot.docs) {
-      totalTimePlayedLastWeek += doc.data()['time_played_last'] / 60;
+      double totalTimePlayedLastWeek = 0.0;
+      // print("Documents found for last week: ${snapshot.docs.length}");
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        // print("Adding time: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedLastWeek += timePlayed;
+      }
+
+      // print("Total time played last week: $totalTimePlayedLastWeek hours");
+      return totalTimePlayedLastWeek;
+    } catch (e) {
+      // print("Error fetching last week's data: $e");
+      return 0.0;
     }
-
-    return totalTimePlayedLastWeek;
   }
 
   Future<double> getTotalTimePlayedLastMonth() async {
-    User? currentUser = await getCurrentUser();
-    if (currentUser == null) return 0.0;
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
 
-    DateTime now = DateTime.now();
-    DateTime startOfMonth = DateTime(now.year, now.month);
+      DateTime now = DateTime.now();
+      DateTime startOfMonth = DateTime(now.year, now.month);
+      // print("Fetching data for last month: $startOfMonth to $now");
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await db
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid)
-        .where('last_played', isGreaterThanOrEqualTo: startOfMonth)
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
+          .where('last_played', isGreaterThanOrEqualTo: startOfMonth)
+          .get();
 
-    double totalTimePlayedLastMonth = 0.0;
-    for (var doc in snapshot.docs) {
-      totalTimePlayedLastMonth += doc.data()['time_played_last'] / 60;
+      double totalTimePlayedLastMonth = 0.0;
+      // print("Documents found for last month: ${snapshot.docs.length}");
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        // print("Adding time: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedLastMonth += timePlayed;
+      }
+
+      // print("Total time played last month: $totalTimePlayedLastMonth hours");
+      return totalTimePlayedLastMonth;
+    } catch (e) {
+      // print("Error fetching last month's data: $e");
+      return 0.0;
     }
-
-    return totalTimePlayedLastMonth;
   }
 
   Future<double> getTotalTimePlayedLastYear() async {
-    User? currentUser = await getCurrentUser();
-    if (currentUser == null) return 0.0;
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
 
-    DateTime now = DateTime.now();
-    DateTime startOfYear = DateTime(now.year);
+      DateTime now = DateTime.now();
+      DateTime startOfYear = DateTime(now.year);
+      // print("Fetching data for last year: $startOfYear to $now");
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await db
-        .collection('stats')
-        .where('userID', isEqualTo: currentUser.uid)
-        .where('last_played', isGreaterThanOrEqualTo: startOfYear)
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
+          .where('last_played', isGreaterThanOrEqualTo: startOfYear)
+          .get();
 
-    double totalTimePlayedLastYear = 0.0;
-    for (var doc in snapshot.docs) {
-      totalTimePlayedLastYear += doc.data()['time_played_last'] / 60;
+      double totalTimePlayedLastYear = 0.0;
+      // print("Documents found for last year: ${snapshot.docs.length}");
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        // print("Adding time: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedLastYear += timePlayed;
+      }
+
+      // print("Total time played last year: $totalTimePlayedLastYear hours");
+      return totalTimePlayedLastYear;
+    } catch (e) {
+      // print("Error fetching last year's data: $e");
+      return 0.0;
     }
-
-    return totalTimePlayedLastYear;
   }
 
   Future<double> getPercentageTimePlayedComparedToOthers() async {
-    User? currentUser = await getCurrentUser();
-    if (currentUser == null) return 0.0;
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
 
-    QuerySnapshot<Map<String, dynamic>> snapshot = await db
-        .collection('stats')
-        .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .get();
 
-    double totalTimePlayedByCurrentUser = 0.0;
-    double totalTimePlayedByAllUsers = 0.0;
+      double totalTimePlayedByCurrentUser = 0.0;
+      double totalTimePlayedByAllUsers = 0.0;
+      // print("Documents found for all users: ${snapshot.docs.length}");
 
-    for (var doc in snapshot.docs) {
-      double timePlayedLast = doc.data()['time_played_last'] / 60;
-      if (doc.data()['userID'] == currentUser.uid) {
-        totalTimePlayedByCurrentUser += timePlayedLast;
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        if (doc.data()['user_id'] == currentUser.uid) {
+          // print("Adding time to current user: $timePlayed hours from doc: ${doc.id}");
+          totalTimePlayedByCurrentUser += timePlayed;
+        }
+        // print("Adding time to all users: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedByAllUsers += timePlayed;
       }
-      totalTimePlayedByAllUsers += timePlayedLast;
+
+      if (totalTimePlayedByAllUsers == 0.0) return 0.0;
+
+      double percentage = (totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100;
+      // print("Percentage time played compared to others: $percentage%");
+      return percentage;
+    } catch (e) {
+      // print("Error fetching percentage time played compared to others: $e");
+      return 0.0;
     }
-
-    if (totalTimePlayedByAllUsers == 0.0) return 0.0;
-
-    return (totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100;
   }
 }
