@@ -64,7 +64,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
                           ),
                         )),
                   ),
-                  Text(_friends![index].username, style: TextStyle(fontSize: 10)),
+                  Text(_friends![index].username, style: const TextStyle(fontSize: 10)),
                 ],
               ),
             );
