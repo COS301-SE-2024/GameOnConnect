@@ -349,37 +349,7 @@ class _DevelopmentButtons extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            MaterialButton(
-              onPressed: () {
-                // Get the current user's ID
-                String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-                //print("current user from home: $currentUserId");
-                if (currentUserId != null) {
-                  // Pass the current user's ID to the search friends page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      //builder: (context) => FriendSearchPage(currentUserId),
-                      builder: (context) => FriendSearch(),
-                    ),
-                  );
-                } else {
-                  // Handle the case where there is no logged-in user
-                  // ignore: avoid_print
-                  print('No user is currently logged in.');
-                }
-              },
-              color: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.surface,
-              child: const Text('search friends '),
-            ),
-          ],
-        ),
-      ),
+      body: Placeholder()
     );
   }
 }
