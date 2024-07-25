@@ -31,12 +31,13 @@ class ChatBubble extends StatelessWidget {
           Text(
             message,
             style: TextStyle(
+              fontSize: 20,
               color: Theme.of(context).colorScheme.surface,
               fontWeight: FontWeight.bold
             ),
           ),
           Text(
-            DateFormat('hh:mm a').format(dateTime),
+            DateFormat('yyyy/MM/dd – kk:mm').format(dateTime),
             style: TextStyle(
               fontSize: 11,
               color: Theme.of(context).colorScheme.surface,

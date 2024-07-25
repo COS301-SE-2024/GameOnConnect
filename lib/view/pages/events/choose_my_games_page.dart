@@ -4,7 +4,9 @@ import 'package:gameonconnect/view/components/card/game_list_card.dart';
 
 class ChooseGame extends StatefulWidget {
   final List<String> myGames;
-  const ChooseGame({super.key, required this.myGames});
+  final String chosenGame;
+  final List<String> images;
+  const ChooseGame({super.key, required this.myGames, required this.chosenGame, required this.images});
 
   @override
   State<ChooseGame> createState() => _ChooseGame();
@@ -14,13 +16,15 @@ class _ChooseGame extends State<ChooseGame> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> myGames=[];
   String chosenGame = "";
+  List<String> images=[];
 
 
   @override
   void initState() {
     super.initState();
     myGames = widget.myGames;
-
+    chosenGame = widget.chosenGame;
+    images = widget.images;
   }
 
   @override
@@ -101,6 +105,7 @@ class _ChooseGame extends State<ChooseGame> {
                             return GameCard(
                                 name: i,
                                 chosen: chosenGame,
+                                image: images[index],
                                 onSelected: (gameName) {
                                   setState(() {
                                     chosenGame = gameName;
