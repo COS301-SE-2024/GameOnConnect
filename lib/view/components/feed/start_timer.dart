@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _GameTimer extends State<GameTimer> {
   Timer? _timer;
   final SessionStatsService _sessionStatsService = SessionStatsService();
   String _mood = "No mood";
+  DateTime _startTime = DateTime.timestamp();
 
   @override
   void initState() {
@@ -55,6 +57,7 @@ class _GameTimer extends State<GameTimer> {
   }
 
   void _startStopWatch() {
+    _startTime = DateTime.timestamp();
     _stopwatch.reset();
     _stopwatch.start();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -168,20 +171,47 @@ class _GameTimer extends State<GameTimer> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       EmojiFeedback(
+                                        emojiPreset: const [
+                                          EmojiModel(
+                                            src:Assets.classicTerrible,
+                                            label: 'Scared',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.classicBad,
+                                            label: 'Disgusted',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatTerrible,
+                                            label: 'Angry',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatBad,
+                                            label: 'Sad',
+                                            package: 'flutter_emoji_feedback',
+                                          ),
+                                          EmojiModel(
+                                            src:Assets.flatVeryGood,
+                                            label: 'Happy',
+                                            package: 'flutter_emoji_feedback',
+                                          )
+                                        ],
                                         inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
                                         onChanged: (value) {
                                           setState(() {
                                             switch (value) {
                                               case 1:
-                                                _mood = "Terrible";
+                                                _mood = "Scared";
                                               case 2:
-                                                _mood = "Bad";
+                                                _mood = "Disgusted";
                                               case 3:
-                                                _mood = "Good";
+                                                _mood = "Angry";
                                               case 4:
-                                                _mood = "Very good";
+                                                _mood = "Sad";
                                               case 5:
-                                                _mood = "Awesome";
+                                                _mood = "Happy";
                                               default:
                                                 _mood = "No mood";
                                             }
@@ -194,10 +224,15 @@ class _GameTimer extends State<GameTimer> {
                                 actions: <Widget>[
                                   TextButton(
                                     child: const Text('Okay'),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.of(context).pop();
                                       //add data to the database
-                                      _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood);
+                                      if (_userGames != null && _selectedItem != null) {
+                                        List<GameDetails> games = await _userGames!;
+                                        GameDetails? selectedGame = games.firstWhere((game) => game.id.toString() == _selectedItem);
+                                        List genres = selectedGame.genres;
+                                        _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood, genres, _startTime);
+                                      }
                                     },
                                   ),
                                 ],

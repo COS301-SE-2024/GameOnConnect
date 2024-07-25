@@ -4,19 +4,21 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 
 class ConnectionCardWidget extends StatefulWidget {
-  final String image ;
+  final String image;
   final String username;
-  final String uniqueNum ;
-  final String uid ;
+  final String uniqueNum;
+  final String uid;
   final String page;
   final List<String>? invited;
   final void Function(String uid,bool selected) onSelected;
+  final void Function(String uid, bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
-   final void Function(String uid)? onRejected;
+  final void Function(String uid)? onRejected;
 
   const ConnectionCardWidget({
     super.key,
@@ -30,6 +32,7 @@ class ConnectionCardWidget extends StatefulWidget {
      this.onAccepted,
      this.onRejected,
     this.invited,
+
   });
 
   @override
@@ -69,11 +72,17 @@ void dispose() {
 }
 
 
-void _disconnect(String targetUserId) async {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _disconnect(String targetUserId) async {
     try {
-      await ConnectionService().disconnect( targetUserId);
-       if (widget.onDisconnected != null) {
-        widget.onDisconnected!(targetUserId); // Notify parent widget if callback is provided
+      await ConnectionService().disconnect(targetUserId);
+      if (widget.onDisconnected != null) {
+        widget.onDisconnected!(
+            targetUserId); // Notify parent widget if callback is provided
       }
     } catch (e) {
       //'Error unfollowing user'
@@ -100,9 +109,10 @@ void _disconnect(String targetUserId) async {
 
   void _accept(String targetUserId) async {
     try {
-      await ConnectionService().acceptConnectionRequest( targetUserId);
-       if (widget.onAccepted != null) {
-        widget.onAccepted!(targetUserId); // Notify parent widget if callback is provided
+      await ConnectionService().acceptConnectionRequest(targetUserId);
+      if (widget.onAccepted != null) {
+        widget.onAccepted!(
+            targetUserId); // Notify parent widget if callback is provided
       }
     } catch (e) {
       //'Error unfollowing user'
@@ -129,9 +139,10 @@ void _disconnect(String targetUserId) async {
 
   void _reject(String targetUserId) async {
     try {
-      await ConnectionService().rejectConnectionRequest( targetUserId);
-       if (widget.onRejected != null) {
-        widget.onRejected!(targetUserId); // Notify parent widget if callback is provided
+      await ConnectionService().rejectConnectionRequest(targetUserId);
+      if (widget.onRejected != null) {
+        widget.onRejected!(
+            targetUserId); // Notify parent widget if callback is provided
       }
     } catch (e) {
       //'Error unfollowing user'
@@ -155,8 +166,6 @@ void _disconnect(String targetUserId) async {
       );
     }
   }
-
-
 
   @override
 Widget build(BuildContext context) {
@@ -225,113 +234,114 @@ Widget build(BuildContext context) {
                       letterSpacing: 0,
                       fontWeight: FontWeight.normal,
                     ),
-                  ),
-                  Text(
-                    '# $uniqueNum',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 14,
-                      letterSpacing: 0,
-                      fontWeight: FontWeight.normal,
                     ),
+                    Text(
+                      '# $uniqueNum',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 14,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            // Popup menu button
+            if (page == 'connections')
+              PopupMenuButton<String>(
+                itemBuilder: (context) => [
+                  const PopupMenuItem<String>(
+                    value: 'disconnect',
+                    child: Text('Disconnect'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'message',
+                    child: Text('Message'),
                   ),
                 ],
+                onSelected: (value) {
+                  if (value == 'disconnect') {
+                    _disconnect(uid);
+                  } else if (value == 'message') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                          profileName: username,
+                          receiverID: uid,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              )
+            else if (page == 'requests')
+              PopupMenuButton<String>(
+                itemBuilder: (context) => [
+                  const PopupMenuItem<String>(
+                    value: 'accept',
+                    child: Row(
+                      children: [
+                        Text('Accept'),
+                        Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'reject',
+                    child: Row(
+                      children: [
+                        Text('Reject'),
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'message',
+                    child: Text('Message'),
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 'accept') {
+                    _accept(uid);
+                  } else if (value == 'reject') {
+                    _reject(uid);
+                  } else if (value == 'message') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Messaging(),
+                      ),
+                    );
+                  }
+                },
               ),
-            ],
-          ),
-          // Popup menu button
-          if (page == 'connections')
-            PopupMenuButton<String>(
-              itemBuilder: (context) => [
-                const PopupMenuItem<String>(
-                  value: 'disconnect',
-                  child: Text('Disconnect'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'message',
-                  child: Text('Message'),
-                ),
-              ],
-              onSelected: (value) {
-                if (value == 'disconnect') {
-                  _disconnect(uid);
-                } else if (value == 'message') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Messaging(),
-                    ),
-                  );
-                }
-              },
-            )
-          else if (page == 'requests')
-            PopupMenuButton<String>(
-              itemBuilder: (context) => [
-                const PopupMenuItem<String>(
-                  value: 'accept',
-                  child: Row(
-                    children: [
-                      Text('Accept'),
-                      Icon(
-                        Icons.check,
-                        color: Colors.green,
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'reject',
-                  child: Row(
-                    children: [
-                      Text('Reject'),
-                      Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'message',
-                  child: Text('Message'),
-                ),
-              ],
-              onSelected: (value) {
-                if (value == 'accept') {
-                  _accept(uid );
-                } else if (value == 'reject') {
-                  _reject(uid);
-                } else if (value == 'message') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Messaging(),
-                    ),
-                  );
-                }
-              },
-            ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-
-  if (page == 'events') {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selected = !selected;
-        });
-        widget.onSelected(uid, selected);
-      },
-      child: cardContent,
     );
-  } else {
-    return cardContent;
+
+    if (page == 'events') {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            selected = !selected;
+          });
+          widget.onSelected(uid, selected);
+        },
+        child: cardContent,
+      );
+    } else {
+      return cardContent;
+    }
   }
-}
-
-
 }
