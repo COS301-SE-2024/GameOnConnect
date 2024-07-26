@@ -18,18 +18,13 @@ class EditProfilePage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: CircleAvatar(
-          key: const Key('profileAvatar'),
-          radius: 25.0, // Doubled the radius
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black, width: 2.0),
+        title: const Text(
+            'Edit Profile',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        centerTitle: true,
       ),
       body: const EditProfileForm(),
     );
@@ -87,13 +82,6 @@ class  EditProfileFormState  extends State<EditProfileForm> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            const SizedBox(height: 16.0),
-             Text(
-              'Edit Profile',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Theme.of(context).colorScheme.secondary),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32.0), // Increased space between header and inputs
             Expanded(
               child: ListView(
                 children: [

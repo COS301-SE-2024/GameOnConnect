@@ -43,8 +43,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Future<void> _fetchGenresFromAPI() async {
     try {
-      var url = Uri.parse(
-          'https://api.rawg.io/api/genres?key=$apiKey');
+      var url = Uri.parse('https://api.rawg.io/api/genres?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -63,8 +62,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Future<void> _fetchTagsFromAPI() async {
     try {
-      var url = Uri.parse(
-          'https://api.rawg.io/api/tags?key=$apiKey');
+      var url = Uri.parse('https://api.rawg.io/api/tags?key=$apiKey');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -146,15 +144,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               List<String>.from(data?["social_interests_tags"] ?? []);
 
           StorageService storageService = StorageService();
-           String bannerDownloadUrl  = await storageService.getBannerUrl(currentUser.uid);
-          String profileDownloadUrl = await storageService.getProfilePictureUrl(currentUser.uid);
+          String bannerDownloadUrl =
+              await storageService.getBannerUrl(currentUser.uid);
+          String profileDownloadUrl =
+              await storageService.getProfilePictureUrl(currentUser.uid);
 
           setState(() {
             _selectedGenres = genres;
             _selectedAge = age;
             _selectedInterests = interests;
             _profileBannerUrl = bannerDownloadUrl;
-            _profileImageUrl = profileDownloadUrl ;
+            _profileImageUrl = profileDownloadUrl;
           });
         }
       }
@@ -323,17 +323,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               Navigator.of(context).pop();
             },
           ),
-          title: CircleAvatar(
-            radius: 25.0,
-            backgroundColor: Colors.white,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black, width: 1.0),
-              ),
-            ),
-          ),
-          centerTitle: true,
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -352,25 +341,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             Navigator.of(context).pop();
           },
         ),
-        title: CircleAvatar(
-          radius: 25.0,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 1.0),
+        title: const Text(
+            'Customize Profile',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-           Align(
-            alignment: Alignment.center,
-            child: Text('Customize Profile', style: TextStyle(fontSize: 24, color:Theme.of(context).colorScheme.secondary)),
-          ),
           InkWell(
             onTap: _pickBanner,
             child: Stack(
@@ -380,11 +361,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   width: double.infinity,
                   height: 150,
                   child: CachedNetworkImage(
-                                    imageUrl:_profileBannerUrl,
-                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                    fit: BoxFit.cover,
-                                  ),
+                    imageUrl: _profileBannerUrl,
+                    placeholder: (context, url) => const Center(
+                        child:
+                            CircularProgressIndicator()), // Loading indicator for banner
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Container(
                   height: 30,
@@ -393,7 +377,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                     color: Theme.of(context).colorScheme.primary,
                     shape: BoxShape.circle,
                   ),
-                  child:  Icon(
+                  child: Icon(
                     Icons.camera_alt,
                     size: 15,
                     color: Theme.of(context).colorScheme.surface,
@@ -413,7 +397,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   CircleAvatar(
                     radius: 60,
                     backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+                    backgroundImage:
+                        CachedNetworkImageProvider(_profileImageUrl),
                   ),
                   Container(
                     height: 30,
@@ -422,11 +407,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                       color: Theme.of(context).colorScheme.primary,
                       shape: BoxShape.circle,
                     ),
-                    child:  Icon(
-                      Icons.camera_alt,
-                      size: 15,
-                      color: Theme.of(context).colorScheme.surface
-                    ),
+                    child: Icon(Icons.camera_alt,
+                        size: 15, color: Theme.of(context).colorScheme.surface),
                   ),
                 ],
               ),
