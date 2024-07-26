@@ -109,7 +109,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                           Padding(
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              '${todayTime.toStringAsFixed(1)} hours',
+                              '${todayTime.toStringAsFixed(3)} hours',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
@@ -146,7 +146,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                           Padding(
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              '${pastWeekTime.toStringAsFixed(1)} hours',
+                              '${pastWeekTime.toStringAsFixed(3)} hours',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
@@ -188,7 +188,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: Text(
-                          '${pastMonthTime.toStringAsFixed(1)} hours',
+                          '${pastMonthTime.toStringAsFixed(3)} hours',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500,
@@ -228,7 +228,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: Text(
-                          '${pastYearTime.toStringAsFixed(1)} hours',
+                          '${pastYearTime.toStringAsFixed(3)} hours',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w500,
@@ -256,7 +256,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                       Padding(
                         padding: const EdgeInsets.all(8),
                         child: Text(
-                          'You are in the top ${playPercentage.toStringAsFixed(1)}% of users based on play time',
+                          'You are in the top ${playPercentage.toStringAsFixed(3)}% of users based on play time',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 15,
