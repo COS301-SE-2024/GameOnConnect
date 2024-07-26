@@ -927,6 +927,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  pulsator:
+    dependency: "direct main"
+    description:
+      name: pulsator
+      sha256: "34258bf5cacfccfa5f0506293449e7e14d12611e9c96cc79c72859ab323a140c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+2"
   rxdart:
     dependency: transitive
     description:
