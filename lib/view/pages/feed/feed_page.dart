@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-import 'package:gameonconnect/view/pages/connections/connections_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
@@ -289,7 +288,8 @@ class _DevelopmentButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: Text('Feed',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -310,37 +310,7 @@ class _DevelopmentButtons extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            MaterialButton(
-              onPressed: () {
-                // Get the current user's ID
-                String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
-                //print("current user from home: $currentUserId");
-                if (currentUserId != null) {
-                  // Pass the current user's ID to the search friends page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      //builder: (context) => FriendSearchPage(currentUserId),
-                      builder: (context) => FriendSearch(),
-                    ),
-                  );
-                } else {
-                  // Handle the case where there is no logged-in user
-                  // ignore: avoid_print
-                  print('No user is currently logged in.');
-                }
-              },
-              color: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).colorScheme.surface,
-              child: const Text('search friends '),
-            ),
-          ],
-        ),
-      ),
+      body: Placeholder()
     );
   }
 }

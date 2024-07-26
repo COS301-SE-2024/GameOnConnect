@@ -70,7 +70,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       16, 5, 0, 0),
                                   child: Text(
-                                    'Joined events:',
+                                    'Events:',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
@@ -78,7 +78,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
-                                      fontSize: 22,
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
