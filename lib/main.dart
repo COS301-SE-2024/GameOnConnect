@@ -27,6 +27,8 @@ import 'view/pages/stats/stats_total_time.dart';
 // import 'view/pages/events/invite_connections_page.dart';
 import 'view/pages/stats/stats_leaderboard_page.dart';
 import 'globals.dart' as globals;
+import 'view/pages/stats/stats_mood.dart';
+import 'view/pages/stats/stats_genres.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -112,6 +114,8 @@ class MyApp extends StatelessWidget {
         '/messages' : (context) => Messaging(),
         '/stats_total_time' : (context) => TotalTimeStatsWidget(),
         '/stats_leaderboard' : (context) => StatsLeaderboardPage(),
+        '/stats_mood' : (context) => StatsMoodPage(),
+        '/stats_genres' : (context) => GenresStatsPage(),
       },
       initialRoute: '/',
     );
