@@ -53,6 +53,11 @@ class _RecentActivityListState extends State<RecentActivityList> {
   }
 }
 
+double millisecondsToHours(int milliseconds) {
+  final hours = milliseconds / (1000 * 3600);
+  return double.parse(hours.toStringAsFixed(3));
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +110,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
           Column(
             children: [
               SizedBox(
-                height: 200, // Adjust the height as needed
+                height: 170, // Adjust the height as needed
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.gameStats.length,
@@ -124,6 +129,7 @@ class _RecentActivityListState extends State<RecentActivityList> {
                           final gameStats = widget.gameStats[index];
                           final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
                           final formattedRelativeDate = timeago.format(lastPlayedDateTime);
+                          final hours = millisecondsToHours(gameStats.timePlayedLast);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child:InkWell(
@@ -172,19 +178,21 @@ class _RecentActivityListState extends State<RecentActivityList> {
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
-                                            'Time played(h): ${gameStats.timePlayedLast}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFFFFFFF),
-                                              ),
-                                            ),
-                                            Text(
                                               ' Mood: ${gameStats.mood} ',
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 color: Color(0xFFFFFFFF),
                                               ),
                                             ),
+                                          Text(
+                                            //'Time played(h): $hours',
+                                            ' $hours hour(s)',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFFFFFFFF),
+                                              ),
+                                            ),
+                                            
                                             
                                             Text(
                                               ' $formattedRelativeDate',
