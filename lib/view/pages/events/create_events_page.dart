@@ -98,6 +98,10 @@ class _CreateEventsState extends State<CreateEvents> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Scaffold(
+          appBar: AppBar(
+        title: const Text('Create Event',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
+      ),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(

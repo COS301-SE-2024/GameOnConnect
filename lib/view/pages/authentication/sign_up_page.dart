@@ -58,8 +58,8 @@ class _SignUpState extends State<SignUp> {
             children: [
               Image.asset(
                 Theme.of(context).brightness == Brightness.dark
-                    ? 'assets/icons/Logo_dark.png'
-                    : 'assets/icons/Logo_light.png',
+                    ? 'assets/icons/GameOnConnect_Logo_Transparent_White.png'
+                    : 'assets/icons/GameOnConnect_Logo_Transparent.png',
                 width: 100,
                 height: 100,
               ),
