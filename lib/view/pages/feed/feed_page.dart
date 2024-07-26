@@ -6,6 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
+import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
+import 'package:gameonconnect/view/components/feed/start_timer.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
@@ -33,7 +36,7 @@ class _FeedPageState extends State<FeedPage> {
 
   static final List<Widget> _pages = <Widget>[
     Center(
-        child: _DevelopmentButtons()), // Integrate the development buttons here
+        child: _FeedPageDisplay()), // Integrate the development buttons here
     const GameLibrary(), // Actual page for the Games Library
     const CreateEvents(), // create events Page
     const ViewEvents(), // View Events Page
@@ -281,15 +284,42 @@ class _FeedPageState extends State<FeedPage> {
   }
 }
 
-class _DevelopmentButtons extends StatelessWidget {
+class _FeedPageDisplay extends StatelessWidget {
   // final MessagingService messagingService = MessagingService();
+  Widget _feedBody() {
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          GameTimer(),
+          SizedBox(height: 30),
+          Text("Friends currently online", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          SizedBox(height: 15),
+          CurrentlyOnlineBar(),
+          SizedBox(height: 30),
+          Text("Event Invites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          SizedBox(height: 15),
+          EventInvitesList()
+        ]
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed',
-        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Feed',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
@@ -309,8 +339,10 @@ class _DevelopmentButtons extends StatelessWidget {
             ),
           ),
         ],
+        centerTitle: false,
+        elevation: 0,
       ),
-      body: Placeholder()
+      body: _feedBody()
     );
   }
 }
