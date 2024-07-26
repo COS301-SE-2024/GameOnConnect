@@ -52,7 +52,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_rounded,
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.onSurface,
               size: 30,
             ),
             onPressed: () async {
@@ -63,7 +63,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
             'Total Time',
             style: TextStyle(
               fontFamily: 'Inter',
-              color: Theme.of(context).colorScheme.surface,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 32,
               fontWeight: FontWeight.w500,
             ),
