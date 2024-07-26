@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/stats/stats_leaderboard_page.dart';
 
+import 'package:gameonconnect/view/pages/stats/stats_genres.dart';
+
 class StatsList extends StatefulWidget {
   const StatsList({super.key ,required this.heading}) ;
   final String heading;
@@ -33,10 +35,10 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
         // );
         break;
       case 1:
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const StatsGenresPage()),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const GenresStatsPage()),
+        );
         break;
       case 2:
         // Navigator.push(

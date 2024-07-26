@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//test comment
 
 class Indicator extends StatelessWidget {
   final Color color;
