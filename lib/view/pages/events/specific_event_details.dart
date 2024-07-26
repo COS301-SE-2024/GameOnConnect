@@ -137,25 +137,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                     ],
                                   ),
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        !selected ;
-                                      });
-                                      if (selected) {
-
-                                        EventsService().unsubscribeToEvent(e);
-                                      } else {
-
-                                        EventsService().subscribeToEvent(e);
-                                      }
-                                      getUpdatedEvent(e.eventID);
-
-                                    },
-                                    icon: selected
-                                        ? const Icon(Icons.notification_add)
-                                        : const Icon(
-                                            Icons.notification_add_outlined)),
                               ],
                             ),
                             Padding(
