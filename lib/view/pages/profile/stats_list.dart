@@ -4,6 +4,9 @@ import 'package:gameonconnect/view/pages/stats/stats_mood.dart';
 
 import 'package:gameonconnect/view/pages/stats/stats_genres.dart';
 
+
+import 'package:gameonconnect/view/pages/stats/stats_total_time.dart';
+
 class StatsList extends StatefulWidget {
   const StatsList({super.key ,required this.heading}) ;
   final String heading;
@@ -42,10 +45,10 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
         );
         break;
       case 2:
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const StatsTotalTimePage()),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const TotalTimeStatsWidget()),
+        );
         break;
       case 3:
         Navigator.push(
