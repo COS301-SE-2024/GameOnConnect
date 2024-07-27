@@ -6,6 +6,7 @@ class GenresStatsPage extends StatefulWidget {
   const GenresStatsPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _GenresStatsPageState createState() => _GenresStatsPageState();
 }
 
@@ -114,7 +115,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                               child: SfCartesianChart(
-                                legend: Legend(
+                                legend: const Legend(
                                   isVisible: false,
                                 ),
                                 tooltipBehavior: TooltipBehavior(
@@ -128,22 +129,22 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                                       padding: const EdgeInsets.all(8.0),
                                       color: Colors.black,
                                       child: Text(
-                                        '${genre}: ${value}',
+                                        '$genre: $value',
                                         style: const TextStyle(color: Colors.white),
                                       ),
                                     );
                                   },
                                 ),
-                                primaryXAxis: CategoryAxis(
+                                primaryXAxis: const CategoryAxis(
                                   labelRotation: 0,
                                   majorGridLines: MajorGridLines(width: 0), // Remove grid lines
                                   axisLine: AxisLine(width: 0), // Remove the axis line
                                   labelIntersectAction: AxisLabelIntersectAction.trim, // Handle long labels
-                                  labelStyle: const TextStyle(
+                                  labelStyle: TextStyle(
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                primaryYAxis: NumericAxis(
+                                primaryYAxis: const NumericAxis(
                                   edgeLabelPlacement: EdgeLabelPlacement.shift,
                                   majorGridLines: MajorGridLines(width: 0), // Remove grid lines
                                   axisLine: AxisLine(width: 0), // Remove the axis line
