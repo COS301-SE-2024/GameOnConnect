@@ -13,6 +13,7 @@ class GenresStatsPage extends StatefulWidget {
 class _GenresStatsPageState extends State<GenresStatsPage> {
   Map<String, double> genrePlayTime = {};
   final StatsGenresService _statsGenresService = StatsGenresService();
+  String _selectedFilter = 'All Time';
 
   @override
   void initState() {
@@ -20,11 +21,38 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
     _loadGenrePlayTime();
   }
 
-  Future<void> _loadGenrePlayTime() async {
-    final data = await _statsGenresService.getGenrePlayTime();
+  Future<void> _loadGenrePlayTime({DateTime? startDate}) async {
+    final data = await _statsGenresService.getGenrePlayTime(startDate: startDate);
     setState(() {
       genrePlayTime = data;
     });
+  }
+
+  void _onFilterSelected(String filter) {
+    setState(() {
+      _selectedFilter = filter;
+    });
+
+    DateTime? startDate;
+    final now = DateTime.now();
+    switch (filter) {
+      case 'Last Day':
+        startDate = now.subtract(Duration(days: 1));
+        break;
+      case 'Last Week':
+        startDate = now.subtract(Duration(days: 7));
+        break;
+      case 'Last Month':
+        startDate = DateTime(now.year, now.month - 1, now.day);
+        break;
+      case 'Last Year':
+        startDate = DateTime(now.year - 1, now.month, now.day);
+        break;
+      default:
+        startDate = null;
+    }
+
+    _loadGenrePlayTime(startDate: startDate);
   }
 
   @override
