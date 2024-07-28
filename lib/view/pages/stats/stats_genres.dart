@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 
 class GenresStatsPage extends StatefulWidget {
@@ -33,36 +33,37 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 30,
-            ),
-            onPressed: () async {
-              Navigator.of(context).pop();
-            },
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
           ),
-          title: Text(
-            'Genres',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 32,
-              letterSpacing: 0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          actions: const [],
-          centerTitle: false,
-          elevation: 2,
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
         ),
-        body: SafeArea(
-          top: true,
+        title: Text(
+          'Genres',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 32,
+            letterSpacing: 0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: const [],
+        centerTitle: false,
+        elevation: 2,
+      ),
+      body: SafeArea(
+        top: true,
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.max,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(5, 15, 5, 5),
@@ -94,123 +95,77 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: genrePlayTime.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : allZero
-                      ? Center(
-                          child: Text(
-                            'No playing sessions recorded',
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: genrePlayTime.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : allZero
+                        ? Center(
+                            child: Text(
+                              'No playing sessions recorded',
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        )
-                  : AspectRatio(
-                      aspectRatio: 1.5,
-                      child: BarChart(
-                        BarChartData(
-                          barTouchData: BarTouchData(
-                            enabled: true,
-                            touchTooltipData: BarTouchTooltipData(
-                              // tooltipBgColor: Colors.transparent,
-                              getTooltipItem: (
-                                BarChartGroupData group,
-                                int groupIndex,
-                                BarChartRodData rod,
-                                int rodIndex,
-                              ) {
-                                return BarTooltipItem(
-                                  '${genrePlayTime.keys.elementAt(groupIndex)}: ${rod.toY.round()} time(s)',
-                                  TextStyle(
-                                    color: Theme.of(context).colorScheme.surface,
-                                    fontWeight: FontWeight.bold,
+                          )
+                        : SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: SfCartesianChart(
+                                legend: const Legend(
+                                  isVisible: false,
+                                ),
+                                tooltipBehavior: TooltipBehavior(
+                                  enable: true,
+                                  header: '',
+                                  canShowMarker: false,
+                                  builder: (dynamic data, ChartPoint<dynamic> point, ChartSeries<dynamic, dynamic> series, int pointIndex, int seriesIndex) {
+                                    final genre = genrePlayTime.keys.elementAt(pointIndex);
+                                    final value = genrePlayTime[genre] ?? 0.0;
+                                    return Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      color: Colors.black,
+                                      child: Text(
+                                        '$genre: $value',
+                                        style: const TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                primaryXAxis: const CategoryAxis(
+                                  labelRotation: 0,
+                                  majorGridLines: MajorGridLines(width: 0), 
+                                  axisLine: AxisLine(width: 0), 
+                                  labelIntersectAction: AxisLabelIntersectAction.trim, 
+                                  labelStyle: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                          titlesData: FlTitlesData(
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 40,
-                                getTitlesWidget: (value, meta) {
-                                  final genre = genrePlayTime.keys.elementAt(value.toInt());
-                                  return SideTitleWidget(
-                                    axisSide: meta.axisSide,
-                                    space: 4,
-                                    child: Text(
-                                      genre,
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: false,
-                                reservedSize: 40,
-                                getTitlesWidget: (value, meta) {
-                                  return SideTitleWidget(
-                                    axisSide: meta.axisSide,
-                                    space: 6,
-                                    child: Text(
-                                      value.toInt().toString(),
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            topTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                            rightTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                          ),
-                          borderData: FlBorderData(
-                            show: true,
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.surface,
-                              width: 1,
-                            ),
-                          ),
-                          barGroups: List.generate(
-                            genrePlayTime.keys.length,
-                            (index) {
-                              final genre = genrePlayTime.keys.elementAt(index);
-                              return BarChartGroupData(
-                                x: index,
-                                barRods: [
-                                  BarChartRodData(
-                                    toY: genrePlayTime[genre]!,
+                                ),
+                                primaryYAxis: const NumericAxis(
+                                  edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                  majorGridLines: MajorGridLines(width: 0), 
+                                  axisLine: AxisLine(width: 0),
+                                ),
+                                series: <CartesianSeries>[
+                                  BarSeries<MapEntry<String, double>, String>(
+                                    dataSource: genrePlayTime.entries.toList(),
+                                    xValueMapper: (entry, _) => entry.key,
+                                    yValueMapper: (entry, _) => entry.value,
                                     color: Theme.of(context).colorScheme.primary,
-                                    width: 15
+                                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                                    enableTooltip: true,
                                   ),
                                 ],
-                              );
-                            },
+                                borderColor: Colors.transparent,
+                              ),
+                            ),
                           ),
-                          gridData: const FlGridData(show: false),
-                          alignment: BarChartAlignment.spaceEvenly,
-                          maxY: genrePlayTime.values.isNotEmpty ? genrePlayTime.values.reduce((a, b) => a > b ? a : b) : 0,
-                        ),
-                      ),
-                    ),
-                  ),
+              ),
             ],
+          ),
         ),
       ),
     );
