@@ -109,10 +109,13 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                      child: Icon(
-                        Icons.filter_alt,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 24,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.filter_alt,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 24,
+                        ),
+                        onPressed: _showTimeRangeDialog,
                       ),
                     ),
                   ],
@@ -196,6 +199,45 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showTimeRangeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          title: Text(
+            'Select Time Range',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: 'Inter',
+            ),
+          ),
+          content: DropdownButton<String>(
+            value: _selectedFilter,
+            items: <String>['All Time', 'Last Day', 'Last Week', 'Last Month', 'Last Year'].map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFamily: 'Inter',
+                  ),
+                ),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              Navigator.of(context).pop();
+              if (newValue != null) {
+                _onFilterSelected(newValue);
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }
