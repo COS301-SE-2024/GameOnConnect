@@ -10,7 +10,15 @@ import 'package:gameonconnect/view/pages/profile/stats_list.dart';
 
 
 class Profilenew extends StatefulWidget {
-  const Profilenew({super.key});
+  final String uid;
+  final bool isOwnProfile;
+
+  Profilenew(String currentUserId, bool bool, {
+    Key? key, // Use 'Key?' instead of 'super.key'
+    required this.uid,
+    required this.isOwnProfile,
+  }) : super(key: key);
+
 
   @override
   State<Profilenew> createState() => _ProfileState();
@@ -23,24 +31,26 @@ class _ProfileState extends State<Profilenew>  {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        actions: [ // NB only show if its my own profile
-                  Builder(
-                    builder: (context) {
-                      return IconButton(
-                        key: const Key('settings_icon_button'),
-                        icon: const Icon(Icons.settings),
-                        color: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          //Scaffold.of(context).openEndDrawer();
-                          Navigator.pushNamed(context, '/settings');
-                        },
-                      );
-                    },
-                  ),
-                ],
+        actions: widget.isOwnProfile
+            ? [
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      key: const Key('settings_icon_button'),
+                      icon: const Icon(Icons.settings),
+                      color: Theme.of(context).colorScheme.secondary,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
+                    );
+                  },
+                ),
+              ]
+            : null,
       ),
       body: FutureBuilder<Profile?>(
-        future: ProfileService().fetchProfile(),
+        //future: ProfileService().fetchProfile(),
+        future: ProfileService(). fetchAllProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return  const Center(child: CircularProgressIndicator()); // Show loading indicator
