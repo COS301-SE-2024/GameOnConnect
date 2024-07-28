@@ -6,18 +6,26 @@ class StatsGenresService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<Map<String, double>> getGenrePlayTime() async {
+  Future<Map<String, double>> getGenrePlayTime({DateTime? startDate}) async {
     try {
       User? currentUser = _auth.currentUser;
 
       if (currentUser == null) {
-        // print("User not logged in");
         return {};
       }
 
-      final snapshot = await _db.collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
-          .get();
+      final snapshot;
+
+      if (startDate != null) {
+        snapshot = await _db.collection('game_session_stats')
+            .where('user_id', isEqualTo: currentUser.uid)
+            .where('last_played', isGreaterThanOrEqualTo: Timestamp.fromDate(startDate))
+            .get();
+      } else {
+         snapshot = await _db.collection('game_session_stats')
+            .where('user_id', isEqualTo: currentUser.uid)
+            .get();
+      }
 
       Map<String, double> genrePlayTime = {};
 
