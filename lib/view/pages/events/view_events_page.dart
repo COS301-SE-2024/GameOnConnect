@@ -19,6 +19,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   EventsService events = EventsService();
   late List<Event>? allEvents;
+  late List<Event>? publicAllEvents;
   late List<Event>? subscribedEvents;
   late List<Event>? myEvents;
   late List<Event>? joinedEvents;
@@ -36,6 +37,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
 
   void getAllEvents() async {
     //allEvents =  events.fetchAllEvents() as List<Event>?;
+    publicAllEvents =events.getPublicEvents(allEvents!);
     subscribedEvents= events.getSubscribedEvents(allEvents );
     myEvents = events.getMyEvents(allEvents );
     joinedEvents = events.getJoinedEvents(allEvents);
@@ -259,7 +261,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                         child:
                                                         ListView.separated(
                                                           itemCount:
-                                                          allEvents!.length,
+                                                          publicAllEvents!.length,
                                                           padding:
                                                           EdgeInsets.zero,
                                                           scrollDirection:
@@ -267,7 +269,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           itemBuilder:
                                                               (context, index) {
                                                             Event i =
-                                                            allEvents![
+                                                            publicAllEvents![
                                                             index];
                                                             return EventCardWidget(
                                                                 e: i);

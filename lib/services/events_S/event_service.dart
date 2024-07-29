@@ -36,6 +36,17 @@ class EventsService {
     }
   }
 
+  List<Event> getPublicEvents( List<Event> e){
+    List<Event> all = [];
+    for(var x in e){
+      if(x.privacy == false)
+        {
+          all.add(x);
+      }
+    }
+    return all;
+  }
+
   Future<Event?> getEvent(String id) async{
     FirebaseFirestore db = FirebaseFirestore.instance;
     Event? e;
