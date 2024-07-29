@@ -8,6 +8,14 @@ class Help extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          title: Text(
+            'Help',
+            style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          ),
           leading: IconButton(
             key: Key('Back_button_key'),
             icon: const Icon(Icons.keyboard_backspace),

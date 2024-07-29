@@ -9,31 +9,24 @@ class Options extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        automaticallyImplyLeading: false,
-        title:  Text(
-          key: const Key('Settings'),
-          'Settings\n',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.surface,
-            fontSize: 24,
-            letterSpacing: 0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          key: const Key('back_button'),
-          color: Theme.of(context).colorScheme.surface,
-          icon: const Icon(Icons.keyboard_backspace),
+          leading: IconButton(
+          icon:  Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.secondary),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
           },
         ),
-        centerTitle: true,
-        elevation: 2,
-      ),
+          title: Text(
+            'Settings',
+            style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          ),
+          actions: const [],
+          centerTitle: false,
+          elevation: 0,
+        ),
       body: SafeArea(
         top: true,
         child: Align(

@@ -30,24 +30,20 @@ class _MessagingState extends State<Messaging> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          automaticallyImplyLeading: true,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).colorScheme.surface),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+          icon:  Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.secondary),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
           title: Text(
             'My Messages',
             style: TextStyle(
-              fontFamily: 'Inter',
-              color: Theme.of(context).colorScheme.surface,
-              fontSize: 20,
-              letterSpacing: 0,
-              fontWeight: FontWeight.w900,
-            ),
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           ),
           actions: const [],
           centerTitle: false,
