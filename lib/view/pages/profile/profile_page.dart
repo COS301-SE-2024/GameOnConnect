@@ -30,27 +30,27 @@ class _ProfileState extends State<Profilenew>  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
-        actions: widget.isOwnProfile
-            ? [
-                Builder(
-                  builder: (context) {
-                    return IconButton(
-                      key: const Key('settings_icon_button'),
-                      icon: const Icon(Icons.settings),
-                      color: Theme.of(context).colorScheme.secondary,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/settings');
-                      },
-                    );
-                  },
-                ),
-              ]
-            : null,
+        title: const Text('Profile',
+        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
+        actions: [ // NB only show if its my own profile
+                  Builder(
+                    builder: (context) {
+                      return IconButton(
+                        key: const Key('settings_icon_button'),
+                        icon: const Icon(Icons.settings),
+                        color: Theme.of(context).colorScheme.secondary,
+                        onPressed: () {
+                          //Scaffold.of(context).openEndDrawer();
+                          Navigator.pushNamed(context, '/settings');
+                        },
+                      );
+                    },
+                  ),
+                ],
       ),
       body: FutureBuilder<Profile?>(
         //future: ProfileService().fetchProfile(),
-        future: ProfileService(). fetchAllProfileData(widget.uid),
+        future: ProfileService().fetchProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return  const Center(child: CircularProgressIndicator()); // Show loading indicator

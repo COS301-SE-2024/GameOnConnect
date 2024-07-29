@@ -79,177 +79,174 @@ class _GameTimer extends State<GameTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 241, 241, 241),
-            borderRadius: BorderRadius.circular(15)),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(
-            title: Text(
-              _stopwatch.isRunning ? 'Done playing?' : "Start playing",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(15)),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          title: Text(
+            _stopwatch.isRunning ? 'Done playing?' : "Start playing",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
-            leading: const Icon(Icons.videogame_asset),
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _stopwatch.isRunning ? 
-                  Row(
-                    children: [
-                      const Icon(Icons.radio_button_checked, color: Colors.red,),
-                      const SizedBox(width: 10),
-                      Text(
-                        _formatElapsedTime(),
-                        style: const TextStyle(color: Colors.red),
-                      )
-                    ],
-                  ) 
-                  : 
-                  FutureBuilder<List<GameDetails>>(
-                    future: _userGames, 
-                    builder: (BuildContext context, AsyncSnapshot<List<GameDetails>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Text('No data found');
-                      } else {
-                        return 
-                        DropdownButton<String>(
-                          underline: const SizedBox(),
-                          value: _selectedItem,
-                          hint: const Text('What are you playing?'),
-                          items: snapshot.data!.map((GameDetails game) {
-                            return DropdownMenuItem<String>(
-                              value: game.id.toString(),
-                              child: Text(game.name),
+          ),
+          leading: const Icon(Icons.videogame_asset),
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _stopwatch.isRunning ? 
+                Row(
+                  children: [
+                    const Icon(Icons.radio_button_checked, color: Colors.red,),
+                    const SizedBox(width: 10),
+                    Text(
+                      _formatElapsedTime(),
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  ],
+                ) 
+                : 
+                FutureBuilder<List<GameDetails>>(
+                  future: _userGames, 
+                  builder: (BuildContext context, AsyncSnapshot<List<GameDetails>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text('No data found');
+                    } else {
+                      return 
+                      DropdownButton<String>(
+                        underline: const SizedBox(),
+                        value: _selectedItem,
+                        hint: const Text('What are you playing?'),
+                        items: snapshot.data!.map((GameDetails game) {
+                          return DropdownMenuItem<String>(
+                            value: game.id.toString(),
+                            child: Text(game.name),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue;
+                          });
+                        },
+                      );
+                    }
+                  }
+                ),
+                FilledButton.icon(
+                  icon: _stopwatch.isRunning
+                      ? const Icon(Icons.stop)
+                      : const Icon(Icons.play_arrow),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _stopwatch.isRunning
+                        ? Colors.red
+                        : Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.only(
+                        left: 25, top: 15, right: 25, bottom: 15),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (_stopwatch.isRunning) {
+                        _stopStopwatch();
+                        //show emoji feedback
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                  'How was your experience playing this game?'),
+                              content: SizedBox(
+                                width: double.maxFinite,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    EmojiFeedback(
+                                      emojiPreset: const [
+                                        EmojiModel(
+                                          src:Assets.classicTerrible,
+                                          label: 'Scared',
+                                          package: 'flutter_emoji_feedback',
+                                        ),
+                                        EmojiModel(
+                                          src:Assets.classicBad,
+                                          label: 'Disgusted',
+                                          package: 'flutter_emoji_feedback',
+                                        ),
+                                        EmojiModel(
+                                          src:Assets.flatTerrible,
+                                          label: 'Angry',
+                                          package: 'flutter_emoji_feedback',
+                                        ),
+                                        EmojiModel(
+                                          src:Assets.flatBad,
+                                          label: 'Sad',
+                                          package: 'flutter_emoji_feedback',
+                                        ),
+                                        EmojiModel(
+                                          src:Assets.flatVeryGood,
+                                          label: 'Happy',
+                                          package: 'flutter_emoji_feedback',
+                                        )
+                                      ],
+                                      inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          switch (value) {
+                                            case 1:
+                                              _mood = "Scared";
+                                            case 2:
+                                              _mood = "Disgusted";
+                                            case 3:
+                                              _mood = "Angry";
+                                            case 4:
+                                              _mood = "Sad";
+                                            case 5:
+                                              _mood = "Happy";
+                                            default:
+                                              _mood = "No mood";
+                                          }
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Okay'),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                    //add data to the database
+                                    if (_userGames != null && _selectedItem != null) {
+                                      List<GameDetails> games = await _userGames!;
+                                      GameDetails? selectedGame = games.firstWhere((game) => game.id.toString() == _selectedItem);
+                                      List genres = selectedGame.genres;
+                                      _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood, genres, _startTime);
+                                    }
+                                  },
+                                ),
+                              ],
                             );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedItem = newValue;
-                            });
                           },
                         );
+                      } else {
+                        _startStopWatch();
                       }
-                    }
-                  ),
-                  FilledButton.icon(
-                    icon: _stopwatch.isRunning
-                        ? const Icon(Icons.stop)
-                        : const Icon(Icons.play_arrow),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: _stopwatch.isRunning
-                          ? Colors.red
-                          : Theme.of(context).primaryColor,
-                      padding: const EdgeInsets.only(
-                          left: 25, top: 15, right: 25, bottom: 15),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        if (_stopwatch.isRunning) {
-                          _stopStopwatch();
-                          //show emoji feedback
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text(
-                                    'How was your experience playing this game?'),
-                                content: SizedBox(
-                                  width: double.maxFinite,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      EmojiFeedback(
-                                        emojiPreset: const [
-                                          EmojiModel(
-                                            src:Assets.classicTerrible,
-                                            label: 'Scared',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src:Assets.classicBad,
-                                            label: 'Disgusted',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src:Assets.flatTerrible,
-                                            label: 'Angry',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src:Assets.flatBad,
-                                            label: 'Sad',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src:Assets.flatVeryGood,
-                                            label: 'Happy',
-                                            package: 'flutter_emoji_feedback',
-                                          )
-                                        ],
-                                        inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            switch (value) {
-                                              case 1:
-                                                _mood = "Scared";
-                                              case 2:
-                                                _mood = "Disgusted";
-                                              case 3:
-                                                _mood = "Angry";
-                                              case 4:
-                                                _mood = "Sad";
-                                              case 5:
-                                                _mood = "Happy";
-                                              default:
-                                                _mood = "No mood";
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('Okay'),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      //add data to the database
-                                      if (_userGames != null && _selectedItem != null) {
-                                        List<GameDetails> games = await _userGames!;
-                                        GameDetails? selectedGame = games.firstWhere((game) => game.id.toString() == _selectedItem);
-                                        List genres = selectedGame.genres;
-                                        _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood, genres, _startTime);
-                                      }
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          _startStopWatch();
-                        }
-                      });
-                    },
-                    label: Text(_stopwatch.isRunning ? 'Stop' : 'Start'),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                    });
+                  },
+                  label: Text(_stopwatch.isRunning ? 'Stop' : 'Start'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

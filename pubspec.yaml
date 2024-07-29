@@ -61,6 +61,7 @@ dependencies:
   fl_chart: ^0.68.0
   logger: ^2.4.0
   timeago: ^3.7.0
+  syncfusion_flutter_charts: ^26.2.5+1
 
 
 dev_dependencies:
@@ -122,6 +123,6 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: "AppIcon"
-  image_path: "assets/icons/icon.png"
+  image_path: "assets/icons/GameOnConnect_Logo_Transparent.png"
   min_sdk_android: 21
   remove_alpha_ios: true

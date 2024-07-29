@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_games_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
-// import 'package:logger/logger.dart'; // Add this line for logging
-
-// final logger = Logger(); // Initialize the logger
-
 
 class GamesWidget extends StatefulWidget {
   const GamesWidget({super.key, required this.gameData});
@@ -24,11 +20,8 @@ class _GamesWidgetState extends State<GamesWidget> {
   }
 
   void _fetchGameData() async {
-    // _gameData = StatsGamesService().fetchGameImages(widget.gameData);
     setState(() {
       _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
-      // logger.i('Data received on GamesWidget: ${widget.gameData}');
-      // logger.i('Data received on GamesWidget: ${_gameData}');
     });
   }
 
@@ -64,11 +57,9 @@ class _GamesWidgetState extends State<GamesWidget> {
       body: FutureBuilder<List<Map<String, String>>>(
         future: _gameData,
         builder: (context, snapshot) {
-          // logger.i('GamesWidget snapshot: hasData=${snapshot.hasData} hasError=${snapshot.hasError}');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            // logger.e('GamesWidget error: ${snapshot.error}');
             return const Center(child: Text('Error loading game data'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No game data available'));
