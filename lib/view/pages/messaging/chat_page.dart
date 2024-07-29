@@ -180,6 +180,9 @@ class _ChatPageState extends State<ChatPage> {
                           )
                         : null,
                   ),
+                  onFieldSubmitted: (value) {
+                    sendMessage();
+                  },
                 );
               },
             ),
