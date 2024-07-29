@@ -37,10 +37,10 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
     final now = DateTime.now();
     switch (filter) {
       case 'Last Day':
-        startDate = now.subtract(Duration(days: 1));
+        startDate = now.subtract(const Duration(days: 1));
         break;
       case 'Last Week':
-        startDate = now.subtract(Duration(days: 7));
+        startDate = now.subtract(const Duration(days: 7));
         break;
       case 'Last Month':
         startDate = DateTime(now.year, now.month - 1, now.day);

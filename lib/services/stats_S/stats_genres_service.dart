@@ -14,7 +14,7 @@ class StatsGenresService {
         return {};
       }
 
-      final snapshot;
+      final QuerySnapshot<Map<String, dynamic>> snapshot;
 
       if (startDate != null) {
         snapshot = await _db.collection('game_session_stats')
