@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
 import '../../components/card/joined_event_card.dart';
@@ -48,15 +50,23 @@ class _HomePageWidgetState extends State<ViewEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
                 top: true,
-                child: StreamBuilder<List<Event>?>(
-                    stream: events.fetchAllEvents(),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance .collection('events')
+                        .orderBy('start_date', descending: false)
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
-                      } else {
-                        allEvents = snapshot.data;
+                      } else if(snapshot.hasData){
+                        allEvents = [];
+                        for (var x in snapshot.data!.docs) {
+                          var data = x.data() as Map<String, dynamic>;
+
+                          Event event = Event.fromMap(data, x.id);
+                          allEvents?.add(event);
+                        }
                         getAllEvents();
                         return SingleChildScrollView(child:  DefaultTabController(
                           length: 3,
@@ -416,6 +426,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                           ),
                         ),
                         );
+                      }else{
+                        return const Text('No data found');
                       }
                     }))));
   }
