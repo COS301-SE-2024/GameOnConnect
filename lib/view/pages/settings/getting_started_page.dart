@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/help/video_widget.dart';
 
 class GettingStarted extends StatelessWidget {
@@ -9,26 +10,13 @@ class GettingStarted extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-                key: Key('back_button'),
-                Icons.arrow_back,
-                color: Theme.of(context).colorScheme.secondary),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text(
-            key: Key('getting_started'),
-            'Getting Started',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
+        appBar: BackButtonAppBar(
+          title: 'Getting Started',
+          onBackButtonPressed: () {
+            Navigator.pop(context);
+          },
+          iconkey: Key('Back_button_key'),
+          textkey: Key('Getting_started_text'),
         ),
         body: SafeArea(
             top: true,

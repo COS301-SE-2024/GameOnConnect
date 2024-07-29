@@ -6,6 +6,7 @@ import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 //import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 //import 'package:gameonconnect/services/profile_S/profile_service.dart';
 //import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
@@ -30,24 +31,13 @@ class _MessagingState extends State<Messaging> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        appBar: AppBar(
-          leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
+        appBar: BackButtonAppBar(
+          title: 'Messages',
+          onBackButtonPressed: () {
             Navigator.pop(context);
           },
-        ),
-          title: Text(
-            'My Messages',
-            style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          ),
-          actions: const [],
-          centerTitle: false,
-          elevation: 0,
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('messages_text'),
         ),
         body: _buildUserList());
   }

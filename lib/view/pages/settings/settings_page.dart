@@ -1,3 +1,5 @@
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+
 import '../authentication/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,24 +10,13 @@ class Options extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
+      appBar: BackButtonAppBar(
+          title: 'Settings',
+          onBackButtonPressed: () {
             Navigator.pop(context);
           },
-        ),
-          title: Text(
-            'Settings',
-            style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          ),
-          actions: const [],
-          centerTitle: false,
-          elevation: 0,
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('settings_text'),
         ),
       body: SafeArea(
         top: true,

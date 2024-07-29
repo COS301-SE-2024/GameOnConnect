@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 
 class Help extends StatelessWidget {
   const Help({super.key});
@@ -7,23 +8,13 @@ class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Help',
-            style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-          ),
-          leading: IconButton(
-            key: Key('Back_button_key'),
-            icon: const Icon(Icons.keyboard_backspace),
-            color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        appBar: BackButtonAppBar(
+          title: 'Help',
+          onBackButtonPressed: () {
+            Navigator.pop(context);
+          },
+          iconkey: Key('Back_button_key'),
+          textkey: Key('Help_text'),
         ),
         body: Center(
             child:
