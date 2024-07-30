@@ -5,7 +5,6 @@ import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
-import '../../../model/game_library_M/game_details_model.dart';
 import 'choose_my_games_page.dart';
 
 String? selectedOption = "Gaming Session";
@@ -20,9 +19,6 @@ class CreateEvents extends StatefulWidget {
 class _CreateEventsState extends State<CreateEvents> {
   String name="";
   bool validName = false;
-  late List<String> gameNames = [];
-  late List<String> gameImages = [];
-  late List<GameDetails>? games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
@@ -31,7 +27,7 @@ class _CreateEventsState extends State<CreateEvents> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   late int gameID;
-  late String gameChosen = "";
+  late int gameChosen = -1;
   bool validStartDate = false;
   bool validEndDate = false;
 
@@ -63,24 +59,9 @@ class _CreateEventsState extends State<CreateEvents> {
     }
   }
 
-  void getGames() async {
-    gameNames = [];
-    gameImages = [];
-    if(games != null) {
-      for (var i in games!) {
-        gameNames.add(i.name);
-        gameImages.add(i.backgroundImage);
-      }
-    }
-  }
 
-  void getGameID(String gameName) async {
-    for (var i in games!) {
-      if (i.name == gameName) {
-        gameID = i.id;
-      }
-    }
-  }
+
+
 
   @override
   void initState() {
@@ -106,17 +87,7 @@ class _CreateEventsState extends State<CreateEvents> {
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
               top: true,
-              child: StreamBuilder<List<GameDetails>>(
-                stream: EventsService().getMyGames(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    games = snapshot.data;
-                    getGames();
-                    return Form(
+              child:Form(
                       autovalidateMode: AutovalidateMode.disabled,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -280,18 +251,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               ChooseGame(
-                                                                myGames:
-                                                                    gameNames,
                                                                 chosenGame:
                                                                     gameChosen,
-                                                                images: gameImages,
                                                               ))).then(
                                                       (gameChosen) {
                                                     setState(() {
                                                       if( gameChosen != null) {
-                                                        this.gameChosen =
-                                                            gameChosen;
-                                                        getGameID(gameChosen);
+                                                        this.gameChosen = gameChosen;
                                                       }
                                                     });
                                                   });
@@ -301,10 +267,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Icon(
-                                                      gameChosen.isEmpty
+                                                      gameChosen ==-1
                                                           ? Icons.add
                                                           : Icons.check,
-                                                      color: gameChosen.isEmpty
+                                                      color: gameChosen ==-1
                                                           ? Colors.red
                                                           : Theme.of(context)
                                                               .colorScheme
@@ -778,7 +744,7 @@ class _CreateEventsState extends State<CreateEvents> {
                               child: MaterialButton(
                                 onPressed: () {
                                   // TODO: error handling here
-                                  if(validName && gameChosen.isNotEmpty && validEndDate && validStartDate) {
+                                  if(validName && !(gameChosen == -1) && validEndDate && validStartDate) {
                                     create();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
@@ -793,7 +759,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                     nameController.clear();
                                     descriptionController.clear();
                                     setState(() {
-                                      gameChosen = "";
+                                      gameChosen = -1;
                                       invites = [];
                                       validEndDate = false;
                                       validName = false;
@@ -812,7 +778,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           backgroundColor:
                                           Colors.red
                                       ));
-                                    }else if (gameChosen.isEmpty){
+                                    }else if (gameChosen==-1){
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                           content: Text(
@@ -846,13 +812,13 @@ class _CreateEventsState extends State<CreateEvents> {
                           ),
                         ],
                       ),
-                    );
+                    )
+    )
+        )
+    );
+
                   }
-                },
-              ),
-            )));
   }
-}
 
 // TODO : look into making this a component
 class ChipData {
