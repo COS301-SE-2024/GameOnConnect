@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../components/settings/editInputText.dart';
+import '../../components/settings/edit_input_text.dart';
+import '../../components/settings/edit_date_input.dart';
+
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:intl/intl.dart';
 import '../../../services/settings/edit_profile_service.dart' as editService;
 
 class EditProfilePage extends StatefulWidget {
@@ -77,9 +78,7 @@ class EditProfileFormState extends State<EditProfileForm> {
   Future<void> _saveProfile() async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
-      // final result = await InternetAddress.lookup('google.com');
       if (result) {
-        //(result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         if (_formKey.currentState?.validate() == true) {
           _formKey.currentState?.save();
           editProfile();
@@ -160,8 +159,12 @@ class EditProfileFormState extends State<EditProfileForm> {
                               label: 'Bio:',
                               onChanged: (value) => _bio = value,
                               input: _bio),
-                          _buildDateInput('Birthday:',
-                              key: const Key('birthdayField')),
+                          EditDateInput(
+                              currentDate: _birthday!,
+                              label: 'Birthday:',
+                              onChanged: (value) => {
+                                _birthday = value
+                          }),
                           _buildSwitchInput(
                             'Private Account:',
                             key: const Key('privateAccountSwitch'),
@@ -191,64 +194,6 @@ class EditProfileFormState extends State<EditProfileForm> {
             );
           }
         });
-  }
-
-  Widget _buildDateInput(String label, {Key? key}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: InkWell(
-              key: key,
-              onTap: () async {
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  builder: (context, child) {
-                    return Theme(
-                      data: ThemeData.from(
-                          colorScheme: Theme.of(context).colorScheme),
-                      child: child!,
-                    );
-                  },
-                );
-                if (picked != null) {
-                  setState(() {
-                    _birthday = DateTime(picked.year, picked.month, picked.day,
-                        picked.hour, picked.minute);
-                  });
-                }
-              },
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.primary),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-                child: Text(
-                  DateFormat('d/MM/yyyy').format(_birthday!),
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildSwitchInput(String label, {Key? key}) {

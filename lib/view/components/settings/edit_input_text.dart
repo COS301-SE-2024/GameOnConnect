@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditInputText extends StatefulWidget{
   final String label;
-  final void Function(String gameName) onChanged;
+  final void Function(String value) onChanged;
   final String input;
   final int maxLines;
 
@@ -16,6 +15,7 @@ class EditInputText extends StatefulWidget{
 class _EditInputText extends State<EditInputText>{
 
 
+  @override
   Widget build (BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
