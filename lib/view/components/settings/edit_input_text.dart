@@ -39,6 +39,8 @@ class _EditInputText extends State<EditInputText>{
                 ),
               ),
               initialValue: widget.input,
+              style:
+              TextStyle(color: Theme.of(context).colorScheme.secondary),
               maxLines: widget.maxLines,
             ),
           ),
