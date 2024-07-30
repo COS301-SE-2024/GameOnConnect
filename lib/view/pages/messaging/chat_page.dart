@@ -29,11 +29,14 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     newFocusNode.addListener(() {
       if (newFocusNode.hasFocus) {
-        Future.delayed(const Duration(milliseconds: 500), () => scrollDownPage());
+        Future.delayed(
+            const Duration(milliseconds: 500), () => scrollDownPage());
       }
     });
-
-    Future.delayed(const Duration(milliseconds: 500),() => scrollDownPage(),);
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => scrollDownPage(),
+    );
   }
 
   @override
@@ -78,7 +81,6 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.profileName),
       ),
       body: Column(
@@ -140,7 +142,10 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       alignment: alignment,
       child: ChatBubble(
-          message: data["message_text"], isCurrentuser: isCurrentuser, time: data["timestamp"],),
+        message: data["message_text"],
+        isCurrentuser: isCurrentuser,
+        time: data["timestamp"],
+      ),
     );
   }
 
@@ -150,35 +155,36 @@ class _ChatPageState extends State<ChatPage> {
       child: Row(
         children: [
           Expanded(
-            child: TextFormField(
-              focusNode: newFocusNode,
-              controller: _textEditingController,
-              obscureText: false,
-              decoration: InputDecoration(
-                hintText: "Enter your message here",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                  borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.primary,
+            child: ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _textEditingController,
+              builder: (context, value, child) {
+                return TextFormField(
+                  focusNode: newFocusNode,
+                  controller: _textEditingController,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    hintText: "Enter your message here",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    suffixIcon: value.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: sendMessage,
+                            icon: Icon(
+                              Icons.send,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          )
+                        : null,
                   ),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            width: 50,
-            height: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              onPressed: sendMessage,
-              icon: const Icon(
-                Icons.arrow_forward_ios,
-                size: 35,
-              ),
+                  onFieldSubmitted: (value) {
+                    sendMessage();
+                  },
+                );
+              },
             ),
           ),
         ],

@@ -105,11 +105,6 @@ class _UserTileState extends State<UserTile> {
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).colorScheme.surface,
                                   shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    width: 2,
-                                  ),
                                 ),
                                 child: buildProfilePicture(widget.profilepictureURL), //build the profile picture widget
                               ),
@@ -132,7 +127,7 @@ class _UserTileState extends State<UserTile> {
                                               .secondary,
                                           fontSize: 20,
                                           letterSpacing: 0,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w900
                                         ),
                                       ),
                                       Padding(
@@ -148,7 +143,7 @@ class _UserTileState extends State<UserTile> {
                                                 .secondary,
                                             fontSize: 15,
                                             letterSpacing: 0,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                       ),
@@ -170,7 +165,7 @@ class _UserTileState extends State<UserTile> {
                                                     .secondary,
                                                 fontSize: 10,
                                                 letterSpacing: 0,
-                                                fontWeight: FontWeight.w500,
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                           ),

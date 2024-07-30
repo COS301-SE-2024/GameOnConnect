@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -334,21 +335,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Widget _buildContent(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.keyboard_backspace),
-          onPressed: () {
-            Navigator.of(context).pop();
+      appBar: BackButtonAppBar(
+          title: 'Customize Profile',
+          onBackButtonPressed: () {
+            Navigator.pop(context);
           },
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('customize_profile_text'),
         ),
-        title: const Text(
-            'Customize Profile',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
