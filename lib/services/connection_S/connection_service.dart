@@ -18,16 +18,19 @@ class ConnectionService {
   }
 
   //Read friends from database
-  Future<List<String>> getConnections(String who) async {
-    initializeCurrentUser();
-    if (currentUser == null) {
-      return []; //return an empty array
+  Future<List<String>> getConnections(String who, [String? UserId = 'CurrentUser']) async {
+    if(UserId== 'CurrentUser')
+    {
+       initializeCurrentUser();
+      if (currentUser == null) {
+        return []; //return an empty array
+      }
+      UserId=currentUser!.uid;
     }
-
+   
     try {
       DocumentSnapshot<Map<String, dynamic>> snapshot =
-          await db.collection('connections').doc(currentUser!.uid).get();
-
+          await db.collection('connections').doc(UserId).get();
       if (snapshot.exists && snapshot.data() != null) {
         if (who == "connections") {
           // Cast the friends array to List<String>
@@ -143,19 +146,7 @@ class ConnectionService {
         String profileName = data['name'] ?? 'Profile name';
         Map<String, dynamic> username = userInfo;
         String userID = userId;
-        /*String profilePicture = data['profile_picture'] ?? '';
-        String profilePictureUrl = '';
-
-        if (profilePicture.isNotEmpty) {
-          try {
-            Reference storageRef =
-                FirebaseStorage.instance.refFromURL(profilePicture);
-            profilePictureUrl = await storageRef.getDownloadURL();
-          } catch (e) {
-            return null;
-          }
-
-        }*/
+       
         StorageService storageService = StorageService();
         String profilePictureUrl =
             await storageService.getProfilePictureUrl(userId);
@@ -178,19 +169,18 @@ class ConnectionService {
     }
   }
 
-  Future<List<user.AppUser>?> getConnectionRequests() async {
+  Future<List<user.AppUser>?> getProfileConnections(String type, String UserId) async {
     try {
-      final currentUser = FirebaseAuth.instance.currentUser;
+
+      print('for the profile page pls get the  $type for user: $UserId');
       List<user.AppUser> list = [];
 
-      if (currentUser != null) {
         List<String>? connections =
-            await ConnectionService().getConnections('requests');
+            await ConnectionService().getConnections(type, UserId);
         for (var i in connections) {
           user.AppUser u = user.AppUser.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
           list.add(u);
-        }
       }
       return list;
     } catch (e) {
@@ -198,6 +188,7 @@ class ConnectionService {
     }
   }
 
+  
   Future<void> disconnect(String targetUserId) async {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
     try {
