@@ -13,12 +13,11 @@ class Profilenew extends StatefulWidget {
   final String uid;
   final bool isOwnProfile;
 
-  Profilenew(String currentUserId, bool bool, {
-    Key? key, // Use 'Key?' instead of 'super.key'
-    required this.uid,
-    required this.isOwnProfile,
+  const Profilenew({ // Use named parameters
+    Key? key,
+    required this.uid, //u
+    required this.isOwnProfile,// true
   }) : super(key: key);
-
 
   @override
   State<Profilenew> createState() => _ProfileState();
@@ -32,25 +31,26 @@ class _ProfileState extends State<Profilenew>  {
       appBar: AppBar(
         title: const Text('Profile',
         style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
-        actions: [ // NB only show if its my own profile
-                  Builder(
-                    builder: (context) {
-                      return IconButton(
-                        key: const Key('settings_icon_button'),
-                        icon: const Icon(Icons.settings),
-                        color: Theme.of(context).colorScheme.secondary,
-                        onPressed: () {
-                          //Scaffold.of(context).openEndDrawer();
-                          Navigator.pushNamed(context, '/settings');
-                        },
-                      );
-                    },
-                  ),
-                ],
+        actions: widget.isOwnProfile
+            ? [
+                Builder(
+                  builder: (context) {
+                    return IconButton(
+                      key: const Key('settings_icon_button'),
+                      icon: const Icon(Icons.settings),
+                      color: Theme.of(context).colorScheme.secondary,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
+                    );
+                  },
+                ),
+              ]
+            : null,
       ),
       body: FutureBuilder<Profile?>(
         //future: ProfileService().fetchProfile(),
-        future: ProfileService().fetchProfile(),
+        future: ProfileService().fetchProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return  const Center(child: CircularProgressIndicator()); // Show loading indicator
@@ -104,7 +104,8 @@ class _ProfileState extends State<Profilenew>  {
                                         const SizedBox(height: 10), //space 
                                       GestureDetector(
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ConnectionsList())); 
+                                          //Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile,))); 
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid))); 
                                         },
                                         child: RichText(
                                           text: TextSpan(
