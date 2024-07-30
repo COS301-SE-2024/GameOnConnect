@@ -5,10 +5,10 @@ class StatsFilterDialog extends StatelessWidget {
   final ValueChanged<String> onFilterSelected;
 
   const StatsFilterDialog({
-    Key? key,
+    super.key,
     required this.selectedFilter,
     required this.onFilterSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
