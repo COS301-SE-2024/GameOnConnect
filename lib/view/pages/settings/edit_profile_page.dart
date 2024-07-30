@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../components/settings/editInputText.dart';
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
+import '../../../services/settings/edit_profile_service.dart' as editService;
 
 class EditProfilePage extends StatefulWidget {
   // ignore: use_super_parameters
   const EditProfilePage({Key? key}) : super(key: key);
 
   State<EditProfilePage> createState() => _EditProfilePage();
-
 }
-class _EditProfilePage extends State<EditProfilePage>{
 
+class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,47 +48,87 @@ class EditProfileForm extends StatefulWidget {
 class EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   String _username = "";
   String _firstName = "";
   String _lastName = "";
   String _bio = "";
   DateTime? _birthday;
-  bool _isPrivate = false;
+  late bool _isPrivate;
 
-  Future<void> databaseAccess() async {
+  void databaseAccess(Map<String, dynamic>? d) async {
+    _username = d?['username']['profile_name'];
+    _firstName = d?['name'];
+    _lastName = d?['surname'];
+    _bio = d?['bio'];
+    _birthday = DateTime.parse(d!['birthday'].toDate().toString());
+    _isPrivate = d['visibility'];
+  }
+
+  Future<void> _saveProfile() async {
     try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      CollectionReference profileRef = db.collection("profile_data");
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-      if (currentUser != null) {
-        DocumentSnapshot qs = await profileRef.doc(currentUser.uid).get();
-        if (qs.exists) {
-          //access specific data :
-          Map<String, dynamic> d = qs.data() as Map<String, dynamic>;
-          _username = d['username']['profile_name'];
-          _firstName = d['name'];
-          _lastName = d['surname'];
-          _bio = d['bio'];
-          _birthday = DateTime.parse(d['birthday'].toDate().toString());
-          _isPrivate = d['visibility'];
+      bool result = await InternetConnection().hasInternetAccess;
+      // final result = await InternetAddress.lookup('google.com');
+      if (result) {
+        //(result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (_formKey.currentState?.validate() == true) {
+          _formKey.currentState?.save();
+          editProfile();
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).pop();
         }
+      } else {
+        _showNoInternetSnackbar();
       }
+    } on SocketException catch (_) {
+      _showNoInternetSnackbar();
+    }
+  }
+
+  void _showNoInternetSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('No internet connection'),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void editProfile() async {
+    try {
+      await editService.editProfileService().editProfile(
+          _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
     } catch (e) {
-      //
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error updating profile'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: databaseAccess(),
+    return FutureBuilder<Map<String, dynamic>?>(
+        future: editService.editProfileService().databaseAccess(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
+            databaseAccess(snapshot.data);
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -99,27 +138,32 @@ class EditProfileFormState extends State<EditProfileForm> {
                     Expanded(
                       child: ListView(
                         children: [
-                          _buildTextInput('Username:', _username,
-                              (value) => _username = value ?? '',
-                              key: const Key('usernameField')),
-                          _buildTextInput('First Name:', _firstName,
-                              (value) => _firstName = value ?? '',
-                              key: const Key('firstNameField')),
-                          _buildTextInput('Last Name:', _lastName,
-                              (value) => _lastName = value ?? '',
-                              key: const Key('lastNameField')),
-                          _buildTextInput(
-                              'Bio:', _bio, (value) => _bio = value ?? '',
-                              maxLines: 3, key: const Key('bioField')),
+                          EditInputText(
+                            maxLines: 1,
+                            label: 'Username:',
+                            onChanged: (value) => _username = value,
+                            input: _username,
+                          ),
+                          EditInputText(
+                            maxLines: 1,
+                            label: 'First name:',
+                            onChanged: (value) => _firstName = value,
+                            input: _firstName,
+                          ),
+                          EditInputText(
+                              maxLines: 1,
+                              label: 'Last Name:',
+                              onChanged: (value) => _lastName = value,
+                              input: _lastName),
+                          EditInputText(
+                              maxLines: 3,
+                              label: 'Bio:',
+                              onChanged: (value) => _bio = value,
+                              input: _bio),
                           _buildDateInput('Birthday:',
                               key: const Key('birthdayField')),
                           _buildSwitchInput(
                             'Private Account:',
-                            (value) {
-                              setState(() {
-                                _isPrivate = value;
-                              });
-                            },
                             key: const Key('privateAccountSwitch'),
                           ),
                         ],
@@ -149,71 +193,6 @@ class EditProfileFormState extends State<EditProfileForm> {
         });
   }
 
-  Future<void> _saveProfile() async {
-    try {
-      bool result = await InternetConnection().hasInternetAccess;
-      // final result = await InternetAddress.lookup('google.com');
-      if (result) {
-        //(result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        if (_formKey.currentState?.validate() == true) {
-          _formKey.currentState?.save();
-          await editProfile(
-              _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).pop();
-        }
-      } else {
-        _showNoInternetSnackbar();
-      }
-    } on SocketException catch (_) {
-      _showNoInternetSnackbar();
-    }
-  }
-
-  void _showNoInternetSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('No internet connection'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-
-  Widget _buildTextInput(
-      String label, String? oldText, void Function(String?)? onSaved,
-      {int maxLines = 1, required Key key}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Text(label,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary)),
-          ),
-          Expanded(
-            flex: 4,
-            child: TextFormField(
-              key: key,
-              onChanged: onSaved,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              initialValue: oldText,
-
-              maxLines: maxLines,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildDateInput(String label, {Key? key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -231,7 +210,7 @@ class EditProfileFormState extends State<EditProfileForm> {
             child: InkWell(
               key: key,
               onTap: () async {
-                 DateTime? picked = await showDatePicker(
+                DateTime? picked = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(1900),
@@ -246,7 +225,8 @@ class EditProfileFormState extends State<EditProfileForm> {
                 );
                 if (picked != null) {
                   setState(() {
-                    _birthday = DateTime(picked.year, picked.month, picked.day, picked.hour, picked.minute);
+                    _birthday = DateTime(picked.year, picked.month, picked.day,
+                        picked.hour, picked.minute);
                   });
                 }
               },
@@ -271,7 +251,7 @@ class EditProfileFormState extends State<EditProfileForm> {
     );
   }
 
-  Widget _buildSwitchInput(String label, Function(bool) onChanged, {Key? key}) {
+  Widget _buildSwitchInput(String label, {Key? key}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -283,11 +263,15 @@ class EditProfileFormState extends State<EditProfileForm> {
                     TextStyle(color: Theme.of(context).colorScheme.secondary)),
           ),
           Expanded(
+            key: key,
             flex: 4,
-            child: Switch(
-              key: key,
+            child: Switch.adaptive(
               value: _isPrivate,
-              onChanged: onChanged,
+              onChanged: (bool value) {
+                setState(() {
+                  _isPrivate = value;
+                });
+              },
               activeTrackColor: Theme.of(context).colorScheme.primary,
               inactiveTrackColor: Theme.of(context).colorScheme.surface,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
@@ -297,46 +281,4 @@ class EditProfileFormState extends State<EditProfileForm> {
       ),
     );
   }
-
-  Future<void> editProfile(String username, String firstname, String lastName,
-      String bio, DateTime birthday, bool privacy) async {
-    try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-      if (currentUser != null) {
-        if (username.isNotEmpty) {
-          final data = {"username.profile_name": username};
-          await db.collection("profile_data").doc(currentUser.uid).update(data);
-        }
-        if (firstname.isNotEmpty) {
-          final data = {"name": firstname};
-          await db.collection("profile_data").doc(currentUser.uid).update(data);
-        }
-        if (lastName.isNotEmpty) {
-          final data = {"surname": lastName};
-          await db.collection("profile_data").doc(currentUser.uid).update(data);
-        }
-        if (bio.isNotEmpty) {
-          final data = {"bio": bio};
-          await db.collection("profile_data").doc(currentUser.uid).update(data);
-        }
-        final data = {"birthday": birthday, "visibility": privacy};
-        await db.collection("profile_data").doc(currentUser.uid).update(data);
-      }
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error updating profile'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      throw Exception('Error updating profile: $e');
-      /*setState(() {
-        _counter = "Error updating profile $e"; // Update counter with error message
-      });*/
-    }
-  }
 }
-
