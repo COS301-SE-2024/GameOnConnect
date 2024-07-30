@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
 import '../../components/settings/edit_switch.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../../../services/settings/edit_profile_service.dart' ;
@@ -18,22 +19,15 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
+      appBar: BackButtonAppBar(
+          title: 'Edit Profile',
+          onBackButtonPressed: () {
+
             Navigator.pop(context);
           },
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('edit_profile_text'),
         ),
-        title: const Text(
-          'Edit Profile',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
       body: const EditProfileForm(),
     );
   }

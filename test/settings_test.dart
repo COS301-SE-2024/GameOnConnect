@@ -10,12 +10,12 @@ void main() {
 
     expect(
         find.byKey(
-          const Key('Settings'),
+          const Key('settings_text'),
         ),
         findsOneWidget);
     expect(
         find.byKey(
-          const Key('back_button'),
+          const Key('Back_button_key'),
         ),
         findsOneWidget);
     expect(
