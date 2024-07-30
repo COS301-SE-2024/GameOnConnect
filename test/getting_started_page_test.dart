@@ -10,10 +10,10 @@ void main() {
       await tester.pumpAndSettle();
       await tester.pump();
 
-      expect(find.byKey(const Key('back_button'),), findsOneWidget);
+      expect(find.byKey(const Key('Back_button_key'),), findsOneWidget);
       expect(find.byKey(const Key('game_library_section'),), findsOneWidget);
       expect(find.byKey(const Key('Friends_section'),), findsOneWidget);
-      expect(find.byKey(const Key('getting_started'),), findsOneWidget);
+      expect(find.byKey(const Key('Getting_started_text'),), findsOneWidget);
       expect(find.byKey(const Key('game_information_section'),), findsOneWidget); 
     });
 

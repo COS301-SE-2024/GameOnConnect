@@ -33,6 +33,7 @@ class _FeedPageState extends State<FeedPage> {
 
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+  
 
   static final List<Widget> _pages = <Widget>[
     Center(
@@ -48,7 +49,7 @@ class _FeedPageState extends State<FeedPage> {
     super.initState();
     usernamecontroller = TextEditingController();
     WidgetsBinding.instance
-        .addPostFrameCallback((_) => _checkProfileAndShowDialog());
+        .addPostFrameCallback((_) => _checkProfileAndShowDialog());      
   }
 
   @override
@@ -334,7 +335,7 @@ class _FeedPageDisplay extends StatelessWidget {
               },
               icon: Icon(
                 Icons.message,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
