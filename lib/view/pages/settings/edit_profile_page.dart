@@ -4,12 +4,13 @@ import '../../components/settings/edit_date_input.dart';
 import '../../components/settings/edit_switch.dart';
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import '../../../services/settings/edit_profile_service.dart' as editService;
+import '../../../services/settings/edit_profile_service.dart' ;
 
 class EditProfilePage extends StatefulWidget {
   // ignore: use_super_parameters
   const EditProfilePage({Key? key}) : super(key: key);
 
+  @override
   State<EditProfilePage> createState() => _EditProfilePage();
 }
 
@@ -104,9 +105,10 @@ class EditProfileFormState extends State<EditProfileForm> {
 
   void editProfile() async {
     try {
-      await editService.editProfileService().editProfile(
+      await EditProfileService().editProfile(
           _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
     } catch (e) {
+      //ignore:  use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error updating profile'),
@@ -119,7 +121,7 @@ class EditProfileFormState extends State<EditProfileForm> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
-        future: editService.editProfileService().databaseAccess(),
+        future: EditProfileService().databaseAccess(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
               snapshot.data == null) {
@@ -138,23 +140,27 @@ class EditProfileFormState extends State<EditProfileForm> {
                       child: ListView(
                         children: [
                           EditInputText(
+                            inputKey:  const Key('usernameField'),
                             maxLines: 1,
                             label: 'Username:',
                             onChanged: (value) => _username = value,
                             input: _username,
                           ),
                           EditInputText(
+                            inputKey: const Key('firstNameField'),
                             maxLines: 1,
                             label: 'First name:',
                             onChanged: (value) => _firstName = value,
                             input: _firstName,
                           ),
                           EditInputText(
+                            inputKey: const Key('lastNameField'),
                               maxLines: 1,
                               label: 'Last Name:',
                               onChanged: (value) => _lastName = value,
                               input: _lastName),
                           EditInputText(
+                            inputKey: const Key('bioField'),
                               maxLines: 3,
                               label: 'Bio:',
                               onChanged: (value) => _bio = value,

@@ -71,10 +71,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               .toList();
         });
       } else {
-        print("Error fetching interest tags: ${response.statusCode}");
+        throw("Error fetching interest tags: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching interest tags: $e");
+      throw("Error fetching interest tags: $e");
     }
   }
 
@@ -158,7 +158,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         }
       }
     } catch (e) {
-      print("Error fetching user selections: $e");
+      throw("Error fetching user selections: $e");
     }
   }
 
@@ -722,12 +722,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } catch (e) {
-      print("Error setting/updating profile data: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to update profile.'),
             backgroundColor: Colors.red),
       );
+      throw("Error setting/updating profile data: $e");
     }
   }
 }
