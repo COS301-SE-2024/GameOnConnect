@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
+import 'package:gameonconnect/view/components/stats/stats_filter.dart';
 
 class GenresStatsPage extends StatefulWidget {
   const GenresStatsPage({super.key});
@@ -14,6 +15,7 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
   Map<String, double> genrePlayTime = {};
   final StatsGenresService _statsGenresService = StatsGenresService();
   String _selectedFilter = 'All Time';
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -22,9 +24,13 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
   }
 
   Future<void> _loadGenrePlayTime({DateTime? startDate}) async {
+    setState(() {
+      _isLoading = true;
+    });
     final data = await _statsGenresService.getGenrePlayTime(startDate: startDate);
     setState(() {
       genrePlayTime = data;
+      _isLoading = false;
     });
   }
 
@@ -115,7 +121,9 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                           color: Theme.of(context).colorScheme.primary,
                           size: 24,
                         ),
-                        onPressed: _showTimeRangeDialog,
+                        onPressed: () {
+                          showStatsFilterDialog(context, _selectedFilter, _onFilterSelected);
+                        },
                       ),
                     ),
                   ],
@@ -127,12 +135,14 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: genrePlayTime.isEmpty
+                child: _isLoading
                     ? const Center(child: CircularProgressIndicator())
-                    : allZero
+                    : genrePlayTime.isEmpty
                         ? Center(
                             child: Text(
-                              'No playing sessions recorded',
+                              _selectedFilter == 'All Time'
+                                  ? 'No playing sessions recorded'
+                                  : 'No playing data was recorded in this time period',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 color: Theme.of(context).colorScheme.secondary,
@@ -141,103 +151,78 @@ class _GenresStatsPageState extends State<GenresStatsPage> {
                               ),
                             ),
                           )
-                        : SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.8,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: SfCartesianChart(
-                                legend: const Legend(
-                                  isVisible: false,
+                        : allZero
+                            ? Center(
+                                child: Text(
+                                  _selectedFilter == 'All Time'
+                                      ? 'No playing sessions recorded'
+                                      : 'No playing data was recorded in this time period',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    color: Theme.of(context).colorScheme.secondary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                tooltipBehavior: TooltipBehavior(
-                                  enable: true,
-                                  header: '',
-                                  canShowMarker: false,
-                                  builder: (dynamic data, ChartPoint<dynamic> point, ChartSeries<dynamic, dynamic> series, int pointIndex, int seriesIndex) {
-                                    final genre = genrePlayTime.keys.elementAt(pointIndex);
-                                    final value = genrePlayTime[genre] ?? 0.0;
-                                    return Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      color: Colors.black,
-                                      child: Text(
-                                        '$genre: $value',
-                                        style: const TextStyle(color: Colors.white),
+                              )
+                            : SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.8,
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: SfCartesianChart(
+                                    legend: const Legend(
+                                      isVisible: false,
+                                    ),
+                                    tooltipBehavior: TooltipBehavior(
+                                      enable: true,
+                                      header: '',
+                                      canShowMarker: false,
+                                      builder: (dynamic data, ChartPoint<dynamic> point, ChartSeries<dynamic, dynamic> series, int pointIndex, int seriesIndex) {
+                                        final genre = genrePlayTime.keys.elementAt(pointIndex);
+                                        final value = genrePlayTime[genre] ?? 0.0;
+                                        return Container(
+                                          padding: const EdgeInsets.all(8.0),
+                                          color: Colors.black,
+                                          child: Text(
+                                            '$genre: $value',
+                                            style: const TextStyle(color: Colors.white),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    primaryXAxis: const CategoryAxis(
+                                      labelRotation: 0,
+                                      majorGridLines: MajorGridLines(width: 0), 
+                                      axisLine: AxisLine(width: 0), 
+                                      labelIntersectAction: AxisLabelIntersectAction.trim, 
+                                      labelStyle: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    );
-                                  },
-                                ),
-                                primaryXAxis: const CategoryAxis(
-                                  labelRotation: 0,
-                                  majorGridLines: MajorGridLines(width: 0), 
-                                  axisLine: AxisLine(width: 0), 
-                                  labelIntersectAction: AxisLabelIntersectAction.trim, 
-                                  labelStyle: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
+                                    ),
+                                    primaryYAxis: const NumericAxis(
+                                      edgeLabelPlacement: EdgeLabelPlacement.shift,
+                                      majorGridLines: MajorGridLines(width: 0), 
+                                      axisLine: AxisLine(width: 0),
+                                    ),
+                                    series: <CartesianSeries>[
+                                      BarSeries<MapEntry<String, double>, String>(
+                                        dataSource: genrePlayTime.entries.toList(),
+                                        xValueMapper: (entry, _) => entry.key,
+                                        yValueMapper: (entry, _) => entry.value,
+                                        color: Theme.of(context).colorScheme.primary,
+                                        dataLabelSettings: const DataLabelSettings(isVisible: true),
+                                        enableTooltip: true,
+                                      ),
+                                    ],
+                                    borderColor: Colors.transparent,
                                   ),
                                 ),
-                                primaryYAxis: const NumericAxis(
-                                  edgeLabelPlacement: EdgeLabelPlacement.shift,
-                                  majorGridLines: MajorGridLines(width: 0), 
-                                  axisLine: AxisLine(width: 0),
-                                ),
-                                series: <CartesianSeries>[
-                                  BarSeries<MapEntry<String, double>, String>(
-                                    dataSource: genrePlayTime.entries.toList(),
-                                    xValueMapper: (entry, _) => entry.key,
-                                    yValueMapper: (entry, _) => entry.value,
-                                    color: Theme.of(context).colorScheme.primary,
-                                    dataLabelSettings: const DataLabelSettings(isVisible: true),
-                                    enableTooltip: true,
-                                  ),
-                                ],
-                                borderColor: Colors.transparent,
                               ),
-                            ),
-                          ),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  void _showTimeRangeDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          title: Text(
-            'Select Time Range',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: 'Inter',
-            ),
-          ),
-          content: DropdownButton<String>(
-            value: _selectedFilter,
-            items: <String>['All Time', 'Last Day', 'Last Week', 'Last Month', 'Last Year'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontFamily: 'Inter',
-                  ),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              Navigator.of(context).pop();
-              if (newValue != null) {
-                _onFilterSelected(newValue);
-              }
-            },
-          ),
-        );
-      },
     );
   }
 }
