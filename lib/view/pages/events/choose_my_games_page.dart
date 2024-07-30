@@ -43,13 +43,13 @@ class _ChooseGame extends State<ChooseGame> {
   }
 
   int getGameID(String gameName)  {
-    int ID=-1;
+    int id=-1;
     for (var i in games!) {
       if (i.name == gameName) {
-        ID = i.id;
+        id = i.id;
       }
     }
-    return ID;
+    return id;
   }
 
   @override

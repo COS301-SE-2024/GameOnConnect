@@ -17,7 +17,7 @@ class CreateEvents extends StatefulWidget {
 }
 
 class _CreateEventsState extends State<CreateEvents> {
-  String name="";
+  String name = "";
   bool validName = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
@@ -26,7 +26,6 @@ class _CreateEventsState extends State<CreateEvents> {
   bool isChanged = false;
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
-  late int gameID;
   late int gameChosen = -1;
   bool validStartDate = false;
   bool validEndDate = false;
@@ -40,7 +39,7 @@ class _CreateEventsState extends State<CreateEvents> {
         _datePicked,
         name,
         _endDatePicked,
-        gameID,
+        gameChosen,
         isChanged,
         invites,
         filePath != null
@@ -59,10 +58,6 @@ class _CreateEventsState extends State<CreateEvents> {
     }
   }
 
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -79,746 +74,733 @@ class _CreateEventsState extends State<CreateEvents> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Scaffold(
-          appBar: AppBar(
-        title: const Text('Create Event',
-        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
-      ),
+            appBar: AppBar(
+              title: const Text(
+                'Create Event',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              ),
+            ),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
-              top: true,
-              child:Form(
-                      autovalidateMode: AutovalidateMode.disabled,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Align(
-                                    alignment:
-                                        const AlignmentDirectional(0, -1),
-                                    child: Container(
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 770,
-                                      ),
-                                      decoration: const BoxDecoration(),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(16, 12, 16, 0),
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                child: FittedBox(
-                                                  fit: BoxFit.cover,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      pickImage();
-                                                    },
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      child: filePath != null
-                                                          ? Image.file(
-                                                              File(filePath!
-                                                                  .path),
-                                                              width: 359,
-                                                              height: 200,
-                                                              fit: BoxFit.cover,
-                                                            )
-                                                          : Image.asset(
-                                                              'assets/default_images/default_image.jpg',
-                                                              width: 359,
-                                                              height: 200,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextFormField(
-                                                onTapOutside: (event) {
-                                                  name = nameController.text;
-                                                  if( name.isNotEmpty){
-                                                    setState(() {
-                                                      validName = true;
-                                                    });
-                                                  }else
-                                                    {
-                                                      setState(() {
-                                                        validName = false;
-                                                      });
-                                                    }
-                                                  FocusManager
-                                                      .instance.primaryFocus
-                                                      ?.unfocus();
+                top: true,
+                child: Form(
+                  autovalidateMode: AutovalidateMode.disabled,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Align(
+                                alignment: const AlignmentDirectional(0, -1),
+                                child: Container(
+                                  constraints: const BoxConstraints(
+                                    maxWidth: 770,
+                                  ),
+                                  decoration: const BoxDecoration(),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16, 12, 16, 0),
+                                    child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: FittedBox(
+                                              fit: BoxFit.cover,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  pickImage();
                                                 },
-                                                maxLength: 50,
-                                                controller: nameController,
-                                                textCapitalization:
-                                                    TextCapitalization.words,
-                                                obscureText: false,
-                                                decoration: InputDecoration(
-                                                  labelText: 'Event name...',
-                                                  labelStyle: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    fontSize: 16,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  hintStyle: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: validName?
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .primary: Colors.red,
-                                                      width: 2,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      width: 2,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  filled: true,
-                                                  fillColor: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
-                                                  contentPadding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(
-                                                          16, 20, 16, 20),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  child: filePath != null
+                                                      ? Image.file(
+                                                          File(filePath!.path),
+                                                          width: 359,
+                                                          height: 200,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/default_images/default_image.jpg',
+                                                          width: 359,
+                                                          height: 200,
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                 ),
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextFormField(
+                                            onFieldSubmitted: (val) {
+                                              name = nameController.text;
+                                              if (name.isNotEmpty) {
+                                                setState(() {
+                                                  validName = true;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  validName = false;
+                                                });
+                                              }
+                                            },
+                                            onTapOutside: (event) {
+                                              name = nameController.text;
+                                              if (name.isNotEmpty) {
+                                                setState(() {
+                                                  validName = true;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  validName = false;
+                                                });
+                                              }
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                            },
+                                            maxLength: 50,
+                                            controller: nameController,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText: 'Event name...',
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 16,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: validName
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                      : Colors.red,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
                                                   color: Theme.of(context)
                                                       .colorScheme
-                                                      .secondary,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
+                                                      .primary,
+                                                  width: 2,
                                                 ),
-                                                cursorColor: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
                                               ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  Navigator.push(
+                                              filled: true,
+                                              fillColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 20, 16, 20),
+                                            ),
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            cursorColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               ChooseGame(
                                                                 chosenGame:
                                                                     gameChosen,
-                                                              ))).then(
-                                                      (gameChosen) {
-                                                    setState(() {
-                                                      if( gameChosen != null) {
-                                                        this.gameChosen = gameChosen;
-                                                      }
-                                                    });
-                                                  });
+                                                              )))
+                                                  .then((gameChosen) {
+                                                setState(() {
+                                                  if (gameChosen != null) {
+                                                    this.gameChosen =
+                                                        gameChosen;
+                                                  }
+                                                });
+                                              });
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Icon(
+                                                  gameChosen == -1
+                                                      ? Icons.add
+                                                      : Icons.check,
+                                                  color: gameChosen == -1
+                                                      ? Colors.red
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                  size: 24,
+                                                ),
+                                                Text(
+                                                  'Choose a game to play...',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextFormField(
+                                            onTapOutside: (event) {
+                                              FocusManager.instance.primaryFocus
+                                                  ?.unfocus();
+                                            },
+                                            maxLength: 100,
+                                            controller: descriptionController,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelText: 'Description...',
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              alignLabelWithHint: true,
+                                              hintStyle: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 14,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  width: 2,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              filled: true,
+                                              fillColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                              contentPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 16, 16, 16),
+                                            ),
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              fontSize: 16,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            maxLines: 9,
+                                            minLines: 5,
+                                            cursorColor: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const ChipSelector(),
+                                          Text(
+                                            'Start date and time',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              fontSize: 14,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              final datePickedDate =
+                                                  await showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                lastDate: DateTime(2050),
+                                                firstDate: DateTime.now(),
+                                                builder: (context, child) {
+                                                  return Theme(
+                                                    data: ThemeData.from(
+                                                        colorScheme:
+                                                            Theme.of(context)
+                                                                .colorScheme),
+                                                    child: child!,
+                                                  );
                                                 },
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Icon(
-                                                      gameChosen ==-1
-                                                          ? Icons.add
-                                                          : Icons.check,
-                                                      color: gameChosen ==-1
-                                                          ? Colors.red
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary,
-                                                      size: 24,
-                                                    ),
-                                                    Text(
-                                                      'Choose a game to play...',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        letterSpacing: 0,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                      ),
-                                                    ),
-                                                  ],
+                                              );
+
+                                              TimeOfDay? datePickedTime;
+                                              if (datePickedDate != null) {
+                                                datePickedTime =
+                                                    await showTimePicker(
+                                                        //ignore: use_build_context_synchronously
+                                                        context: context,
+                                                        initialTime:
+                                                            TimeOfDay.now(),
+                                                        builder:
+                                                            (context, child) {
+                                                          return Theme(
+                                                            data: ThemeData.from(
+                                                                colorScheme: Theme.of(
+                                                                        context)
+                                                                    .colorScheme),
+                                                            child: child!,
+                                                          );
+                                                        });
+                                              }
+
+                                              if (datePickedDate != null &&
+                                                  datePickedTime != null) {
+                                                setState(() {
+                                                  validStartDate = true;
+                                                  _datePicked = DateTime(
+                                                    datePickedDate.year,
+                                                    datePickedDate.month,
+                                                    datePickedDate.day,
+                                                    datePickedTime!.hour,
+                                                    datePickedTime.minute,
+                                                  );
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 48,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: validStartDate
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                      : Colors.red,
+                                                  width: 2,
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              TextFormField(
-                                                onTapOutside: (event) {
-                                                  FocusManager
-                                                      .instance.primaryFocus
-                                                      ?.unfocus();
-                                                },
-                                                maxLength: 100,
-                                                controller:
-                                                    descriptionController,
-                                                textCapitalization:
-                                                    TextCapitalization.words,
-                                                obscureText: false,
-                                                decoration: InputDecoration(
-                                                  labelText: 'Description...',
-                                                  labelStyle: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  alignLabelWithHint: true,
-                                                  hintStyle: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    fontSize: 14,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      width: 2,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      width: 2,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  filled: true,
-                                                  fillColor: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
-                                                  contentPadding:
+                                              child: Align(
+                                                alignment:
+                                                    const AlignmentDirectional(
+                                                        -1, 0),
+                                                child: Padding(
+                                                  padding:
                                                       const EdgeInsetsDirectional
                                                           .fromSTEB(
-                                                          16, 16, 16, 16),
-                                                ),
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  fontSize: 16,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                maxLines: 9,
-                                                minLines: 5,
-                                                cursorColor: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              const ChipSelector(),
-                                              Text(
-                                                'Start date and time',
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  fontSize: 14,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  final datePickedDate =
-                                                      await showDatePicker(
-                                                    context: context,
-                                                    initialDate: DateTime.now(),
-                                                    lastDate: DateTime(2050),
-                                                    firstDate: DateTime.now(),
-                                                    builder: (context, child) {
-                                                      return Theme(
-                                                        data: ThemeData.from(
-                                                            colorScheme: Theme
-                                                                    .of(context)
-                                                                .colorScheme),
-                                                        child: child!,
-                                                      );
-                                                    },
-                                                  );
-
-                                                  TimeOfDay? datePickedTime;
-                                                  if (datePickedDate != null) {
-                                                    datePickedTime =
-                                                        await showTimePicker(
-                                                            //ignore: use_build_context_synchronously
-                                                            context: context,
-                                                            initialTime:
-                                                                TimeOfDay.now(),
-                                                            builder: (context,
-                                                                child) {
-                                                              return Theme(
-                                                                data: ThemeData.from(
-                                                                    colorScheme:
-                                                                        Theme.of(context)
-                                                                            .colorScheme),
-                                                                child: child!,
-                                                              );
-                                                            });
-                                                  }
-
-                                                  if (datePickedDate != null &&
-                                                      datePickedTime != null) {
-                                                    setState(() {
-                                                      validStartDate = true;
-                                                      _datePicked = DateTime(
-                                                        datePickedDate.year,
-                                                        datePickedDate.month,
-                                                        datePickedDate.day,
-                                                        datePickedTime!.hour,
-                                                        datePickedTime.minute,
-                                                      );
-                                                    });
-                                                  }
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .surface,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    border: Border.all(
-                                                      color: validStartDate ?Theme.of(context)
+                                                          12, 0, 0, 0),
+                                                  child: Text(
+                                                    _datePicked != null
+                                                        ? DateFormat(
+                                                                'd MMMM , hh:mm a')
+                                                            .format(
+                                                                _datePicked!)
+                                                        : 'Select a date',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      color: Theme.of(context)
                                                           .colorScheme
-                                                          .primary: Colors.red,
-                                                      width: 2,
-                                                    ),
-                                                  ),
-                                                  child: Align(
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            -1, 0),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              12, 0, 0, 0),
-                                                      child: Text(
-                                                        _datePicked != null
-                                                            ? DateFormat(
-                                                                    'd MMMM , hh:mm a')
-                                                                .format(
-                                                                    _datePicked!)
-                                                            : 'Select a date',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Inter',
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                          fontSize: 14,
-                                                          letterSpacing: 0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
+                                                          .secondary,
+                                                      fontSize: 14,
+                                                      letterSpacing: 0,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              Text(
-                                                'End date and time',
-                                                style: TextStyle(
-                                                  fontFamily: 'Inter',
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  fontSize: 14,
-                                                  letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  final datePickedDate2 =
-                                                      await showDatePicker(
-                                                    context: context,
-                                                    initialDate: DateTime.now(),
-                                                    lastDate: DateTime(2050),
-                                                    firstDate: DateTime.now(),
-                                                    builder: (context, child) {
-                                                      return Theme(
-                                                        data: ThemeData.from(
-                                                            colorScheme: Theme
-                                                                    .of(context)
+                                            ),
+                                          ),
+                                          Text(
+                                            'End date and time',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              fontSize: 14,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              final datePickedDate2 =
+                                                  await showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                lastDate: DateTime(2050),
+                                                firstDate: DateTime.now(),
+                                                builder: (context, child) {
+                                                  return Theme(
+                                                    data: ThemeData.from(
+                                                        colorScheme:
+                                                            Theme.of(context)
                                                                 .colorScheme),
-                                                        child: child!,
-                                                      );
-                                                    },
+                                                    child: child!,
                                                   );
-
-                                                  TimeOfDay? datePickedTime2;
-                                                  if (datePickedDate2 != null) {
-                                                    datePickedTime2 =
-                                                        await showTimePicker(
-                                                            //ignore: use_build_context_synchronously
-                                                            context: context,
-                                                            initialTime:
-                                                                TimeOfDay.now(),
-                                                            builder: (context,
-                                                                child) {
-                                                              return Theme(
-                                                                data: ThemeData.from(
-                                                                    colorScheme:
-                                                                        Theme.of(context)
-                                                                            .colorScheme),
-                                                                child: child!,
-                                                              );
-                                                            });
-                                                  }
-
-                                                  if (datePickedDate2 != null &&
-                                                      datePickedTime2 != null) {
-                                                    setState(() {
-                                                      _endDatePicked = DateTime(
-                                                        datePickedDate2.year,
-                                                        datePickedDate2.month,
-                                                        datePickedDate2.day,
-                                                        datePickedTime2!.hour,
-                                                        datePickedTime2.minute,
-                                                      );
-                                                      if (_datePicked!.isBefore(
-                                                          _endDatePicked!)) {
-                                                        validEndDate = true;
-                                                      } else {
-                                                        ScaffoldMessenger.of(
-                                                            context)
-                                                            .showSnackBar(
-                                                            const SnackBar(
-                                                                content:  Text(
-                                                                    "Invalid end date/time."),
-                                                                backgroundColor: Colors
-                                                                    .red));
-                                                      }
-                                                    });
-                                                  }
                                                 },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  height: 48,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .surface,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    border: Border.all(
-                                                      color: validEndDate ?Theme.of(context)
-                                                          .colorScheme
-                                                          .primary: Colors.red,
-                                                      width: 2,
-                                                    ),
-                                                  ),
-                                                  child: Align(
-                                                    alignment:
-                                                        const AlignmentDirectional(
-                                                            -1, 0),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                              12, 0, 0, 0),
-                                                      child: Text(
-                                                        _endDatePicked != null && validEndDate
-                                                            ? DateFormat(
-                                                                    'd MMMM , hh:mm a')
-                                                                .format(
-                                                                    _endDatePicked!)
-                                                            : 'Select a date',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Inter',
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                          fontSize: 14,
-                                                          letterSpacing: 0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    const Text(
-                                                      'Private',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        letterSpacing: 0,
-                                                      ),
-                                                    ),
-                                                    Switch.adaptive(
-                                                      activeTrackColor:
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .primary,
-                                                      inactiveTrackColor:
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .surface,
-                                                      inactiveThumbColor:
-                                                          Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary,
-                                                      value: isChanged,
-                                                      onChanged: (bool value) {
-                                                        setState(() {
-                                                          isChanged = value;
+                                              );
+
+                                              TimeOfDay? datePickedTime2;
+                                              if (datePickedDate2 != null) {
+                                                datePickedTime2 =
+                                                    await showTimePicker(
+                                                        //ignore: use_build_context_synchronously
+                                                        context: context,
+                                                        initialTime:
+                                                            TimeOfDay.now(),
+                                                        builder:
+                                                            (context, child) {
+                                                          return Theme(
+                                                            data: ThemeData.from(
+                                                                colorScheme: Theme.of(
+                                                                        context)
+                                                                    .colorScheme),
+                                                            child: child!,
+                                                          );
                                                         });
-                                                      },
+                                              }
+
+                                              if (datePickedDate2 != null &&
+                                                  datePickedTime2 != null) {
+                                                setState(() {
+                                                  _endDatePicked = DateTime(
+                                                    datePickedDate2.year,
+                                                    datePickedDate2.month,
+                                                    datePickedDate2.day,
+                                                    datePickedTime2!.hour,
+                                                    datePickedTime2.minute,
+                                                  );
+                                                  if (_datePicked!.isBefore(
+                                                      _endDatePicked!)) {
+                                                    validEndDate = true;
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                            const SnackBar(
+                                                                content: Text(
+                                                                    "Invalid end date/time."),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .red));
+                                                  }
+                                                });
+                                              }
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              height: 48,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: validEndDate
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                      : Colors.red,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: Align(
+                                                alignment:
+                                                    const AlignmentDirectional(
+                                                        -1, 0),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
+                                                          12, 0, 0, 0),
+                                                  child: Text(
+                                                    _endDatePicked != null &&
+                                                            validEndDate
+                                                        ? DateFormat(
+                                                                'd MMMM , hh:mm a')
+                                                            .format(
+                                                                _endDatePicked!)
+                                                        : 'Select a date',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                      fontSize: 14,
+                                                      letterSpacing: 0,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
-                                                    const SizedBox(width: 20),
-                                                  ]),
-                                              InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ConnectionsListWidget(
-                                                                chosenInvites:
-                                                                    invites,
-                                                              ))).then(
-                                                      (invited) {
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                const Text(
+                                                  'Private',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0,
+                                                  ),
+                                                ),
+                                                Switch.adaptive(
+                                                  activeTrackColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                  inactiveTrackColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .surface,
+                                                  inactiveThumbColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                  value: isChanged,
+                                                  onChanged: (bool value) {
                                                     setState(() {
-                                                      if( invited != null) {
-                                                        invites = invited
-                                                        as List<String>;
-                                                      }
+                                                      isChanged = value;
                                                     });
-                                                  });
-                                                },
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Icon(
-                                                         invites.isEmpty
-                                                          ? Icons.add
-                                                          : Icons.check,
-                                                      color:  invites.isEmpty
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary,
-                                                      size: 24,
-                                                    ),
-                                                    Text(
-                                                      'Invite connections to join...',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Inter',
-                                                        letterSpacing: 0,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  },
                                                 ),
-                                              ),
-                                              Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                                const SizedBox(width: 20),
+                                              ]),
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ConnectionsListWidget(
+                                                            chosenInvites:
+                                                                invites,
+                                                          ))).then((invited) {
+                                                setState(() {
+                                                  if (invited != null) {
+                                                    invites =
+                                                        invited as List<String>;
+                                                  }
+                                                });
+                                              });
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                Icon(
+                                                  invites.isEmpty
+                                                      ? Icons.add
+                                                      : Icons.check,
+                                                  color: invites.isEmpty
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                  size: 24,
                                                 ),
-                                              ),
-                                              const SizedBox(height: 12),
-                                              const SizedBox(height: 32)
-                                            ]),
-                                      ),
-                                    ),
+                                                Text(
+                                                  'Invite connections to join...',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Inter',
+                                                    letterSpacing: 0,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 100,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          const SizedBox(height: 32)
+                                        ]),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          Container(
-                            constraints: const BoxConstraints(
-                              maxWidth: 770,
-                            ),
-                            decoration: const BoxDecoration(),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16, 12, 16, 12),
-                              child: MaterialButton(
-                                onPressed: () {
-                                  // TODO: error handling here
-                                  if(validName && !(gameChosen == -1) && validEndDate && validStartDate) {
-                                    create();
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      content: const Text(
-                                          "Event created successfully!"),
-                                      backgroundColor:
-                                      Theme
-                                          .of(context)
-                                          .colorScheme
-                                          .primary,
-                                    ));
-                                    nameController.clear();
-                                    descriptionController.clear();
-                                    setState(() {
-                                      gameChosen = -1;
-                                      invites = [];
-                                      validEndDate = false;
-                                      validName = false;
-                                      validStartDate = false;
-                                      _endDatePicked = null;
-                                      _datePicked = null;
-
-                                    });
-
-                                  }else{
-                                    if(!validName) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                        ),
+                      ),
+                      Container(
+                        constraints: const BoxConstraints(
+                          maxWidth: 770,
+                        ),
+                        decoration: const BoxDecoration(),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              16, 12, 16, 12),
+                          child: MaterialButton(
+                            onPressed: () {
+                              // TODO: error handling here
+                              name = nameController.text;
+                              if(name.isEmpty){
+                                validName = false;
+                              }else
+                                {
+                                  validName = true;
+                                }
+                              if (validName &&
+                                  !(gameChosen == -1) &&
+                                  validEndDate &&
+                                  validStartDate) {
+                                create();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content:
+                                      const Text("Event created successfully!"),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                ));
+                                nameController.clear();
+                                descriptionController.clear();
+                                setState(() {
+                                  gameChosen = -1;
+                                  invites = [];
+                                  validEndDate = false;
+                                  validName = false;
+                                  validStartDate = false;
+                                  _endDatePicked = null;
+                                  _datePicked = null;
+                                });
+                              } else {
+                                if (!validName) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
                                           content: Text(
                                               "Please ensure you entered an event name "),
-                                          backgroundColor:
-                                          Colors.red
-                                      ));
-                                    }else if (gameChosen==-1){
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          backgroundColor: Colors.red));
+                                } else if (gameChosen == -1) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
                                           content: Text(
                                               "Please ensure you chose a game to play "),
-                                          backgroundColor:
-                                          Colors.red
-                                      ));
-                                    } else if( !validStartDate){
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          backgroundColor: Colors.red));
+                                } else if (!validStartDate) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
                                           content: Text(
                                               "Please ensure you entered a valid start date and time "),
-                                          backgroundColor:
-                                          Colors.red
-                                      ));
-                                    }else{
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
+                                          backgroundColor: Colors.red));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
                                           content: Text(
                                               "Please ensure you entered a valid end date and time "),
-                                          backgroundColor:
-                                          Colors.red
-                                      ));
-                                    }
-                                  }
-                                },
-                                color: Theme.of(context).colorScheme.primary,
-                                child: const Text('Create'),
-                              ),
-                            ),
+                                          backgroundColor: Colors.red));
+                                }
+                              }
+                            },
+                            color: Theme.of(context).colorScheme.primary,
+                            child: const Text('Create'),
                           ),
-                        ],
+                        ),
                       ),
-                    )
-    )
-        )
-    );
-
-                  }
+                    ],
+                  ),
+                ))));
   }
+}
 
 // TODO : look into making this a component
 class ChipData {
