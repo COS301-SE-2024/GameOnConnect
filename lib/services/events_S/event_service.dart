@@ -25,7 +25,6 @@ class EventsService {
           var data = x.data() as Map<String, dynamic>;
           Event event = Event.fromMap(data, x.id);
           if (!DateTime.now().isAfter(event.endDate)) {
-            print(DateTime.now());
             if (event.privacy == false) {
               all.add(event);
             }
