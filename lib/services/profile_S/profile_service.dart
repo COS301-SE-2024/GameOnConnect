@@ -9,32 +9,39 @@ import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 
 class ProfileService {
-Future<Profile?>  fetchProfile() async {
-    try {
-      FirebaseFirestore db = FirebaseFirestore.instance;
+
+Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
+  if(uid== 'CurrentUser')
+    {
+       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
+      if (currentUser == null) {
+        return null; //return an empty array
+      }
+      uid=currentUser.uid;
+    }
+    try {
+      FirebaseFirestore db = FirebaseFirestore.instance;
 
-      if (currentUser != null) {
+      if (uid != null && uid !="") {
         DocumentSnapshot doc =
-            await db.collection("profile_data").doc(currentUser.uid).get();
+            await db.collection("profile_data").doc(uid).get();
 
         if (doc.exists) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-
           Map<String, dynamic> userInfo =data['username'] as Map<String, dynamic>;
           String name= userInfo['profile_name'] ?? 'username';
           int uniqueNum=userInfo['unique_num'] ?? '';
 
   	      // Get number of connections
-          List<String> connections= await ConnectionService().getConnections("connections");
+          List<String> connections= await ConnectionService().getConnections("connections" ,uid);
           int connectionsCount = connections.length;
 
           // Fetch banner and profile picture URLs
           StorageService storageService = StorageService();
-          String bannerUrl = await storageService.getBannerUrl(currentUser.uid);
-          String profilePictureUrl = await storageService.getProfilePictureUrl(currentUser.uid);
+          String bannerUrl = await storageService.getBannerUrl(uid);
+          String profilePictureUrl = await storageService.getProfilePictureUrl(uid);
 
           // Fetch recent activities (assuming it's an array of references)
         final recentActivitiesRefs = List<DocumentReference>.from(data['recent_activity'] ?? []);
@@ -64,7 +71,6 @@ Future<Profile?>  fetchProfile() async {
     }
     return null;
   }
-
 
   Future<String?> getProfileName(String userId) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
