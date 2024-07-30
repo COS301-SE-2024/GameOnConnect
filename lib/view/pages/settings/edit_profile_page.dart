@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
-
+import '../../components/settings/edit_switch.dart';
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../../../services/settings/edit_profile_service.dart' as editService;
@@ -162,12 +162,11 @@ class EditProfileFormState extends State<EditProfileForm> {
                           EditDateInput(
                               currentDate: _birthday!,
                               label: 'Birthday:',
-                              onChanged: (value) => {
-                                _birthday = value
-                          }),
-                          _buildSwitchInput(
-                            'Private Account:',
-                            key: const Key('privateAccountSwitch'),
+                              onChanged: (value) => {_birthday = value}),
+                          EditSwitch(
+                            label: 'Private Account:',
+                            currentValue: _isPrivate,
+                            onChanged: (value) => {_isPrivate = value},
                           ),
                         ],
                       ),
@@ -194,36 +193,5 @@ class EditProfileFormState extends State<EditProfileForm> {
             );
           }
         });
-  }
-
-  Widget _buildSwitchInput(String label, {Key? key}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Text(label,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary)),
-          ),
-          Expanded(
-            key: key,
-            flex: 4,
-            child: Switch.adaptive(
-              value: _isPrivate,
-              onChanged: (bool value) {
-                setState(() {
-                  _isPrivate = value;
-                });
-              },
-              activeTrackColor: Theme.of(context).colorScheme.primary,
-              inactiveTrackColor: Theme.of(context).colorScheme.surface,
-              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
