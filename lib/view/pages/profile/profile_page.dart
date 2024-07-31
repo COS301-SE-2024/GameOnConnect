@@ -12,11 +12,14 @@ import 'package:gameonconnect/view/pages/profile/stats_list.dart';
 class Profilenew extends StatefulWidget {
   final String uid;
   final bool isOwnProfile;
+  final bool isConnection;
 
   const Profilenew({ // Use named parameters
     Key? key,
     required this.uid, //u
-    required this.isOwnProfile,// true
+    required this.isOwnProfile,
+    required this.isConnection,
+    // true
   }) : super(key: key);
 
   @override
@@ -163,8 +166,9 @@ class _ProfileState extends State<Profilenew>  {
                             ),
                           ],
                         ),
-                        //ProfileInfo(),
-                        // Conditionally display the CurrentlyPlaying widget
+                        //ProfileInfo()
+                        if (widget.isOwnProfile ||widget.isConnection ||  profileData.visibility ) ...[
+                          // Conditionally display the CurrentlyPlaying widget
                       profileData.currentlyPlaying.isNotEmpty
                           ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
                           : const SizedBox.shrink(), // You can replace this with any widget or SizedBox.shrink() if you don't want to show anything
@@ -215,6 +219,28 @@ class _ProfileState extends State<Profilenew>  {
                       const StatsList (
                         heading: 'Stats',
                       ),
+                        ] else...[
+                          const SizedBox(height: 20), // space
+                          Divider(),
+                           Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.lock,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 10), // space
+                                Text(
+                                  'This account is private',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        
                               
                       ],
               ),

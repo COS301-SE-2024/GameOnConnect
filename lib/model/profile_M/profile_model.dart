@@ -12,6 +12,7 @@ class Profile {
   final List<String> wantToPlay;
   final List<GameStats> recentActivities;
   final int numberOfconnections; 
+  final bool visibility;
 
   Profile({
     required this.banner,
@@ -25,5 +26,6 @@ class Profile {
     required this.wantToPlay,
     required this.recentActivities,
     required this.numberOfconnections,
+    required this.visibility,
   });
 }

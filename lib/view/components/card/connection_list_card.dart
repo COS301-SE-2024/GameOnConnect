@@ -326,10 +326,17 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     // Wrap cardContent in GestureDetector for navigation
     return GestureDetector(
       onTap: () {
-        if (page == 'connections' || page == 'requests') {
+        if (page == 'connections') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false)), // Navigate to ConnectionsList page
+            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true,)), // Navigate to ConnectionsList page
+          );
+        }
+        else if(page == 'requests')
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false,)), // Navigate to ConnectionsList page
           );
         }
         else{

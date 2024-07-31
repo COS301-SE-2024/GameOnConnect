@@ -59,6 +59,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
           wantToPlay: List<String>.from(data['want_to_play'] ?? []),
           numberOfconnections: connectionsCount,
           recentActivities: recentActivities, 
+          visibility: data['visibility'] ?? true,
       );
         } else {
           //print('Document not found');
