@@ -92,7 +92,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                       ),
                     ), 
                        Center(
-                        child: Text('No Connections ${widget.uid}, ${widget.isOwnProfile}'),
+                        child: Text('No Connections'),
                       )
                       ]);
                     } else{
@@ -126,7 +126,21 @@ class _ConnectionsListState extends State<ConnectionsList> {
                           itemBuilder: (context, index) {
                             user.AppUser? i = list![index];
 
-                            return ConnectionCardWidget(
+                            if(i.uid == widget.LoggedInUser)
+                            {
+                              return ConnectionCardWidget(
+                                image: i.profilePicture,
+                                username: 'You',
+                                uniqueNum: i.uniqueNum.toString(),
+                                uid: i.uid,
+                                page: 'connections',
+                                loggedInUser: widget.LoggedInUser,
+                                onDisconnected: _handleDisconnection ,
+                                onSelected: (uid, selected) {
+                                  
+                                });
+                            }else{
+                              return ConnectionCardWidget(
                                 image: i.profilePicture,
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
@@ -137,6 +151,8 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 onSelected: (uid, selected) {
                                   
                                 });
+                            }
+                            
                                 
                           },
                           separatorBuilder: (BuildContext context, int index) {

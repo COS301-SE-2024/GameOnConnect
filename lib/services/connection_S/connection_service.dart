@@ -172,7 +172,7 @@ class ConnectionService {
   Future<List<user.AppUser>?> getProfileConnections(String type, String UserId) async {
     try {
 
-      print('for the profile page pls get the  $type for user: $UserId');
+      //print('for the profile page pls get the  $type for user: $UserId');
       List<user.AppUser> list = [];
 
         List<String>? connections =

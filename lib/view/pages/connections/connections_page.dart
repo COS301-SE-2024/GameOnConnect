@@ -4,6 +4,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import '../../../services/connection_S/connection_request_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../../model/connection_M/friend_model.dart';
@@ -25,7 +26,7 @@ class _FriendSearchState extends State<FriendSearch> {
   List<AppUser> _users = [];
   String _searchQuery = '';
   String _currentUserId = '';
-
+ 
   @override
   void initState() {
     super.initState();
@@ -283,6 +284,12 @@ class _FriendSearchState extends State<FriendSearch> {
 
                       ),*/
                         title: Text(user.username),
+                        onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profilenew(uid: user.uid, isOwnProfile:false, isConnection: false, loggedInUser: _currentUserId)), // Navigate to ConnectionsList page
+                        );
+                      },
                         trailing: isConnection
                             ? ElevatedButton.icon(
                                 onPressed: () => _disconnect(user.uid),

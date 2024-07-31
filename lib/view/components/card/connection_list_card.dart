@@ -245,7 +245,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               ],
             ),
             // Popup menu button
-            if (page == 'connections')
+            if (page == 'connections' && username!='You')
               PopupMenuButton<String>(
                 itemBuilder: (context) => [
                   const PopupMenuItem<String>(

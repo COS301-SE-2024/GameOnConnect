@@ -74,7 +74,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   if (list!.isEmpty) {
             // Display "No connections" when the list is empty
             return  Center(
-              child: Text('No connection Requests ${widget.uid},  ${widget.isOwnProfile}'),
+              child: Text('No connection Requests'),
             );
           } else{
             return Column(
