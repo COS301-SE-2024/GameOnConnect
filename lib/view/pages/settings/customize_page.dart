@@ -16,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../../globals.dart' as globals;
+import '../../../services/settings/customize_service.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 class CustomizeProfilePage extends StatefulWidget {
@@ -40,45 +40,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String _profileBannerUrl = '';
   dynamic _profileBanner;
   String testBannerurl = '';
-
-  Future<void> _fetchGenresFromAPI() async {
-    try {
-      var url =
-          Uri.parse('https://api.rawg.io/api/genres?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        setState(() {
-          _genres = (decoded['results'] as List)
-              .map((genre) => genre['name'].toString())
-              .toList();
-        });
-      } else {
-        //print("Error fetching genres: ${response.statusCode}");
-      }
-    } catch (e) {
-      //print("Error fetching genres: $e");
-    }
-  }
-
-  Future<void> _fetchTagsFromAPI() async {
-    try {
-      var url = Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        setState(() {
-          _interests = (decoded['results'] as List)
-              .map((tag) => tag['name'].toString())
-              .toList();
-        });
-      } else {
-        throw ("Error fetching interest tags: ${response.statusCode}");
-      }
-    } catch (e) {
-      throw ("Error fetching interest tags: $e");
-    }
-  }
 
   Widget _displaySelectedItems(
       List<String> selectedItems, void Function(String) onDeleted) {
@@ -126,47 +87,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         Brightness.dark;
   }
 
-  Future<void> _fetchUserSelectionsFromDatabase() async {
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef =
-            db.collection("profile_data").doc(currentUser.uid);
-
-        final docSnapshot = await profileDocRef.get();
-        if (docSnapshot.exists) {
-          final data = docSnapshot.data();
-          final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
-          final age = List<String>.from(data?["age_rating_tags"] ?? []);
-          final interests =
-              List<String>.from(data?["social_interests_tags"] ?? []);
-
-          StorageService storageService = StorageService();
-          String bannerDownloadUrl =
-              await storageService.getBannerUrl(currentUser.uid);
-          String profileDownloadUrl =
-              await storageService.getProfilePictureUrl(currentUser.uid);
-
-          setState(() {
-            _selectedGenres = genres;
-            _selectedAge = age;
-            _selectedInterests = interests;
-            _profileBannerUrl = bannerDownloadUrl;
-            _profileImageUrl = profileDownloadUrl;
-          });
-        }
-      }
-    } catch (e) {
-      throw ("Error fetching user selections: $e");
-    }
-  }
 
   Future<void> _fetchData() async {
-    await _fetchUserSelectionsFromDatabase();
-    await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
+    Map<String,dynamic> userSelection = await CustomizeService().fetchUserSelectionsFromDatabase();
+    setState(() {
+      _selectedGenres = userSelection['genres'];
+      _selectedAge = userSelection['age'];
+      _selectedInterests = userSelection['interests'];
+      _profileBannerUrl = userSelection['bannerUrl'];
+      _profileImageUrl = userSelection['profileUrl'];
+    });
+    await Future.wait([CustomizeService().fetchGenresFromAPI(), CustomizeService().fetchTagsFromAPI()]);
   }
 
   Future<void> _pickImage() async {
@@ -216,7 +147,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
       UploadTask uploadTask;
       if(kIsWeb){
-        //uploadTask = storageReference.putBlob( image);
+        uploadTask = storageReference.putFile(image );
         print("hellooooo");
       }else {
          uploadTask = storageReference.putFile(image);
