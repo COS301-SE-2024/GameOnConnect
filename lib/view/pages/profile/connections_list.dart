@@ -9,11 +9,13 @@ class ConnectionsList extends StatefulWidget {
   const ConnectionsList({
     super.key,
     required this.isOwnProfile,// true
-    required this.uid,// u
+    required this.uid,
+    required this.LoggedInUser
      });
 
     final bool isOwnProfile;
     final String uid;
+    final String LoggedInUser;
 
   @override
   State<ConnectionsList> createState() => _ConnectionsListState();
@@ -75,7 +77,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                     GestureDetector(
                       onTap: () {
                         // Navigate to the request page when the text is clicked
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid)));//go to next page 
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, LoggedInUser: widget.LoggedInUser,)));//go to next page 
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -101,7 +103,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         GestureDetector(
                           onTap: () {
                             // Navigate to the request page when the text is clicked
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid)));//go to next page 
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, LoggedInUser: widget.LoggedInUser,)));//go to next page 
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -130,6 +132,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'connections',
+                                loggedInUser: widget.LoggedInUser,
                                 onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   

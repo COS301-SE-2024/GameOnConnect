@@ -150,6 +150,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'events',
+                                loggedInUser: i.uid,
                                 onSelected: (uid, selected) {
                                   if (selected) {
                                     invites.add(uid);

@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
@@ -13,13 +16,14 @@ class Profilenew extends StatefulWidget {
   final String uid;
   final bool isOwnProfile;
   final bool isConnection;
+  final String loggedInUser;
 
   const Profilenew({ // Use named parameters
     Key? key,
     required this.uid, //u
     required this.isOwnProfile,
     required this.isConnection,
-    // true
+    required this.loggedInUser,
   }) : super(key: key);
 
   @override
@@ -28,6 +32,28 @@ class Profilenew extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<Profilenew>  {
+  bool isConnectionParent= false;
+  //String? parentId ;
+
+ Future<void> isConnectionOfParent() async {
+  final connections = await ConnectionService().getConnections('connections');
+  isConnectionParent= connections.contains(widget.uid);
+}
+
+
+
+ /* void getParent() {
+   FirebaseAuth auth = FirebaseAuth.instance;
+    parentId = auth.currentUser?.uid;
+  }*/
+
+@override
+  void initState() {
+    super.initState();
+    isConnectionOfParent();
+   // getParent();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +78,6 @@ class _ProfileState extends State<Profilenew>  {
             : null,
       ),
       body: FutureBuilder<Profile?>(
-        //future: ProfileService().fetchProfile(),
         future: ProfileService().fetchProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -108,7 +133,7 @@ class _ProfileState extends State<Profilenew>  {
                                       GestureDetector(
                                         onTap: () {
                                           //Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile,))); 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid))); 
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid, LoggedInUser: widget.loggedInUser,))); 
                                         },
                                         child: RichText(
                                           text: TextSpan(
@@ -167,7 +192,8 @@ class _ProfileState extends State<Profilenew>  {
                           ],
                         ),
                         //ProfileInfo()
-                        if (widget.isOwnProfile ||widget.isConnection ||  profileData.visibility ) ...[
+                        if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
+                          
                           // Conditionally display the CurrentlyPlaying widget
                       profileData.currentlyPlaying.isNotEmpty
                           ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
@@ -222,6 +248,7 @@ class _ProfileState extends State<Profilenew>  {
                         ] else...[
                           const SizedBox(height: 20), // space
                           Divider(),
+                           const SizedBox(height: 20), // space
                            Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

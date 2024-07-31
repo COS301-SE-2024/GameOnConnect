@@ -7,11 +7,13 @@ class ConnectionRequestList extends StatefulWidget {
   const ConnectionRequestList({
      super.key,
     required this.isOwnProfile,// true
-    required this.uid,// u
+    required this.uid,
+     required this.LoggedInUser,
      });
 
     final bool isOwnProfile;
     final String uid;
+    final String LoggedInUser;
 
   @override
   State<ConnectionRequestList> createState() => _ConnectionRequestListState();
@@ -94,6 +96,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'requests',
+                                loggedInUser: widget.LoggedInUser,
                                 onAccepted: _handleAcceptance ,
                                 onRejected: _handleRejection ,
                                 onSelected: (uid, selected) {

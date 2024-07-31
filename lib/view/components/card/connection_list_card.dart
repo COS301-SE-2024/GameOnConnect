@@ -15,6 +15,7 @@ class ConnectionCardWidget extends StatefulWidget {
   final String uid;
   final String page;
   final List<String>? invited;
+  final String loggedInUser;
   final void Function(String uid,bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
@@ -28,6 +29,7 @@ class ConnectionCardWidget extends StatefulWidget {
     required this.uniqueNum,
     required this.onSelected,
     required this.page,
+    required this.loggedInUser,
     this.onDisconnected,
     this.onAccepted,
     this.onRejected,
@@ -329,14 +331,14 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
         if (page == 'connections') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true,)), // Navigate to ConnectionsList page
+            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
           );
         }
         else if(page == 'requests')
         {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false,)), // Navigate to ConnectionsList page
+            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
           );
         }
         else{

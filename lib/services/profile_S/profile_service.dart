@@ -73,6 +73,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
     return null;
   }
 
+
   Future<String?> getProfileName(String userId) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
