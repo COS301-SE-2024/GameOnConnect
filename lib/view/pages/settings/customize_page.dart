@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../globals.dart' as globals;
+import 'package:image_picker_web/image_picker_web.dart';
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -72,10 +73,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               .toList();
         });
       } else {
-        throw("Error fetching interest tags: ${response.statusCode}");
+        throw ("Error fetching interest tags: ${response.statusCode}");
       }
     } catch (e) {
-      throw("Error fetching interest tags: $e");
+      throw ("Error fetching interest tags: $e");
     }
   }
 
@@ -159,7 +160,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         }
       }
     } catch (e) {
-      throw("Error fetching user selections: $e");
+      throw ("Error fetching user selections: $e");
     }
   }
 
@@ -169,86 +170,40 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 
   Future<void> _pickImage() async {
-    if (kIsWeb) {
-      // Web implementation
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
 
-      if (result != null) {
-        PlatformFile file = result.files.first;
-        if (file.bytes != null) {
-          setState(() {
-            _profileImage = (file.bytes!, file.name);
-          });
-        }
-        //print("picked image and image updated ");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _profileImage = image.path;
+        _profileImageUrl = "";
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Image selected successfully.')),
+      );
     } else {
-      // Mobile/desktop implementation
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileImage = image.path;
-          _profileImageUrl = "";
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to select Image.')),
+      );
     }
   }
 
   Future<void> _pickBanner() async {
-    if (kIsWeb) {
-      // Web implementation
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
-
-      if (result != null) {
-        PlatformFile file = result.files.first;
-        if (file.bytes != null) {
-          setState(() {
-            _profileBanner = (file.bytes!, file.name);
-            //_profileBannerFB = file.name;
-          });
-        }
-       /* ScaffoldMessenger.of(context).showSnackBar(
+    // Mobile/desktop implementation
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _profileBanner = image.path;
+        _profileBannerUrl = "";
+      });
+      /*ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
         );*/
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
     } else {
-      // Mobile/desktop implementation
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileBanner = image.path;
-          _profileBannerUrl = "";
-        });
-        /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );*/
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to select Image.')),
+      );
     }
   }
 
@@ -259,8 +214,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     if (imagetype == 'Profile_picture') {
       Reference storageReference =
           FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-      UploadTask uploadTask = storageReference.putFile(image);
-      await uploadTask.whenComplete(() => null);
+      UploadTask uploadTask;
+      if(kIsWeb){
+        //uploadTask = storageReference.putBlob( image);
+        print("hellooooo");
+      }else {
+         uploadTask = storageReference.putFile(image);
+      }
+      //await uploadTask.whenComplete(() => null);
 
       String downloadURL = await storageReference.getDownloadURL();
       return downloadURL;
@@ -336,13 +297,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Widget _buildContent(BuildContext context) {
     return Scaffold(
       appBar: BackButtonAppBar(
-          title: 'Customize Profile',
-          onBackButtonPressed: () {
-            Navigator.pop(context);
-          },
-          iconkey: const Key('Back_button_key'),
-          textkey: const Key('customize_profile_text'),
-        ),
+        title: 'Customize Profile',
+        onBackButtonPressed: () {
+          Navigator.pop(context);
+        },
+        iconkey: const Key('Back_button_key'),
+        textkey: const Key('customize_profile_text'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -364,12 +325,19 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                               const Icon(Icons.error),
                           fit: BoxFit.cover,
                         )
-                      : Image.file(
-                          File(_profileBanner),
-                          width: 359,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                      : kIsWeb
+                          ? Image.network(
+                              _profileBanner,
+                              width: 359,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              File(_profileBanner),
+                              width: 359,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
                 ),
                 Container(
                   height: 30,
@@ -395,17 +363,27 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  _profileImageUrl.isNotEmpty? CircleAvatar(
+                  _profileImageUrl.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundImage:
+                              CachedNetworkImageProvider(_profileImageUrl),
+                        )
+                      :  kIsWeb
+                      ? CircleAvatar(
                     radius: 60,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage:
-                        CachedNetworkImageProvider(_profileImageUrl),
-                  ):
-              CircleAvatar(
-              radius: 60,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: FileImage(File(_profileImage)),
-              ),
+                    backgroundColor:
+                    Theme.of(context).colorScheme.primary,
+                    backgroundImage: NetworkImage(_profileImage),
+                  )
+                      : CircleAvatar(
+                    radius: 60,
+                    backgroundColor:
+                    Theme.of(context).colorScheme.primary,
+                    backgroundImage: FileImage(File(_profileImage)),
+                  ),
                   Container(
                     height: 30,
                     width: 30,
@@ -667,13 +645,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             db.collection("profile_data").doc(currentUser.uid);
         if (_profileImage != null) {
           String imageUrl;
-          if (kIsWeb) {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
-          } else {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
-          }
+            imageUrl = await uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
 
           await saveImageURL(imageUrl, 'Profile_picture');
 
@@ -685,11 +658,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
         if (_profileBanner != null) {
           String bannerUrl;
-          if (kIsWeb) {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
-          } else {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
-          }
+            bannerUrl =
+                await uploadImageToFirebase(File(_profileBanner!), 'banner');
+            print(bannerUrl);
           await saveImageURL(bannerUrl, 'banner');
 
           // Show a confirmation message or navigate
@@ -716,12 +687,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to update profile.'),
             backgroundColor: Colors.red),
       );
-      throw("Error setting/updating profile data: $e");
+      throw ("Error setting/updating profile data: $e");
     }
   }
 }
