@@ -100,7 +100,6 @@ class AuthService {
           "birthday": Timestamp.now(),
           "profilepicture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
           "username": {"profile_name": username, "unique_num": _nextNum},
-          "profileName": username ?? "",
           "currently_playing":"",
           "my_games": [],
           "recent_activity": [],
