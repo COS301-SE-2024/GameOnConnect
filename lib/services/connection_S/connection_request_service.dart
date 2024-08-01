@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import '../../model/connection_M/user_model.dart';
 import '../../model/connection_M/friend_model.dart';
 
@@ -28,10 +29,12 @@ class UserService {
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
-          AppUser currentuser = AppUser.fromMap(data);
+          AppUser currentUser = AppUser.fromMap(data);
 
-          //await currentuser.setpicture(data); // Await the result
-          users.add(currentuser);
+          //StorageService storageService = StorageService();
+          //currentUser.profilePicture = await storageService.getProfilePictureUrl(currentUser.uid);
+
+          users.add(currentUser);
           //users.add(User.fromMap(data));
         } else {
           /*print('Skipping document ${doc.id} due to missing required fields \n');
