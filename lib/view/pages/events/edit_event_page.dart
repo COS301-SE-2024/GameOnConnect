@@ -60,7 +60,6 @@ class _EditEventsState extends State<EditEvent> {
         e.eventID);
   }
 
-  void getEventInfo(Event i) {}
   Future pickImage() async {
     final image = ImagePicker();
     final file = await image.pickImage(source: ImageSource.gallery);
@@ -104,6 +103,7 @@ class _EditEventsState extends State<EditEvent> {
     gameChosen = e.gameID;
     selectedOption = e.eventType;
     imageUrl = widget.imageUrl;
+    invites = e.invited;
   }
 
   @override

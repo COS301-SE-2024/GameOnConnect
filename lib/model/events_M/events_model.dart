@@ -10,6 +10,7 @@ class Event {
   final List<dynamic> participants;
   final String description;
   final bool privacy;
+  final List<String> invited;
   // can later add  conversation id and teams if needed
 
   Event(
@@ -23,7 +24,9 @@ class Event {
       required this.subscribed,
       required this.participants,
       required this.description,
-      required this.privacy});
+      required this.privacy,
+        required this.invited
+      });
 
   factory Event.fromMap(Map<String, dynamic> data, String id) {
     return Event(
@@ -38,7 +41,7 @@ class Event {
         participants: data['participants'],
         description: data['description'],
         privacy: data['privacy'],
-
+        invited: List<String>.from(data['invited']),
     );
   }
 }
