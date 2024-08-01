@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 
 class GameCard extends StatefulWidget {
   final String name;
-  final String chosen;
-  final void Function(String gameName) onSelected;
+  final int gameID;
+  final int chosen;
+  final void Function(int gameID) onSelected;
   final String image;
-  const GameCard({super.key, required this.name,required this.chosen, required this.onSelected, required this.image});
+  const GameCard({super.key, required this.name, required this.gameID,required this.chosen, required this.onSelected, required this.image});
 
   @override
   State<GameCard> createState() => _EventCardWidgetState();
@@ -15,8 +16,9 @@ class GameCard extends StatefulWidget {
 
 class _EventCardWidgetState extends State<GameCard> {
   String name = "";
+  int gameID =-1;
   bool selected = false;
-  String chosen="";
+  int chosen=-1;
   String image = "";
   @override
   void setState(VoidCallback callback) {
@@ -29,6 +31,7 @@ class _EventCardWidgetState extends State<GameCard> {
     name = widget.name;
     chosen = widget.chosen;
     image = widget.image;
+    gameID = widget.gameID;
   }
 
   @override
@@ -39,77 +42,77 @@ class _EventCardWidgetState extends State<GameCard> {
 
   @override
   Widget build(BuildContext context) {
-    selected = ( name == widget.chosen);
+    selected = ( gameID == widget.chosen);
     return InkWell(
-        onTap: (){
-          setState(() {
-            selected = !selected;
-          });
-          widget.onSelected(name);
+      onTap: (){
+        setState(() {
+          selected = !selected;
+        });
+        widget.onSelected(gameID);
 
-        },
-        child: Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
-      child: Container(
-        width: double.infinity,
-        height: 60,
-        decoration: BoxDecoration(
-          color: selected? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0,
-              color: Theme.of(context).colorScheme.surface,
-              offset: const Offset(
-                0,
-                1,
-              ),
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(width: 60,
-                height: 60, child:
-               ClipRRect(
-                borderRadius: BorderRadius.circular(44),
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+      },
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
+        child: Container(
+          width: double.infinity,
+          height: 60,
+          decoration: BoxDecoration(
+            color: selected? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 0,
+                color: Theme.of(context).colorScheme.surface,
+                offset: const Offset(
+                  0,
+                  1,
                 ),
-              ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          color:  Theme.of(context).colorScheme.secondary,
-                          fontSize: 16,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+              )
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(width: 60,
+                  height: 60, child:
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(44),
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color:  Theme.of(context).colorScheme.secondary,
+                            fontSize: 16,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }
