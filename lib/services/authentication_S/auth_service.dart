@@ -105,7 +105,6 @@ class AuthService {
           "my_games": [],
           "wantToPlay": [],
           "recent_activity": [],
-          "numberOfconnections": 0,
           "genre_interests_tags": [],
           "social_interests_tags": [],
           "name": "",
