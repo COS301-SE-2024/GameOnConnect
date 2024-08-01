@@ -89,7 +89,7 @@ Future<Profile?>  fetchProfile() async {
       try {
         await doc.update({'currently_playing': gameId});
       } catch (e) {
-        print("Error setting currently playing: $e");
+        throw("Error setting currently playing: $e");
       }
     } else {
       throw(Exception('User not found'));
