@@ -56,64 +56,63 @@ class _ChooseGame extends State<ChooseGame> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<GameDetails>>(
         future: EventsService().getMyGames(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            games = snapshot.data;
-            getGames();
-            return Scaffold(
-                key: scaffoldKey,
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                body: SafeArea(
-                    top: true,
-                    child:Column(mainAxisSize: MainAxisSize.max, children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 3,
-                              color: Theme.of(context).colorScheme.secondary,
-                              offset: const Offset(
-                                0,
-                                1,
-                              ),
-                            )
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: const AlignmentDirectional(-1, 0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 0, 0, 12),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        icon:
-                                        const Icon(Icons.keyboard_backspace)),
-                                    Text(
-                                      'Select a game to play',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+    builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
+    return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+    return Text('Error: ${snapshot.error}');
+    } else {
+    games = snapshot.data;
+    getGames();
+    return Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: SafeArea(
+          top: true,
+          child:Column(mainAxisSize: MainAxisSize.max, children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 3,
+                            color: Theme.of(context).colorScheme.secondary,
+                            offset: const Offset(
+                              0,
+                              1,
+                            ),
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Align(
+                            alignment: const AlignmentDirectional(-1, 0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16, 0, 0, 12),
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon:
+                                      const Icon(Icons.keyboard_backspace)),
+                                  Text(
+                                    'Select a game to play',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 16,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ],
                                 ),
@@ -122,24 +121,24 @@ class _ChooseGame extends State<ChooseGame> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: 300,
-                          child: ListView.separated(
-                            itemCount: gameNames.length,
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              String i = gameNames[index];
+                    ),
+                    SizedBox(
+                        height: 300,
+                        child: ListView.separated(
+                          itemCount: gameNames.length,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            String i = gameNames[index];
 
-                              return GameCard(
-                                  name: i,
-                                  gameID: getGameID(i),
-                                  chosen: chosenGame,
-                                  image: gameImages[index],
-                                  onSelected: (gameName) {
-                                    setState(() {
-                                      chosenGame = gameName;
-                                    });
+                            return GameCard(
+                                name: i,
+                                gameID: getGameID(i),
+                                chosen: chosenGame,
+                                image: gameImages[index],
+                                onSelected: (gameName) {
+                                  setState(() {
+                                    chosenGame = gameName;
                                   });
                             },
                             separatorBuilder: (BuildContext context, int index) {
@@ -160,5 +159,6 @@ class _ChooseGame extends State<ChooseGame> {
             );
           }
         });
+
   }
 }

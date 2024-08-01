@@ -44,11 +44,12 @@ class _EventCardWidgetState extends State<GameCard> {
   Widget build(BuildContext context) {
     selected = ( gameID == widget.chosen);
     return InkWell(
-      onTap: (){
-        setState(() {
-          selected = !selected;
-        });
-        widget.onSelected(gameID);
+
+        onTap: (){
+          setState(() {
+            selected = !selected;
+          });
+          widget.onSelected(gameID);
 
       },
       child: Padding(

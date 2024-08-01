@@ -104,12 +104,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
-                                    const EdgeInsetsDirectional.fromSTEB(
-                                        16, 12, 16, 0),
+
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16, 12, 16, 0),
                                     child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             width: MediaQuery.of(context)
@@ -123,20 +124,20 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 },
                                                 child: ClipRRect(
                                                   borderRadius:
-                                                  BorderRadius.circular(8),
+                                                      BorderRadius.circular(8),
                                                   child: filePath != null
                                                       ? Image.file(
-                                                    File(filePath!.path),
-                                                    width: 359,
-                                                    height: 200,
-                                                    fit: BoxFit.cover,
-                                                  )
+                                                          File(filePath!.path),
+                                                          width: 359,
+                                                          height: 200,
+                                                          fit: BoxFit.cover,
+                                                        )
                                                       : Image.asset(
-                                                    'assets/default_images/default_image.jpg',
-                                                    width: 359,
-                                                    height: 200,
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                                          'assets/default_images/default_image.jpg',
+                                                          width: 359,
+                                                          height: 200,
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                 ),
                                               ),
                                             ),
@@ -174,7 +175,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             maxLength: 50,
                                             controller: nameController,
                                             textCapitalization:
-                                            TextCapitalization.words,
+                                                TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
                                               labelText: 'Event name...',
@@ -199,13 +200,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 borderSide: BorderSide(
                                                   color: validName
                                                       ? Theme.of(context)
-                                                      .colorScheme
-                                                      .primary
+                                                          .colorScheme
+                                                          .primary
                                                       : Colors.red,
                                                   width: 2,
                                                 ),
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
@@ -215,15 +216,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   width: 2,
                                                 ),
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
                                                   .surface,
                                               contentPadding:
-                                              const EdgeInsetsDirectional
-                                                  .fromSTEB(16, 20, 16, 20),
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 20, 16, 20),
                                             ),
                                             style: TextStyle(
                                               fontFamily: 'Inter',
@@ -247,13 +248,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChooseGame(
-                                                            chosenGame:
-                                                            gameChosen,
-                                                          )))
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChooseGame(
+                                                                chosenGame:
+                                                                    gameChosen,
+                                                              )))
                                                   .then((gameChosen) {
                                                 setState(() {
                                                   if (gameChosen != null) {
@@ -273,8 +274,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   color: gameChosen == -1
                                                       ? Colors.red
                                                       : Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
+                                                          .colorScheme
+                                                          .primary,
                                                   size: 24,
                                                 ),
                                                 Text(
@@ -301,7 +302,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             maxLength: 100,
                                             controller: descriptionController,
                                             textCapitalization:
-                                            TextCapitalization.words,
+                                                TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
                                               labelText: 'Description...',
@@ -331,7 +332,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   width: 2,
                                                 ),
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
@@ -341,15 +342,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   width: 2,
                                                 ),
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
                                                   .surface,
                                               contentPadding:
-                                              const EdgeInsetsDirectional
-                                                  .fromSTEB(16, 16, 16, 16),
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 16, 16, 16),
                                             ),
                                             style: TextStyle(
                                               fontFamily: 'Inter',
@@ -398,8 +399,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   return Theme(
                                                     data: ThemeData.from(
                                                         colorScheme:
-                                                        Theme.of(context)
-                                                            .colorScheme),
+
+                                                            Theme.of(context)
+                                                                .colorScheme),
                                                     child: child!,
                                                   );
                                                 },
@@ -408,21 +410,21 @@ class _CreateEventsState extends State<CreateEvents> {
                                               TimeOfDay? datePickedTime;
                                               if (datePickedDate != null) {
                                                 datePickedTime =
-                                                await showTimePicker(
-                                                  //ignore: use_build_context_synchronously
-                                                    context: context,
-                                                    initialTime:
-                                                    TimeOfDay.now(),
-                                                    builder:
-                                                        (context, child) {
-                                                      return Theme(
-                                                        data: ThemeData.from(
-                                                            colorScheme: Theme.of(
-                                                                context)
-                                                                .colorScheme),
-                                                        child: child!,
-                                                      );
-                                                    });
+                                                    await showTimePicker(
+                                                        //ignore: use_build_context_synchronously
+                                                        context: context,
+                                                        initialTime:
+                                                            TimeOfDay.now(),
+                                                        builder:
+                                                            (context, child) {
+                                                          return Theme(
+                                                            data: ThemeData.from(
+                                                                colorScheme: Theme.of(
+                                                                        context)
+                                                                    .colorScheme),
+                                                            child: child!,
+                                                          );
+                                                        });
                                               }
 
                                               if (datePickedDate != null &&
@@ -447,31 +449,31 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     .colorScheme
                                                     .surface,
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                                 border: Border.all(
                                                   color: validStartDate
                                                       ? Theme.of(context)
-                                                      .colorScheme
-                                                      .primary
+                                                          .colorScheme
+                                                          .primary
                                                       : Colors.red,
                                                   width: 2,
                                                 ),
                                               ),
                                               child: Align(
                                                 alignment:
-                                                const AlignmentDirectional(
-                                                    -1, 0),
+                                                    const AlignmentDirectional(
+                                                        -1, 0),
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                      12, 0, 0, 0),
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
+                                                          12, 0, 0, 0),
                                                   child: Text(
                                                     _datePicked != null
                                                         ? DateFormat(
-                                                        'd MMMM , hh:mm a')
-                                                        .format(
-                                                        _datePicked!)
+                                                                'd MMMM , hh:mm a')
+                                                            .format(
+                                                                _datePicked!)
                                                         : 'Select a date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
@@ -481,7 +483,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
@@ -507,7 +509,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               final datePickedDate2 =
-                                              await showDatePicker(
+                                                  await showDatePicker(
                                                 context: context,
                                                 initialDate: DateTime.now(),
                                                 lastDate: DateTime(2050),
@@ -516,8 +518,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   return Theme(
                                                     data: ThemeData.from(
                                                         colorScheme:
-                                                        Theme.of(context)
-                                                            .colorScheme),
+                                                            Theme.of(context)
+                                                                .colorScheme),
                                                     child: child!,
                                                   );
                                                 },
@@ -526,21 +528,21 @@ class _CreateEventsState extends State<CreateEvents> {
                                               TimeOfDay? datePickedTime2;
                                               if (datePickedDate2 != null) {
                                                 datePickedTime2 =
-                                                await showTimePicker(
-                                                  //ignore: use_build_context_synchronously
-                                                    context: context,
-                                                    initialTime:
-                                                    TimeOfDay.now(),
-                                                    builder:
-                                                        (context, child) {
-                                                      return Theme(
-                                                        data: ThemeData.from(
-                                                            colorScheme: Theme.of(
-                                                                context)
-                                                                .colorScheme),
-                                                        child: child!,
-                                                      );
-                                                    });
+                                                    await showTimePicker(
+                                                        //ignore: use_build_context_synchronously
+                                                        context: context,
+                                                        initialTime:
+                                                            TimeOfDay.now(),
+                                                        builder:
+                                                            (context, child) {
+                                                          return Theme(
+                                                            data: ThemeData.from(
+                                                                colorScheme: Theme.of(
+                                                                        context)
+                                                                    .colorScheme),
+                                                            child: child!,
+                                                          );
+                                                        });
                                               }
 
                                               if (datePickedDate2 != null &&
@@ -558,14 +560,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     validEndDate = true;
                                                   } else {
                                                     ScaffoldMessenger.of(
-                                                        context)
+                                                            context)
                                                         .showSnackBar(
-                                                        const SnackBar(
-                                                            content: Text(
-                                                                "Invalid end date/time."),
-                                                            backgroundColor:
-                                                            Colors
-                                                                .red));
+                                                            const SnackBar(
+                                                                content: Text(
+                                                                    "Invalid end date/time."),
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .red));
                                                   }
                                                 });
                                               }
@@ -578,32 +580,32 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     .colorScheme
                                                     .surface,
                                                 borderRadius:
-                                                BorderRadius.circular(12),
+                                                    BorderRadius.circular(12),
                                                 border: Border.all(
                                                   color: validEndDate
                                                       ? Theme.of(context)
-                                                      .colorScheme
-                                                      .primary
+                                                          .colorScheme
+                                                          .primary
                                                       : Colors.red,
                                                   width: 2,
                                                 ),
                                               ),
                                               child: Align(
                                                 alignment:
-                                                const AlignmentDirectional(
-                                                    -1, 0),
+                                                    const AlignmentDirectional(
+                                                        -1, 0),
                                                 child: Padding(
                                                   padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                      12, 0, 0, 0),
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
+                                                          12, 0, 0, 0),
                                                   child: Text(
                                                     _endDatePicked != null &&
-                                                        validEndDate
+                                                            validEndDate
                                                         ? DateFormat(
-                                                        'd MMMM , hh:mm a')
-                                                        .format(
-                                                        _endDatePicked!)
+                                                                'd MMMM , hh:mm a')
+                                                            .format(
+                                                                _endDatePicked!)
                                                         : 'Select a date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
@@ -613,7 +615,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                      FontWeight.w600,
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
@@ -632,17 +634,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 ),
                                                 Switch.adaptive(
                                                   activeTrackColor:
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
                                                   inactiveTrackColor:
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .surface,
                                                   inactiveThumbColor:
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
                                                   value: isChanged,
                                                   onChanged: (bool value) {
                                                     setState(() {
@@ -664,12 +666,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       builder: (context) =>
                                                           ConnectionsListWidget(
                                                             chosenInvites:
-                                                            invites,
+                                                                invites,
                                                           ))).then((invited) {
                                                 setState(() {
                                                   if (invited != null) {
                                                     invites =
-                                                    invited as List<String>;
+                                                        invited as List<String>;
                                                   }
                                                 });
                                               });
@@ -683,12 +685,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       : Icons.check,
                                                   color: invites.isEmpty
                                                       ? Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary
+                                                          .colorScheme
+                                                          .secondary
                                                       : Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  size: 24,
+                                                          .colorScheme
+                                                          .primary,                                                  size: 24,
                                                 ),
                                                 Text(
                                                   'Invite connections to join...',
@@ -737,9 +738,9 @@ class _CreateEventsState extends State<CreateEvents> {
                               if(name.isEmpty){
                                 validName = false;
                               }else
-                              {
-                                validName = true;
-                              }
+                                {
+                                  validName = true;
+                                }
                               if (validName &&
                                   !(gameChosen == -1) &&
                                   validEndDate &&
@@ -748,9 +749,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   content:
-                                  const Text("Event created successfully!"),
+                                      const Text("Event created successfully!"),
                                   backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
+                                      Theme.of(context).colorScheme.primary,
                                 ));
                                 nameController.clear();
                                 descriptionController.clear();

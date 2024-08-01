@@ -40,7 +40,7 @@ class EventsService {
   List<Event> getPublicEvents(List<Event> e) {
     List<Event> all = [];
     for (var x in e) {
-      if (x.privacy == false && !DateTime.now().isAfter(x.endDate)) {
+        if (x.privacy == false && !DateTime.now().isAfter(x.endDate)) {
         all.add(x);
       }
     }
@@ -178,7 +178,7 @@ class EventsService {
     List<Event> subscribed = [];
     for (var i in allEvents!) {
       for (var j in i.subscribed) {
-        if (j == currentUser?.uid && !DateTime.now().isAfter(i.endDate)) {
+        if (j == currentUser?.uid&& !DateTime.now().isAfter(i.endDate)) {
           subscribed.add(i);
           continue;
         }
@@ -191,8 +191,7 @@ class EventsService {
     final currentUser = FirebaseAuth.instance.currentUser;
     List<Event> myEvents = [];
     for (var i in allEvents!) {
-      if (i.creatorID == currentUser?.uid &&
-          !DateTime.now().isAfter(i.endDate)) {
+      if (i.creatorID == currentUser?.uid&& !DateTime.now().isAfter(i.endDate)) {
         myEvents.add(i);
       }
     }
@@ -204,7 +203,7 @@ class EventsService {
     List<Event> joinedEvents = [];
     for (var i in allEvents!) {
       for (var j in i.participants) {
-        if (j == currentUser?.uid && !DateTime.now().isAfter(i.endDate)) {
+        if (j == currentUser?.uid&& !DateTime.now().isAfter(i.endDate)) {
           joinedEvents.add(i);
         }
       }
@@ -296,7 +295,8 @@ class EventsService {
     return e.participants.length;
   }
 
-  Future<List<GameDetails>> getMyGames() async {
+
+  Future<List<GameDetails>> getMyGames() async{
     List<String> gameIds = await MyGamesService().getMyGames();
     List<GameDetails> gameDetails = [];
     for (var i in gameIds) {
@@ -351,4 +351,5 @@ class EventsService {
       }
     }
   }
+
 }
