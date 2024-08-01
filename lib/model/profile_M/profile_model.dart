@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 
 class Profile {
@@ -12,8 +13,20 @@ class Profile {
   final List<String> wantToPlay;
   final List<GameStats> recentActivities;
   final int numberOfconnections; 
+  final String name;
+  final String surname;
+  final String theme;
+  final String userID;
+  final bool visibility;
+  final List<String> ageRatings;
+  final Timestamp birthday;
+  final List<String> genreInterests;
+  final List<String> socialInterests;
+  final List<int> positions;
 
   Profile({
+    required this.ageRatings,
+    required this.birthday,
     required this.banner,
     required this.bio,
     required this.profilePicture,
@@ -25,5 +38,13 @@ class Profile {
     required this.wantToPlay,
     required this.recentActivities,
     required this.numberOfconnections,
+    required this.name,
+    required this.surname,
+    required this.theme,
+    required this.userID,
+    required this.visibility,
+    required this.genreInterests,
+    required this.socialInterests,
+    required this.positions,
   });
 }

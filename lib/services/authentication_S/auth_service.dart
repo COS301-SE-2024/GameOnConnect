@@ -94,22 +94,27 @@ class AuthService {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
         final defaultData = <String, dynamic>{
+          "age_rating_tags": [],
+          "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
+          "bio": "",
+          "birthday": null,
+          "profilepicture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
+          "username": {"profile_name": username, "unique_num": _nextNum},
+          "profileName": username ?? "",
+          "currently_playing":"",
+          "my_games": [],
+          "wantToPlay": [],
+          "recent_activity": [],
+          "numberOfconnections": 0,
+          "genre_interests_tags": [],
+          "social_interests_tags": [],
           "name": "",
           "surname": "",
-          "age_rating_tags": [],
-          "birthday": null,
-          "genre_interests_tags": [],
-          "profile_picture":
-          "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
-          "social_interests_tags": [],
           "theme": "light",
           "userID": currentUser.uid,
-          "username": {"profile_name": username, "unique_num": _nextNum},
           "visibility": true,
-          "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
           "want_to_play": [],
-          "my_games": [],
-          "currently_playing":"",
+          "positions" : [],
         };
 
         final connectionData = <String, dynamic>{
