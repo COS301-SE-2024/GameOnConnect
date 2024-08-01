@@ -11,7 +11,7 @@ import '../../model/game_library_M/game_details_model.dart';
 import '../../services/game_library_S/my_games_service.dart';
 
 class EventsService {
-  Stream<List<Event>> fetchAllEvents()  async* {
+  Stream<List<Event>> fetchAllEvents() async* {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -24,8 +24,8 @@ class EventsService {
         for (var x in querySnapshot.docs) {
           var data = x.data() as Map<String, dynamic>;
 
-            Event event = Event.fromMap(data, x.id);
-          if( event.privacy == false) {
+          Event event = Event.fromMap(data, x.id);
+          if (event.privacy == false) {
             all.add(event);
           }
         }
@@ -36,23 +36,22 @@ class EventsService {
     }
   }
 
-  List<Event> getPublicEvents( List<Event> e){
+  List<Event> getPublicEvents(List<Event> e) {
     List<Event> all = [];
-    for(var x in e){
-      if(x.privacy == false)
-        {
-          all.add(x);
+    for (var x in e) {
+      if (x.privacy == false) {
+        all.add(x);
       }
     }
     return all;
   }
 
-  Future<Event?> getEvent(String id) async{
+  Future<Event?> getEvent(String id) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     Event? e;
-    DocumentSnapshot doc= await db.collection('events').doc(id).get();
-    if(doc.exists){
-      Map<String,dynamic> data = doc.data() as Map<String,dynamic>;
+    DocumentSnapshot doc = await db.collection('events').doc(id).get();
+    if (doc.exists) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       e = Event.fromMap(data, id);
     }
     return e;
@@ -80,8 +79,7 @@ class EventsService {
     return invitedEvents;
   }
 
-  Future<void> createEvent(
-      String? type,
+  Future<void> createEvent(String? type,
       DateTime? startDate,
       String name,
       DateTime? endDate,
@@ -89,15 +87,17 @@ class EventsService {
       bool privacy,
       List<String> invited,
       String url,
-      String description
-      ) async {
+      String description) async {
     try {
       FirebaseFirestore db = FirebaseFirestore.instance;
       final storage = FirebaseStorage.instance.ref();
       final currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser != null) {
-        String id = db.collection('events').doc().id;
+        String id = db
+            .collection('events')
+            .doc()
+            .id;
 
         final data = <String, dynamic>{
           "name": name,
@@ -116,9 +116,8 @@ class EventsService {
           "description": description,
         };
 
-        if(!url.startsWith('assets'))
-          {
-            // default image not stored, there will just not be a event image with the event id
+        if (!url.startsWith('assets')) {
+          // default image not stored, there will just not be a event image with the event id
           final imageStorage = storage.child('events/$id');
           await imageStorage.putFile(File(url));
         }
@@ -129,19 +128,19 @@ class EventsService {
       rethrow;
     }
   }
-  
-  Future<String> getEventImage(String id) async{
+
+  Future<String> getEventImage(String id) async {
     final storage = FirebaseStorage.instance.ref();
-    try{
+    try {
       return await storage.child('events/$id').getDownloadURL();
-      
-    }catch (e){
+    } catch (e) {
       return await storage.child('events/default_image.jpg').getDownloadURL();
     }
   }
 
   Future<void> declineEventInvitation(Event event) async {
-    final DocumentReference docRef = FirebaseFirestore.instance.collection('events').doc(event.eventID);
+    final DocumentReference docRef = FirebaseFirestore.instance.collection(
+        'events').doc(event.eventID);
 
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
@@ -163,7 +162,7 @@ class EventsService {
 
       if (currentUser != null) {
         List<String>? connections =
-            await ConnectionService().getConnections('connections');
+        await ConnectionService().getConnections('connections');
         for (var i in connections) {
           user.AppUser u = user.AppUser.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
@@ -178,7 +177,7 @@ class EventsService {
 
   List<Event> getSubscribedEvents(List<Event>? allEvents) {
     final currentUser = FirebaseAuth.instance.currentUser;
-    List<Event> subscribed = [] ;
+    List<Event> subscribed = [];
     for (var i in allEvents!) {
       for (var j in i.subscribed) {
         if (j == currentUser?.uid) {
@@ -229,35 +228,33 @@ class EventsService {
   }
 
 
-    Future<void> unsubscribeToEvent(Event subscribed) async {
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      final currentUser = FirebaseAuth.instance.currentUser;try{
-        if(currentUser != null) {
-          subscribed.subscribed.remove(currentUser.uid);
-          await db.collection('events').doc(subscribed.eventID).update({
-            'subscribed': FieldValue.arrayRemove([currentUser.uid])
-
-          },);
-        }
-      }catch (e){
-        throw("unable to unsubscribe from event");
-      }
-
-
-    }
-
-    bool isSubscribed(Event e) {
-      final currentUser = FirebaseAuth.instance.currentUser;
+  Future<void> unsubscribeToEvent(Event subscribed) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    try {
       if (currentUser != null) {
-        for (var i in e.subscribed) {
-          if (i == currentUser.uid) {
-            return true;
-          }
+        subscribed.subscribed.remove(currentUser.uid);
+        await db.collection('events').doc(subscribed.eventID).update({
+          'subscribed': FieldValue.arrayRemove([currentUser.uid])
+        },);
+      }
+    } catch (e) {
+      throw("unable to unsubscribe from event");
+    }
+  }
+
+  bool isSubscribed(Event e) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      for (var i in e.subscribed) {
+        if (i == currentUser.uid) {
+          return true;
         }
-        return false;
       }
       return false;
     }
+    return false;
+  }
 
   bool isJoined(Event e) {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -271,10 +268,10 @@ class EventsService {
     }
     return false;
   }
-  bool isCreator (Event e) {
+
+  bool isCreator(Event e) {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null && currentUser.uid == e.creatorID) {
-
       return true;
     }
     return false;
@@ -284,13 +281,13 @@ class EventsService {
     FirebaseFirestore db = FirebaseFirestore.instance;
     final currentUser = FirebaseAuth.instance.currentUser;
 
-    try{
-      if(currentUser != null) {
+    try {
+      if (currentUser != null) {
         await db.collection('events').doc(joined.eventID).set({
           'participants': FieldValue.arrayUnion([currentUser.uid])
         }, SetOptions(merge: true));
       }
-    }catch (e){
+    } catch (e) {
       throw("unable to subscribe to event");
     }
   }
@@ -299,13 +296,14 @@ class EventsService {
     return e.participants.length;
   }
 
-  Stream<List<GameDetails>> getMyGames() async*{
+  Stream<List<GameDetails>> getMyGames() async* {
     List<String> gameIds = await MyGamesService().getMyGames();
-    List<GameDetails> gameDetails=[];
-    for(var i in gameIds){
+    List<GameDetails> gameDetails = [];
+    for (var i in gameIds) {
       GameDetails game = await GameService().fetchGameDetails(i);
       gameDetails.add(game);
     }
     yield gameDetails;
-}
+  }
+
 }

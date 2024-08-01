@@ -37,7 +37,8 @@ class Event {
         subscribed: data['subscribed'],
         participants: data['participants'],
         description: data['description'],
-        privacy: data['privacy']
+        privacy: data['privacy'],
+
     );
   }
 }
