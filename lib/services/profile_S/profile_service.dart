@@ -62,13 +62,13 @@ Future<Profile?>  fetchProfile() async {
           positions: List<int>.from(data['positions'] ?? []),
       );
         } else {
-          print('Document not found');
+          //print('Document not found');
         }
       } else {
-        print('User not found');
+        //print('User not found');
       }
     } catch (e) {
-      print('Error fetching profile data: $e');
+      //print('Error fetching profile data: $e');
     }
     return null;
   }
