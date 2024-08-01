@@ -1,6 +1,5 @@
 // ignore_for_file: unused_element
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -29,16 +28,14 @@ class _FriendSearchState extends State<FriendSearch> {
 
 double _calculateButtonWidth(BuildContext context) {
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(
+      text: const TextSpan(
         text: 'Disconnect',
-        style: TextStyle(fontWeight: FontWeight.bold), // Adjust the font size if needed
+        style: TextStyle(fontWeight: FontWeight.bold), 
       ),
       textDirection: TextDirection.ltr,
     )..layout();
 
     final double textWidth = textPainter.width;
-    //final double iconWidth = 24.0; // Approximate width of the icon
-    //final double padding = 32.0; // Padding around the text and icon
 
     return textWidth;
   }
@@ -127,6 +124,7 @@ Future<void> _fetchUsers() async {
       position: DelightSnackbarPosition.top,
       autoDismiss: true,
       snackbarDuration: const Duration(seconds: 3))
+      // ignore: use_build_context_synchronously
       .show(context);
   } finally {
     setState(() {
@@ -284,7 +282,8 @@ Widget build(BuildContext context) {
             user.username.toLowerCase().contains(_searchQuery.toLowerCase()) &&
             user.uid != _currentUserId)
           .toList();
-        final double buttonWidth = _calculateButtonWidth(context);
+        // ignore: unused_local_variable
+        //final double buttonWidth = _calculateButtonWidth(context);
 
         return Column(
           children: [
@@ -332,7 +331,7 @@ Widget build(BuildContext context) {
                               ? Icon(Icons.error) // Fallback icon if no image is provided
                               : null,
                         ),*/
-                          SizedBox(width: 12.0),
+                          const SizedBox(width: 12.0),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -346,8 +345,8 @@ Widget build(BuildContext context) {
                               ],
                             ),
                           ),
-                          SizedBox(width: 16.0),
-                          Container(
+                          const SizedBox(width: 16.0),
+                          SizedBox(
                             width: 130,
                             child: isConnection
                               ? ElevatedButton.icon(
