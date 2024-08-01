@@ -128,12 +128,12 @@ class EventsService {
     }
   }
 
-  Future<String> getEventImage(String id) async {
+  Stream<String> getEventImage(String id) async* {
     final storage = FirebaseStorage.instance.ref();
     try {
-      return await storage.child('events/$id').getDownloadURL();
+      yield await storage.child('events/$id').getDownloadURL();
     } catch (e) {
-      return await storage.child('events/default_image.jpg').getDownloadURL();
+      yield await storage.child('events/default_image.jpg').getDownloadURL();
     }
   }
 

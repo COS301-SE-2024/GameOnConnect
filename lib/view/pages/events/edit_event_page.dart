@@ -13,7 +13,9 @@ String? selectedOption = "Gaming Session";
 
 class EditEvent extends StatefulWidget {
   final Event e;
-  const EditEvent({super.key, required this.e});
+  final String imageUrl;
+
+  const EditEvent({super.key, required this.e, required this.imageUrl});
 
   @override
   State<EditEvent> createState() => _EditEventsState();
@@ -37,6 +39,8 @@ class _EditEventsState extends State<EditEvent> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   late int gameID;
+  late String imageUrl;
+
 
   List<String> invites = [];
 
@@ -51,7 +55,7 @@ class _EditEventsState extends State<EditEvent> {
         invites,
         filePath != null
             ? filePath!.path
-            : 'assets/default_images/default_image.jpg',
+            : imageUrl,
         descriptionController.text,
         e.eventID);
   }
@@ -99,6 +103,7 @@ class _EditEventsState extends State<EditEvent> {
     isChanged = e.privacy;
     gameChosen = e.gameID;
     selectedOption = e.eventType;
+    imageUrl = widget.imageUrl;
   }
 
   @override
@@ -169,8 +174,8 @@ class _EditEventsState extends State<EditEvent> {
                                                           height: 200,
                                                           fit: BoxFit.cover,
                                                         )
-                                                      : Image.asset(
-                                                          'assets/default_images/default_image.jpg',
+                                                      : Image.network(
+                                                          imageUrl,
                                                           width: 359,
                                                           height: 200,
                                                           fit: BoxFit.cover,
@@ -422,6 +427,7 @@ class _EditEventsState extends State<EditEvent> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
+                                              validEndDate = false;
                                               final datePickedDate =
                                                   await showDatePicker(
                                                 context: context,
@@ -470,6 +476,10 @@ class _EditEventsState extends State<EditEvent> {
                                                     datePickedTime!.hour,
                                                     datePickedTime.minute,
                                                   );
+                                                  if(_datePicked!.isBefore(_endDatePicked!))
+                                                    {
+                                                      validEndDate = true;
+                                                    }
                                                 });
                                               }
                                             },
@@ -777,13 +787,6 @@ class _EditEventsState extends State<EditEvent> {
                                   validEndDate &&
                                   validStartDate) {
                                 editEvent();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content:
-                                      const Text("Event edit successfully!"),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ));
                                 nameController.clear();
                                 descriptionController.clear();
                                 setState(() {
@@ -795,6 +798,7 @@ class _EditEventsState extends State<EditEvent> {
                                   _endDatePicked = null;
                                   _datePicked = null;
                                 });
+                                Navigator.pop(context);
                               } else {
                                 if (!validName) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -824,7 +828,7 @@ class _EditEventsState extends State<EditEvent> {
                               }
                             },
                             color: Theme.of(context).colorScheme.primary,
-                            child: const Text('Create'),
+                            child: const Text('Save'),
                           ),
                         ),
                       ),
