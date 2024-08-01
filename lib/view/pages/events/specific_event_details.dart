@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../../model/events_M/events_model.dart';
@@ -63,10 +64,15 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Stack(children: [
-                              Image.network(
-                                imageUrl,
-                                width: double.infinity,
+                              CachedNetworkImage(
                                 height: 340,
+                                width: double.infinity,
+                                imageUrl: imageUrl,
+                                placeholder: (context, url) => const Center(
+                                    child:
+                                    CircularProgressIndicator()), // Loading indicator for banner
+                                errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                                 fit: BoxFit.cover,
                               ),
                               Align(

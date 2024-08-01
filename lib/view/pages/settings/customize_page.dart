@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
 
@@ -9,13 +9,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../../globals.dart' as globals;
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -39,11 +40,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   dynamic _profileBanner;
   String testBannerurl = '';
 
-  final String? apiKey = dotenv.env['RAWG_API_KEY'];
-
   Future<void> _fetchGenresFromAPI() async {
     try {
-      var url = Uri.parse('https://api.rawg.io/api/genres?key=$apiKey');
+      var url =
+          Uri.parse('https://api.rawg.io/api/genres?key=${globals.apiKey}');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -53,16 +53,16 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               .toList();
         });
       } else {
-        print("Error fetching genres: ${response.statusCode}");
+        //print("Error fetching genres: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching genres: $e");
+      //print("Error fetching genres: $e");
     }
   }
 
   Future<void> _fetchTagsFromAPI() async {
     try {
-      var url = Uri.parse('https://api.rawg.io/api/tags?key=$apiKey');
+      var url = Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
@@ -72,10 +72,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               .toList();
         });
       } else {
-        print("Error fetching interest tags: ${response.statusCode}");
+        throw("Error fetching interest tags: ${response.statusCode}");
       }
     } catch (e) {
-      print("Error fetching interest tags: $e");
+      throw("Error fetching interest tags: $e");
     }
   }
 
@@ -159,7 +159,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         }
       }
     } catch (e) {
-      print("Error fetching user selections: $e");
+      throw("Error fetching user selections: $e");
     }
   }
 
@@ -196,8 +196,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
-          _profileImage = File(image.path);
-          print("picked image and image updated ");
+          _profileImage = image.path;
+          _profileImageUrl = "";
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
@@ -224,9 +224,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             //_profileBannerFB = file.name;
           });
         }
-        ScaffoldMessenger.of(context).showSnackBar(
+       /* ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
-        );
+        );*/
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -238,11 +238,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
-          _profileBanner = File(image.path);
+          _profileBanner = image.path;
+          _profileBannerUrl = "";
         });
-        ScaffoldMessenger.of(context).showSnackBar(
+        /*ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
-        );
+        );*/
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -334,21 +335,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Widget _buildContent(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.keyboard_backspace),
-          onPressed: () {
-            Navigator.of(context).pop();
+      appBar: BackButtonAppBar(
+          title: 'Customize Profile',
+          onBackButtonPressed: () {
+            Navigator.pop(context);
           },
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('customize_profile_text'),
         ),
-        title: const Text(
-            'Customize Profile',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -360,15 +354,22 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 SizedBox(
                   width: double.infinity,
                   height: 150,
-                  child: CachedNetworkImage(
-                    imageUrl: _profileBannerUrl,
-                    placeholder: (context, url) => const Center(
-                        child:
-                            CircularProgressIndicator()), // Loading indicator for banner
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    fit: BoxFit.cover,
-                  ),
+                  child: _profileBannerUrl.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: _profileBannerUrl,
+                          placeholder: (context, url) => const Center(
+                              child:
+                                  CircularProgressIndicator()), // Loading indicator for banner
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(_profileBanner),
+                          width: 359,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 Container(
                   height: 30,
@@ -394,12 +395,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  CircleAvatar(
+                  _profileImageUrl.isNotEmpty? CircleAvatar(
                     radius: 60,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     backgroundImage:
                         CachedNetworkImageProvider(_profileImageUrl),
-                  ),
+                  ):
+              CircleAvatar(
+              radius: 60,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage: FileImage(File(_profileImage)),
+              ),
                   Container(
                     height: 30,
                     width: 30,
@@ -663,10 +669,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           String imageUrl;
           if (kIsWeb) {
             imageUrl =
-                await uploadImageToFirebase(_profileImage!, 'Profile_picture');
+                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
           } else {
             imageUrl =
-                await uploadImageToFirebase(_profileImage!, 'Profile_picture');
+                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
           }
 
           await saveImageURL(imageUrl, 'Profile_picture');
@@ -680,11 +686,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileBanner != null) {
           String bannerUrl;
           if (kIsWeb) {
-            bannerUrl = await uploadImageToFirebase(_profileBanner!, 'banner');
+            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
           } else {
-            bannerUrl = await uploadImageToFirebase(_profileBanner!, 'banner');
+            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
           }
-
           await saveImageURL(bannerUrl, 'banner');
 
           // Show a confirmation message or navigate
@@ -711,12 +716,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } catch (e) {
-      print("Error setting/updating profile data: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to update profile.'),
             backgroundColor: Colors.red),
       );
+      throw("Error setting/updating profile data: $e");
     }
   }
 }

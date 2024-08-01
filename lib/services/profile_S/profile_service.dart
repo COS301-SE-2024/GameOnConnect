@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
-//import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';

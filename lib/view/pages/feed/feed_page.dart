@@ -37,6 +37,7 @@ class _FeedPageState extends State<FeedPage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+  
 
 
   late String currentUserId; // Declare currentUserId here
@@ -65,6 +66,10 @@ class _FeedPageState extends State<FeedPage> {
   String getCurrentUserId() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return currentUserId;
+
+    //WidgetsBinding.instance
+        //.addPostFrameCallback((_) => _checkProfileAndShowDialog());      
+
   }
 
 
@@ -351,7 +356,7 @@ class _FeedPageDisplay extends StatelessWidget {
               },
               icon: Icon(
                 Icons.message,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
