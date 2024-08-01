@@ -10,12 +10,12 @@ class ConnectionsList extends StatefulWidget {
     super.key,
     required this.isOwnProfile,// true
     required this.uid,
-    required this.LoggedInUser
+    required this.loggedInUser
      });
 
     final bool isOwnProfile;
     final String uid;
-    final String LoggedInUser;
+    final String loggedInUser;
 
   @override
   State<ConnectionsList> createState() => _ConnectionsListState();
@@ -77,7 +77,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                     GestureDetector(
                       onTap: () {
                         // Navigate to the request page when the text is clicked
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, LoggedInUser: widget.LoggedInUser,)));//go to next page 
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, loggedInUser: widget.loggedInUser,)));//go to next page 
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -91,7 +91,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         ),
                       ),
                     ), 
-                       Center(
+                       const Center(
                         child: Text('No Connections'),
                       )
                       ]);
@@ -103,7 +103,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         GestureDetector(
                           onTap: () {
                             // Navigate to the request page when the text is clicked
-                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, LoggedInUser: widget.LoggedInUser,)));//go to next page 
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionRequestList(isOwnProfile: widget.isOwnProfile,uid : widget.uid, loggedInUser: widget.loggedInUser,)));//go to next page 
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -126,7 +126,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                           itemBuilder: (context, index) {
                             user.AppUser? i = list![index];
 
-                            if(i.uid == widget.LoggedInUser)
+                            if(i.uid == widget.loggedInUser)
                             {
                               return ConnectionCardWidget(
                                 image: i.profilePicture,
@@ -134,7 +134,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'connections',
-                                loggedInUser: widget.LoggedInUser,
+                                loggedInUser: widget.loggedInUser,
                                 onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   
@@ -146,7 +146,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'connections',
-                                loggedInUser: widget.LoggedInUser,
+                                loggedInUser: widget.loggedInUser,
                                 onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   

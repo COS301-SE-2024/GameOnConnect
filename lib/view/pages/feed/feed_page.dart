@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -22,7 +22,8 @@ import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 class FeedPage extends StatefulWidget {
   final String title;
 
-  FeedPage({
+  // ignore: prefer_const_constructors_in_immutables
+  const FeedPage({
     Key? key,
     required this.title,
   }) : super(key: key);

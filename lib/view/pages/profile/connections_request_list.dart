@@ -8,12 +8,12 @@ class ConnectionRequestList extends StatefulWidget {
      super.key,
     required this.isOwnProfile,// true
     required this.uid,
-     required this.LoggedInUser,
+     required this.loggedInUser,
      });
 
     final bool isOwnProfile;
     final String uid;
-    final String LoggedInUser;
+    final String loggedInUser;
 
   @override
   State<ConnectionRequestList> createState() => _ConnectionRequestListState();
@@ -73,7 +73,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   list = snapshot.data;
                   if (list!.isEmpty) {
             // Display "No connections" when the list is empty
-            return  Center(
+            return  const Center(
               child: Text('No connection Requests'),
             );
           } else{
@@ -96,7 +96,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'requests',
-                                loggedInUser: widget.LoggedInUser,
+                                loggedInUser: widget.loggedInUser,
                                 onAccepted: _handleAcceptance ,
                                 onRejected: _handleRejection ,
                                 onSelected: (uid, selected) {

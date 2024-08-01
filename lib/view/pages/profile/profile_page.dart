@@ -1,6 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
@@ -18,6 +16,7 @@ class Profilenew extends StatefulWidget {
   final bool isConnection;
   final String loggedInUser;
 
+  // ignore: use_super_parameters
   const Profilenew({ // Use named parameters
     Key? key,
     required this.uid, //u
@@ -133,7 +132,7 @@ class _ProfileState extends State<Profilenew>  {
                                       GestureDetector(
                                         onTap: () {
                                           //Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile,))); 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid, LoggedInUser: widget.loggedInUser,))); 
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid, loggedInUser: widget.loggedInUser,))); 
                                         },
                                         child: RichText(
                                           text: TextSpan(
@@ -247,12 +246,12 @@ class _ProfileState extends State<Profilenew>  {
                       ),
                         ] else...[
                           const SizedBox(height: 20), // space
-                          Divider(),
+                          const Divider(),
                            const SizedBox(height: 20), // space
-                           Center(
+                           const Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
+                              children: [
                                 Icon(
                                   Icons.lock,
                                   size: 50,

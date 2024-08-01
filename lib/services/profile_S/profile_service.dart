@@ -13,7 +13,6 @@ class ProfileService {
 Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
   if(uid== 'CurrentUser')
     {
-       FirebaseFirestore db = FirebaseFirestore.instance;
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
       if (currentUser == null) {
