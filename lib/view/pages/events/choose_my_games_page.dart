@@ -114,14 +114,14 @@ class _ChooseGame extends State<ChooseGame> {
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ],
+                                  ),
+            ],
                                 ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
                     SizedBox(
                         height: 300,
                         child: ListView.separated(
@@ -141,6 +141,7 @@ class _ChooseGame extends State<ChooseGame> {
                                     chosenGame = gameName;
                                   });
                             },
+    );},
                             separatorBuilder: (BuildContext context, int index) {
                               return const SizedBox();
                             },
