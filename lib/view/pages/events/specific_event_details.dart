@@ -409,7 +409,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         child: MaterialButton(
                                           onPressed: () {
                                             if(isCreator){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditEvent(e: e,)));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditEvent(e: e,imageUrl: imageUrl)));
                                             }
                                             if (!isJoined) {
                                               EventsService().joinEvent(e);
