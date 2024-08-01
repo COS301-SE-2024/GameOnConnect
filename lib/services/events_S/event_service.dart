@@ -295,13 +295,13 @@ class EventsService {
     return e.participants.length;
   }
 
-  Stream<List<GameDetails>> getMyGames() async* {
+  Future<List<GameDetails>> getMyGames() async{
     List<String> gameIds = await MyGamesService().getMyGames();
     List<GameDetails> gameDetails = [];
     for (var i in gameIds) {
       GameDetails game = await GameService().fetchGameDetails(i);
       gameDetails.add(game);
     }
-    yield gameDetails;
-  }
+    return gameDetails;
+}
 }

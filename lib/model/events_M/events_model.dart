@@ -10,7 +10,7 @@ class Event {
   final List<dynamic> participants;
   final String description;
   final bool privacy;
-  // can later add privacy, conversation id and teams if needed
+  // can later add  conversation id and teams if needed
 
   Event(
       {required this.creatorID,
