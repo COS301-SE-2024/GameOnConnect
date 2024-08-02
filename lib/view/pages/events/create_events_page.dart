@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'choose_my_games_page.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 
 String? selectedOption = "Gaming Session";
 
@@ -250,7 +249,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 15,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -400,7 +399,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 10,
                                           ),
                                           const ChipSelector(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           Text(
                                             'Start*',
                                             style: TextStyle(
@@ -480,10 +481,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primaryContainer
-                                                ),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               child: Align(
                                                 alignment:
@@ -509,13 +509,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height:10),
+
                                           Text(
                                             'End*',
                                             style: TextStyle(
@@ -608,10 +610,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color:
-                                                       Theme.of(context)
-                                                          .colorScheme
-                                                          .primaryContainer,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer,
                                                 ),
                                               ),
                                               child: Align(
@@ -639,59 +640,71 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20,),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
                                           Container(
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
-                                              color: Theme.of(context).colorScheme.primaryContainer,
-
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primaryContainer,
                                             ),
-                                            child:
-                                          Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                 Text(
-                                                   textAlign: TextAlign.start,
-                                                  'Private',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    letterSpacing: 0,
-                                                    color: Theme.of(context).colorScheme.secondary,
+                                            child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    child: Text(
+                                                      'Private',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        letterSpacing: 0,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                Align(
-                                                    alignment: Alignment.centerRight,
-                                                    child:
-                                                Switch.adaptive(
-                                                  activeTrackColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  inactiveTrackColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .surface,
-                                                  inactiveThumbColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                  value: isChanged,
-                                                  onChanged: (bool value) {
-                                                    setState(() {
-                                                      isChanged = value;
-                                                    });
-                                                  },
-                                                ),
-                                                ),
-                                                const SizedBox(width: 20),
-                                              ]),
+                                                  const Spacer(),
+                                                  Switch.adaptive(
+                                                    activeTrackColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    inactiveTrackColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    inactiveThumbColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .surface,
+                                                    value: isChanged,
+                                                    onChanged: (bool value) {
+                                                      setState(() {
+                                                        isChanged = value;
+                                                      });
+                                                    },
+                                                  ),
+                                                  const SizedBox(width: 20),
+                                                ]),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -715,123 +728,134 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Icon(
-                                                  invites.isEmpty
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: invites.isEmpty
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  size: 24,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 0, 16, 0),
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                 ),
-                                                Text(
-                                                  'Invite connections to join...',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    letterSpacing: 0,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Invite connections*',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      letterSpacing: 0,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    invites.isEmpty
+                                                        ? Icons
+                                                            .add_circle_outline
+                                                        : Icons
+                                                            .check_circle_outline_rounded,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
+                                                    size: 24,
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          const SizedBox(height: 32)
+                                          const SizedBox(height: 40),
                                         ]),
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16, 12, 16, 12),
+                                child: MaterialButton(
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  minWidth: double.infinity,
+                                  onPressed: () {
+                                    name = nameController.text;
+                                    if (name.isEmpty) {
+                                      validName = false;
+                                    } else {
+                                      validName = true;
+                                    }
+                                    if (validName &&
+                                        !(gameChosen == -1) &&
+                                        validEndDate &&
+                                        validStartDate) {
+                                      create();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                        const Text("Event created successfully!"),
+                                        backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                      ));
+                                      nameController.clear();
+                                      descriptionController.clear();
+                                      setState(() {
+                                        gameChosen = -1;
+                                        invites = [];
+                                        validEndDate = false;
+                                        validName = false;
+                                        validStartDate = false;
+                                        _endDatePicked = null;
+                                        _datePicked = null;
+                                      });
+                                    } else {
+                                      if (!validName) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered an event name "),
+                                                backgroundColor: Colors.red));
+                                      } else if (gameChosen == -1) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you chose a game to play "),
+                                                backgroundColor: Colors.red));
+                                      } else if (!validStartDate) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered a valid start date and time "),
+                                                backgroundColor: Colors.red));
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered a valid end date and time "),
+                                                backgroundColor: Colors.red));
+                                      }
+                                    }
+                                  },
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: Text(
+                                    'Create event',
+                                    style: TextStyle(
+                                        color: Theme.of(context).colorScheme.surface,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        constraints: const BoxConstraints(
-                          maxWidth: 770,
-                        ),
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16, 12, 16, 12),
-                          child: MaterialButton(
-                            onPressed: () {
-                              name = nameController.text;
-                              if (name.isEmpty) {
-                                validName = false;
-                              } else {
-                                validName = true;
-                              }
-                              if (validName &&
-                                  !(gameChosen == -1) &&
-                                  validEndDate &&
-                                  validStartDate) {
-                                create();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content:
-                                      const Text("Event created successfully!"),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ));
-                                nameController.clear();
-                                descriptionController.clear();
-                                setState(() {
-                                  gameChosen = -1;
-                                  invites = [];
-                                  validEndDate = false;
-                                  validName = false;
-                                  validStartDate = false;
-                                  _endDatePicked = null;
-                                  _datePicked = null;
-                                });
-                              } else {
-                                if (!validName) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered an event name "),
-                                          backgroundColor: Colors.red));
-                                } else if (gameChosen == -1) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you chose a game to play "),
-                                          backgroundColor: Colors.red));
-                                } else if (!validStartDate) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered a valid start date and time "),
-                                          backgroundColor: Colors.red));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered a valid end date and time "),
-                                          backgroundColor: Colors.red));
-                                }
-                              }
-                            },
-                            color: Theme.of(context).colorScheme.primary,
-                            child: const Text('Create'),
                           ),
                         ),
                       ),
@@ -884,29 +908,32 @@ class ChipSelectorState extends State<ChipSelector> {
         return ChoiceChip(
           showCheckmark: false,
           label: Center(
-              child: Container(
-                height: 25,
-                width: 140,
-                alignment:Alignment.center,
-                child:Row(
-                  children: [
+            child: Container(
+              height: 25,
+              width: 140,
+              alignment: Alignment.center,
+              child: Row(children: [
                 option.icon,
-                const SizedBox(width: 5,),
-                Align(alignment:Alignment.center, child: Text(
-                  option.label,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: selectedOption == option.label
-                        ? Colors.black
-                        : Theme.of(context).colorScheme.secondary,
+                const SizedBox(
+                  width: 5,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    option.label,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: selectedOption == option.label
+                          ? Colors.black
+                          : Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                 ),
-                ),
               ]),
-              ),
             ),
+          ),
           selected: selectedOption == option.label,
           onSelected: (bool selected) {
             setState(() {
