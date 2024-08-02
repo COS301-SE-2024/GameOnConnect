@@ -84,13 +84,19 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Row(
-        children: [
-          buildProfilePicture(widget.profilePicture),
-          const SizedBox(width: 8), 
-          Text(widget.profileName),
-        ],
-      ),
+          children: [
+            buildProfilePicture(widget.profilePicture),
+            const SizedBox(width: 8),
+            Text(widget.profileName,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
+                )),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -172,22 +178,30 @@ class _ChatPageState extends State<ChatPage> {
                   controller: _textEditingController,
                   obscureText: false,
                   decoration: InputDecoration(
+                    fillColor: Theme.of(context).colorScheme.primaryContainer,
+                    filled: true,
                     hintText: "Enter your message here",
+                    hintStyle: const TextStyle(
+                      fontFamily: 'Inter',
+                    ),
                     border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(
+                      color: Colors.transparent, 
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
+                      borderSide: const BorderSide(
+                        color: Colors.transparent, 
                       ),
                     ),
-                    suffixIcon: value.text.isNotEmpty
-                        ? IconButton(
-                            onPressed: sendMessage,
-                            icon: Icon(
-                              Icons.send,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          )
-                        : null,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent, 
+                      ),
+                    ),
                   ),
                   onFieldSubmitted: (value) {
                     sendMessage();
@@ -195,6 +209,20 @@ class _ChatPageState extends State<ChatPage> {
                 );
               },
             ),
+          ),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: _textEditingController,
+            builder: (context, value, child) {
+              return value.text.isNotEmpty
+                  ? IconButton(
+                      onPressed: sendMessage,
+                      icon: Icon(
+                        Icons.send,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    )
+                  : Container(); 
+            },
           ),
         ],
       ),
@@ -209,17 +237,17 @@ class _ChatPageState extends State<ChatPage> {
           borderRadius: BorderRadius.circular(40),
           child: CachedNetworkImage(
             imageUrl: profilePicUrl,
-            width: 44,
-            height: 44,
+            width: 50,
+            height: 50,
             fit: BoxFit.cover,
             placeholder: (context, url) => _buildLoadingWidget(),
             errorWidget: (context, url, error) => _buildErrorWidget(),
             fadeInDuration: const Duration(milliseconds: 200),
             fadeInCurve: Curves.easeIn,
-            memCacheWidth: 88,
-            memCacheHeight: 88,
-            maxWidthDiskCache: 88,
-            maxHeightDiskCache: 88,
+            memCacheWidth: 50,
+            memCacheHeight: 50,
+            maxWidthDiskCache: 50,
+            maxHeightDiskCache: 50,
           ),
         ),
       );
