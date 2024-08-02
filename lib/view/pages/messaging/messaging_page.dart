@@ -151,6 +151,7 @@ class _MessagingState extends State<Messaging> {
                     builder: (context) => ChatPage(
                       profileName: profileName,
                       receiverID: receiverID,
+                      profilePicture: profilePictureUrl,
                     ),
                   ),
                 );

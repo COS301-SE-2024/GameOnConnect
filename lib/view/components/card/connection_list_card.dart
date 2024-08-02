@@ -265,6 +265,7 @@ Widget build(BuildContext context) {
                         builder: (context) => ChatPage(
                           profileName: username,
                           receiverID: uid,
+                          profilePicture: image,
                         ),
                       ),
                     );

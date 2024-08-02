@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
@@ -7,11 +8,13 @@ import 'package:gameonconnect/view/components/messaging/chat_bubble_component.da
 class ChatPage extends StatefulWidget {
   final String profileName;
   final String receiverID;
+  final String profilePicture;
 
   const ChatPage({
     super.key,
     required this.profileName,
     required this.receiverID,
+    required this.profilePicture,
   });
 
   @override
@@ -81,7 +84,13 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.profileName),
+        title: Row(
+        children: [
+          buildProfilePicture(widget.profilePicture),
+          const SizedBox(width: 8), 
+          Text(widget.profileName),
+        ],
+      ),
       ),
       body: Column(
         children: [
@@ -189,6 +198,55 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildProfilePicture(String? profilePicUrl) {
+    if (profilePicUrl != null) {
+      return Padding(
+        padding: const EdgeInsets.all(2),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: CachedNetworkImage(
+            imageUrl: profilePicUrl,
+            width: 44,
+            height: 44,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => _buildLoadingWidget(),
+            errorWidget: (context, url, error) => _buildErrorWidget(),
+            fadeInDuration: const Duration(milliseconds: 200),
+            fadeInCurve: Curves.easeIn,
+            memCacheWidth: 88,
+            memCacheHeight: 88,
+            maxWidthDiskCache: 88,
+            maxHeightDiskCache: 88,
+          ),
+        ),
+      );
+    } else {
+      return _buildErrorWidget();
+    }
+  }
+
+  //this widget builds while the image is still loading
+  Widget _buildLoadingWidget() {
+    return const SizedBox(
+      width: 44,
+      height: 44,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  //this widget builds if there is an error with the image
+  Widget _buildErrorWidget() {
+    return Container(
+      width: 44,
+      height: 44,
+      color: Colors.grey[300],
+      child: const Icon(Icons.error),
     );
   }
 }
