@@ -702,7 +702,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           "genre_interests_tags": _selectedGenres.isNotEmpty
               ? _selectedGenres
               : FieldValue.delete(),
-          "age_rating_tag":
+          "age_rating_tags":
               _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
           "social_interests_tags": _selectedInterests.isNotEmpty
               ? _selectedInterests
