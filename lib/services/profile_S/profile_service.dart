@@ -59,7 +59,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
           name: data['name'] ?? '',
           surname: data['surname'] ?? '',
           theme: data['theme'] ?? '',
-          userID: currentUser.uid,
+          userID: uid,
           visibility: data['visibility'] ?? true,
           ageRatings: List<String>.from(data['age_rating_tags'] ?? []),
           birthday: data['birthday'],
