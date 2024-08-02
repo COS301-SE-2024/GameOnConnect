@@ -56,7 +56,16 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
           wantToPlay: List<String>.from(data['want_to_play'] ?? []),
           numberOfconnections: connectionsCount,
           recentActivities: recentActivities, 
+          name: data['name'] ?? '',
+          surname: data['surname'] ?? '',
+          theme: data['theme'] ?? '',
+          userID: currentUser.uid,
           visibility: data['visibility'] ?? true,
+          ageRatings: List<String>.from(data['age_rating_tags'] ?? []),
+          birthday: data['birthday'],
+          genreInterests: List<String>.from(data['genre_interests_tags'] ?? []),
+          socialInterests: List<String>.from(data['social_interests_tags'] ?? []),
+          positions: List<int>.from(data['positions'] ?? []),
       );
         } else {
           //print('Document not found');
