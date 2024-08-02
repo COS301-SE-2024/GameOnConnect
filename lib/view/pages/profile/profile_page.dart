@@ -219,17 +219,22 @@ class _ProfileState extends State<Profilenew>  {
 
 
                       const SizedBox(height: 10), //space 
-                      HorizontalGameList(
-                        gameIds: profileData.myGames,
-                        heading: 'My Games',
-                      ),
+                      profileData.myGames.isNotEmpty && widget.uid!= widget.loggedInUser
+                          ? HorizontalGameList(
+                              gameIds: profileData.myGames,
+                              heading: 'My Games',
+                            )
+                          : const SizedBox.shrink(),
+                      
 
 
                       const SizedBox(height: 5), //space 
-                      HorizontalGameList(
-                        gameIds: profileData.wantToPlay,
-                        heading: 'Want To Play',
-                      ),
+                      profileData.wantToPlay.isNotEmpty && widget.uid!= widget.loggedInUser
+                        ? HorizontalGameList(
+                            gameIds: profileData.wantToPlay,
+                            heading: 'Want To Play',
+                          )
+                        : const SizedBox.shrink(),
 
 
                       //change RECENT ACTIVITY 

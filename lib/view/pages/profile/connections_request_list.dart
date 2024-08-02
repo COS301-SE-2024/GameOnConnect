@@ -97,6 +97,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uid: i.uid,
                                 page: 'requests',
                                 loggedInUser: widget.loggedInUser,
+                                isOwnProfile: widget.isOwnProfile,
                                 onAccepted: _handleAcceptance ,
                                 onRejected: _handleRejection ,
                                 onSelected: (uid, selected) {

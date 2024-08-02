@@ -16,6 +16,7 @@ class ConnectionCardWidget extends StatefulWidget {
   final String page;
   final List<String>? invited;
   final String loggedInUser;
+  final bool isOwnProfile;
   final void Function(String uid,bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
@@ -30,6 +31,7 @@ class ConnectionCardWidget extends StatefulWidget {
     required this.onSelected,
     required this.page,
     required this.loggedInUser,
+    required this.isOwnProfile,
     this.onDisconnected,
     this.onAccepted,
     this.onRejected,
@@ -245,7 +247,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               ],
             ),
             // Popup menu button
-            if (page == 'connections' && username!='You')
+            if (page == 'connections' && username!='You' && widget.isOwnProfile==true)
               PopupMenuButton<String>(
                 itemBuilder: (context) => [
                   const PopupMenuItem<String>(
@@ -328,11 +330,15 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     // Wrap cardContent in GestureDetector for navigation
     return GestureDetector(
       onTap: () {
-        if (page == 'connections') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
-          );
+        if (page == 'connections' ) {
+          if(username!='You')
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
+            );
+          }
+            
         }
         else if(page == 'requests')
         {

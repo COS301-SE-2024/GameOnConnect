@@ -135,6 +135,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uid: i.uid,
                                 page: 'connections',
                                 loggedInUser: widget.loggedInUser,
+                                isOwnProfile: widget.isOwnProfile,
                                 onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   
@@ -147,6 +148,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                                 uid: i.uid,
                                 page: 'connections',
                                 loggedInUser: widget.loggedInUser,
+                                isOwnProfile: widget.isOwnProfile,
                                 onDisconnected: _handleDisconnection ,
                                 onSelected: (uid, selected) {
                                   
