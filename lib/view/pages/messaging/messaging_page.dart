@@ -112,8 +112,8 @@ class _MessagingState extends State<Messaging> {
                 ),
               ),
               Divider(
-                height: 1,
-                thickness: 0.5,
+                height: 0.1,
+                thickness: 0.025,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ],
