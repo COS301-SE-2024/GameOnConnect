@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'choose_my_games_page.dart';
+//import '../../components/create_event/create_event_chips';
 
-String? selectedOption = "Gaming Session";
+String selectedOption = "Gaming Session";
 
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
@@ -112,7 +113,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
+                                          Stack (
+                                            alignment: Alignment.center,
+                                            children: [SizedBox(
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
@@ -141,6 +144,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 ),
                                               ),
                                             ),
+                                          ),
+                                             Container(
+                                              height: 40,
+                                              width :40,
+                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer,
+                                                  shape:BoxShape.circle ),
+                                              child:
+                                            Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
+                                            ),
+                                  ],
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -398,7 +411,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          const ChipSelector(),
+                                           ChipSelector( selectedOption: selectedOption),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -866,20 +879,37 @@ class _CreateEventsState extends State<CreateEvents> {
 }
 
 // TODO : look into making this a component
+
+
 class ChipData {
   final String label;
   final Icon icon;
 
   ChipData(this.label, this.icon);
 }
-
 class ChipSelector extends StatefulWidget {
-  const ChipSelector({super.key});
+  final String selectedOption;
+
+  const ChipSelector({super.key, required this.selectedOption});
   @override
-  ChipSelectorState createState() => ChipSelectorState();
+  State<ChipSelector> createState() => ChipSelectorState();
 }
 
 class ChipSelectorState extends State<ChipSelector> {
+
+  String selectedOption="" ;
+  @override
+  void initState() {
+    super.initState();
+    selectedOption = widget.selectedOption;
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<ChipData> options = [
@@ -937,7 +967,7 @@ class ChipSelectorState extends State<ChipSelector> {
           selected: selectedOption == option.label,
           onSelected: (bool selected) {
             setState(() {
-              selectedOption = selected ? option.label : null;
+              selectedOption = (selected ? option.label : null)!;
             });
           },
           backgroundColor: selectedOption == option.label
