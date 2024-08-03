@@ -6,8 +6,8 @@ import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import '../../components/create_event/create_event_chips.dart';
 import 'choose_my_games_page.dart';
-//import '../../components/create_event/create_event_chips';
 
 String selectedOption = "Gaming Session";
 
@@ -411,7 +411,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                           ChipSelector( selectedOption: selectedOption),
+                                          ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
+                                            selectedOption = option;
+                                          }));}
+                                          ),
+
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -880,111 +884,3 @@ class _CreateEventsState extends State<CreateEvents> {
 
 // TODO : look into making this a component
 
-
-class ChipData {
-  final String label;
-  final Icon icon;
-
-  ChipData(this.label, this.icon);
-}
-class ChipSelector extends StatefulWidget {
-  final String selectedOption;
-
-  const ChipSelector({super.key, required this.selectedOption});
-  @override
-  State<ChipSelector> createState() => ChipSelectorState();
-}
-
-class ChipSelectorState extends State<ChipSelector> {
-
-  String selectedOption="" ;
-  @override
-  void initState() {
-    super.initState();
-    selectedOption = widget.selectedOption;
-  }
-
-  @override
-  void dispose() {
-
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    List<ChipData> options = [
-      ChipData(
-          'Gaming Session',
-          Icon(
-            CupertinoIcons.game_controller,
-            color: selectedOption == 'Gaming Session'
-                ? Colors.black
-                : Theme.of(context).colorScheme.secondary,
-            size: 18,
-          )),
-      ChipData(
-          'Tournament',
-          Icon(
-            Icons.emoji_events_outlined,
-            color: selectedOption == "Tournament"
-                ? Colors.black
-                : Theme.of(context).colorScheme.secondary,
-            size: 18,
-          )),
-    ];
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: options.map((option) {
-        return ChoiceChip(
-          showCheckmark: false,
-          label: Center(
-            child: Container(
-              height: 25,
-              width: 140,
-              alignment: Alignment.center,
-              child: Row(children: [
-                option.icon,
-                const SizedBox(
-                  width: 5,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    option.label,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: selectedOption == option.label
-                          ? Colors.black
-                          : Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-              ]),
-            ),
-          ),
-          selected: selectedOption == option.label,
-          onSelected: (bool selected) {
-            setState(() {
-              selectedOption = (selected ? option.label : null)!;
-            });
-          },
-          backgroundColor: selectedOption == option.label
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.surface,
-          selectedColor: Theme.of(context).colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(
-              color: selectedOption == option.label
-                  ? Theme.of(context).colorScheme.surface
-                  : Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          elevation: 0,
-        );
-      }).toList(),
-    );
-  }
-}
