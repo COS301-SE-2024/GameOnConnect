@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -154,10 +155,12 @@ class _EditEventsState extends State<EditEvent> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
+                                          Stack (
+                                              alignment: Alignment.center,
+                                              children: [SizedBox(
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width,
                                             child: FittedBox(
                                               fit: BoxFit.cover,
                                               child: InkWell(
@@ -184,10 +187,23 @@ class _EditEventsState extends State<EditEvent> {
                                               ),
                                             ),
                                           ),
+                                                Container(
+                                                    height: 40,
+                                                    width :40,
+                                                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer,
+                                                        shape:BoxShape.circle ),
+                                                    child:
+                                                    Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
+                                                ),
+                                              ],
+                                          ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          TextFormField(
+                                    SizedBox(
+                                        height: 70,
+                                        child:
+                                        TextFormField(
                                             onFieldSubmitted: (val) {
                                               name = nameController.text;
                                               if (name.isNotEmpty) {
@@ -220,7 +236,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'Event name...',
+                                              labelText: 'Event name*',
                                               labelStyle: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -238,32 +254,34 @@ class _EditEventsState extends State<EditEvent> {
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: validName
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
-                                                ),
+                                              border: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
+                                                  .primaryContainer,
                                               contentPadding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 20, 16, 20),
@@ -275,13 +293,15 @@ class _EditEventsState extends State<EditEvent> {
                                                   .secondary,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
+                                              fontSize: 16,
                                             ),
                                             cursorColor: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
                                           ),
+                                    ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -306,31 +326,54 @@ class _EditEventsState extends State<EditEvent> {
                                                 });
                                               });
                                             },
-                                            child: Row(
+                                            child: Container(
+                                          padding:
+                                          const EdgeInsetsDirectional
+                                              .fromSTEB(16, 0, 16, 0),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
                                               mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
                                               children: [
-                                                Icon(
-                                                  Icons.check,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  size: 24,
-                                                ),
                                                 Text(
-                                                  'Choose a game to play...',
+                                                  'Choose game*',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
+                                                    fontSize: 16,
                                                   ),
                                                 ),
+                                                Icon(
+                                                  Icons.add_circle_outline,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  size: 24,
+                                                ),
+
                                               ],
                                             ),
                                           ),
+                                          ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 20,
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
@@ -343,7 +386,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'Description...',
+                                              labelText: 'Description',
                                               labelStyle: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -363,29 +406,25 @@ class _EditEventsState extends State<EditEvent> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
+                                                  .primaryContainer,
                                               contentPadding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 16, 16, 16),
@@ -406,11 +445,11 @@ class _EditEventsState extends State<EditEvent> {
                                                 .primary,
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 10,
                                           ),
                                           const ChipSelector(),
                                           Text(
-                                            'Start date and time',
+                                            'Start*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -489,16 +528,14 @@ class _EditEventsState extends State<EditEvent> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validStartDate
-                                                      ? Theme.of(context)
+                                                  color:
+                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
+                                                          .primaryContainer
                                                 ),
                                               ),
                                               child: Align(
@@ -525,15 +562,16 @@ class _EditEventsState extends State<EditEvent> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height: 10),
                                           Text(
-                                            'End date and time',
+                                            'End*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -620,16 +658,13 @@ class _EditEventsState extends State<EditEvent> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validEndDate
-                                                      ? Theme.of(context)
+                                                  color:  Theme.of(context)
                                                           .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
+                                                          .primaryContainer
                                                 ),
                                               ),
                                               child: Align(
@@ -657,23 +692,45 @@ class _EditEventsState extends State<EditEvent> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height: 20),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer,
+                                        ),
+                                        child:
                                           Row(
                                               mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
                                               children: [
-                                                const Text(
+                                          Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 15),
+                                                child: Text(
                                                   'Private',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                   ),
                                                 ),
+                                          ),
+                                                const Spacer(),
                                                 Switch.adaptive(
                                                   activeTrackColor:
                                                       Theme.of(context)
@@ -682,11 +739,11 @@ class _EditEventsState extends State<EditEvent> {
                                                   inactiveTrackColor:
                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .surface,
+                                                          .secondary,
                                                   inactiveThumbColor:
                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .secondary,
+                                                          .surface,
                                                   value: isChanged,
                                                   onChanged: (bool value) {
                                                     setState(() {
@@ -696,6 +753,8 @@ class _EditEventsState extends State<EditEvent> {
                                                 ),
                                                 const SizedBox(width: 20),
                                               ]),
+                                    ),
+                                          const SizedBox(height:20,),
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -718,24 +777,31 @@ class _EditEventsState extends State<EditEvent> {
                                                 });
                                               });
                                             },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Icon(
-                                                  invites.isEmpty
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: invites.isEmpty
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  size: 24,
+                                            child:Container(
+                                              padding:
+                                              const EdgeInsetsDirectional
+                                                  .fromSTEB(16, 0, 16, 0),
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                 ),
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                              children: [
                                                 Text(
-                                                  'Invite connections to join...',
+                                                  'Invite connections*',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
@@ -744,20 +810,20 @@ class _EditEventsState extends State<EditEvent> {
                                                         .secondary,
                                                   ),
                                                 ),
+                                                Icon(
+                                                  invites.isEmpty
+                                                      ? Icons.add_circle_outline
+                                                      : Icons.check_circle_outline_rounded,
+                                                  color:
+                                                       Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary
+                                                ),
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                            ),
                                           ),
-                                          const SizedBox(height: 12),
-                                          const SizedBox(height: 32)
+                                          const SizedBox(height: 40),
                                         ]),
                                   ),
                                 ),
@@ -766,15 +832,13 @@ class _EditEventsState extends State<EditEvent> {
                           ),
                         ),
                       ),
-                      Container(
-                        constraints: const BoxConstraints(
-                          maxWidth: 770,
-                        ),
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16, 12, 16, 12),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(
+                16, 12, 16, 12),
                           child: MaterialButton(
+                            height: 50,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            minWidth: double.infinity,
                             onPressed: () {
                               name = nameController.text;
                               if (name.isEmpty) {
@@ -828,10 +892,14 @@ class _EditEventsState extends State<EditEvent> {
                               }
                             },
                             color: Theme.of(context).colorScheme.primary,
-                            child: const Text('Save'),
+                            child: const Text(
+                              'Save',
+                              style: TextStyle(
+                               color: Colors.black,
+                                  fontWeight: FontWeight.bold),
                           ),
-                        ),
                       ),
+          ),
                     ],
                   ),
                 ))));
@@ -841,7 +909,7 @@ class _EditEventsState extends State<EditEvent> {
 // TODO : look into making this a component
 class ChipData {
   final String label;
-  final IconData icon;
+  final Icon icon;
 
   ChipData(this.label, this.icon);
 }
@@ -853,62 +921,83 @@ class ChipSelector extends StatefulWidget {
 }
 
 class ChipSelectorState extends State<ChipSelector> {
-  List<ChipData> options = [
-    ChipData('Gaming Session', Icons.videogame_asset_outlined),
-    ChipData('Tournament', Icons.emoji_events_sharp),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        alignment: WrapAlignment.spaceEvenly,
-        children: options.map((option) {
-          return ChoiceChip(
-            showCheckmark: false,
-            label: Text(
-              option.label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: selectedOption == option.label
-                    ? Colors.black
-                    : Theme.of(context).colorScheme.secondary,
-              ),
+    List<ChipData> options = [
+      ChipData(
+          'Gaming Session',
+          Icon(
+            CupertinoIcons.game_controller,
+            color: selectedOption == 'Gaming Session'
+                ? Colors.black
+                : Theme.of(context).colorScheme.secondary,
+            size: 18,
+          )),
+      ChipData(
+          'Tournament',
+          Icon(
+            Icons.emoji_events_outlined,
+            color: selectedOption == "Tournament"
+                ? Colors.black
+                : Theme.of(context).colorScheme.secondary,
+            size: 18,
+          )),
+    ];
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: options.map((option) {
+        return ChoiceChip(
+          showCheckmark: false,
+          label: Center(
+            child: Container(
+              height: 25,
+              width: 140,
+              alignment: Alignment.center,
+              child: Row(children: [
+                option.icon,
+                const SizedBox(
+                  width: 5,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    option.label,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: selectedOption == option.label
+                          ? Colors.black
+                          : Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
+              ]),
             ),
-            avatar: Icon(
-              option.icon,
+          ),
+          selected: selectedOption == option.label,
+          onSelected: (bool selected) {
+            setState(() {
+              selectedOption = (selected ? option.label : null)!;
+            });
+          },
+          backgroundColor: selectedOption == option.label
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.surface,
+          selectedColor: Theme.of(context).colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
               color: selectedOption == option.label
-                  ? Colors.black
-                  : Theme.of(context).colorScheme.secondary,
-              size: 18,
+                  ? Theme.of(context).colorScheme.surface
+                  : Theme.of(context).colorScheme.primary,
             ),
-            selected: selectedOption == option.label,
-            onSelected: (bool selected) {
-              setState(() {
-                selectedOption = selected ? option.label : null;
-              });
-            },
-            backgroundColor: selectedOption == option.label
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
-            selectedColor: Theme.of(context).colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(
-                color: selectedOption == option.label
-                    ? Theme.of(context).colorScheme.surface
-                    : Theme.of(context).colorScheme.primary,
-                width: 2,
-              ),
-            ),
-            elevation: 0,
-          );
-        }).toList(),
-      ),
+          ),
+          elevation: 0,
+        );
+      }).toList(),
     );
   }
-}
+  }
