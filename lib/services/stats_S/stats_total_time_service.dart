@@ -105,19 +105,18 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getTotalTimePlayedLastYear() async {
+  Future<double> getTotalTimePlayedAll() async {
     try {
       User? currentUser = await getCurrentUser();
       if (currentUser == null) return 0.0;
 
-      DateTime now = DateTime.now();
-      DateTime startOfYear = DateTime(now.year);
+      // DateTime now = DateTime.now();
+      // DateTime startOfYear = DateTime(now.year);
       // print("Fetching data for last year: $startOfYear to $now");
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
           .where('user_id', isEqualTo: currentUser.uid)
-          .where('last_played', isGreaterThanOrEqualTo: startOfYear)
           .get();
 
       double totalTimePlayedLastYear = 0.0;
