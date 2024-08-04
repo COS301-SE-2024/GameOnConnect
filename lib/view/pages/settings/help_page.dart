@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/help/all_faqs.dart';
 import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
 
 class Help extends StatelessWidget {
@@ -42,6 +43,7 @@ class Help extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
+          AllFaqs()
           /*GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/profile_management');

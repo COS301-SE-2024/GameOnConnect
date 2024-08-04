@@ -15,8 +15,26 @@ class FaqSection extends StatefulWidget {
 class _FaqSectionState extends State<FaqSection> {
   @override
   Widget build(BuildContext context) {
-    return const ExpansionTile(
-      title: Text('Hello'),
+    return Container(
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Text(widget.title),
+          Column(children: [
+            ...widget.faq.map((faqItem) {
+              return ExpansionTile(
+                title: Text(faqItem.faqHeading),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(faqItem.faqDetails),
+                  ),
+                ],
+              );
+            })
+          ],)
+        ],
+      )
     );
   }
 }
