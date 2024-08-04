@@ -1,69 +1,439 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/components/stats/stats_genres_bar_graph.dart';
-import 'package:gameonconnect/view/components/stats/stats_leaderboard_pie_chart.dart';
-import 'package:gameonconnect/view/components/stats/stats_mood_pie_chart.dart';
-import 'package:gameonconnect/view/components/stats/stats_total_time_boxes.dart';
+import 'package:provider/provider.dart';
 
-class StatsOverviewPage extends StatelessWidget {
-  const StatsOverviewPage({super.key});
+class StatsPage extends StatefulWidget {
+  const StatsPage({super.key});
+
+  @override
+  State<StatsPage> createState() => _StatsPageState();
+}
+
+class _StatsPageState extends State<StatsPage> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(
-          'My Stats',
-          style: TextStyle(
-            fontFamily: 'Inter',
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 32,
-            fontWeight: FontWeight.w500,
+    return GestureDetector(
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
+          title: Text(
+            'Gaming Stats',
+            style: TextStyle(
+              fontFamily: 'Inter',
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: false,
+          elevation: 2,
         ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        body: SafeArea(
+          top: true,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buildSectionHeader(context, 'Total Time'),
-              const SizedBox(height: 10),
-              const TotalTimeStatsComponent(),
-              const SizedBox(height: 20),
-              _buildSectionHeader(context, 'Mood'),
-              const SizedBox(height: 10),
-              const StatsMoodWidget(),
-              const SizedBox(height: 20),
-              _buildSectionHeader(context, 'Genres'),
-              const SizedBox(height: 10),
-              const GenresStatsComponent(),
-              const SizedBox(height: 20),
-              _buildSectionHeader(context, 'Leaderboard'),
-              const SizedBox(height: 10),
-              const StatsLeaderboardPage(),
-              const SizedBox(height: 20),
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                child: Text(
+                  'Total Time Played',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 110,
+                            height: 110,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    'Today',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(
+                                    'n hours',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 110,
+                            height: 110,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    'Past week',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(
+                                    'n hours',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 110,
+                            height: 110,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2,
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(2),
+                                  child: Text(
+                                    'Past month',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(
+                                    'n hours',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(30, 10, 30, 10),
+                      child: Container(
+                        width: double.infinity,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 2, 0),
+                                        child: Text(
+                                          'You have played',
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(2, 0, 2, 0),
+                                        child: Text(
+                                          'n',
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            color: Theme.of(context).colorScheme.primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+                                    child: Text(
+                                      'hours in total. Wow!',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(0),
+                                child: Image.network(
+                                  'https://picsum.photos/seed/753/600',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(30, 10, 30, 10),
+                      child: Container(
+                        width: double.infinity,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(0),
+                                child: Image.network(
+                                  'https://picsum.photos/seed/580/600',
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'You have played more than',
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 2, 0),
+                                        child: Text(
+                                          'n%',
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            color: Theme.of(context).colorScheme.primary,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+                                        child: Text(
+                                          'of players',
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontFamily: 'Inter',
-        color: Theme.of(context).colorScheme.onSurface,
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-      ),
-    );
-  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import 'package:flutter/material.dart';
+// import 'package:gameonconnect/view/components/stats/stats_genres_bar_graph.dart';
+// import 'package:gameonconnect/view/components/stats/stats_leaderboard_pie_chart.dart';
+// import 'package:gameonconnect/view/components/stats/stats_mood_pie_chart.dart';
+// import 'package:gameonconnect/view/components/stats/stats_total_time_boxes.dart';
+
+// class StatsOverviewPage extends StatelessWidget {
+//   const StatsOverviewPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Theme.of(context).colorScheme.primary,
+//         title: Text(
+//           'My Stats',
+//           style: TextStyle(
+//             fontFamily: 'Inter',
+//             color: Theme.of(context).colorScheme.secondary,
+//             fontSize: 32,
+//             fontWeight: FontWeight.w500,
+//           ),
+//         ),
+//         centerTitle: true,
+//       ),
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: <Widget>[
+//               _buildSectionHeader(context, 'Total Time'),
+//               const SizedBox(height: 10),
+//               const TotalTimeStatsComponent(),
+//               const SizedBox(height: 20),
+//               _buildSectionHeader(context, 'Mood'),
+//               const SizedBox(height: 10),
+//               const StatsMoodWidget(),
+//               const SizedBox(height: 20),
+//               _buildSectionHeader(context, 'Genres'),
+//               const SizedBox(height: 10),
+//               const GenresStatsComponent(),
+//               const SizedBox(height: 20),
+//               _buildSectionHeader(context, 'Leaderboard'),
+//               const SizedBox(height: 10),
+//               const StatsLeaderboardPage(),
+//               const SizedBox(height: 20),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget _buildSectionHeader(BuildContext context, String title) {
+//     return Text(
+//       title,
+//       style: TextStyle(
+//         fontFamily: 'Inter',
+//         color: Theme.of(context).colorScheme.onSurface,
+//         fontSize: 24,
+//         fontWeight: FontWeight.bold,
+//       ),
+//     );
+//   }
+// }
 
 
 
