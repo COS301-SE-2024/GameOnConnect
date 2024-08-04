@@ -28,7 +28,7 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
     double today = await statsService.getTotalTimePlayedToday();
     double week = await statsService.getTotalTimePlayedLastWeek();
     double month = await statsService.getTotalTimePlayedLastMonth();
-    double year = await statsService.getTotalTimePlayedLastYear();
+    double year = await statsService.getTotalTimePlayedAll();
     double percentage = await statsService.getPercentageTimePlayedComparedToOthers();
 
     setState(() {
