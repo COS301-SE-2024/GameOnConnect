@@ -115,13 +115,13 @@ class _ChooseGame extends State<ChooseGame> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
+            ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                     SizedBox(
                         height: 300,
                         child: ListView.separated(
@@ -140,25 +140,26 @@ class _ChooseGame extends State<ChooseGame> {
                                   setState(() {
                                     chosenGame = gameName;
                                   });
-                                });
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox();
-                          },
-                        )),
-                    Padding(
-                      padding:const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
-                      child: MaterialButton(onPressed: () {Navigator.pop(context,chosenGame);},
-                          color: Theme.of(context).colorScheme.primary,
-                          child: const Row(children: [
-                            Text("Save my game choice"),
-                          ])),
+                            },
+    );},
+                            separatorBuilder: (BuildContext context, int index) {
+                              return const SizedBox();
+                            },
+                          )),
+                      Padding(
+                        padding:const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
+                        child: MaterialButton(onPressed: () {Navigator.pop(context,chosenGame);},
+                            color: Theme.of(context).colorScheme.primary,
+                            child: const Row(children: [
+                              Text("Save my game choice"),
+                            ])),
+                      )
+                    ]
                     )
-                  ]
-    )
-    )
-    );
-                }
-              });
+                )
+            );
+          }
+        });
+
   }
 }
