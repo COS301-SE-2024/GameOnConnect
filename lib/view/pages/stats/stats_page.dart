@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
+import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
+import 'package:gameonconnect/view/pages/stats/stats_games.dart';
+import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -12,6 +15,17 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
+  final StatsMoodService _statsMoodService = StatsMoodService();
+
+  Map<String, int> moodCounts = {
+    'Happy': 0,
+    'Disgusteded': 0,
+    'Sad': 0,
+    'Angry': 0,
+    'Scared': 0,
+  };
+
+  bool _isLoading = true;
 
   double todayTime = 0;
   double pastWeekTime = 0;
@@ -22,10 +36,11 @@ class _StatsPageState extends State<StatsPage> {
   @override
   void initState() {
     super.initState();
-    fetchTotalTimeStats();
+    _fetchTotalTimeStats();
+    _fetchMoodData();
   }
 
-  Future<void> fetchTotalTimeStats() async {
+  Future<void> _fetchTotalTimeStats() async {
     double today = await totalTimeService.getTotalTimePlayedToday();
     double week = await totalTimeService.getTotalTimePlayedLastWeek();
     double month = await totalTimeService.getTotalTimePlayedLastMonth();
@@ -39,6 +54,20 @@ class _StatsPageState extends State<StatsPage> {
       allTime = all;
       playPercentage = percentage;
     });
+  }
+
+  Future<void> _fetchMoodData() async {
+    try {
+      final fetchedMoodCounts = await _statsMoodService.fetchMoodData();
+      setState(() {
+        moodCounts = fetchedMoodCounts;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -91,7 +120,7 @@ class _StatsPageState extends State<StatsPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -371,6 +400,60 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Divider(
+                thickness: 1,
+                indent: 15,
+                endIndent: 15,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                child: Text(
+                  'Mood',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Divider(
+                thickness: 1,
+                indent: 15,
+                endIndent: 15,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                child: Text(
+                  'Most played genres',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Divider(
+                thickness: 1,
+                indent: 15,
+                endIndent: 15,
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              const Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                child: Text(
+                  'Leaderboard rankings',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
