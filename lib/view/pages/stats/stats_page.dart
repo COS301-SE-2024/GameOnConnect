@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -10,10 +11,34 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
+
+  double todayTime = 0;
+  double pastWeekTime = 0;
+  double pastMonthTime = 0;
+  double allTime = 0;
+  double playPercentage = 0;
 
   @override
   void initState() {
     super.initState();
+    fetchTotalTimeStats();
+  }
+
+  Future<void> fetchTotalTimeStats() async {
+    double today = await totalTimeService.getTotalTimePlayedToday();
+    double week = await totalTimeService.getTotalTimePlayedLastWeek();
+    double month = await totalTimeService.getTotalTimePlayedLastMonth();
+    double all = await totalTimeService.getTotalTimePlayedAll();
+    double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers();
+
+    setState(() {
+      todayTime = today;
+      pastWeekTime = week;
+      pastMonthTime = month;
+      allTime = all;
+      playPercentage = percentage;
+    });
   }
 
   @override
@@ -106,7 +131,7 @@ class _StatsPageState extends State<StatsPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(2),
                                   child: Text(
-                                    'n hours',
+                                    '${todayTime.toStringAsFixed(3)} hours',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       color: Theme.of(context).colorScheme.primary,
@@ -145,7 +170,7 @@ class _StatsPageState extends State<StatsPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(2),
                                   child: Text(
-                                    'n hours',
+                                    '${pastWeekTime.toStringAsFixed(3)} hours',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       color: Theme.of(context).colorScheme.primary,
@@ -184,7 +209,7 @@ class _StatsPageState extends State<StatsPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(2),
                                   child: Text(
-                                    'n hours',
+                                    '${pastMonthTime.toStringAsFixed(3)} hours',
                                     style: TextStyle(
                                       fontFamily: 'Inter',
                                       color: Theme.of(context).colorScheme.primary,
@@ -318,7 +343,7 @@ class _StatsPageState extends State<StatsPage> {
                                       Padding(
                                         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 2, 0),
                                         child: Text(
-                                          'n%',
+                                          '${playPercentage.toStringAsFixed(3)}%',
                                           style: TextStyle(
                                             fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
