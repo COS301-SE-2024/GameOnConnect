@@ -11,40 +11,30 @@ class Help extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: BackButtonAppBar(
-          title: 'Help',
+          title: 'Help & Support',
           onBackButtonPressed: () {
             Navigator.pop(context);
           },
           iconkey: Key('Back_button_key'),
           textkey: Key('Help_text'),
         ),
-        body: Center(
-            child:
-                ListView(padding: const EdgeInsets.all(8), children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/getting_started');
-            },
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(60),
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child:  Center(
-                child: Text(
-                    style: TextStyle(color:Theme.of(context).colorScheme.surface),
-                  key: Key('Getting_started_text'),
-                  "Getting started"),
-
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(25),
+              child: Text(
+                "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          AllFaqs()
-          /*GestureDetector(
+            AllFaqs()
+          ],
+        ),
+        /*GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/profile_management');
             },
@@ -93,7 +83,6 @@ class Help extends StatelessWidget {
           SizedBox(
             height: 5,
           ),*/
-        ])),
-        bottomNavigationBar: ContactUsBar(),);
+        bottomNavigationBar: ContactUsBar());
   }
 }
