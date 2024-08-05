@@ -48,16 +48,17 @@ class _ChipSelectorState extends State<ChipSelector> {
           )),
     ];
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: options.map((option) {
         return ChoiceChip(
           showCheckmark: false,
           label: Center(
             child: Container(
               height: 25,
-              width: 140,
               alignment: Alignment.center,
-              child: Row(children: [
+              child: Row(
+                  children: [
                 option.icon,
                 const SizedBox(
                   width: 5,
@@ -98,8 +99,10 @@ class _ChipSelectorState extends State<ChipSelector> {
             ),
           ),
           elevation: 0,
+          padding: const EdgeInsetsDirectional
+              .fromSTEB(16, 0, 16, 0),
         );
-      }).toList(),
+      }).toList()
     );
   }
 }

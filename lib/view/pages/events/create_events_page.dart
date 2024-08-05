@@ -112,19 +112,18 @@ class _CreateEventsState extends State<CreateEvents> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Stack (
-                                            alignment: Alignment.center,
-                                            children: [SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: FittedBox(
-                                              fit: BoxFit.cover,
-                                              child: InkWell(
+                                          InkWell(
                                                 onTap: () {
                                                   pickImage();
                                                 },
-                                                child: ClipRRect(
+                                                child: Stack (
+                                                    alignment: Alignment.center,
+                                                    children: [SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                    child: const FittedBox(
+                                      fit: BoxFit.cover,)),ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -141,18 +140,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
+
                                              Container(
                                               height: 40,
                                               width :40,
-                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer,
+                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
                                                   shape:BoxShape.circle ),
                                               child:
                                             Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
                                             ),
                                   ],
+                                          ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -678,7 +676,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceBetween,
+                                                        .spaceAround,
                                                 children: [
                                                   Padding(
                                                     padding:
@@ -695,7 +693,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const Spacer(),
+                                                  const SizedBox(width: 200,),
                                                   Switch.adaptive(
                                                     activeTrackColor:
                                                         Theme.of(context)
