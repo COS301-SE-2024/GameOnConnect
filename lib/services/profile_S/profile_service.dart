@@ -94,6 +94,24 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
     }
   }
 
+  Future<void> setCurrentlyPlaying(String gameId) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final currentUser = auth.currentUser;
+
+    if (currentUser != null) {
+      DocumentReference doc = db.collection('profile_data').doc(currentUser.uid);
+
+      try {
+        await doc.update({'currently_playing': gameId});
+      } catch (e) {
+        throw("Error setting currently playing: $e");
+      }
+    } else {
+      throw(Exception('User not found'));
+    }
+  }
+
   Future<List<GameStats>> fetchRecentActivities(List<DocumentReference> recentActivitiesRefs) async {
  final recentActivities = <GameStats>[];
 

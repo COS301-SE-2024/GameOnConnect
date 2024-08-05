@@ -1,51 +1,64 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import '../../../model/events_M/events_model.dart';
+import '../../../model/game_library_M/game_details_model.dart';
 import 'choose_my_games_page.dart';
 
 String? selectedOption = "Gaming Session";
 
-class CreateEvents extends StatefulWidget {
-  const CreateEvents({super.key});
+class EditEvent extends StatefulWidget {
+  final Event e;
+  final String imageUrl;
+
+  const EditEvent({super.key, required this.e, required this.imageUrl});
 
   @override
-  State<CreateEvents> createState() => _CreateEventsState();
+  State<EditEvent> createState() => _EditEventsState();
 }
 
-class _CreateEventsState extends State<CreateEvents> {
+class _EditEventsState extends State<EditEvent> {
+  late Event e;
   String name = "";
-  bool validName = false;
+  late int gameChosen = -1;
+  bool validStartDate = true;
+  bool validEndDate = true;
+  bool validName = true;
+  late List<String> gameNames = [];
+  late List<String> gameImages = [];
+  late List<GameDetails>? games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime? _datePicked;
   DateTime? _endDatePicked;
   XFile? filePath;
-  bool isChanged = false;
+  bool isChanged = true;
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
-  late int gameChosen = -1;
-  bool validStartDate = false;
-  bool validEndDate = false;
+  late int gameID;
+  late String imageUrl;
 
-  String? type;
+
   List<String> invites = [];
 
-  Future create() async {
-    await EventsService().createEvent(
+  Future<void> editEvent() async {
+    await EventsService().editEvent(
         selectedOption,
         _datePicked,
         name,
         _endDatePicked,
-        gameChosen,
+        gameID,
         isChanged,
         invites,
         filePath != null
             ? filePath!.path
-            : 'assets/default_images/default_image.jpg',
-        descriptionController.text);
+            : imageUrl,
+        descriptionController.text,
+        e.eventID);
   }
 
   Future pickImage() async {
@@ -58,9 +71,40 @@ class _CreateEventsState extends State<CreateEvents> {
     }
   }
 
+  void getGames() async {
+    gameNames = [];
+    gameImages = [];
+    if (games != null) {
+      for (var i in games!) {
+        gameNames.add(i.name);
+        gameImages.add(i.backgroundImage);
+      }
+    }
+  }
+
+  void getGameID(String gameName) async {
+    for (var i in games!) {
+      if (i.name == gameName) {
+        gameID = i.id;
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    e = widget.e;
+    nameController.text = e.name;
+    _datePicked = e.startDate;
+    _endDatePicked = e.endDate;
+    selectedOption = e.eventType;
+    gameID = e.gameID;
+    descriptionController.text = e.description;
+    isChanged = e.privacy;
+    gameChosen = e.gameID;
+    selectedOption = e.eventType;
+    imageUrl = widget.imageUrl;
+    invites = e.invited;
   }
 
   @override
@@ -76,7 +120,7 @@ class _CreateEventsState extends State<CreateEvents> {
         child: Scaffold(
             appBar: AppBar(
               title: const Text(
-                'Create Event',
+                'Edit Event',
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
             ),
@@ -104,7 +148,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
-
                                         const EdgeInsetsDirectional.fromSTEB(
                                             16, 12, 16, 0),
                                     child: Column(
@@ -112,10 +155,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
+                                          Stack (
+                                              alignment: Alignment.center,
+                                              children: [SizedBox(
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width,
                                             child: FittedBox(
                                               fit: BoxFit.cover,
                                               child: InkWell(
@@ -132,8 +177,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           height: 200,
                                                           fit: BoxFit.cover,
                                                         )
-                                                      : Image.asset(
-                                                          'assets/default_images/default_image.jpg',
+                                                      : Image.network(
+                                                          imageUrl,
                                                           width: 359,
                                                           height: 200,
                                                           fit: BoxFit.cover,
@@ -142,10 +187,23 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
+                                                Container(
+                                                    height: 40,
+                                                    width :40,
+                                                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer,
+                                                        shape:BoxShape.circle ),
+                                                    child:
+                                                    Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
+                                                ),
+                                              ],
+                                          ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          TextFormField(
+                                    SizedBox(
+                                        height: 70,
+                                        child:
+                                        TextFormField(
                                             onFieldSubmitted: (val) {
                                               name = nameController.text;
                                               if (name.isNotEmpty) {
@@ -178,7 +236,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'Event name...',
+                                              labelText: 'Event name*',
                                               labelStyle: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -196,32 +254,34 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: validName
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
-                                                ),
+                                              border: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
+                                                  .primaryContainer,
                                               contentPadding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 20, 16, 20),
@@ -233,13 +293,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   .secondary,
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
+                                              fontSize: 16,
                                             ),
                                             cursorColor: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
                                           ),
+                                    ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -264,35 +326,54 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-                                            child: Row(
+                                            child: Container(
+                                          padding:
+                                          const EdgeInsetsDirectional
+                                              .fromSTEB(16, 0, 16, 0),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
                                               mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceBetween,
                                               children: [
-                                                Icon(
-                                                  gameChosen == -1
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: gameChosen == -1
-                                                      ? Colors.red
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  size: 24,
-                                                ),
                                                 Text(
-                                                  'Choose a game to play...',
+                                                  'Choose game*',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
+                                                    fontSize: 16,
                                                   ),
                                                 ),
+                                                Icon(
+                                                  Icons.add_circle_outline,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  size: 24,
+                                                ),
+
                                               ],
                                             ),
                                           ),
+                                          ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 20,
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
@@ -305,7 +386,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'Description...',
+                                              labelText: 'Description',
                                               labelStyle: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -325,29 +406,25 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
+                                                  .primaryContainer,
                                               contentPadding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 16, 16, 16),
@@ -368,11 +445,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 .primary,
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 10,
                                           ),
                                           const ChipSelector(),
                                           Text(
-                                            'Start date and time',
+                                            'Start*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -389,8 +466,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
+                                              validEndDate = false;
                                               final datePickedDate =
-                                              await showDatePicker(
+                                                  await showDatePicker(
                                                 context: context,
                                                 initialDate: DateTime.now(),
                                                 lastDate: DateTime(2050),
@@ -399,7 +477,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   return Theme(
                                                     data: ThemeData.from(
                                                         colorScheme:
-
                                                             Theme.of(context)
                                                                 .colorScheme),
                                                     child: child!,
@@ -438,6 +515,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     datePickedTime!.hour,
                                                     datePickedTime.minute,
                                                   );
+                                                  if(_datePicked!.isBefore(_endDatePicked!))
+                                                    {
+                                                      validEndDate = true;
+                                                    }
                                                 });
                                               }
                                             },
@@ -447,16 +528,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validStartDate
-                                                      ? Theme.of(context)
+                                                  color:
+                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
+                                                          .primaryContainer
                                                 ),
                                               ),
                                               child: Align(
@@ -483,15 +562,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height: 10),
                                           Text(
-                                            'End date and time',
+                                            'End*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -578,16 +658,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validEndDate
-                                                      ? Theme.of(context)
+                                                  color:  Theme.of(context)
                                                           .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
+                                                          .primaryContainer
                                                 ),
                                               ),
                                               child: Align(
@@ -615,23 +692,45 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height: 20),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer,
+                                        ),
+                                        child:
                                           Row(
                                               mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
                                               children: [
-                                                const Text(
+                                          Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 15),
+                                                child: Text(
                                                   'Private',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                   ),
                                                 ),
+                                          ),
+                                                const Spacer(),
                                                 Switch.adaptive(
                                                   activeTrackColor:
                                                       Theme.of(context)
@@ -640,11 +739,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   inactiveTrackColor:
                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .surface,
+                                                          .secondary,
                                                   inactiveThumbColor:
                                                       Theme.of(context)
                                                           .colorScheme
-                                                          .secondary,
+                                                          .surface,
                                                   value: isChanged,
                                                   onChanged: (bool value) {
                                                     setState(() {
@@ -654,6 +753,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 ),
                                                 const SizedBox(width: 20),
                                               ]),
+                                    ),
+                                          const SizedBox(height:20,),
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -676,23 +777,31 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Icon(
-                                                  invites.isEmpty
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: invites.isEmpty
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,                                                  size: 24,
+                                            child:Container(
+                                              padding:
+                                              const EdgeInsetsDirectional
+                                                  .fromSTEB(16, 0, 16, 0),
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                 ),
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                              children: [
                                                 Text(
-                                                  'Invite connections to join...',
+                                                  'Invite connections*',
                                                   style: TextStyle(
                                                     fontFamily: 'Inter',
                                                     letterSpacing: 0,
@@ -701,20 +810,20 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .secondary,
                                                   ),
                                                 ),
+                                                Icon(
+                                                  invites.isEmpty
+                                                      ? Icons.add_circle_outline
+                                                      : Icons.check_circle_outline_rounded,
+                                                  color:
+                                                       Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary
+                                                ),
                                               ],
                                             ),
                                           ),
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                            ),
                                           ),
-                                          const SizedBox(height: 12),
-                                          const SizedBox(height: 32)
+                                          const SizedBox(height: 40),
                                         ]),
                                   ),
                                 ),
@@ -723,36 +832,25 @@ class _CreateEventsState extends State<CreateEvents> {
                           ),
                         ),
                       ),
-                      Container(
-                        constraints: const BoxConstraints(
-                          maxWidth: 770,
-                        ),
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16, 12, 16, 12),
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(
+                16, 12, 16, 12),
                           child: MaterialButton(
+                            height: 50,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            minWidth: double.infinity,
                             onPressed: () {
-                              // TODO: error handling here
                               name = nameController.text;
-                              if(name.isEmpty){
+                              if (name.isEmpty) {
                                 validName = false;
-                              }else
-                                {
-                                  validName = true;
-                                }
+                              } else {
+                                validName = true;
+                              }
                               if (validName &&
                                   !(gameChosen == -1) &&
                                   validEndDate &&
                                   validStartDate) {
-                                create();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content:
-                                      const Text("Event created successfully!"),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ));
+                                editEvent();
                                 nameController.clear();
                                 descriptionController.clear();
                                 setState(() {
@@ -764,6 +862,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                   _endDatePicked = null;
                                   _datePicked = null;
                                 });
+                                Navigator.pop(context);
                               } else {
                                 if (!validName) {
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -793,10 +892,14 @@ class _CreateEventsState extends State<CreateEvents> {
                               }
                             },
                             color: Theme.of(context).colorScheme.primary,
-                            child: const Text('Create'),
+                            child: const Text(
+                              'Save',
+                              style: TextStyle(
+                               color: Colors.black,
+                                  fontWeight: FontWeight.bold),
                           ),
-                        ),
                       ),
+          ),
                     ],
                   ),
                 ))));
@@ -806,7 +909,7 @@ class _CreateEventsState extends State<CreateEvents> {
 // TODO : look into making this a component
 class ChipData {
   final String label;
-  final IconData icon;
+  final Icon icon;
 
   ChipData(this.label, this.icon);
 }
@@ -818,62 +921,83 @@ class ChipSelector extends StatefulWidget {
 }
 
 class ChipSelectorState extends State<ChipSelector> {
-  List<ChipData> options = [
-    ChipData('Gaming Session', Icons.videogame_asset_outlined),
-    ChipData('Tournament', Icons.emoji_events_sharp),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        alignment: WrapAlignment.spaceEvenly,
-        children: options.map((option) {
-          return ChoiceChip(
-            showCheckmark: false,
-            label: Text(
-              option.label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: selectedOption == option.label
-                    ? Colors.black
-                    : Theme.of(context).colorScheme.secondary,
-              ),
+    List<ChipData> options = [
+      ChipData(
+          'Gaming Session',
+          Icon(
+            CupertinoIcons.game_controller,
+            color: selectedOption == 'Gaming Session'
+                ? Colors.black
+                : Theme.of(context).colorScheme.secondary,
+            size: 18,
+          )),
+      ChipData(
+          'Tournament',
+          Icon(
+            Icons.emoji_events_outlined,
+            color: selectedOption == "Tournament"
+                ? Colors.black
+                : Theme.of(context).colorScheme.secondary,
+            size: 18,
+          )),
+    ];
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: options.map((option) {
+        return ChoiceChip(
+          showCheckmark: false,
+          label: Center(
+            child: Container(
+              height: 25,
+              width: 140,
+              alignment: Alignment.center,
+              child: Row(children: [
+                option.icon,
+                const SizedBox(
+                  width: 5,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    option.label,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: selectedOption == option.label
+                          ? Colors.black
+                          : Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
+              ]),
             ),
-            avatar: Icon(
-              option.icon,
+          ),
+          selected: selectedOption == option.label,
+          onSelected: (bool selected) {
+            setState(() {
+              selectedOption = (selected ? option.label : null)!;
+            });
+          },
+          backgroundColor: selectedOption == option.label
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.surface,
+          selectedColor: Theme.of(context).colorScheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(
               color: selectedOption == option.label
-                  ? Colors.black
-                  : Theme.of(context).colorScheme.secondary,
-              size: 18,
+                  ? Theme.of(context).colorScheme.surface
+                  : Theme.of(context).colorScheme.primary,
             ),
-            selected: selectedOption == option.label,
-            onSelected: (bool selected) {
-              setState(() {
-                selectedOption = selected ? option.label : null;
-              });
-            },
-            backgroundColor: selectedOption == option.label
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
-            selectedColor: Theme.of(context).colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(
-                color: selectedOption == option.label
-                    ? Theme.of(context).colorScheme.surface
-                    : Theme.of(context).colorScheme.primary,
-                width: 2,
-              ),
-            ),
-            elevation: 0,
-          );
-        }).toList(),
-      ),
+          ),
+          elevation: 0,
+        );
+      }).toList(),
     );
   }
-}
+  }
