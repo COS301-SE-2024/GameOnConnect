@@ -8,7 +8,7 @@ import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 class ConnectionsList extends StatefulWidget {
   const ConnectionsList({
     super.key,
-    required this.isOwnProfile,// true
+    required this.isOwnProfile,
     required this.uid,
     required this.loggedInUser
      });

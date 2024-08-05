@@ -6,7 +6,7 @@ import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 class ConnectionRequestList extends StatefulWidget {
   const ConnectionRequestList({
      super.key,
-    required this.isOwnProfile,// true
+    required this.isOwnProfile,
     required this.uid,
      required this.loggedInUser,
      });
