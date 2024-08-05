@@ -80,22 +80,23 @@ class _MessagingState extends State<Messaging> {
           );
         }
 
+        String currentUserID = _authService.getCurrentUser()!.uid;
         return ListView(
-          children: snapshot.data!
-              .map<Widget>((userData) => _buildUserListItem(context, userData))
-              .toList(),
-        );
+        children: snapshot.data!.map<Widget>((userData) {
+          String userID = userData['userID'] as String? ?? "default_user_id";
+          Stream<DocumentSnapshot<Object?>> lastMessageStream = _messagingService
+              .getLastMessage(currentUserID, userID); // get the last message stream
+
+          
+          return _buildUserListItem(context, userData, lastMessageStream);
+        }).toList(),
+      );
       },
     );
   }
 
   Widget _buildUserListItem(
-      BuildContext context, Map<String, dynamic> userData) {
-    String currentUserID = _authService.getCurrentUser()!.uid;
-    String userID = userData['userID'] as String? ?? "default_user_id";
-    Stream<DocumentSnapshot<Object?>> lastMessageStream = _messagingService
-        .getLastMessage(currentUserID, userID); // get the last message stream
-
+      BuildContext context, Map<String, dynamic> userData, Stream<DocumentSnapshot<Object?>> lastMessageStream) {
     return StreamBuilder<DocumentSnapshot<Object?>>(
       stream: lastMessageStream,
       builder: (BuildContext context,
@@ -136,6 +137,7 @@ class _MessagingState extends State<Messaging> {
               'profile_picture']; // get the profile picture from the user data
           String profileName =
               userData['username']['profile_name'] as String? ?? "Not found";
+          String userID = userData['userID'] as String? ?? "default_user_id";
           String receiverID = userID;
 
           if (userID != _authService.getCurrentUser()!.uid) {
