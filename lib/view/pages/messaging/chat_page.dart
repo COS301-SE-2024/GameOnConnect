@@ -177,6 +177,8 @@ class _ChatPageState extends State<ChatPage> {
                   focusNode: newFocusNode,
                   controller: _textEditingController,
                   obscureText: false,
+                  maxLines: null,
+                  minLines: 1,
                   decoration: InputDecoration(
                     fillColor: Theme.of(context).colorScheme.primaryContainer,
                     filled: true,
