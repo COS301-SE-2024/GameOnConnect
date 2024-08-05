@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gameonconnect/view/pages/leaderboard/view_leaderboard.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
@@ -114,6 +115,7 @@ class MyApp extends StatelessWidget {
         '/stats_leaderboard' : (context) => StatsLeaderboardPage(),
         '/stats_mood' : (context) => StatsMoodPage(),
         '/stats_genres' : (context) => GenresStatsPage(),
+        '/leaderboard' : (context) => ViewLeaderboard(),
       },
       initialRoute: '/',
     );

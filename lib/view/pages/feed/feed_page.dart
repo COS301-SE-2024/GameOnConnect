@@ -10,6 +10,7 @@ import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
 import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
 import 'package:gameonconnect/view/components/feed/start_timer.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/leaderboard/view_leaderboard.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
@@ -343,6 +344,23 @@ class _FeedPageDisplay extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ViewLeaderboard(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.leaderboard,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: IconButton(
