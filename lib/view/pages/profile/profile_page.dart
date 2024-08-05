@@ -190,13 +190,12 @@ class _ProfileState extends State<Profilenew>  {
                             ),
                           ],
                         ),
-                        //ProfileInfo()
                         if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
                           
                           // Conditionally display the CurrentlyPlaying widget
                       profileData.currentlyPlaying.isNotEmpty
                           ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
-                          : const SizedBox.shrink(), // You can replace this with any widget or SizedBox.shrink() if you don't want to show anything
+                          : const SizedBox.shrink(), 
                         
 
                         //search
@@ -227,8 +226,6 @@ class _ProfileState extends State<Profilenew>  {
                             ),
                           
                       
-
-
                       const SizedBox(height: 5), //space 
                       profileData.wantToPlay.isEmpty && widget.uid!= widget.loggedInUser
                         ?  const SizedBox.shrink()
