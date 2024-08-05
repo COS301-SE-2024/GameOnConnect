@@ -34,7 +34,7 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const StatsPage()),
+          MaterialPageRoute(builder: (context) => const StatsMoodPage()),
         );
         break;
       case 1:
@@ -46,7 +46,7 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const TotalTimeStatsWidget()),
+          MaterialPageRoute(builder: (context) => const StatsPage()),
         );
         break;
       case 3:
