@@ -205,20 +205,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 Flexible(
                                   child: Align(
                                     alignment: const Alignment(-1, 0),
-                                    child: Text(
-                                      gameDetails.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium
-                                          ?.copyWith(
-                                            fontFamily: 'Inter',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 32,
-                                            letterSpacing: 0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Text(
+                                        gameDetails.name,
+                                        style: const TextStyle(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold
+                                        )
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -267,173 +262,137 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
                             child: Text(
                               gameDetails.publisher[0]['name'],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 12,
-                                    letterSpacing: 0,
-                                  ),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey
+                              )
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  20, // Subtracting 20 for padding on both sides
-                              child: Divider(
+                          Divider(
                                 thickness: 1,
                                 indent: 0,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.primaryContainer,
                               ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 12, 10, 0),
-                                child: Container(
-                                  width: 110,
-                                  height: 75,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(15),
-                                      bottomRight: Radius.circular(15),
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                    shape: BoxShape.rectangle,
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Align(
-                                        alignment: const Alignment(0, -1),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            'RATINGS',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontSize: 14,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight
-                                                  .w500, // Adjust font weight if needed
-                                            ),
-                                          ),
-                                        ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 21, 0, 21),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: 110,
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(15),
+                                        topLeft: Radius.circular(15),
+                                        topRight: Radius.circular(15),
                                       ),
-                                      Align(
-                                        alignment:
-                                            const AlignmentDirectional(0, 1),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: Text(
-                                              gameDetails.rating.toString(),
-                                              //ratings
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Align(
+                                          alignment: const Alignment(0, -1),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(
+                                              'RATINGS',
                                               style: TextStyle(
-                                                fontFamily: 'Inter',
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .secondary,
-                                                fontSize: 16,
-                                                letterSpacing: 0,
+                                                    .primary,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight
+                                                    .w400, // Adjust font weight if needed
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              const AlignmentDirectional(0, 1),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4),
+                                            child: Text(
+                                                gameDetails.rating.toString(),
+                                                //ratings
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 110,
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(15),
+                                        topLeft: Radius.circular(15),
+                                        topRight: Radius.circular(15),
+                                      ),
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              const AlignmentDirectional(0, -1),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(
+                                              'SCORE',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              const AlignmentDirectional(0, 1),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(6),
+                                            child: Text(
+                                              gameDetails.score.toString(),
+                                              //gameDetails.score,
+                                              style: const TextStyle(
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.bold,
-                                              )),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    10, 12, 10, 0),
-                                child: Container(
-                                  width: 110,
-                                  height: 75,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(15),
-                                      bottomRight: Radius.circular(15),
-                                      topLeft: Radius.circular(15),
-                                      topRight: Radius.circular(15),
-                                    ),
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Align(
-                                        alignment:
-                                            const AlignmentDirectional(0, -1),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            'SCORE',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              fontSize: 14,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Align(
-                                        alignment:
-                                            const AlignmentDirectional(0, 1),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(6),
-                                          child: Text(
-                                            gameDetails.score.toString(),
-                                            //gameDetails.score,
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              fontSize: 16,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              const Flexible(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 12, 10, 0),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                           Container(
                             width: double.infinity,
@@ -441,18 +400,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Theme.of(context).colorScheme.surface,
                             ),
                           ),
-                          Align(
-                            alignment: const Alignment(-1, -1),
+                          const Align(
+                            alignment: Alignment(-1, -1),
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 20, 0, 10),
+                              padding: EdgeInsets.all(12),
                               child: Text(
                                 'About',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
                                   fontSize: 20,
-                                  letterSpacing: 0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -469,20 +424,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          // Align(
-                          //   alignment: const AlignmentDirectional(0, 0),
-                          //   child: Padding(
-                          //     padding: const EdgeInsetsDirectional.fromSTEB(10, 6, 10, 6),
-                          //     child: SingleChildScrollView(
-                          //       scrollDirection: Axis.horizontal,
-                          //       child: Row(
-                          //         mainAxisSize: MainAxisSize.max,
-                          //         children: gameDetails.getScreenshots(context),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-
                           FutureBuilder<List<Screenshot>>(
                             future: _gameScreenshots,
                             builder: (context, screenshotSnapshot) {
@@ -550,78 +491,46 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 }),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  20, // Subtracting 20 for padding on both sides
-                              child: Divider(
-                                thickness: 1,
-                                indent: 0,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                child: Text(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   'Platforms',
                                   style: TextStyle(
                                     fontFamily: 'Inter',
                                     color:
                                         Theme.of(context).colorScheme.secondary,
-                                    letterSpacing: 0,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
+                                    fontSize: 12,
                                   ),
-                                ),
-                              ),
-                              const Spacer(), // This spacer will push the icons to the right edge
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: gameDetails.getPlatformIcons(context),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  20, // Subtracting 20 for padding on both sides
-                              child: Divider(
-                                thickness: 1,
-                                indent: 0,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                                ),// This spacer will push the icons to the right edge
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: gameDetails.getPlatformIcons(context),
+                                )
+                              ],
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Flexible(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    'Developer',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      letterSpacing: 0,
-                                      fontSize: 14,
-                                    ),
+                          Divider(
+                            thickness: 1,
+                            indent: 0,
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Developer',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary,
+                                    fontSize: 12,
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(215, 0, 10, 0),
-                                child: Text(
+                                Text(
                                   // gameDetails.developer,
                                   gameDetails.publisher[0]['name'],
                                   style: TextStyle(
@@ -631,68 +540,42 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     letterSpacing: 0,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  20, // Subtracting 20 for padding on both sides
-                              child: Divider(
-                                thickness: 1,
-                                indent: 0,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                              ],
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Flexible(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    'Publisher',
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      letterSpacing: 0,
-                                    ),
+                          Divider(
+                            thickness: 1,
+                            indent: 0,
+                            color: Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Publisher',
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary,
                                   ),
                                 ),
-                              ),
-                              const Spacer(),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(223, 0, 10, 0),
-                                child: Text(
-                                  // gameDetails.publisher,
+                                Text(
                                   gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontFamily: 'Inter',
                                     color:
                                         Theme.of(context).colorScheme.secondary,
-                                    letterSpacing: 0,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  20, // Subtracting 20 for padding on both sides
-                              child: Divider(
-                                thickness: 1,
-                                indent: 0,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                              ],
                             ),
+                          ),
+                          Divider(
+                            thickness: 1,
+                            indent: 0,
+                            color: Theme.of(context).colorScheme.primaryContainer,
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
