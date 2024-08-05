@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
-// import 'package:logger/logger.dart'; // Add this line for logging
-
-// final logger = Logger(); // Initialize the logger
-//test comment
 
 class StatsLeaderboardPage extends StatefulWidget {
   const StatsLeaderboardPage({super.key});
@@ -42,7 +38,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
         _isLoading = false;
       });
     } catch (e) {
-      // print("Error fetching leaderboard data: $e");
       setState(() {
         _isLoading = false;
       });
@@ -51,7 +46,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
     final isEmpty = leaderboardData.values.every((value) => value == 0);
 
     return Scaffold(
@@ -90,7 +84,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   isEmpty
-                    ? Center(
+                      ? Center(
                           child: Text(
                             'You have not achieved any top 10 finishes',
                             style: TextStyle(
@@ -101,63 +95,80 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                             ),
                           ),
                         )
-                    : AspectRatio(
-                      aspectRatio: 1.8,
-                      child: PieChart(
-                        PieChartData(
-                          borderData: FlBorderData(show: false),
-                          sectionsSpace: 0,
-                          centerSpaceRadius: 0,
-                          sections: showingSections(),
-                          pieTouchData: PieTouchData(
-                            touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                              if (event is FlLongPressEnd || event is FlTapUpEvent) {
-                                final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
-                                if (touchedIndex != null) {
-                                  String position = '';
-                                  switch (touchedIndex) {
-                                    case 0:
-                                      position = '1st';
-                                      break;
-                                    case 1:
-                                      position = '2nd';
-                                      break;
-                                    case 2:
-                                      position = '3rd';
-                                      break;
-                                    case 3:
-                                      position = 'top5';
-                                      break;
-                                    case 4:
-                                      position = 'top10';
-                                      break;
-                                  }
-                                  // logger.i('Toched section index: $touchedIndex');
-                                  _navigateToGamesPage(position);
-                                }
-                              }
-                            },
-                          ),
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: PieChart(
+                                  PieChartData(
+                                    borderData: FlBorderData(show: false),
+                                    sectionsSpace: 0,
+                                    centerSpaceRadius: 70, // Adjust as needed
+                                    sections: showingSections(),
+                                    pieTouchData: PieTouchData(
+                                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                        if (event is FlLongPressEnd || event is FlTapUpEvent) {
+                                          final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
+                                          if (touchedIndex != null) {
+                                            String position = '';
+                                            switch (touchedIndex) {
+                                              case 0:
+                                                position = '1st';
+                                                break;
+                                              case 1:
+                                                position = '2nd';
+                                                break;
+                                              case 2:
+                                                position = '3rd';
+                                                break;
+                                              case 3:
+                                                position = 'Top 5';
+                                                break;
+                                              case 4:
+                                                position = 'Top 10';
+                                                break;
+                                            }
+                                            _navigateToGamesPage(position);
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  child: Indicator(color: Color.fromRGBO(200, 235, 197, 1.0), text: '1st', isSquare: false, size: 30),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  child: Indicator(color: Color.fromRGBO(5, 94, 3, 1.0), text: '2nd', isSquare: false, size: 30),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  child: Indicator(color: Color.fromRGBO(0, 182, 40, 1.0), text: '3rd', isSquare: false, size: 30),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  child: Indicator(color: Color.fromRGBO(0, 216, 35, 1.0), text: 'Top 5', isSquare: false, size: 30),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  child: Indicator(color: Color.fromRGBO(72, 228, 88, 1.0), text: 'Top 10', isSquare: false, size: 30),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
                   const SizedBox(height: 16),
-                  const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Indicator(color: Color.fromRGBO(200, 235, 197, 1.0), text: '1st', isSquare: false, size: 30),
-                      SizedBox(height: 10),
-                      Indicator(color: Color.fromRGBO(5, 94, 3, 1.0), text: '2nd', isSquare: false, size: 30),
-                      SizedBox(height: 10),
-                      Indicator(color: Color.fromRGBO(0, 182, 40, 1.0), text: '3rd', isSquare: false, size: 30),
-                      SizedBox(height: 10),
-                      Indicator(color: Color.fromRGBO(0, 216, 35, 1.0), text: 'Top 5', isSquare: false, size: 30),
-                      SizedBox(height: 10),
-                      Indicator(color: Color.fromRGBO(72, 228, 88, 1.0), text: 'Top 10', isSquare: false, size: 30),
-                      SizedBox(height: 10),
-                    ],
-                  ),
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                     child: Column(
@@ -191,8 +202,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
   List<PieChartSectionData> showingSections() {
     return List.generate(5, (i) {
       const fontSize = 16.0;
-      const radius = 100.0;
-      // final shadows = [const Shadow(color: Colors.black, blurRadius: 2)];
+      const radius = 70.0; // Adjusted for consistency with mood page
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -204,7 +214,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
-              // shadows: shadows,
               fontFamily: "inter",
             ),
           );
@@ -218,7 +227,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
-              // shadows: shadows,
               fontFamily: "inter",
             ),
           );
@@ -232,7 +240,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
-              // shadows: shadows,
               fontFamily: "inter",
             ),
           );
@@ -246,7 +253,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
-              // shadows: shadows,
               fontFamily: "inter",
             ),
           );
@@ -260,7 +266,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
-              // shadows: shadows,
               fontFamily: "inter",
             ),
           );
@@ -272,8 +277,6 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
 
   void _navigateToGamesPage(String position) async {
     List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position); // Fetch the game IDs based on position
-    // logger.i('Query snapshot size: ${gameData}');
-    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),
@@ -288,5 +291,45 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
     } catch (e) {
       throw Exception('Error fetching game IDs for mood: $e');
     }
+  }
+}
+
+class Indicator extends StatelessWidget {
+  final Color color;
+  final String text;
+  final bool isSquare;
+  final double size;
+
+  const Indicator({
+    required this.color,
+    required this.text,
+    this.isSquare = true,
+    this.size = 16,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: isSquare ? BoxShape.rectangle : BoxShape.circle,
+            color: color,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurface,
+            fontFamily: "Inter",
+          ),
+        ),
+      ],
+    );
   }
 }
