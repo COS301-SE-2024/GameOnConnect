@@ -409,7 +409,6 @@ class _StatsPageState extends State<StatsPage> {
                                       borderRadius: BorderRadius.circular(0),
                                       child: Image.network(
                                         'assets/default_images/stats_icon1.png',
-                                        // 'https://picsum.photos/seed/753/600',
                                         width: 110,
                                         height: 100,
                                         fit: BoxFit.cover,
@@ -513,7 +512,6 @@ class _StatsPageState extends State<StatsPage> {
                         ),
                       ),
                     ),
-                    //insert the moods pie chart and indicators here
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: allZeroMood
@@ -768,7 +766,7 @@ class _StatsPageState extends State<StatsPage> {
                                       PieChartData(
                                         borderData: FlBorderData(show: false),
                                         sectionsSpace: 0,
-                                        centerSpaceRadius: 70, // Adjust as needed
+                                        centerSpaceRadius: 70, 
                                         sections: showingSectionsLB(),
                                         pieTouchData: PieTouchData(
                                           touchCallback: (FlTouchEvent event, pieTouchResponse) {
@@ -832,31 +830,6 @@ class _StatsPageState extends State<StatsPage> {
                               ],
                             ),
                     ),
-                    // const SizedBox(height: 16),
-                    // Padding(
-                    //   padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                    //   child: Column(
-                    //     mainAxisSize: MainAxisSize.max,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       Text(
-                    //         'Click on any chart segment to view the games',
-                    //         style: TextStyle(
-                    //           fontFamily: 'Inter',
-                    //           color: Theme.of(context).colorScheme.onSurface,
-                    //           letterSpacing: 0,
-                    //           fontWeight: FontWeight.w500,
-                    //         ),
-                    //       ),
-                    //       Divider(
-                    //         thickness: 1,
-                    //         indent: 10,
-                    //         endIndent: 10,
-                    //         color: Theme.of(context).colorScheme.onSurface,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
