@@ -409,11 +409,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
+                                           ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
                                             selectedOption = option;
                                           }));}
                                           ),
-
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -678,7 +677,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 mainAxisSize: MainAxisSize.max,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceAround,
+                                                        .spaceBetween,
                                                 children: [
                                                   Padding(
                                                     padding:
@@ -695,7 +694,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       ),
                                                     ),
                                                   ),
-                                                  const SizedBox(width: 200,),
+                                                  const Spacer(),
                                                   Switch.adaptive(
                                                     activeTrackColor:
                                                         Theme.of(context)
