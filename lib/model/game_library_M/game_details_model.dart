@@ -110,7 +110,7 @@ class GameDetails {
             style: TextStyle(
               decoration: TextDecoration.underline,
               decorationColor: Theme.of(context).colorScheme.secondary,
-              fontSize: 14,
+              fontSize: 12,
               color: Theme.of(context).colorScheme.secondary,
             ),
             // overflow: TextOverflow.fade,
