@@ -10,14 +10,14 @@ import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
 import 'package:gameonconnect/view/pages/profile/stats_list.dart';
 
 
-class Profilenew extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final String uid;
   final bool isOwnProfile;
   final bool isConnection;
   final String loggedInUser;
 
   // ignore: use_super_parameters
-  const Profilenew({ // Use named parameters
+  const ProfilePage({ // Use named parameters
     Key? key,
     required this.uid, //u
     required this.isOwnProfile,
@@ -26,11 +26,11 @@ class Profilenew extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Profilenew> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfileState();
 }
 
 //NB rename
-class _ProfileState extends State<Profilenew>  {
+class _ProfileState extends State<ProfilePage>  {
   bool isConnectionParent= false;
   //String? parentId ;
 
@@ -57,8 +57,22 @@ class _ProfileState extends State<Profilenew>  {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile',
-        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
+        title: widget.isOwnProfile
+        ? const Text(
+          'My Profile',
+          style: TextStyle(
+            fontSize: 32, 
+            fontWeight: 
+            FontWeight.bold
+            ),
+          )
+        : const Text('Profile',
+            style: TextStyle(
+            fontSize: 32, 
+            fontWeight: 
+            FontWeight.bold
+            ),
+          ),
         actions: widget.isOwnProfile
             ? [
                 Builder(
