@@ -80,189 +80,107 @@ class _MessagingState extends State<Messaging> {
           );
         }
 
-        String currentUserID = _authService.getCurrentUser()!.uid;
-        return ListView(
-        children: snapshot.data!.map<Widget>((userData) {
+        String currentUserID =
+            _authService.getCurrentUser()!.uid; //get the logged in user
+        //get the user data and the last message stream
+        List<Map<String, dynamic>> userDataList =
+            snapshot.data!.map<Map<String, dynamic>>((userData) {
           String userID = userData['userID'] as String? ?? "default_user_id";
-          Stream<DocumentSnapshot<Object?>> lastMessageStream = _messagingService
-              .getLastMessage(currentUserID, userID); // get the last message stream
+          Stream<DocumentSnapshot<Object?>> lastMessageStream =
+              _messagingService.getLastMessage(
+                  currentUserID, userID); // get the last message stream
+          return {
+            //return the data as a list
+            'userData': userData,
+            'lastMessageStream': lastMessageStream,
+          };
+        }).toList();
 
-          
-          return _buildUserListItem(context, userData, lastMessageStream);
-        }).toList(),
-      );
+        return FutureBuilder(
+          future: Future.wait(userDataList.map((data) async { //wait for all the data from the stream to be fetched
+            var lastMessageSnapshot = await data['lastMessageStream'].first; //take the first snapshot
+            return {
+              'userData': data['userData'],
+              'lastMessageSnapshot': lastMessageSnapshot,
+            };
+          }).toList()),
+          builder: (context,
+              AsyncSnapshot<List<Map<String, dynamic>>> sortedSnapshot) {
+            if (sortedSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (sortedSnapshot.hasError) {
+              return const Text('Please check your internet connection.');
+            } else if (sortedSnapshot.hasData) {
+              List<Map<String, dynamic>> sortedUserDataList =
+                  sortedSnapshot.data!; //make a list of the data
+              sortedUserDataList.sort((first, second) {
+                var firstTimestamp = (first['lastMessageSnapshot'].data() //get the first timeStamp
+                    as Map<String, dynamic>?)?['timestamp'] as Timestamp?;
+                var secondTimestamp = (second['lastMessageSnapshot'].data() //get the second timeStamp
+                    as Map<String, dynamic>?)?['timestamp'] as Timestamp?;
+                return secondTimestamp?.compareTo(firstTimestamp ?? Timestamp.now()) ??
+                    0; //compare timestamps
+              });
+              return ListView(
+                children: sortedUserDataList.map<Widget>((data) { //map the data returned and return the user list to the _buildUserListItem to be built
+                  return _buildUserListItem(
+                      context, data['userData'], data['lastMessageSnapshot']);
+                }).toList(),
+              );
+            } else { //if an error occurs, return text to check the internet connection
+              return const Text('Please check your internet connection.');
+            }
+          },
+        );
       },
     );
   }
 
-  Widget _buildUserListItem(
-      BuildContext context, Map<String, dynamic> userData, Stream<DocumentSnapshot<Object?>> lastMessageStream) {
-    return StreamBuilder<DocumentSnapshot<Object?>>(
-      stream: lastMessageStream,
-      builder: (BuildContext context,
-          AsyncSnapshot<DocumentSnapshot<Object?>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Center(
-                child: SizedBox(
-                  width: 65,
-                  height: 65,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              Divider(
-                height: 0.1,
-                thickness: 0.025,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ],
-          );
-        } else if (snapshot.hasError) {
-          return const Icon(Icons.error_outline);
-        } else if (snapshot.hasData) {
-          var documentSnapshot = snapshot.data!;
-          Map<String, dynamic>? lastMessageSnapshot = documentSnapshot.data()
-              as Map<String, dynamic>?; // use the last message
-          String lastMessage = lastMessageSnapshot?['message_text'] ??
-              'No message'; // use the text
-          Timestamp timestamp =
-              lastMessageSnapshot?['timestamp']; // get the time
-          DateTime messageDateTime =
-              timestamp.toDate(); // use date and time from the stored time
-          String messageTime = DateFormat('yyyy-MM-dd – kk:mm')
-              .format(messageDateTime); // convert the time to string for now
-          String profilePictureUrl = userData[
-              'profile_picture']; // get the profile picture from the user data
-          String profileName =
-              userData['username']['profile_name'] as String? ?? "Not found";
-          String userID = userData['userID'] as String? ?? "default_user_id";
-          String receiverID = userID;
+  Widget _buildUserListItem(BuildContext context, Map<String, dynamic> userData,
+    DocumentSnapshot<Object?> lastMessageSnapshot) { //check if a snapshot exists
+      if (lastMessageSnapshot.exists) {
+        Map<String, dynamic>? lastMessageData = lastMessageSnapshot.data()
+            as Map<String, dynamic>?; // use the last message
+        String lastMessage =
+            lastMessageData?['message_text'] ?? 'No message'; // use the text
+        Timestamp timestamp = lastMessageData?['timestamp']; // get the time
+        DateTime messageDateTime =
+            timestamp.toDate(); // use date and time from the stored time
+        String messageTime = DateFormat('yyyy-MM-dd – kk:mm')
+            .format(messageDateTime); // convert the time to string for now
+        String profilePictureUrl = userData[
+            'profile_picture']; // get the profile picture from the user data
+        String profileName =
+            userData['username']['profile_name'] as String? ?? "Not found";
+        String userID = userData['userID'] as String? ?? "default_user_id";
+        String receiverID = userID;
 
-          if (userID != _authService.getCurrentUser()!.uid) {
-            return UserTile(
-              profilepictureURL: profilePictureUrl,
-              text: profileName,
-              lastMessage: lastMessage,
-              time: messageTime,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                      profileName: profileName,
-                      receiverID: receiverID,
-                      profilePicture: profilePictureUrl,
-                    ),
+        if (userID != _authService.getCurrentUser()!.uid) {
+          return UserTile(
+            profilepictureURL: profilePictureUrl,
+            text: profileName,
+            lastMessage: lastMessage,
+            time: messageTime,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    profileName: profileName,
+                    receiverID: receiverID,
+                    profilePicture: profilePictureUrl,
                   ),
-                );
-              },
-            );
-          } else {
-            return Container();
-          }
+                ),
+              );
+            },
+          );
         } else {
           return Container();
         }
-      },
-    );
+      } else {
+        return Container();
+      }
   }
 }
-
-/*
-  Old code for _buildUserListItem
-  Widget _buildUserListItem(
-      Map<String, dynamic> userData, BuildContext context) {
-    Map<String, dynamic> userInfo =
-        userData['username'] as Map<String, dynamic>? ?? {};
-    String profileName = userInfo['profile_name'] as String? ?? "Unknown";
-    String profilePictureUrl =
-        userData['profile_picture'] as String? ?? "default_picture_url";
-    String receiverID = userData['userID'] as String? ?? "default_user_id";
-
-    //we need to get more info here to build the tile successfully
-    if (userData['userID'] != _authService.getCurrentUser()!.uid) {
-      return UserTile(
-        profilepictureURL: profilePictureUrl,
-        text: profileName,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                profileName: profileName,
-                receiverID: receiverID,
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      return Container();
-    }
-  }*/
-
-/* More old code
-
-Widget _buildUserListItem(
-      BuildContext context, Map<String, dynamic> userData) {
-    Map<String, dynamic> userInfo =
-        userData['username'] as Map<String, dynamic>? ?? {};
-    String profileName = userInfo['profile_name'] as String? ?? "Unknown";
-    String userID = userData['userID'] as String? ?? "default_picture_url";
-    String receiverID = userData['userID'] as String? ?? "default_user_id";
-    return FutureBuilder<String>(
-      future: storageService.getProfilePictureUrl(userID),
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          //this is the loading state
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Center(
-                child: SizedBox(
-                  width: 65,
-                  height: 65,
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              Divider(
-                //added divider here to induce the same loading
-                height: 1,
-                thickness: 0.5,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ],
-          );
-        } else if (snapshot.hasError) {
-          //add a possible toastbar to check the connection
-          return const Icon(Icons.error_outline);
-          //Text('Error: ${snapshot.error}'
-        } else {
-          //this widget means that the data loaded successfully
-          String profilePictureUrl = snapshot.data!;
-          if (userData['userID'] != _authService.getCurrentUser()!.uid) {
-            return UserTile(
-              profilepictureURL: profilePictureUrl,
-              text: profileName,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                      profileName: profileName,
-                      receiverID: receiverID,
-                    ),
-                  ),
-                );
-              },
-            );
-          } else {
-            return Container();
-          }
-        }
-      },
-    );
-  }
-}*/
