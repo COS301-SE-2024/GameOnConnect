@@ -166,7 +166,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildUserInput(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.all(5.0),
       child: Row(
         children: [
           Expanded(
