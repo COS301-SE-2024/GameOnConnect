@@ -163,7 +163,7 @@ class _UserTileState extends State<UserTile> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w600,
                                               ),

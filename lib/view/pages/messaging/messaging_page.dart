@@ -148,8 +148,15 @@ class _MessagingState extends State<Messaging> {
         Timestamp timestamp = lastMessageData?['timestamp']; // get the time
         DateTime messageDateTime =
             timestamp.toDate(); // use date and time from the stored time
-        String messageTime = DateFormat('yyyy-MM-dd – kk:mm')
-            .format(messageDateTime); // convert the time to string for now
+
+        String messageTime = "";
+        DateTime today = DateTime.now();
+        if (messageDateTime.year == today.year && messageDateTime.month == today.month && messageDateTime.day == today.day) {
+          messageTime = DateFormat('kk:mm').format(messageDateTime); //if the message is today then show the time
+        } else {
+          messageTime = DateFormat('yyyy-MM-dd').format(messageDateTime); //if the message was sent on a different day then show the date
+        }
+
         String profilePictureUrl = userData[
             'profile_picture']; // get the profile picture from the user data
         String profileName =
