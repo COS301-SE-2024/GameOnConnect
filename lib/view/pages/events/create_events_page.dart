@@ -5,9 +5,10 @@ import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import '../../components/create_event/create_event_chips.dart';
 import 'choose_my_games_page.dart';
 
-String? selectedOption = "Gaming Session";
+String selectedOption = "Gaming Session";
 
 class CreateEvents extends StatefulWidget {
   const CreateEvents({super.key});
@@ -112,17 +113,18 @@ class _CreateEventsState extends State<CreateEvents> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: FittedBox(
-                                              fit: BoxFit.cover,
-                                              child: InkWell(
+                                          InkWell(
                                                 onTap: () {
                                                   pickImage();
                                                 },
-                                                child: ClipRRect(
+                                                child: Stack (
+                                                    alignment: Alignment.center,
+                                                    children: [SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                    child: const FittedBox(
+                                      fit: BoxFit.cover,)),ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -139,107 +141,126 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
-                                              ),
+
+                                             Container(
+                                              height: 40,
+                                              width :40,
+                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
+                                                  shape:BoxShape.circle ),
+                                              child:
+                                            Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
                                             ),
+                                  ],
+                                          ),
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          TextFormField(
-                                            onFieldSubmitted: (val) {
-                                              name = nameController.text;
-                                              if (name.isNotEmpty) {
-                                                setState(() {
-                                                  validName = true;
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  validName = false;
-                                                });
-                                              }
-                                            },
-                                            onTapOutside: (event) {
-                                              name = nameController.text;
-                                              if (name.isNotEmpty) {
-                                                setState(() {
-                                                  validName = true;
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  validName = false;
-                                                });
-                                              }
-                                              FocusManager.instance.primaryFocus
-                                                  ?.unfocus();
-                                            },
-                                            maxLength: 50,
-                                            controller: nameController,
-                                            textCapitalization:
-                                                TextCapitalization.words,
-                                            obscureText: false,
-                                            decoration: InputDecoration(
-                                              labelText: 'Event name...',
-                                              labelStyle: TextStyle(
-                                                fontFamily: 'Inter',
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                                fontSize: 16,
-                                                letterSpacing: 0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              hintStyle: TextStyle(
-                                                fontFamily: 'Inter',
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                                letterSpacing: 0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: validName
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
+                                          SizedBox(
+                                            height: 70,
+                                            child: TextFormField(
+                                              onFieldSubmitted: (val) {
+                                                name = nameController.text;
+                                                if (name.isNotEmpty) {
+                                                  setState(() {
+                                                    validName = true;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    validName = false;
+                                                  });
+                                                }
+                                              },
+                                              onTapOutside: (event) {
+                                                name = nameController.text;
+                                                if (name.isNotEmpty) {
+                                                  setState(() {
+                                                    validName = true;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    validName = false;
+                                                  });
+                                                }
+                                                FocusManager
+                                                    .instance.primaryFocus
+                                                    ?.unfocus();
+                                              },
+                                              maxLength: 50,
+                                              controller: nameController,
+                                              textCapitalization:
+                                                  TextCapitalization.words,
+                                              obscureText: false,
+                                              decoration: InputDecoration(
+                                                labelText: 'Event name*',
+                                                labelStyle: TextStyle(
+                                                  fontFamily: 'Inter',
                                                   color: Theme.of(context)
                                                       .colorScheme
-                                                      .primary,
-                                                  width: 2,
+                                                      .secondary,
+                                                  fontSize: 16,
+                                                  letterSpacing: 0,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
+                                                hintStyle: TextStyle(
+                                                  fontFamily: 'Inter',
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  letterSpacing: 0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primaryContainer),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primaryContainer),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: BorderSide(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primaryContainer),
+                                                ),
+                                                filled: true,
+                                                fillColor: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                contentPadding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
+                                                        16, 20, 16, 20),
                                               ),
-                                              filled: true,
-                                              fillColor: Theme.of(context)
+                                              style: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                              ),
+                                              cursorColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
-                                              contentPadding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 20, 16, 20),
+                                                  .primary,
                                             ),
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            cursorColor: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
                                           ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -264,35 +285,57 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Icon(
-                                                  gameChosen == -1
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: gameChosen == -1
-                                                      ? Colors.red
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  size: 24,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 0, 16, 0),
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                 ),
-                                                Text(
-                                                  'Choose a game to play...',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    letterSpacing: 0,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Choose game*',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      letterSpacing: 0,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    gameChosen == -1
+                                                        ? Icons
+                                                            .add_circle_outline
+                                                        : Icons
+                                                            .check_circle_outline_rounded,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
+                                                    size: 24,
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 20,
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
@@ -305,7 +348,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 TextCapitalization.words,
                                             obscureText: false,
                                             decoration: InputDecoration(
-                                              labelText: 'Description...',
+                                              labelText: 'Description',
                                               labelStyle: TextStyle(
                                                 fontFamily: 'Inter',
                                                 color: Theme.of(context)
@@ -325,29 +368,25 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                  width: 2,
-                                                ),
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(10),
+                                                borderSide: BorderSide(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               filled: true,
                                               fillColor: Theme.of(context)
                                                   .colorScheme
-                                                  .surface,
+                                                  .primaryContainer,
                                               contentPadding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 16, 16, 16),
@@ -368,11 +407,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 .primary,
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 10,
                                           ),
-                                          const ChipSelector(),
+                                           ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
+                                            selectedOption = option;
+                                          }));}
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           Text(
-                                            'Start date and time',
+                                            'Start*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -447,17 +492,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validStartDate
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
-                                                ),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer),
                                               ),
                                               child: Align(
                                                 alignment:
@@ -483,15 +524,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(height:10),
+
                                           Text(
-                                            'End date and time',
+                                            'End*',
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
@@ -578,16 +621,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
-                                                    .surface,
+                                                    .primaryContainer,
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 border: Border.all(
-                                                  color: validEndDate
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : Colors.red,
-                                                  width: 2,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer,
                                                 ),
                                               ),
                                               child: Align(
@@ -615,45 +655,72 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fontSize: 14,
                                                       letterSpacing: 0,
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                const Text(
-                                                  'Private',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    letterSpacing: 0,
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primaryContainer,
+                                            ),
+                                            child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15),
+                                                    child: Text(
+                                                      'Private',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Inter',
+                                                        letterSpacing: 0,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                Switch.adaptive(
-                                                  activeTrackColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                  inactiveTrackColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .surface,
-                                                  inactiveThumbColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary,
-                                                  value: isChanged,
-                                                  onChanged: (bool value) {
-                                                    setState(() {
-                                                      isChanged = value;
-                                                    });
-                                                  },
-                                                ),
-                                                const SizedBox(width: 20),
-                                              ]),
+                                                  const Spacer(),
+                                                  Switch.adaptive(
+                                                    activeTrackColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    inactiveTrackColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    inactiveThumbColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .surface,
+                                                    value: isChanged,
+                                                    onChanged: (bool value) {
+                                                      setState(() {
+                                                        isChanged = value;
+                                                      });
+                                                    },
+                                                  ),
+                                                  const SizedBox(width: 20),
+                                                ]),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -676,124 +743,135 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Icon(
-                                                  invites.isEmpty
-                                                      ? Icons.add
-                                                      : Icons.check,
-                                                  color: invites.isEmpty
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,                                                  size: 24,
+
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(16, 0, 16, 0),
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer,
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                 ),
-                                                Text(
-                                                  'Invite connections to join...',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Inter',
-                                                    letterSpacing: 0,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Invite connections*',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Inter',
+                                                      letterSpacing: 0,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    invites.isEmpty
+                                                        ? Icons
+                                                            .add_circle_outline
+                                                        : Icons
+                                                            .check_circle_outline_rounded,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
+                                                    size: 24,
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          const SizedBox(height: 32)
+                                          const SizedBox(height: 40),
                                         ]),
                                   ),
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16, 12, 16, 12),
+                                child: MaterialButton(
+                                  height: 50,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  minWidth: double.infinity,
+                                  onPressed: () {
+                                    name = nameController.text;
+                                    if (name.isEmpty) {
+                                      validName = false;
+                                    } else {
+                                      validName = true;
+                                    }
+                                    if (validName &&
+                                        !(gameChosen == -1) &&
+                                        validEndDate &&
+                                        validStartDate) {
+                                      create();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                        const Text("Event created successfully!"),
+                                        backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                      ));
+                                      nameController.clear();
+                                      descriptionController.clear();
+                                      setState(() {
+                                        gameChosen = -1;
+                                        invites = [];
+                                        validEndDate = false;
+                                        validName = false;
+                                        validStartDate = false;
+                                        _endDatePicked = null;
+                                        _datePicked = null;
+                                      });
+                                    } else {
+                                      if (!validName) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered an event name "),
+                                                backgroundColor: Colors.red));
+                                      } else if (gameChosen == -1) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you chose a game to play "),
+                                                backgroundColor: Colors.red));
+                                      } else if (!validStartDate) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered a valid start date and time "),
+                                                backgroundColor: Colors.red));
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Please ensure you entered a valid end date and time "),
+                                                backgroundColor: Colors.red));
+                                      }
+                                    }
+                                  },
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: Text(
+                                    'Create event',
+                                    style: TextStyle(
+                                        color: Theme.of(context).colorScheme.surface,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        constraints: const BoxConstraints(
-                          maxWidth: 770,
-                        ),
-                        decoration: const BoxDecoration(),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16, 12, 16, 12),
-                          child: MaterialButton(
-                            onPressed: () {
-                              // TODO: error handling here
-                              name = nameController.text;
-                              if(name.isEmpty){
-                                validName = false;
-                              }else
-                                {
-                                  validName = true;
-                                }
-                              if (validName &&
-                                  !(gameChosen == -1) &&
-                                  validEndDate &&
-                                  validStartDate) {
-                                create();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content:
-                                      const Text("Event created successfully!"),
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                ));
-                                nameController.clear();
-                                descriptionController.clear();
-                                setState(() {
-                                  gameChosen = -1;
-                                  invites = [];
-                                  validEndDate = false;
-                                  validName = false;
-                                  validStartDate = false;
-                                  _endDatePicked = null;
-                                  _datePicked = null;
-                                });
-                              } else {
-                                if (!validName) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered an event name "),
-                                          backgroundColor: Colors.red));
-                                } else if (gameChosen == -1) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you chose a game to play "),
-                                          backgroundColor: Colors.red));
-                                } else if (!validStartDate) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered a valid start date and time "),
-                                          backgroundColor: Colors.red));
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Please ensure you entered a valid end date and time "),
-                                          backgroundColor: Colors.red));
-                                }
-                              }
-                            },
-                            color: Theme.of(context).colorScheme.primary,
-                            child: const Text('Create'),
                           ),
                         ),
                       ),
@@ -803,77 +881,3 @@ class _CreateEventsState extends State<CreateEvents> {
   }
 }
 
-// TODO : look into making this a component
-class ChipData {
-  final String label;
-  final IconData icon;
-
-  ChipData(this.label, this.icon);
-}
-
-class ChipSelector extends StatefulWidget {
-  const ChipSelector({super.key});
-  @override
-  ChipSelectorState createState() => ChipSelectorState();
-}
-
-class ChipSelectorState extends State<ChipSelector> {
-  List<ChipData> options = [
-    ChipData('Gaming Session', Icons.videogame_asset_outlined),
-    ChipData('Tournament', Icons.emoji_events_sharp),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
-        spacing: 10,
-        runSpacing: 8,
-        alignment: WrapAlignment.spaceEvenly,
-        children: options.map((option) {
-          return ChoiceChip(
-            showCheckmark: false,
-            label: Text(
-              option.label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: selectedOption == option.label
-                    ? Colors.black
-                    : Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            avatar: Icon(
-              option.icon,
-              color: selectedOption == option.label
-                  ? Colors.black
-                  : Theme.of(context).colorScheme.secondary,
-              size: 18,
-            ),
-            selected: selectedOption == option.label,
-            onSelected: (bool selected) {
-              setState(() {
-                selectedOption = selected ? option.label : null;
-              });
-            },
-            backgroundColor: selectedOption == option.label
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
-            selectedColor: Theme.of(context).colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(
-                color: selectedOption == option.label
-                    ? Theme.of(context).colorScheme.surface
-                    : Theme.of(context).colorScheme.primary,
-                width: 2,
-              ),
-            ),
-            elevation: 0,
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
