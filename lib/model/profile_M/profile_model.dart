@@ -46,5 +46,6 @@ class Profile {
     required this.genreInterests,
     required this.socialInterests,
     required this.positions,
+
   });
 }
