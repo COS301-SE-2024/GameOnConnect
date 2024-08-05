@@ -44,75 +44,76 @@ class _EventCardWidgetState extends State<GameCard> {
   Widget build(BuildContext context) {
     selected = ( gameID == widget.chosen);
     return InkWell(
+
         onTap: (){
           setState(() {
             selected = !selected;
           });
           widget.onSelected(gameID);
 
-        },
-        child: Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
-      child: Container(
-        width: double.infinity,
-        height: 60,
-        decoration: BoxDecoration(
-          color: selected? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0,
-              color: Theme.of(context).colorScheme.surface,
-              offset: const Offset(
-                0,
-                1,
-              ),
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(width: 60,
-                height: 60, child:
-               ClipRRect(
-                borderRadius: BorderRadius.circular(44),
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+      },
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
+        child: Container(
+          width: double.infinity,
+          height: 60,
+          decoration: BoxDecoration(
+            color: selected? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 0,
+                color: Theme.of(context).colorScheme.surface,
+                offset: const Offset(
+                  0,
+                  1,
                 ),
-              ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          color:  Theme.of(context).colorScheme.secondary,
-                          fontSize: 16,
-                          letterSpacing: 0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+              )
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(width: 60,
+                  height: 60, child:
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(44),
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            color:  Theme.of(context).colorScheme.secondary,
+                            fontSize: 16,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }

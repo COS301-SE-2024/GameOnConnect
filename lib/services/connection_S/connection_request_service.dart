@@ -28,10 +28,12 @@ class UserService {
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         if (_hasRequiredFields(data)) {
-          AppUser currentuser = AppUser.fromMap(data);
+          AppUser currentUser = AppUser.fromMap(data);
 
-          //await currentuser.setpicture(data); // Await the result
-          users.add(currentuser);
+          //StorageService storageService = StorageService();
+          //currentUser.profilePicture = await storageService.getProfilePictureUrl(currentUser.uid);
+
+          users.add(currentUser);
           //users.add(User.fromMap(data));
         } else {
           /*print('Skipping document ${doc.id} due to missing required fields \n');

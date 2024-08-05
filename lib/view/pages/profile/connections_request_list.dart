@@ -4,8 +4,16 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 
 class ConnectionRequestList extends StatefulWidget {
-  const ConnectionRequestList({super.key, });
-  //final List<User> users;
+  const ConnectionRequestList({
+     super.key,
+    required this.isOwnProfile,
+    required this.uid,
+     required this.loggedInUser,
+     });
+
+    final bool isOwnProfile;
+    final String uid;
+    final String loggedInUser;
 
   @override
   State<ConnectionRequestList> createState() => _ConnectionRequestListState();
@@ -28,7 +36,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
   }
 
   Future<void> getConnectionRequests() async {
-    list = await ConnectionService().getConnectionRequests();
+    list = await ConnectionService().getProfileConnections('requests', widget.uid);
     setState(() {});
   }
 
@@ -50,12 +58,12 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(//
         title: const Text('Connection Requests'),
     ),
     
       body:  FutureBuilder<List<user.AppUser>?>(
-              future: ConnectionService().getConnectionRequests(),
+              future: ConnectionService().getProfileConnections('requests',widget.uid ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -65,7 +73,7 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   list = snapshot.data;
                   if (list!.isEmpty) {
             // Display "No connections" when the list is empty
-            return const Center(
+            return  const Center(
               child: Text('No connection Requests'),
             );
           } else{
@@ -88,6 +96,8 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'requests',
+                                loggedInUser: widget.loggedInUser,
+                                isOwnProfile: widget.isOwnProfile,
                                 onAccepted: _handleAcceptance ,
                                 onRejected: _handleRejection ,
                                 onSelected: (uid, selected) {
