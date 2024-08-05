@@ -6,6 +6,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
+import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 
 class ConnectionCardWidget extends StatefulWidget {
   final String image;
@@ -14,6 +15,8 @@ class ConnectionCardWidget extends StatefulWidget {
   final String uid;
   final String page;
   final List<String>? invited;
+  final String loggedInUser;
+  final bool isOwnProfile;
   final void Function(String uid,bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
@@ -27,9 +30,11 @@ class ConnectionCardWidget extends StatefulWidget {
     required this.uniqueNum,
     required this.onSelected,
     required this.page,
-     this.onDisconnected, 
-     this.onAccepted,
-     this.onRejected,
+    required this.loggedInUser,
+    required this.isOwnProfile,
+    this.onDisconnected,
+    this.onAccepted,
+    this.onRejected,
     this.invited,
 
   });
@@ -39,36 +44,36 @@ class ConnectionCardWidget extends StatefulWidget {
 }
 
 class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
-   late List<String>? invited;
-   late String image;
-late String username;
-late String uniqueNum;
-late String uid;
-late String page;
-bool selected = false;
+  late List<String>? invited;
+  late String image;
+  late String username;
+  late String uniqueNum;
+  late String uid;
+  late String page;
+  bool selected = false;
 
-@override
-void initState() {
-  super.initState();
-  image = widget.image;
-  username = widget.username;
-  uniqueNum = widget.uniqueNum;
-  uid = widget.uid;
-  page=widget.page;
-  invited = widget.invited;
+  @override
+  void initState() {
+    super.initState();
+    image = widget.image;
+    username = widget.username;
+    uniqueNum = widget.uniqueNum;
+    uid = widget.uid;
+    page = widget.page;
+    invited = widget.invited;
   if(invited == null)
     {
       selected = false;
     }else {
-    selected = invited!.contains(uid);
+      selected = invited!.contains(uid);
+    }
+
   }
 
-}
-
-@override
-void dispose() {
-  super.dispose();
-}
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void _disconnect(String targetUserId) async {
     try {
@@ -80,18 +85,18 @@ void dispose() {
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error disconnecting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
+        builder: (context) {
+          return CustomToastCard(
+            title: Text(
+              'Error disconnecting user. Please ensure that you have an active internet connection.',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        },
+        position: DelightSnackbarPosition.top,
+        autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
@@ -110,18 +115,18 @@ void dispose() {
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error accepting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
+        builder: (context) {
+          return CustomToastCard(
+            title: Text(
+              'Error accepting user. Please ensure that you have an active internet connection.',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        },
+        position: DelightSnackbarPosition.top,
+        autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
@@ -140,18 +145,18 @@ void dispose() {
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error rejecting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
+        builder: (context) {
+          return CustomToastCard(
+            title: Text(
+              'Error rejecting user. Please ensure that you have an active internet connection.',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        },
+        position: DelightSnackbarPosition.top,
+        autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
         // ignore: use_build_context_synchronously
@@ -161,72 +166,71 @@ void dispose() {
   }
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     Widget cardContent = Container(
-    width: 388,
-    height: 72,
-    decoration: BoxDecoration(
-      color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
-      boxShadow: [
-        BoxShadow(
-          blurRadius: 0,
-          color: Theme.of(context).colorScheme.surface,
-          offset: const Offset(0, 1),
-        )
-      ],
-    ),
-    child: Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Profile picture and name column
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: (page != "events")
-                      ? null // No border for profiles
-                      : Border.all(
-                          width: 1, // Add a border for non-profiles
-                          color: Colors.black,
-                        ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(44),
-                    
-                    child: CachedNetworkImage(
-                              imageUrl: image,
-                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
-                              fit: BoxFit.cover,
-                            ),
+      width: 388,
+      height: 72,
+      decoration: BoxDecoration(
+        color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 0,
+            color: Theme.of(context).colorScheme.surface,
+            offset: const Offset(0, 1),
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Profile picture and name column
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: (page != "events")
+                        ? null // No border for profiles
+                        : Border.all(
+                            width: 1, // Add a border for non-profiles
+                            color: Colors.black,
+                          ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(44),
+                      child: CachedNetworkImage(
+                        imageUrl: image,
+                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12), // Add spacing between profile picture and name
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    username,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 16,
-                      letterSpacing: 0,
-                      fontWeight: FontWeight.normal,
-                    ),
+                const SizedBox(width: 12), // Add spacing between profile picture and name
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      username,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 16,
+                        letterSpacing: 0,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     Text(
                       '# $uniqueNum',
@@ -243,7 +247,7 @@ Widget build(BuildContext context) {
               ],
             ),
             // Popup menu button
-            if (page == 'connections')
+            if (page == 'connections' && username!='You' && widget.isOwnProfile==true)
               PopupMenuButton<String>(
                 itemBuilder: (context) => [
                   const PopupMenuItem<String>(
@@ -323,18 +327,34 @@ Widget build(BuildContext context) {
       ),
     );
 
-    if (page == 'events') {
-      return GestureDetector(
-        onTap: () {
+    // Wrap cardContent in GestureDetector for navigation
+    return GestureDetector(
+      onTap: () {
+        if (page == 'connections' ) {
+          if(username!='You')
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
+            );
+          }
+            
+        }
+        else if(page == 'requests')
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
+          );
+        }
+        else{
           setState(() {
             selected = !selected;
           });
           widget.onSelected(uid, selected);
-        },
-        child: cardContent,
-      );
-    } else {
-      return cardContent;
-    }
+        }
+      },
+      child: cardContent,
+    );
   }
 }

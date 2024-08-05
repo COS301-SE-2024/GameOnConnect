@@ -43,7 +43,7 @@ class _UserTileState extends State<UserTile> {
       isLoading =
           true; //sets the loading state to true to build the loading widget
     });
-    _profileService.fetchProfile().then((data) {
+    _profileService.fetchProfileData().then((data) {
       setState(() {
         profileData = data;
         isLoading =
