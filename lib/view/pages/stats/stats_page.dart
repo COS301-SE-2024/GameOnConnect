@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
@@ -409,8 +408,9 @@ class _StatsPageState extends State<StatsPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(0),
                                       child: Image.network(
-                                        'https://picsum.photos/seed/753/600',
-                                        width: 100,
+                                        'assets/default_images/stats_icon1.png',
+                                        // 'https://picsum.photos/seed/753/600',
+                                        width: 110,
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),
@@ -442,8 +442,8 @@ class _StatsPageState extends State<StatsPage> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(0),
                                       child: Image.network(
-                                        'https://picsum.photos/seed/580/600',
-                                        width: 100,
+                                        'assets/default_images/stats_icon2.png',
+                                        width: 110,
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),
@@ -598,7 +598,7 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                      padding: const EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -963,7 +963,7 @@ class _StatsPageState extends State<StatsPage> {
   List<PieChartSectionData> showingSectionsLB() {
     return List.generate(5, (i) {
       const fontSize = 16.0;
-      const radius = 70.0; // Adjusted for consistency with mood page
+      const radius = 70.0; 
       switch (i) {
         case 0:
           return PieChartSectionData(
