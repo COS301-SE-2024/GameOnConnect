@@ -15,7 +15,7 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
-  final StatsMoodService _statsMoodService = StatsMoodService();
+  final StatsMoodService statsMoodService = StatsMoodService();
 
   Map<String, int> moodCounts = {
     'Happy': 0,
@@ -58,7 +58,7 @@ class _StatsPageState extends State<StatsPage> {
 
   Future<void> _fetchMoodData() async {
     try {
-      final fetchedMoodCounts = await _statsMoodService.fetchMoodData();
+      final fetchedMoodCounts = await statsMoodService.fetchMoodData();
       setState(() {
         moodCounts = fetchedMoodCounts;
         _isLoading = false;
@@ -72,6 +72,7 @@ class _StatsPageState extends State<StatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool allZeroMood = moodCounts.values.every((count) => count == 0);
     return GestureDetector(
       child: Scaffold(
         key: scaffoldKey,
@@ -420,6 +421,7 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ),
               ),
+              //insert the moods pie chart and indicators here
               Divider(
                 thickness: 1,
                 indent: 15,
@@ -438,6 +440,7 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ),
               ),
+              //insert the genres bar graph here
               Divider(
                 thickness: 1,
                 indent: 15,
