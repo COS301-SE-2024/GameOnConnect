@@ -8,7 +8,7 @@ void main() {
       await tester.pumpWidget(const MaterialApp(home: Help()));
 
       expect(find.byKey(const Key('Back_button_key'),), findsOneWidget);
-      expect(find.byKey(const Key('Getting_started_text'),), findsOneWidget);
+      expect(find.byKey(const Key('Help_text'),), findsOneWidget);
       
     });
 

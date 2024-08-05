@@ -3,9 +3,9 @@ import 'package:gameonconnect/model/help_M/faq_model.dart';
 import 'package:gameonconnect/view/components/help/video_widget.dart';
 
 class FaqSection extends StatefulWidget {
-  late List<FAQ> faq;
-  late String title;
-  late IconData icon;
+  late final List<FAQ> faq;
+  late final String title;
+  late final IconData icon;
   FaqSection(this.faq, this.title, this.icon, {super.key}) {
     super.key;
   }
