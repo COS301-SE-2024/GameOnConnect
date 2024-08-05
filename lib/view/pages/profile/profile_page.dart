@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
@@ -33,25 +34,24 @@ class ProfilePage extends StatefulWidget {
 //NB rename
 class _ProfileState extends State<ProfilePage>  {
   bool isConnectionParent= false;
-  //String? parentId ;
+  late double totalTimePlayed ;
+  late String roundedTotalTime;
 
  Future<void> isConnectionOfParent() async {
   final connections = await ConnectionService().getConnections('connections');
   isConnectionParent= connections.contains(widget.uid);
 }
 
-
-
- /* void getParent() {
-   FirebaseAuth auth = FirebaseAuth.instance;
-    parentId = auth.currentUser?.uid;
-  }*/
+Future<void> getTimePlayed() async {
+  totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll();
+  roundedTotalTime = totalTimePlayed.toStringAsFixed(2);
+}
 
 @override
   void initState() {
     super.initState();
     isConnectionOfParent();
-   // getParent();
+    getTimePlayed();
   }
 
   @override
@@ -145,7 +145,7 @@ class _ProfileState extends State<ProfilePage>  {
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
-                                  shape: BoxShape.circle, // Make it circular
+                                  shape: BoxShape.circle, 
                                 ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
@@ -169,10 +169,27 @@ class _ProfileState extends State<ProfilePage>  {
                                   Expanded(
                                     child: ProfileButton(value: '${profileData.numberOfconnections}', title: 'Connections'),
                                   ),
-                                  const Expanded(
-                                    child: ProfileButton(value: '140 hrs', title: 'Time Played'),
+                                  Expanded(
+                                    child: ProfileButton(value: '${roundedTotalTime} hrs', title: 'Time Played'),
                                   ),
-                                  
+                                 /* Expanded(
+                                  child: FutureBuilder<double>(
+                                    future: totalTimePlayed,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                        return const Center(child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Center(child: Text('Error: ${snapshot.error}'));
+                                      } else {
+                                        final timePlayed = snapshot.data ?? 0.0;
+                                        return ProfileButton(
+                                          value: '$timePlayed hrs',
+                                          title: 'Time Played',
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ),*/
                                 ],
                               ),
                               
@@ -180,7 +197,109 @@ class _ProfileState extends State<ProfilePage>  {
                                                   
                           ],
                         ),
-                        
+                        //new
+                        Container(
+                  margin: EdgeInsets.fromLTRB(12, 0, 12, 19),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 19, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(70.5),
+                              color: Color(0xFFD9D9D9),
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'assets/images/mockPicture.jpeg',
+                                ),
+                              ),
+                            ),
+                            child: Container(
+                              width: 94,
+                              height: 94,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 45),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                child: Text(
+                                  'franco_dreyer',
+                                  style:  TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24,
+                                    letterSpacing: 0,
+                                    color: Color(0xFFFFFFFF),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(0, 1.5, 5, 1.5),
+                                      child: SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF00FF75),
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                                child: Container(
+                                                  width: 8,
+                                                  height: 8,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: -2,
+                                                child: Container(
+                                                  width: 12,
+                                                  height: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Currently Online',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        letterSpacing: 0,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                         /*if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
                           
                           // Conditionally display the CurrentlyPlaying widget
