@@ -141,7 +141,13 @@ Future<void> getTimePlayed() async {
                             Positioned(
                               top: 50, // Adjust this value to move the profile picture downwards
                               left: 19,
-                              child:Container(
+                              child:Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 19, 0),
+                          child: Container(
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
@@ -156,6 +162,85 @@ Future<void> getTimePlayed() async {
                                   ),
                                 ),
                               ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 45),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                child: Text(
+                                  profileData.profileName,
+                                  style:  TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24,
+                                    letterSpacing: 0,
+                                    color: Color(0xFFFFFFFF),
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /*Container(
+                                      margin: EdgeInsets.fromLTRB(0, 1.5, 5, 1.5),
+                                      child: SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: Container(
+                                          padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                          child: Stack(
+                                            clipBehavior: Clip.none,
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF00FF75),
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                                child: Container(
+                                                  width: 8,
+                                                  height: 8,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: -2,
+                                                child: Container(
+                                                  width: 12,
+                                                  height: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),*/
+                                    Icon(
+                                      Icons.radio_button_checked,
+                                      color: Theme.of(context).colorScheme.primary ,
+                                      size: 15,
+                                      ),
+                                    Text(
+                                      'Currently Online',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        //fontSize: 12,
+                                        letterSpacing: 0,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                             ),
                              Positioned(
                               left: 16,
@@ -209,21 +294,20 @@ Future<void> getTimePlayed() async {
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 19, 0),
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(70.5),
-                              color: Color(0xFFD9D9D9),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  'assets/images/mockPicture.jpeg',
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle, 
+                                ),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: profileData.profilePicture,
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for profile picture
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: Container(
-                              width: 94,
-                              height: 94,
-                            ),
-                          ),
                         ),
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 45),
