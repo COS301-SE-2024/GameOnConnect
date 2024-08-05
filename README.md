@@ -3,9 +3,13 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 <br><br>
 
 **Link to Demo 1 video: [here](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing)** <br>
-**Link to Demo 2 video: [here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing)**<br>
-**Our Functional Requirements Document can be found [here](https://github.com/COS301-SE-2024/GameOnConnect/wiki)** <br>
-**Our github project board can be found [here](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
+**Link to Demo 2 video: [here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing)**<br><br>
+# Documentation Links: #
+**[SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki)** <br>
+**[Github project board](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
+**[User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual)** <br>
+**Our technical installation manual can be found here when we finalize it**<br>
+**[Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards)**
 <br>
 # 🎮Badges: #
 [![codecov](https://codecov.io/github/COS301-SE-2024/GameOnConnect/graph/badge.svg?token=Wer3BjZWpE)](https://codecov.io/github/COS301-SE-2024/GameOnConnect)
