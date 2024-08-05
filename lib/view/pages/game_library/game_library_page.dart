@@ -9,7 +9,7 @@ import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:gameonconnect/view/pages/connections/connections_page.dart';
+import 'package:gameonconnect/view/pages/connections/connections_search_page.dart';
 import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class GameLibrary extends StatefulWidget {
@@ -163,7 +163,7 @@ class _GameLibraryState extends State<GameLibrary> {
               children: [
                 TabBar(tabs: const [
                     Tab(text: 'GAMES'),
-                    Tab(text: 'GAMERS'),
+                    Tab(text: 'CONNECTIONS'),
                   ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),

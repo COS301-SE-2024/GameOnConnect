@@ -295,6 +295,7 @@ class EventsService {
     return e.participants.length;
   }
 
+
   Future<List<GameDetails>> getMyGames() async{
     List<String> gameIds = await MyGamesService().getMyGames();
     List<GameDetails> gameDetails = [];
@@ -303,5 +304,52 @@ class EventsService {
       gameDetails.add(game);
     }
     return gameDetails;
-}
+  }
+
+  Future<void> editEvent(
+      String? type,
+      DateTime? startDate,
+      String name,
+      DateTime? endDate,
+      int gameID,
+      bool privacy,
+      List<String> invited,
+      String url,
+      String description, String eventId) async {
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final storage = FirebaseStorage.instance.ref();
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser != null) {
+        final data = <String, dynamic>{
+          "name": name,
+          "eventType": type,
+          "participants": [],
+          "start_date": startDate,
+          "end_date": endDate,
+          "gameID": gameID,
+          "privacy": privacy,
+          "conversationID": "",
+          "teams": [],
+          "creatorID": currentUser.uid,
+          "invited": invited,
+          "subscribed": [],
+          // image url is in bucket, under events/eventID
+          "description": description,
+        };
+
+        if (!url.startsWith('assets')) {
+          // default image not stored, there will just not be a event image with the event id
+          final imageStorage = storage.child('events/$eventId');
+          await imageStorage.putFile(File(url));
+        }
+
+        db.collection("events").doc(eventId).set(data);
+      }
+    }
+  }
+
 }

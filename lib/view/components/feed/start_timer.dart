@@ -4,6 +4,7 @@ import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 
@@ -18,6 +19,7 @@ class GameTimer extends StatefulWidget {
 class _GameTimer extends State<GameTimer> {
   final MyGamesService _currentlyPlaying = MyGamesService();
   final GameService _gameService = GameService();
+  final ProfileService _profileService = ProfileService();
   Future<List<GameDetails>>? _userGames;
   String? _selectedItem;
   static final Stopwatch _stopwatch = Stopwatch();
@@ -63,11 +65,13 @@ class _GameTimer extends State<GameTimer> {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
       });
+    _profileService.setCurrentlyPlaying(_selectedItem!);
   }
 
   void _stopStopwatch() {
     _stopwatch.stop();
     _timer?.cancel();
+    _profileService.setCurrentlyPlaying("");
   }
 
   String _formatElapsedTime() {

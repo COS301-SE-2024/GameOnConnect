@@ -9,7 +9,6 @@ import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
 import 'package:gameonconnect/view/pages/settings/settings_page.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
-import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
 import 'view/pages/feed/feed_page.dart';
@@ -24,7 +23,6 @@ import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'view/pages/stats/stats_total_time.dart';
-// import 'view/pages/events/invite_connections_page.dart';
 import 'view/pages/stats/stats_leaderboard_page.dart';
 import 'globals.dart' as globals;
 import 'view/pages/stats/stats_mood.dart';
@@ -102,7 +100,7 @@ class MyApp extends StatelessWidget {
         '/edit-profile': (context) => EditProfilePage(),
         '/customize': (context) => CustomizeProfilePage(),
         '/sign_up': (context) => SignUp(),
-        '/profile': (context) => Profilenew(),
+        //'/profile': (context) => Profilenew(),
         '/game_library': (context) => GameLibrary(),
         '/create_events': (context) => CreateEvents(),
         '/events': (context) => ViewEvents(),

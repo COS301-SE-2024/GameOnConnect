@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../../model/events_M/events_model.dart';
+import 'edit_event_page.dart';
 
 class ViewEventDetailsWidget extends StatefulWidget {
   final Event e;
@@ -413,6 +414,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
+                                            if(isCreator){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditEvent(e: e,imageUrl: imageUrl)));
+                                            }
                                             if (!isJoined) {
                                               EventsService().joinEvent(e);
                                               getUpdatedEvent(e.eventID);

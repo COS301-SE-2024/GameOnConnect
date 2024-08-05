@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -20,8 +20,13 @@ import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
 
 class FeedPage extends StatefulWidget {
-  const FeedPage({super.key, required this.title});
   final String title;
+
+  // ignore: prefer_const_constructors_in_immutables
+  const FeedPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   State<FeedPage> createState() => _FeedPageState();
@@ -30,27 +35,43 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   int _selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
-
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
   
 
-  static final List<Widget> _pages = <Widget>[
-    Center(
-        child: _FeedPageDisplay()), // Integrate the development buttons here
-    const GameLibrary(), // Actual page for the Games Library
-    const CreateEvents(), // create events Page
-    const ViewEvents(), // View Events Page
-    const Profilenew(), // Actual page for the Profile
-  ];
+
+  late String currentUserId; // Declare currentUserId here
+  late List<Widget> _pages; // Declare _pages as late
+
 
   @override
   void initState() {
     super.initState();
     usernamecontroller = TextEditingController();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _checkProfileAndShowDialog());      
+    currentUserId = getCurrentUserId(); // Initialize currentUserId
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkProfileAndShowDialog());
+
+    // Initialize _pages after currentUserId is set
+    _pages = <Widget>[
+      Center(
+        child:  _FeedPageDisplay(),
+      ),
+      const GameLibrary(),
+      const CreateEvents(),
+      const ViewEvents(),
+      Profilenew(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
+    ];
   }
+
+  String getCurrentUserId() {
+    final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    return currentUserId;
+
+    //WidgetsBinding.instance
+        //.addPostFrameCallback((_) => _checkProfileAndShowDialog());      
+
+  }
+
 
   @override
   void dispose() {
