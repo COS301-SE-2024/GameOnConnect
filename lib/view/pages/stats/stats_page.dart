@@ -1011,6 +1011,7 @@ class _StatsPageState extends State<StatsPage> {
 
   void _navigateToGamesPageLB(String position) async {
     List<Map<String, dynamic>> gameData = await fetchGameIDsByPositionLB(position); // Fetch the game IDs based on position
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),

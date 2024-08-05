@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
-import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
+// import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 
 class StatsLeaderboardPage extends StatefulWidget {
   const StatsLeaderboardPage({super.key});
@@ -277,6 +277,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
 
   void _navigateToGamesPage(String position) async {
     List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position); // Fetch the game IDs based on position
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),
@@ -300,7 +301,7 @@ class Indicator extends StatelessWidget {
   final bool isSquare;
   final double size;
 
-  const Indicator({
+  const Indicator({super.key, 
     required this.color,
     required this.text,
     this.isSquare = true,

@@ -46,6 +46,7 @@ class LeaderboardBody extends StatefulWidget {
   const LeaderboardBody({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LeaderboardBodyState createState() => _LeaderboardBodyState();
 }
 
@@ -267,6 +268,7 @@ class _LeaderboardBodyState extends State<LeaderboardBody> {
 
   void _navigateToGamesPage(String position) async {
     List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position);
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),

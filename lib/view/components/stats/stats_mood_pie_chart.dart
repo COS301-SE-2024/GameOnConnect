@@ -8,6 +8,7 @@ class StatsMoodWidget extends StatefulWidget {
   const StatsMoodWidget({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _StatsMoodWidgetState createState() => _StatsMoodWidgetState();
 }
 
@@ -228,6 +229,7 @@ class _StatsMoodWidgetState extends State<StatsMoodWidget> {
 
   void _navigateToGamesPage(String mood) async {
     List<Map<String, dynamic>> gameData = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
+    // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamesWidget(gameData: gameData),

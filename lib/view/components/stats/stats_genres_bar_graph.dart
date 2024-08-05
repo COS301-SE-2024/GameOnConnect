@@ -4,9 +4,10 @@ import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 import 'package:gameonconnect/view/components/stats/stats_filter.dart';
 
 class GenresStatsComponent extends StatefulWidget {
-  const GenresStatsComponent({Key? key}) : super(key: key);
+  const GenresStatsComponent({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _GenresStatsComponentState createState() => _GenresStatsComponentState();
 }
 
