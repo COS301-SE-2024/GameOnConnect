@@ -5,7 +5,7 @@ class Indicator extends StatelessWidget {
   final String text;
   final bool isSquare;
   final double size;
-  final Color textColor;
+  final Color? textColor;
 
   const Indicator({
     super.key,
@@ -13,12 +13,12 @@ class Indicator extends StatelessWidget {
     required this.text,
     this.isSquare = true,
     this.size = 16,
-    this.textColor = const Color(0xff505050),
+    this.textColor, // = Theme.of(context).colorScheme.secondary,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Theme.of(context);
+     final effectiveTextColor = textColor ?? Theme.of(context).colorScheme.secondary;
     return Row(
       children: <Widget>[
         Container(
@@ -35,7 +35,7 @@ class Indicator extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: textColor,
+            color: effectiveTextColor,
           ),
         )
       ],
