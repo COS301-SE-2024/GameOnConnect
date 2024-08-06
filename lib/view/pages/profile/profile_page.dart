@@ -4,6 +4,7 @@ import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
+import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
@@ -117,12 +118,12 @@ Future<void> getTimePlayed() async {
                                   width: MediaQuery.of(context).size.width,
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
-                                    color: Color.fromRGBO(42, 42, 42, 1.0),  
+                                    color: const Color.fromRGBO(42, 42, 42, 1.0),  
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
                                       //image: CachedNetworkImageProvider(profileData.banner),
                                       //image:CachedNetworkImageProvider('https://wallup.net/wp-content/uploads/2018/03/19/579265-water-green-nature-waterfall.jpg'),
-                                      image: CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg'),
+                                      image: const CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg'),
                                       colorFilter: ColorFilter.mode(
                                         Colors.grey.withOpacity(0.6), // Adjust opacity here
                                         BlendMode.dstATop, // Use dstATop for transparency
@@ -147,11 +148,11 @@ Future<void> getTimePlayed() async {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 19, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 19, 0),
                           child: Container(
                                 height: 100,
                                 width: 100,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle, 
                                 ),
                                 child: ClipOval(
@@ -165,16 +166,16 @@ Future<void> getTimePlayed() async {
                               ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 45),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 45),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                                 child: Text(
                                   profileData.profileName,
-                                  style:  TextStyle(
+                                  style:  const TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 24,
                                     letterSpacing: 0,
@@ -190,7 +191,7 @@ Future<void> getTimePlayed() async {
                                       size: 15,
                                       ),
                                      const SizedBox(width: 5),   
-                                    Text(
+                                    const Text(
                                       'Currently Online',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
@@ -212,7 +213,8 @@ Future<void> getTimePlayed() async {
                               left: 16,
                               bottom: 20,
                               right: 16,
-                              child: Row(
+                              child:
+                              Row(
                                 children: [
                                   Expanded(
                                     child: ProfileButton(value: '${profileData.myGames.length}', title: 'Games'),
@@ -248,20 +250,19 @@ Future<void> getTimePlayed() async {
                                                   
                           ],
                         ),
-
-                        const Positioned(
-                              left: 16,
-                              right: 16,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: StatsButton(),
-                                  ),
-                                 
-                                ],
+ 
+                          const Row(
+                            children: [
+                              Expanded(
+                                child: StatsButton(),
                               ),
-                              
-                            ),
+                            ],
+                          ),
+                          
+
+                        const SizedBox(height: 15),
+                         Bio(bio: profileData.bio,),
+                        
                         //new
 
                         /*if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
