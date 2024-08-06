@@ -27,7 +27,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
     imageUrl = await EventsService().getEventImage(e.eventID);
   }
 
-  void getUpdatedEvent(String id) async{
+  void getUpdatedEvent(String id) async {
     Event updated = (await EventsService().getEvent(id))!;
     setState(() {
       e = updated;
@@ -71,14 +71,14 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 imageUrl: imageUrl,
                                 placeholder: (context, url) => const Center(
                                     child:
-                                    CircularProgressIndicator()), // Loading indicator for banner
+                                        CircularProgressIndicator()), // Loading indicator for banner
                                 errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                                    const Icon(Icons.error),
                                 fit: BoxFit.cover,
                               ),
                               Align(
                                 alignment:
-                                    const AlignmentDirectional(0.85, -1.24),
+                                    const AlignmentDirectional(-0.9, -1),
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 50, 0, 0),
@@ -101,51 +101,66 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                             ]),
                             Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
                                   child: Column(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 20, 0, 0),
-                                        child: Text(
-                                          e.name,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: 'Inter',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 24,
-                                            letterSpacing: 0,
-                                            fontWeight: FontWeight.w500,
-                                            decoration:
-                                                TextDecoration.underline,
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(16, 0, 0, 0),
+                                            child: Text(
+                                              e.name,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Inter',
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 24,
+                                                letterSpacing: 0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          const Spacer(),
+                                          //TODO figure out how to do this button thing
+                                          IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  !selected;
+                                                });
+                                                if (selected) {
+                                                  EventsService()
+                                                      .unsubscribeToEvent(e);
+                                                } else {
+                                                  EventsService()
+                                                      .subscribeToEvent(e);
+                                                }
+                                                getUpdatedEvent(e.eventID);
+                                              },
+                                              icon: selected
+                                                  ? Icon(
+                                                      Icons.notifications,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .notification_add_outlined,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary)),
+                                        ],
                                       ),
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              !selected;
-                                            });
-                                            if (selected) {
-                                              EventsService().unsubscribeToEvent(e);
-                                            } else {
-                                              EventsService().subscribeToEvent(e);
-                                            }
-                                            getUpdatedEvent(e.eventID);
-                                          },
-                                          icon: selected
-                                              ? const Icon(Icons.notifications)
-                                              : const Icon(Icons
-                                                  .notification_add_outlined)),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
+
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 8, 24, 0),
@@ -363,7 +378,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       ),
                                     ),
                                     Text(
-                                      EventsService().getAmountJoined(e).toString(),
+                                      EventsService()
+                                          .getAmountJoined(e)
+                                          .toString(),
                                       style: TextStyle(
                                         fontFamily: 'Inter',
                                         color: Theme.of(context)
@@ -414,15 +431,21 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             .fromSTEB(0, 0, 0, 4),
                                         child: MaterialButton(
                                           onPressed: () {
-                                            if(isCreator){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditEvent(e: e,imageUrl: imageUrl)));
+                                            if (isCreator) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EditEvent(
+                                                              e: e,
+                                                              imageUrl:
+                                                                  imageUrl)));
                                             }
                                             if (!isJoined) {
                                               EventsService().joinEvent(e);
                                               getUpdatedEvent(e.eventID);
                                               isJoined = true;
                                             }
-
                                           },
                                           child: Text(
                                             isCreator
