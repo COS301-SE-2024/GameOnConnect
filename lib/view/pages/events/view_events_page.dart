@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../../model/events_M/events_model.dart';
 import '../../components/event/event_card.dart';
@@ -154,7 +153,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                     Align(
                                                       alignment:
                                                           const Alignment(
-                                                              1, 1),
+                                                              0, 1),
                                                       child: ButtonsTabBar(
                                                         width: 110,
                                                         contentCenter: true,
@@ -205,6 +204,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                       ),
                                                     ),
                                                     Expanded(
+
                                                       child: TabBarView(
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
