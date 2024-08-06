@@ -94,24 +94,21 @@ class _TotalTimeStatsWidgetState extends State<TotalTimeStatsWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8),
+                          const Padding(
+                            padding: EdgeInsets.all(8),
                             child: Text(
                               'Today',
                               style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 15,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              '${todayTime.toStringAsFixed(3)} hours',
+                              '${todayTime.toStringAsFixed(2)} hours',
                               style: TextStyle(
-                                fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).colorScheme.secondary,
                               ),

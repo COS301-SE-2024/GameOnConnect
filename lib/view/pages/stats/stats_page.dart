@@ -185,27 +185,11 @@ class _StatsPageState extends State<StatsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 10),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "*Click on any pie chart segment to view the games",
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
                       child: Text(
                         'Total Time Played',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          // fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -219,10 +203,10 @@ class _StatsPageState extends State<StatsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 12, 10),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   width: 110,
@@ -244,7 +228,6 @@ class _StatsPageState extends State<StatsPage> {
                                         child: Text(
                                           'Today',
                                           style: TextStyle(
-                                            // fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
@@ -253,9 +236,8 @@ class _StatsPageState extends State<StatsPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(2),
                                         child: Text(
-                                          '${todayTime.toStringAsFixed(3)} hours',
+                                          '${todayTime.toStringAsFixed(2)} hours',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
@@ -285,7 +267,6 @@ class _StatsPageState extends State<StatsPage> {
                                         child: Text(
                                           'Past week',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
@@ -294,9 +275,8 @@ class _StatsPageState extends State<StatsPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(2),
                                         child: Text(
-                                          '${pastWeekTime.toStringAsFixed(3)} hours',
+                                          '${pastWeekTime.toStringAsFixed(2)} hours',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
@@ -326,7 +306,6 @@ class _StatsPageState extends State<StatsPage> {
                                         child: Text(
                                           'Past month',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           ),
@@ -335,9 +314,8 @@ class _StatsPageState extends State<StatsPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(2),
                                         child: Text(
-                                          '${pastMonthTime.toStringAsFixed(3)} hours',
+                                          '${pastMonthTime.toStringAsFixed(2)} hours',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
@@ -351,10 +329,10 @@ class _StatsPageState extends State<StatsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 10, 30, 10),
+                            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 12, 10),
                             child: Container(
                               width: double.infinity,
-                              height: 100,
+                              height: 110,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(10),
@@ -381,7 +359,6 @@ class _StatsPageState extends State<StatsPage> {
                                               child: Text(
                                                 'You have played',
                                                 style: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12,
                                                 ),
@@ -392,7 +369,6 @@ class _StatsPageState extends State<StatsPage> {
                                               child: Text(
                                                 allTime.toStringAsFixed(3),
                                                 style: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   color: Theme.of(context).colorScheme.primary,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12,
@@ -406,7 +382,6 @@ class _StatsPageState extends State<StatsPage> {
                                           child: Text(
                                             'hours in total. Wow!',
                                             style: TextStyle(
-                                              fontFamily: 'Inter',
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                             ),
@@ -429,7 +404,7 @@ class _StatsPageState extends State<StatsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(30, 10, 30, 10),
+                            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 30, 12),
                             child: Container(
                               width: double.infinity,
                               height: 100,
@@ -463,7 +438,6 @@ class _StatsPageState extends State<StatsPage> {
                                         const Text(
                                           'You have played more than',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -475,7 +449,6 @@ class _StatsPageState extends State<StatsPage> {
                                               child: Text(
                                                 '${playPercentage.toStringAsFixed(3)}%',
                                                 style: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   color: Theme.of(context).colorScheme.primary,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -486,7 +459,6 @@ class _StatsPageState extends State<StatsPage> {
                                               child: Text(
                                                 'of players',
                                                 style: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -510,19 +482,32 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Click on any pie chart segment to view the games *",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
                       child: Text(
                         'Mood',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          // fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(28),
+                      padding: const EdgeInsets.all(12),
                       child: allZeroMood
                         ? Center(
                             child: Text(
@@ -584,15 +569,15 @@ class _StatsPageState extends State<StatsPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 20),
+                                  Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 12),
                                   SizedBox(height: 25),
-                                  Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 20),
+                                  Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 12),
                                   SizedBox(height: 25),
-                                  Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 20),
+                                  Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 12),
                                   SizedBox(height: 25),
-                                  Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 20),
+                                  Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 12),
                                   SizedBox(height: 25),
-                                  Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 20),
+                                  Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 12),
                                 ],
                               ),
                             ],
@@ -605,7 +590,7 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                      padding: const EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -744,7 +729,7 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(30, 20, 10, 10),
+                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
                       child: Text(
                         'Leaderboard rankings',
                         textAlign: TextAlign.start,
@@ -756,7 +741,7 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(28),
+                      padding: const EdgeInsets.all(12),
                       child: isEmptyLB
                           ? Center(
                               child: Text(
@@ -820,23 +805,23 @@ class _StatsPageState extends State<StatsPage> {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
-                                      child: Indicator(color: Color.fromRGBO(200, 235, 197, 1.0), text: '1st', isSquare: false, size: 20),
+                                      child: Indicator(color: Color.fromRGBO(200, 235, 197, 1.0), text: '1st', isSquare: false, size: 12),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
-                                      child: Indicator(color: Color.fromRGBO(5, 94, 3, 1.0), text: '2nd', isSquare: false, size: 20),
+                                      child: Indicator(color: Color.fromRGBO(5, 94, 3, 1.0), text: '2nd', isSquare: false, size: 12),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
-                                      child: Indicator(color: Color.fromRGBO(0, 182, 40, 1.0), text: '3rd', isSquare: false, size: 20),
+                                      child: Indicator(color: Color.fromRGBO(0, 182, 40, 1.0), text: '3rd', isSquare: false, size: 12),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
-                                      child: Indicator(color: Color.fromRGBO(0, 216, 35, 1.0), text: 'Top 5', isSquare: false, size: 20),
+                                      child: Indicator(color: Color.fromRGBO(0, 216, 35, 1.0), text: 'Top 5', isSquare: false, size: 12),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
-                                      child: Indicator(color: Color.fromRGBO(72, 228, 88, 1.0), text: 'Top 10', isSquare: false, size: 20),
+                                      child: Indicator(color: Color.fromRGBO(72, 228, 88, 1.0), text: 'Top 10', isSquare: false, size: 12),
                                     ),
                                   ],
                                 ),
