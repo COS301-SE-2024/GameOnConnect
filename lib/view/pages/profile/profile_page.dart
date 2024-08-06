@@ -5,6 +5,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
+import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
@@ -180,50 +181,15 @@ Future<void> getTimePlayed() async {
                                     color: Color(0xFFFFFFFF),
                                   ),
                                 ),
-                              ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              ), 
+                                Row(
                                   children: [
-                                    /*Container(
-                                      margin: EdgeInsets.fromLTRB(0, 1.5, 5, 1.5),
-                                      child: SizedBox(
-                                        width: 12,
-                                        height: 12,
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                                          child: Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF00FF75),
-                                                  borderRadius: BorderRadius.circular(4),
-                                                ),
-                                                child: Container(
-                                                  width: 8,
-                                                  height: 8,
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: -2,
-                                                child: Container(
-                                                  width: 12,
-                                                  height: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),*/
                                     Icon(
                                       Icons.radio_button_checked,
                                       color: Theme.of(context).colorScheme.primary ,
                                       size: 15,
                                       ),
+                                     const SizedBox(width: 5),   
                                     Text(
                                       'Currently Online',
                                       style: TextStyle(
@@ -235,7 +201,7 @@ Future<void> getTimePlayed() async {
                                     ),
                                   ],
                                 ),
-                              ),
+                              //),
                             ],
                           ),
                         ),
@@ -282,108 +248,22 @@ Future<void> getTimePlayed() async {
                                                   
                           ],
                         ),
+
+                        const Positioned(
+                              left: 16,
+                              right: 16,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: StatsButton(),
+                                  ),
+                                 
+                                ],
+                              ),
+                              
+                            ),
                         //new
-                        Container(
-                  margin: EdgeInsets.fromLTRB(12, 0, 12, 19),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 19, 0),
-                          child: Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle, 
-                                ),
-                                child: ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: profileData.profilePicture,
-                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for profile picture
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 45),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                child: Text(
-                                  'franco_dreyer',
-                                  style:  TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 24,
-                                    letterSpacing: 0,
-                                    color: Color(0xFFFFFFFF),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(0, 1.5, 5, 1.5),
-                                      child: SizedBox(
-                                        width: 12,
-                                        height: 12,
-                                        child: Container(
-                                          padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
-                                          child: Stack(
-                                            clipBehavior: Clip.none,
-                                            children: [
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF00FF75),
-                                                  borderRadius: BorderRadius.circular(4),
-                                                ),
-                                                child: Container(
-                                                  width: 8,
-                                                  height: 8,
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: -2,
-                                                child: Container(
-                                                  width: 12,
-                                                  height: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      'Currently Online',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
-                                        letterSpacing: 0,
-                                        color: Color(0xFFFFFFFF),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+
                         /*if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
                           
                           // Conditionally display the CurrentlyPlaying widget
