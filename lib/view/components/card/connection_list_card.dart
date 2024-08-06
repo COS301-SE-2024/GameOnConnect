@@ -190,7 +190,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
+                SizedBox(
                   width: page!="events" ?44:60,
                   height: page!="events" ?44:60,
 

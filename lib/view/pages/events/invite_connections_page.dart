@@ -84,9 +84,9 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      color: Theme.of(context).brightness == Brightness.light
+                                          ? Theme.of(context).colorScheme.secondary
+                                          : Colors.white,
                                       fontSize: 24,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.bold,
@@ -164,14 +164,14 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
               }),
         ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton:Container( width: 350, child:MaterialButton(
+        floatingActionButton:SizedBox( width: 350, child:MaterialButton(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: () {
               Navigator.pop(context, invites);
             },
             color: Theme.of(context).colorScheme.primary,
             child: const Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-              Text("Save"),
+              Text("Save",style: TextStyle(color: Colors.black)),
             ])),
         ),
     );
