@@ -57,4 +57,3 @@ class _EditSwitch extends State<EditSwitch> {
     );
   }
 }
-
