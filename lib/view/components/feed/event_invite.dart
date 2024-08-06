@@ -42,8 +42,7 @@ class _EventInvitationState extends State<EventInvitation> {
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child: Expanded(
               child: Container(
-            padding:
-                const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(15),
@@ -53,6 +52,7 @@ class _EventInvitationState extends State<EventInvitation> {
                   Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
                   title: Row(
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -66,9 +66,13 @@ class _EventInvitationState extends State<EventInvitation> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('${widget.inviterName} invited you to join',
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
                           Text(widget.event.name,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color:
@@ -92,7 +96,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                 style: const TextStyle(fontSize: 12))
                           ],
                         ),
-                        const SizedBox(height:10),
+                        const SizedBox(height: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -132,10 +136,11 @@ class _EventInvitationState extends State<EventInvitation> {
                                   ),
                                   child: Text('Accept',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Theme.of(context).colorScheme.surface
-                                      ))),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface))),
                             ),
                             InkWell(
                                 //decline
@@ -157,10 +162,11 @@ class _EventInvitationState extends State<EventInvitation> {
                                     ),
                                     child: Text('Decline',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                          color: Theme.of(context).colorScheme.surface
-                                        )))),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface)))),
                             InkWell(
                                 //stay notified
                                 onTap: () {
