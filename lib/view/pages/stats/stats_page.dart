@@ -184,17 +184,17 @@ class _StatsPageState extends State<StatsPage> {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 15, 15, 10),
+                    const Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(15, 20, 15, 10),
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
                           "*Click on any pie chart segment to view the games",
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Colors.grey,
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -205,7 +205,7 @@ class _StatsPageState extends State<StatsPage> {
                         'Total Time Played',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          // fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -244,7 +244,7 @@ class _StatsPageState extends State<StatsPage> {
                                         child: Text(
                                           'Today',
                                           style: TextStyle(
-                                            fontFamily: 'Inter',
+                                            // fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -506,14 +506,14 @@ class _StatsPageState extends State<StatsPage> {
                         'Mood',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          // fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(28),
                       child: allZeroMood
                         ? Center(
                             child: Text(
@@ -605,7 +605,7 @@ class _StatsPageState extends State<StatsPage> {
                             'Most played genres',
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              // fontFamily: 'Inter',
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -614,26 +614,30 @@ class _StatsPageState extends State<StatsPage> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(
-                                'Filter',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color: Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.filter_alt,
-                                    color: Theme.of(context).colorScheme.primary,
-                                    size: 24,
-                                  ),
-                                  onPressed: () {
-                                    showStatsFilterDialog(context, _selectedFilter, _onFilterSelected);
-                                  },
+                              GestureDetector(
+                                onTap: () {
+                                  showStatsFilterDialog(context, _selectedFilter, _onFilterSelected);
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Filter',
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        color: Theme.of(context).colorScheme.secondary,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                                      child: Icon(
+                                        Icons.filter_alt,
+                                        color: Theme.of(context).colorScheme.primary,
+                                        size: 24,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -736,14 +740,14 @@ class _StatsPageState extends State<StatsPage> {
                         'Leaderboard rankings',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontFamily: 'Inter',
+                          // fontFamily: 'Inter',
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(28),
                       child: isEmptyLB
                           ? Center(
                               child: Text(
