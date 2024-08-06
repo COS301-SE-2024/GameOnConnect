@@ -101,17 +101,17 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                               0, 12, 0, 0),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        height: 150,
+                                        height: 200,
                                         child: CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
                                               CarouselController(),
                                           options: CarouselOptions(
+                                            padEnds: false,
                                             initialPage: 0,
-                                            viewportFraction: 0.5,
+                                            viewportFraction: 0.4,
                                             disableCenter: true,
-                                            enlargeCenterPage: true,
-                                            enlargeFactor: 0.25,
+                                            enlargeCenterPage: false,
                                             enableInfiniteScroll: false,
                                             scrollDirection: Axis.horizontal,
                                             autoPlay: false,
