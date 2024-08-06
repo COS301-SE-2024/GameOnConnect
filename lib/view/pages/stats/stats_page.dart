@@ -246,6 +246,7 @@ class _StatsPageState extends State<StatsPage> {
                                           style: TextStyle(
                                             // fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -257,6 +258,7 @@ class _StatsPageState extends State<StatsPage> {
                                             fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -285,6 +287,7 @@ class _StatsPageState extends State<StatsPage> {
                                           style: TextStyle(
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -296,6 +299,7 @@ class _StatsPageState extends State<StatsPage> {
                                             fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -324,6 +328,7 @@ class _StatsPageState extends State<StatsPage> {
                                           style: TextStyle(
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -335,6 +340,7 @@ class _StatsPageState extends State<StatsPage> {
                                             fontFamily: 'Inter',
                                             color: Theme.of(context).colorScheme.primary,
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ),
@@ -377,6 +383,7 @@ class _StatsPageState extends State<StatsPage> {
                                                 style: TextStyle(
                                                   fontFamily: 'Inter',
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ),
@@ -388,6 +395,7 @@ class _StatsPageState extends State<StatsPage> {
                                                   fontFamily: 'Inter',
                                                   color: Theme.of(context).colorScheme.primary,
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ),
@@ -400,6 +408,7 @@ class _StatsPageState extends State<StatsPage> {
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               fontWeight: FontWeight.bold,
+                                              fontSize: 12,
                                             ),
                                           ),
                                         ),
