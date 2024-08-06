@@ -101,7 +101,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                               0, 12, 0, 0),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        height: 200,
+                                        height: 250,
                                         child: CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
@@ -109,7 +109,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           options: CarouselOptions(
                                             padEnds: false,
                                             initialPage: 0,
-                                            viewportFraction: 0.4,
+                                            viewportFraction: 0.5,
                                             disableCenter: true,
                                             enlargeCenterPage: false,
                                             enableInfiniteScroll: false,

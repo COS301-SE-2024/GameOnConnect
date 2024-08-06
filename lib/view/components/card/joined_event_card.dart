@@ -1,5 +1,5 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
 import '../../../model/events_M/events_model.dart';
@@ -46,7 +46,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
-          } else  {
+          } else {
             imageUrl = snapshot.data!;
             return InkWell(
               onTap: () {
@@ -56,87 +56,93 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
               child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: SizedBox(
-
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
+                padding: const EdgeInsets.all(6.0),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [BoxShadow(blurRadius: 2,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer,
-                      offset: const Offset(
-                        0,
-                        5,
-                      ),)]
-                    ),
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 2,
+                          color: Theme.of(context).colorScheme.surface,
+                          offset: const Offset(
+                            0,
+                            1,
+                          ),
+                        )
+                      ]),
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CachedNetworkImage(
-                                  height: 84,
-                                  width: double.infinity,
-                                  imageUrl: imageUrl,
-                                  placeholder: (context, url) => const Center(
-                                      child:
-                                          CircularProgressIndicator()), // Loading indicator for banner
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                  fit: BoxFit.cover,
-                                ),
-                                Text(
-                                  'Upcoming: ${widget.e?.name}',
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 16,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CachedNetworkImage(
+                                height: 100,
+                                width: double.infinity,
+                                imageUrl: imageUrl,
+                                imageBuilder: (context, imageProvider) =>
+                                    Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover),
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
                                 ),
-                                Expanded(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 0, 0),
-                                    child: Text(
-                                      '${widget.e?.startDate.day}/${widget.e?.startDate.month}/${widget.e?.startDate.year}\n${widget.e?.startDate.hour}:${widget.e?.startDate.minute}',
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 14,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                placeholder: (context, url) => const Center(
+                                    child:
+                                        CircularProgressIndicator()), // Loading indicator for banner
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                fit: BoxFit.cover,
+                              ),
+                              Text(
+                                'Upcoming: ${widget.e?.name}',
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  color:
+                                      Colors.black,
+                                  fontSize: 16,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 0, 0),
+                                  child: Text(
+                                    '${widget.e?.startDate.day}/${widget.e?.startDate.month}/${widget.e?.startDate.year} at ${widget.e?.startDate.hour}:${widget.e?.startDate.minute}',
+                                    style: const TextStyle(
+                                      fontFamily: 'Inter',
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Icon( e.eventType == "Gaming Session"? CupertinoIcons.game_controller : Icons.emoji_events_outlined),
+                            ],
                           ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                  ),
               ),
             );
           }
