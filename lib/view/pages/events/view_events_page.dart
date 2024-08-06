@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../model/events_M/events_model.dart';
-import '../../components/card/event_card.dart';
-import '../../components/card/joined_event_card.dart';
+import '../../components/event/event_card.dart';
+import '../../components/event/joined_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
@@ -75,6 +76,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                               children: [
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+
                                   children: [
                                     Align(
                                       alignment:
@@ -134,18 +137,6 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           color: Theme.of(context)
                                               .colorScheme
                                               .surface,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              blurRadius: 2,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              offset: const Offset(
-                                                0,
-                                                2,
-                                              ),
-                                            )
-                                          ],
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
@@ -154,8 +145,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                               .fromSTEB(0, 16, 0, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
                                               Expanded(
                                                 child: Column(
@@ -163,8 +154,10 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                     Align(
                                                       alignment:
                                                           const Alignment(
-                                                              -1, 0),
+                                                              1, 1),
                                                       child: ButtonsTabBar(
+                                                        width: 110,
+                                                        contentCenter: true,
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
                                                           color:
@@ -175,6 +168,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           letterSpacing: 0,
                                                           fontWeight:
                                                               FontWeight.w500,
+
                                                         ),
                                                         unselectedLabelStyle:
                                                             TextStyle(
@@ -185,22 +179,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                         unselectedBackgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
-                                                                .surface,
-                                                        borderColor:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .primary,
-                                                        unselectedBorderColor:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .secondary,
-                                                        borderWidth: 2,
+                                                                .primaryContainer,
                                                         elevation: 0,
                                                         backgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
-                                                                .surface,
-                                                        tabs: const [
+                                                                .primary,
+                                                        tabs:  const [
                                                           Tab(
                                                             text: 'All',
                                                           ),
