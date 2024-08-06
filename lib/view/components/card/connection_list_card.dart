@@ -171,7 +171,6 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       width: 388,
       height: 72,
       decoration: BoxDecoration(
-        color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             blurRadius: 0,
@@ -192,22 +191,17 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: (page != "events")
-                        ? null // No border for profiles
-                        : Border.all(
-                            width: 1, // Add a border for non-profiles
-                            color: Colors.black,
-                          ),
-                  ),
+                  width: page!="events" ?44:60,
+                  height: page!="events" ?44:60,
+
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(44),
-                      child: CachedNetworkImage(
+                      child: selected? Container(color:Theme.of(context).colorScheme.primary,
+                        child: Icon(Icons.check,color: Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).colorScheme.surface,), ):CachedNetworkImage(
                         imageUrl: image,
                         placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
                         errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -233,7 +227,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                       ),
                     ),
                     Text(
-                      '# $uniqueNum',
+                      '#$uniqueNum',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         color: Theme.of(context).colorScheme.secondary,

@@ -61,22 +61,8 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                           user.uid != _currentUserId) // Exclude current user
                       .toList();
                   return  Column(mainAxisSize: MainAxisSize.max, children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 3,
-                            color: Theme.of(context).colorScheme.secondary,
-                            offset: const Offset(
-                              0,
-                              1,
-                            ),
-                          )
-                        ],
-                      ),
-                      child: Row(
+
+                       Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -101,7 +87,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
-                                      fontSize: 16,
+                                      fontSize: 24,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -111,7 +97,6 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             ),
                           ),
                         ],
-                      ),
                     ),
                     const SizedBox(height: 20),
                     SearchField(
@@ -168,24 +153,27 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                       constraints: const BoxConstraints(
                         maxWidth: 770,
                       ),
-                      decoration: const BoxDecoration(),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            16, 12, 16, 12),
-                        child: MaterialButton(
-                            onPressed: () {
-                              Navigator.pop(context, invites);
-                            },
-                            color: Theme.of(context).colorScheme.primary,
-                            child: const Row(children: [
-                              Text("Save invites"),
-                            ])),
-                      ),
-                    )
+
+                    ),
+
                   ]
+
                   );
+
                 }
               }),
-        ));
+        ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton:Container( width: 350, child:MaterialButton(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {
+              Navigator.pop(context, invites);
+            },
+            color: Theme.of(context).colorScheme.primary,
+            child: const Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+              Text("Save"),
+            ])),
+        ),
+    );
   }
 }
