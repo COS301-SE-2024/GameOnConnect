@@ -269,6 +269,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                         builder: (context) => ChatPage(
                           profileName: username,
                           receiverID: uid,
+                          profilePicture: image,
                         ),
                       ),
                     );

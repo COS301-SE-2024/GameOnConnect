@@ -6,7 +6,8 @@ ThemeData darkTheme = ThemeData(
     primary: Color.fromRGBO(0, 255, 117, 1.0),
     secondary: Color.fromRGBO(190, 190, 190, 1.0),
     tertiary: Color.fromRGBO(136, 255, 131, 1.0),
-    primaryContainer: Color.fromRGBO(42, 42, 42, 1.0)
+    primaryContainer: Color.fromRGBO(42, 42, 42, 1.0),
+    onPrimary: Color.fromRGBO(0, 144, 66, 1.0),
   )
 );
 
@@ -16,6 +17,7 @@ ThemeData lightTheme = ThemeData(
     primary: Color.fromRGBO(0, 223, 103, 1.0),
     secondary: Color.fromRGBO(42, 42, 42, 1.0),
     tertiary: Color.fromRGBO(136, 255, 131, 1.0),
-    primaryContainer: Color.fromRGBO(244, 244, 244, 1.0)
+    primaryContainer: Color.fromRGBO(244, 244, 244, 1.0),
+    onPrimary: Color.fromRGBO(136, 255, 191, 1.0),
   )
 );
