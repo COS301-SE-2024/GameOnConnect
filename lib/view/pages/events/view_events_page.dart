@@ -161,9 +161,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
                                                           color:
-                                                              Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary,
+                                                          Theme.of(context).brightness == Brightness.light
+                                                              ? Theme.of(context).colorScheme.secondary
+                                                              : Theme.of(context).colorScheme.surface,
                                                           fontSize: 16,
                                                           letterSpacing: 0,
                                                           fontWeight:
@@ -172,10 +172,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                         ),
                                                         unselectedLabelStyle:
                                                             TextStyle(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .secondary),
+                                                                color: Theme.of(context).brightness == Brightness.light
+                                                                    ? Theme.of(context).colorScheme.secondary
+                                                                    : Colors.white),
                                                         unselectedBackgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme

@@ -75,7 +75,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         )
                       ]),
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -108,10 +109,11 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                               ),
                               Text(
                                 'Upcoming: ${widget.e?.name}',
-                                style: const TextStyle(
+                                style:  TextStyle(
                                   fontFamily: 'Inter',
-                                  color:
-                                      Colors.black,
+                                  color: Theme.of(context).brightness == Brightness.light
+                                      ? Colors.black
+                                      : Colors.white,
                                   fontSize: 16,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
@@ -120,11 +122,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                 maxLines: 2,
                               ),
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 0, 0),
                                   child: Text(
-                                    '${widget.e?.startDate.day}/${widget.e?.startDate.month}/${widget.e?.startDate.year} at ${widget.e?.startDate.hour}:${widget.e?.startDate.minute}',
+                                    '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
                                     style: const TextStyle(
                                       fontFamily: 'Inter',
                                       color: Colors.grey,
@@ -133,9 +132,16 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
                               ),
-                              Icon( e.eventType == "Gaming Session"? CupertinoIcons.game_controller : Icons.emoji_events_outlined),
+                              Icon(
+                                e.eventType == "Gaming Session"
+                                    ? CupertinoIcons.game_controller
+                                    : Icons.emoji_events_outlined,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Theme.of(context).colorScheme.primary,
+                              ),
                             ],
                           ),
                         ),

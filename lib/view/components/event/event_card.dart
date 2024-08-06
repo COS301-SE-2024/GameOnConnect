@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../pages/events/specific_event_details.dart';
@@ -35,17 +36,18 @@ class EventCard extends State<EventCardWidget> {
     });
   }
 
+  Future<void> getImage(Event e) async {
+    imageUrl = await EventsService().getEventImage(e.eventID);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: EventsService().getEventImage(e.eventID),
+        future: getImage(e),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            imageUrl = snapshot.data!;
             return InkWell(
                 onTap: () {
                   Navigator.push(
@@ -57,7 +59,7 @@ class EventCard extends State<EventCardWidget> {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
                   child: Container(
                     width: double.infinity,
-                    height: 60,
+                    height: 100,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
                     ),
@@ -68,27 +70,26 @@ class EventCard extends State<EventCardWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           SizedBox(
-                            width: 95,
-                            height: 95,
+                            width: 100,
+                            height: 90,
                             child: CachedNetworkImage(
                               height: 100,
                               width: double.infinity,
                               imageUrl: imageUrl,
                               imageBuilder: (context, imageProvider) =>
                                   Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover),
-                                    ),
-                                  ),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(12),
+                                  image: DecorationImage(
+                                      image: imageProvider, fit: BoxFit.cover),
+                                ),
+                              ),
                               placeholder: (context, url) => const Center(
                                   child:
-                                  CircularProgressIndicator()), // Loading indicator for banner
+                                      CircularProgressIndicator()), // Loading indicator for banner
                               errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+                                  const Icon(Icons.error),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -105,9 +106,9 @@ class EventCard extends State<EventCardWidget> {
                                     e.name,
                                     style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      color:Theme.of(context).brightness == Brightness.light
+                                          ? Colors.black
+                                          : Colors.white,
                                       fontSize: 16,
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.w500,
@@ -116,38 +117,35 @@ class EventCard extends State<EventCardWidget> {
                                     maxLines: 1,
                                   ),
                                   Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 4, 0, 0),
-                                      child: Text(
-                                        '${e.startDate.day}/${e.startDate.month}/${e.startDate.year}      |     ${e.startDate.hour}:${e.startDate.minute}',
+                                    child:  Text(
+                                        '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
                                         style: TextStyle(
                                           fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
+                                          color: Theme.of(context).brightness == Brightness.light
+                                              ? Colors.black
+                                              : Colors.white,
                                           fontSize: 14,
                                           letterSpacing: 0,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                     ),
-                                  ),
+                                  Icon(e.eventType == "Gaming Session"
+                                      ? CupertinoIcons.game_controller
+                                      : Icons.emoji_events_outlined,
+                                  color: Theme.of(context).brightness == Brightness.light
+                                      ? Theme.of(context).colorScheme.secondary
+                                      : Theme.of(context).colorScheme.primary,),
                                 ],
                               ),
                             ),
                           ),
-                          Text(
-                            e.eventType,
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              fontFamily: 'Inter',
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 12,
-                              letterSpacing: 0,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Theme.of(context).colorScheme.primary,
                           ),
                         ],
                       ),
