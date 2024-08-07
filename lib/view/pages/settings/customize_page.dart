@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
-import 'package:gameonconnect/view/components/settings/edit_colouricon_component.dart';
+import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
@@ -574,7 +574,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               (item) => _deleteSelectedItem(item, _selectedInterests)),
 
           const SizedBox(height: 20),
-          ColorIconContainer(
+          ColourIconContainer(
             updateTheme: _updateTheme,
             isDarkMode: isDarkMode,
             onDarkModeChanged: (newValue) {

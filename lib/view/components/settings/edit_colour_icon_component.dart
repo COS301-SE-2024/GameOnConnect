@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 
-class ColorIconContainer extends StatelessWidget {
+class ColourIconContainer extends StatelessWidget {
   final Function(Color) updateTheme;
   final bool isDarkMode;
   final Function(bool) onDarkModeChanged;
   final Color currentColor;
 
-  const ColorIconContainer({
+  const ColourIconContainer({
     super.key,
     required this.updateTheme,
     required this.isDarkMode,
