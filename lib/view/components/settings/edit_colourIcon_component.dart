@@ -56,6 +56,10 @@ class ColorIconContainer extends StatelessWidget {
                     Provider.of<ThemeProvider>(context, listen: false)
                         .toggleTheme();
                   },
+                  activeColor: Theme.of(context).colorScheme.surface,
+                  inactiveThumbColor: Theme.of(context).colorScheme.primary,
+                  activeTrackColor: Theme.of(context).colorScheme.primary,
+                  inactiveTrackColor: Theme.of(context).colorScheme.secondary,
                 ),
               ],
             ),
