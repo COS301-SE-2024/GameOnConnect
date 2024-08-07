@@ -55,13 +55,13 @@ class ConnectionService {
     }
   }
 
-  Future<List<user.AppUser>?> getConnectionlist() async {
+  Future<List<user.AppUser>?> getConnectionlist(String who) async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       List<user.AppUser> list = [];
 
       if (currentUser != null) {
-        List<String>? connections = await getConnections('connections');
+        List<String>? connections = await getConnections(who);
         for (var i in connections) {
           user.AppUser u = user.AppUser.fromMap(
               await ConnectionService().fetchFriendProfileData(i));
@@ -79,7 +79,7 @@ class ConnectionService {
     List<user.AppUser> onlineConnections = [];
 
     try {
-      List<user.AppUser>? connections = await getConnectionlist();
+      List<user.AppUser>? connections = await getConnectionlist("connections");
       print(connections);
 
       if (connections != null) {

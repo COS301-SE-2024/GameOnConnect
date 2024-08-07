@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/feed/connection_updates.dart';
 import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
 import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
 import 'package:gameonconnect/view/components/feed/start_timer.dart';
@@ -359,7 +360,12 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
         SizedBox(height: 15),
         CurrentlyOnlineBar(),
         SizedBox(height: 30),
-        Text("Event Invites",
+        Text("Connection updates",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        SizedBox(height: 15),
+        ConnectionUpdates(),
+        SizedBox(height: 30),
+        Text("Event invites",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         SizedBox(height: 15),
         EventInvitesList()
