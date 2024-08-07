@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
-import 'package:gameonconnect/view/components/settings/edit_colourIcon_component.dart';
+import 'package:gameonconnect/view/components/settings/edit_colouricon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
@@ -139,15 +139,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    if (color == Color.fromRGBO(0, 255, 117, 1.0)) {
+    if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == Color.fromRGBO(173, 0, 255, 1.0)) {
+    } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == Color.fromRGBO(0, 10, 255, 1.0)) {
+    } else if (color ==  const Color.fromRGBO(0, 10, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == Color.fromRGBO(235, 255, 0, 1.0)) {
+    } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
-    } else if (color == Color.fromRGBO(255, 0, 199, 1.0)) {
+    } else if (color == const Color.fromRGBO(255, 0, 199, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }
   }
