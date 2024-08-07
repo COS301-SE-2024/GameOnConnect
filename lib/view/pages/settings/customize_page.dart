@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
+import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -119,10 +120,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         _isDataFetched = true;
       });
     });
-    isDarkMode = Provider.of<ThemeProvider>(context, listen: false)
-            .themeData
-            .brightness ==
-        Brightness.dark;
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+  ThemeData currentTheme = themeProvider.themeData;
+
+  // Check if the current theme is a dark theme
+  isDarkMode = currentTheme == darkGreenTheme ||
+               currentTheme == darkPurpleTheme ||
+               currentTheme == darkBlueTheme ||
+               currentTheme == darkYellowTheme ||
+               currentTheme == darkPinkTheme;
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {

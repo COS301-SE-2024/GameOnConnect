@@ -15,21 +15,77 @@ class ThemeProvider with ChangeNotifier{
     notifyListeners();
   }
   
-  void setLightMode() {
+  void setLightGreenMode() {
     themeData = lightGreenTheme;
-    _saveThemePreference('light');
+    _saveThemePreference('light_green');
   }
 
-  void setDarkMode() {
+  void setDarkGreenMode() {
     themeData = darkGreenTheme;
-    _saveThemePreference('dark');
+    _saveThemePreference('dark_green');
+  }
+
+  void setLightPurpleMode() {
+    themeData = lightPurpleTheme;
+    _saveThemePreference('light_purple');
+  }
+
+  void setDarkPurpleMode() {
+    themeData = darkPurpleTheme;
+    _saveThemePreference('dark_purple');
+  }
+
+  void setLightBlueMode() {
+    themeData = lightBlueTheme;
+    _saveThemePreference('light_blue');
+  }
+
+  void setDarkBlueMode() {
+    themeData = darkBlueTheme;
+    _saveThemePreference('dark_blue');
+  }
+
+  void setLightYellowMode() {
+    themeData = lightYellowTheme;
+    _saveThemePreference('light_yellow');
+  }
+
+  void setDarkYellowMode() {
+    themeData = darkYellowTheme;
+    _saveThemePreference('dark_yellow');
+  }
+
+  void setLightPinkMode() {
+    themeData = lightPinkTheme;
+    _saveThemePreference('light_pink');
+  }
+
+  void setDarkPinkMode() {
+    themeData = darkPinkTheme;
+    _saveThemePreference('dark_pink');
   }
 
   void toggleTheme() {
     if (_themeData == lightGreenTheme) {
-      setDarkMode();
-    } else {
-      setLightMode();
+      setDarkGreenMode();
+    } else if (_themeData == darkGreenTheme) {
+      setLightGreenMode();
+    } else if (_themeData == lightPurpleTheme) {
+      setDarkPurpleMode();
+    } else if (_themeData == darkPurpleTheme) {
+      setLightPurpleMode();
+    } else if (_themeData == lightBlueTheme) {
+      setDarkBlueMode();
+    } else if (_themeData == darkBlueTheme) {
+      setLightBlueMode();
+    } else if (_themeData == lightYellowTheme) {
+      setDarkYellowMode();
+    } else if (_themeData == darkYellowTheme) {
+      setLightYellowMode();
+    } else if (_themeData == lightPinkTheme) {
+      setDarkPinkMode();
+    } else if (_themeData == darkPinkTheme) {
+      setLightPinkMode();
     }
   }
 
