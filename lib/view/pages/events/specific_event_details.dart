@@ -65,20 +65,35 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Stack(children: [
-                              CachedNetworkImage(
-                                height: 340,
-                                width: double.infinity,
-                                imageUrl: imageUrl,
-                                placeholder: (context, url) => const Center(
-                                    child:
-                                        CircularProgressIndicator()), // Loading indicator for banner
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                fit: BoxFit.cover,
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0, 51, 0, 0),
+                                child: CachedNetworkImage(
+                                  height: 340,
+                                  width: double.infinity,
+                                  imageUrl: imageUrl,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration:  BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius:const  BorderRadius.only(
+                                            topLeft: Radius.circular(0),
+                                            topRight: Radius.circular(0),
+                                            bottomLeft: Radius.circular(15),
+                                            bottomRight: Radius.circular(15)),
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.cover)),
+                                  ),
+                                  placeholder: (context, url) => const Center(
+                                      child:
+                                          CircularProgressIndicator()), // Loading indicator for banner
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
                               ),
                               Align(
-                                alignment:
-                                    const AlignmentDirectional(-0.9, -1),
+                                alignment: const AlignmentDirectional(-0.9, -1),
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 50, 0, 0),
@@ -90,7 +105,8 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                       onPressed: () async {
                                         Navigator.pop(context);
                                       },
-                                      icon: const Icon(Icons.close_outlined),
+                                      icon:
+                                          const Icon(Icons.keyboard_backspace),
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
@@ -109,16 +125,15 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .fromSTEB(16, 0, 0, 0),
+                                                .fromSTEB(19, 0, 0, 0),
                                             child: Text(
                                               e.name,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontFamily: 'Inter',
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 24,
+                                                fontSize: 20,
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -160,7 +175,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 ),
                               ],
                             ),
-
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   24, 8, 24, 0),
