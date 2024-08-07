@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/feed/connection_update.dart';
-import '../../../model/connection_M/user_model.dart' as user;
+import '../../../model/connection_M/user_model.dart';
 
 class ConnectionUpdates extends StatefulWidget {
   const ConnectionUpdates({super.key});
@@ -12,47 +12,53 @@ class ConnectionUpdates extends StatefulWidget {
 
 class _ConnectionUpdatesState extends State<ConnectionUpdates> {
   final ConnectionService _connectionService = ConnectionService();
-  List<user.AppUser>? _connectionRequests;
+  late Future<List<AppUser>?> _connectionRequests;
 
   @override
   void initState() {
     super.initState();
-    _fetchConnectionRequests();
+    _connectionRequests = _fetchConnectionRequests();
   }
 
-  Future<void> _fetchConnectionRequests() async {
+  Future<List<AppUser>?> _fetchConnectionRequests() async {
     try {
-      print(_connectionService.getConnectionlist("requests"));
-      List<user.AppUser>? connectionRequests =
-          await _connectionService.getConnectionlist("requests");
-
-      setState(() {
-        _connectionRequests = connectionRequests;
-      });
+      return await _connectionService.getConnectionlist("requests");
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _connectionRequests == null
-        ? const Center(child: CircularProgressIndicator())
-        : Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  itemCount: _connectionRequests!.length,
+    return FutureBuilder<List<AppUser>?>(
+      future: _connectionRequests,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No connection requests found.'));
+        } else {
+          final connectionRequests = snapshot.data!;
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: connectionRequests.length,
                   itemBuilder: (context, index) {
-                    final appUser = _connectionRequests![index];
+                    final appUser = connectionRequests[index];
                     return ConnectionUpdateCard(
                       user: appUser.username,
                       connectionStatus: "connect",
                     );
                   },
                 ),
-            ),
-          ],
-        );
+              ),
+            ],
+          );
+        }
+      }
+    );
   }
 }
