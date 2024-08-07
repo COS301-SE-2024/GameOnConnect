@@ -4,13 +4,19 @@ class EditSwitch extends StatefulWidget {
   final bool currentValue;
   final String label;
   final void Function(bool value) onChanged;
-  const EditSwitch({super.key, required this.currentValue, required this.label, required this.onChanged});
+
+  const EditSwitch({
+    Key? key,
+    required this.currentValue,
+    required this.label,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
-  State<EditSwitch> createState() => _EditSwitch();
+  State<EditSwitch> createState() => _EditSwitchState();
 }
 
-class _EditSwitch extends State<EditSwitch> {
+class _EditSwitchState extends State<EditSwitch> {
   late bool currentValue;
   late String label;
 
@@ -22,24 +28,24 @@ class _EditSwitch extends State<EditSwitch> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Text(widget.label,
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-          ),
-          Expanded(
-            flex: 4,
-            child: Switch.adaptive(
+      padding: const EdgeInsets.fromLTRB(12, 15, 12, 0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.5),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(10.0),
+          // border: Border.all(color: Theme.of(context).colorScheme.primary),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              widget.label,
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            ),
+            Switch.adaptive(
               value: currentValue,
               onChanged: (bool value) {
                 widget.onChanged(value);
@@ -51,8 +57,8 @@ class _EditSwitch extends State<EditSwitch> {
               inactiveTrackColor: Theme.of(context).colorScheme.surface,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
