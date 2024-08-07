@@ -1,22 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
-import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
-import 'package:gameonconnect/view/components/card/game_list_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
-import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
-import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
-import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
-import 'package:gameonconnect/view/pages/profile/stats_list.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 
 
@@ -251,14 +244,16 @@ void navigateToConnections(BuildContext context) {
                     ),
                             ),
                              Positioned(
-                              left: 16,
+                              left: 12,
                               bottom: 20,
-                              right: 16,
+                              right: 12,
                               child:
                               Row(
                                 children: [
                                   Expanded(
-                                    child: ProfileButton(value: '${profileData.myGames.length}', title: 'Games'),
+                                    child: ProfileButton(
+                                      value: '${profileData.myGames.length}',
+                                      title: 'Games'),
                                   ),
                                   Expanded(
                                     child: ProfileButton(
@@ -268,7 +263,9 @@ void navigateToConnections(BuildContext context) {
                                       ),
                                   ),
                                   Expanded(
-                                    child: ProfileButton(value: '${roundedTotalTime} hrs', title: 'Time Played'),
+                                    child: ProfileButton(
+                                      value: '$roundedTotalTime hrs', 
+                                      title: 'Time Played'),
                                   ),
                                  
                                 ],
@@ -298,6 +295,7 @@ void navigateToConnections(BuildContext context) {
                       padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
                       child: Divider(
                         color: Color(0xFF2A2A2A),//Dark grey,
+                        thickness: 0.5,
                       ),
                     ),
 

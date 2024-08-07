@@ -15,7 +15,7 @@ class _StatsButtonState extends State<StatsButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 10, 8, 10), // Adjust spacing as needed
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10), // Adjust spacing as needed
       child:Container(
           height: 40,
           decoration: BoxDecoration(
@@ -37,7 +37,6 @@ class _StatsButtonState extends State<StatsButton> {
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   //fontSize: 12,
-                  letterSpacing: 0,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),

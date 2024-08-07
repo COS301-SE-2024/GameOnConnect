@@ -6,7 +6,7 @@ class ProfileButton extends StatefulWidget {
   final VoidCallback? onPressed;
    
 
-  const ProfileButton({
+  const ProfileButton({super.key, 
     required this.value, 
     required this.title,
      this.onPressed,

@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, prefer_typing_uninitialized_variables
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +41,7 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+          margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
           child: widget.playing
           ?                 Container(
                   //margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
@@ -47,14 +49,12 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                  'https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg',
-                      ),
+                      image: CachedNetworkImageProvider(widget.image),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Color(0xFF00FF75),
-                        offset: Offset(0, 0),
+                        color: Theme.of(context).colorScheme.primary,
+                        offset: const Offset(0, 0),
                         blurRadius: 5.3499999046,
                       ),
                     ],
@@ -84,65 +84,61 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
         ),
         Expanded(
           child: Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 3),
+            margin: const EdgeInsets.fromLTRB(0, 0, 0, 3),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                   child: Text(
                     //'The Witcher wujsggeuk32ji90dyvc2mnid2',
                     widget.name,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
                       //height: 0.9,
-                      color: Color(0xFFFFFFFF),
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ),
-                if (widget.playing==false)
+                if (widget.playing==false && widget.timePlayed!='' )
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
                       '${widget.timePlayed} hrs on record',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 12,
                         height: 0.9,
-                        color: Color(0xFFBEBEBE),
                       ),
                     ),
                   ),
                 ),
-                if (widget.timePlayed > 0)
+                if (widget.lastPlayedDate!='' && widget.timePlayed > 0)
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 7.8, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 0, 7.8, 0),
                   child: Text(
                     'last played ${widget.lastPlayedDate}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
                       height: 0.9,
-                      color: Color(0xFFBEBEBE),
                     ),
                   ),
                 ),
                 if (widget.playing== true)
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 7.8, 0),
-                  child: Text(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 7.8, 0),
+                  child: const Text(
                     'playing now',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
                       height: 0.9,
-                      color: Color(0xFFBEBEBE),
                     ),
                   ),
                 ),
