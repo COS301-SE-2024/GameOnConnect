@@ -46,6 +46,35 @@ class _HomePageWidgetState extends State<ViewEvents> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Scaffold(
+            appBar: AppBar(
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                automaticallyImplyLeading: false,
+                title:Text(
+                  'Events',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface,
+                  ),
+                ),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: IconButton(
+                      onPressed: () {
+                        //Navigate to history page
+                        },
+                      icon: Icon(
+                        Icons.history,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                ]
+            ),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
@@ -78,32 +107,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
 
                                   children: [
-                                    Align(
-                                      alignment:
-                                          const AlignmentDirectional(-1, 0),
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(16, 5, 0, 0),
-                                        child: Text(
-                                          'Events:',
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            fontSize: 32,
-                                            fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0, 12, 0, 0),
-                                      child: SizedBox(
+                                    SizedBox(
                                         width: double.infinity,
-                                        height: 250,
+                                        height: 190.44,
                                         child: CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
@@ -111,12 +117,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           options: CarouselOptions(
                                             padEnds: false,
                                             initialPage: 0,
-                                            viewportFraction: 0.5,
+                                            viewportFraction: 0.4,
                                             disableCenter: true,
                                             enlargeCenterPage: false,
                                             enableInfiniteScroll: false,
                                             scrollDirection: Axis.horizontal,
                                             autoPlay: false,
+                                            height: 190.44,
                                           ),
                                           itemBuilder:
                                               (context, index, realIndex) {
@@ -126,26 +133,23 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           },
                                         ),
                                       ),
-                                    ),
                                     Padding(
-                                      padding: const EdgeInsets.all(16),
+                                      padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
                                       child: Container(
-                                        width: 430,
-                                        height: 400,
+                                        width: double.infinity,
+                                        height: 360,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
                                               .surface,
                                           borderRadius:
-                                              BorderRadius.circular(12),
+                                              BorderRadius.circular(10),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsetsDirectional
-                                              .fromSTEB(0, 16, 0, 0),
+                                              .fromSTEB(12, 0, 0, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
-
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
                                               Expanded(
                                                 child: Column(
@@ -155,7 +159,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           const Alignment(
                                                               0, 1),
                                                       child: ButtonsTabBar(
-                                                        width: 110,
+                                                        width: 100,
                                                         contentCenter: true,
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
@@ -211,19 +215,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                         children: [
                                                           ClipRRect(
                                                             borderRadius:
-                                                                const BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(12),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          12),
-                                                              topLeft: Radius
-                                                                  .circular(0),
-                                                              topRight: Radius
-                                                                  .circular(0),
-                                                            ),
+                                                                 BorderRadius.circular(10),
                                                             child: Container(
                                                               width: 100,
                                                               height: 100,
@@ -234,21 +226,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     .colorScheme
                                                                     .surface,
                                                                 borderRadius:
-                                                                    const BorderRadius
-                                                                        .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                ),
+                                                                     BorderRadius.circular(10),
                                                               ),
                                                               child: ListView
                                                                   .separated(
@@ -272,8 +250,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 separatorBuilder: (context,
                                                                         index) =>
                                                                     const SizedBox(
-                                                                        height:
-                                                                            10),
+                                                                        ),
                                                               ),
                                                             ),
                                                           ),

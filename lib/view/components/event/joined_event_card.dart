@@ -56,10 +56,11 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
               child: Padding(
-                padding: const EdgeInsets.all(6.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                    24, 13, 0, 0),
                 child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
+                  width: 147,
+                  height: 190.44,
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.rectangle,
@@ -76,7 +77,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                       ]),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+                        const EdgeInsetsDirectional.fromSTEB(11.61, 11.61, 11.61, 11.61),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -87,8 +88,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CachedNetworkImage(
-                                height: 100,
-                                width: double.infinity,
+                                height: 83.65,
+                                width: 123.79,
                                 imageUrl: imageUrl,
                                 imageBuilder: (context, imageProvider) =>
                                     Container(

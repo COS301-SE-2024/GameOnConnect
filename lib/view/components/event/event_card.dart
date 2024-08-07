@@ -55,100 +55,97 @@ class EventCard extends State<EventCardWidget> {
                       MaterialPageRoute(
                           builder: (context) => ViewEventDetailsWidget(e: e)));
                 },
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),
-                  child: Container(
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            height: 90,
-                            child: CachedNetworkImage(
-                              height: 100,
-                              width: double.infinity,
-                              imageUrl: imageUrl,
-                              imageBuilder: (context, imageProvider) =>
-                                  Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(12),
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.cover),
-                                ),
+                child: Container(
+                  width: double.infinity,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        SizedBox(
+                          width: 80,
+                          height: 60,
+                          child: CachedNetworkImage(
+                            width: double.infinity,
+                            imageUrl: imageUrl,
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
                               ),
-                              placeholder: (context, url) => const Center(
-                                  child:
-                                      CircularProgressIndicator()), // Loading indicator for banner
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              fit: BoxFit.cover,
                             ),
+                            placeholder: (context, url) => const Center(
+                                child:
+                                    CircularProgressIndicator()), // Loading indicator for banner
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            fit: BoxFit.cover,
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12, 0, 0, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    e.name,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color:Theme.of(context).brightness == Brightness.light
-                                          ? Colors.black
-                                          : Colors.white,
-                                      fontSize: 16,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                12, 0, 0, 0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  e.name,
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  Expanded(
-                                    child:  Text(
-                                        '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context).brightness == Brightness.light
-                                              ? Colors.black
-                                              : Colors.white,
-                                          fontSize: 14,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  Icon(e.eventType == "Gaming Session"
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                Text(
+                                  '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                    fontSize: 12,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Icon(
+                                  e.eventType == "Gaming Session"
                                       ? CupertinoIcons.game_controller
                                       : Icons.emoji_events_outlined,
-                                  color: Theme.of(context).brightness == Brightness.light
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context).colorScheme.primary,),
-                                ],
-                              ),
+                                      : Theme.of(context).colorScheme.primary,
+                                  size: 24,
+                                ),
+                              ],
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context).colorScheme.primary,
-                          ),
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Theme.of(context).colorScheme.primary,
+                        ),
+                      ],
                     ),
                   ),
                 ));
