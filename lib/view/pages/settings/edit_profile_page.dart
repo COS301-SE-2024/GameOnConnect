@@ -135,7 +135,7 @@ class EditProfileFormState extends State<EditProfileForm> {
                             onChanged: (value) => _username = value,
                             input: _username,
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 2),
                           EditInputText(
                             inputKey: const Key('firstNameField'),
                             maxLines: 1,
@@ -143,7 +143,7 @@ class EditProfileFormState extends State<EditProfileForm> {
                             onChanged: (value) => _firstName = value,
                             input: _firstName,
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 4),
                           EditInputText(
                             inputKey: const Key('lastNameField'),
                             maxLines: 1,
@@ -151,21 +151,21 @@ class EditProfileFormState extends State<EditProfileForm> {
                             onChanged: (value) => _lastName = value,
                             input: _lastName,
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 6),
                           EditInputText(
                             inputKey: const Key('bioField'),
-                            maxLines: 3,
+                            maxLines: 5,
                             label: 'Bio:',
                             onChanged: (value) => _bio = value,
                             input: _bio,
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 8),
                           EditDateInput(
                             currentDate: _birthday!,
                             label: 'Birthday:',
                             onChanged: (value) => {_birthday = value},
                           ),
-                          const SizedBox(height: 10),
+                          // const SizedBox(height: 10),
                           EditSwitch(
                             label: 'Private Account:',
                             currentValue: _isPrivate,
@@ -174,22 +174,27 @@ class EditProfileFormState extends State<EditProfileForm> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20.0),
+                    // const SizedBox(height: 10.0),
                     Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.surface,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: SizedBox(
+                          width: double.infinity, // Make the button take the full width
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              foregroundColor: Theme.of(context).colorScheme.surface,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: _saveProfile,
+                            child: const Text('Save Changes'),
                           ),
                         ),
-                        onPressed: _saveProfile,
-                        child: const Text('Save Changes'),
                       ),
                     ),
+
                   ],
                 ),
               ),
