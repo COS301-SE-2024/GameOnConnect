@@ -69,10 +69,11 @@ double millisecondsToHours(int milliseconds) {
           child: Text(
             widget.heading,
             style: const TextStyle(
-              fontSize: 20, 
-              fontWeight: FontWeight.w700),
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          ),
+        ),
         if (widget.gameStats.isEmpty)
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -87,7 +88,9 @@ double millisecondsToHours(int milliseconds) {
                 children: [
                   Column(
                     children: [
-                      Text('You currently don\'t have any games in ${widget.heading}. Would you like to add games?'),
+                      Text(
+                        'You currently don\'t have any games in ${widget.heading}. Would you like to add games?',
+                      ),
                       Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
@@ -96,7 +99,12 @@ double millisecondsToHours(int milliseconds) {
                         child: IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const GameLibrary()));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const GameLibrary(),
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -110,7 +118,7 @@ double millisecondsToHours(int milliseconds) {
           ListView.builder(
             physics: NeverScrollableScrollPhysics(), // Disable ListView's own scrolling
             shrinkWrap: true, // Make ListView take only the space it needs
-            itemCount: widget.gameStats.length,
+            itemCount: widget.gameStats.length > 4 ? 4 : widget.gameStats.length,
             itemBuilder: (context, index) {
               return FutureBuilder<GameDetails>(
                 future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
@@ -141,10 +149,36 @@ double millisecondsToHours(int milliseconds) {
               );
             },
           ),
+        if (widget.gameStats.length > 4)
+          Container(
+            margin: EdgeInsets.fromLTRB(12, 0, 12, 24),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                width: 102,
+                padding: EdgeInsets.fromLTRB(0, 7, 0.9, 7),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xFF00FF75)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  'See more',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    letterSpacing: 0,
+                    color: Color(0xFF00FF75),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
       ],
     ),
   );
 }
+
 
 }
 
