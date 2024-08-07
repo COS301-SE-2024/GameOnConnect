@@ -262,12 +262,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 style: const TextStyle(
                                     fontSize: 12, color: Colors.grey)),
                           ),
-                          Divider(
-                            thickness: 1,
-                            indent: 0,
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                          ),
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 21, 0, 21),
@@ -385,6 +379,269 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                          Divider(
+                            thickness: 1,
+                            indent: 0,
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (isInWishlist) {
+                                      await wishlist.removeFromWishlist(
+                                          gameDetails.id.toString());
+                                      // ignore: use_build_context_synchronously
+                                      DelightToastBar(
+                                        builder: (context) {
+                                          return CustomToastCard(
+                                            title: Text(
+                                              'Removed from Want to Play!',
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        position: DelightSnackbarPosition.top,
+                                        autoDismiss: true,
+                                        snackbarDuration:
+                                            const Duration(seconds: 3),
+                                      ).show(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                      );
+                                    } else {
+                                      await wishlist.addToWishlist(
+                                          gameDetails.id.toString());
+                                      // ignore: use_build_context_synchronously
+                                      DelightToastBar(
+                                              builder: (context) {
+                                                return CustomToastCard(
+                                                  title: Text(
+                                                    'Added to Want to Play!',
+                                                    style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              position:
+                                                  DelightSnackbarPosition.top,
+                                              autoDismiss: true,
+                                              snackbarDuration:
+                                                  const Duration(seconds: 3))
+                                          .show(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                      );
+                                    }
+                                    // setState(() {
+                                    //   isInWishlist = !isInWishlist;
+                                    // });
+                                    checkWishlistStatus();
+                                  },
+                                  // child: ElevatedButton(
+                                  // onPressed: () {
+                                  //   wishlist.addToWishlist(
+                                  //       gameDetails.id.toString());
+                                  //    ScaffoldMessenger.of(context).showSnackBar(
+                                  //       const SnackBar(
+                                  //         content: Text(
+                                  //             "Added to wishlist!"),
+                                  //         backgroundColor: Colors.green,
+                                  //       ));
+                                  //
+                                  // },
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all<
+                                            Color>(
+                                        Theme.of(context).colorScheme.primary),
+                                    padding: WidgetStateProperty.all<
+                                        EdgeInsetsGeometry>(
+                                      const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                    ),
+                                    elevation:
+                                        WidgetStateProperty.all<double>(3),
+                                    shape:
+                                        WidgetStateProperty.all<OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                          isInWishlist
+                                              ? Icons.remove
+                                              : Icons.add,
+                                          color: Colors.black),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        isInWishlist
+                                            ? 'Want to Play'
+                                            : 'Want to Play',
+                                        // 'Add to wishlist',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (isInMyGames) {
+                                      await myGames.removeFromMyGames(
+                                          gameDetails.id.toString());
+                                      // ignore: use_build_context_synchronously
+                                      DelightToastBar(
+                                              builder: (context) {
+                                                return CustomToastCard(
+                                                  title: Text(
+                                                    'Removed from My Games!',
+                                                    style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              position:
+                                                  DelightSnackbarPosition.top,
+                                              autoDismiss: true,
+                                              snackbarDuration:
+                                                  const Duration(seconds: 3))
+                                          .show(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                      );
+                                    } else {
+                                      await myGames.addToMyGames(
+                                          gameDetails.id.toString());
+                                      // ignore: use_build_context_synchronously
+                                      DelightToastBar(
+                                              builder: (context) {
+                                                return CustomToastCard(
+                                                  title: Text(
+                                                    'Added to My Games!',
+                                                    style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              position:
+                                                  DelightSnackbarPosition.top,
+                                              autoDismiss: true,
+                                              snackbarDuration:
+                                                  const Duration(seconds: 3))
+                                          .show(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                      );
+                                    } /*else {
+                                      await currentlyPlaying
+                                          .addToCurrentlyPlaying(
+                                              gameDetails.id.toString());
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                    );
+                                  }*/
+                                    // setState(() {
+                                    //   isInWishlist = !isInWishlist;
+                                    // });
+                                    checkMyGamesStatus();
+                                  },
+                                  // child: ElevatedButton(
+                                  //   onPressed: () {
+                                  //     myGames.addTomyGames(
+                                  //         gameDetails.id.toString());
+                                  //     ScaffoldMessenger.of(context).showSnackBar(
+                                  //         const SnackBar(
+                                  //           content: Text(
+                                  //               "Successfully added game to "
+                                  //                   "currently playing list"),
+                                  //           backgroundColor: Colors.green,
+                                  //         ));
+                                  //
+                                  //   },
+
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStateProperty.all<Color>(
+                                      Theme.of(context).colorScheme.surface,
+                                    ),
+                                    padding: WidgetStateProperty.all<
+                                        EdgeInsetsGeometry>(
+                                      const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                    ),
+                                    elevation:
+                                        WidgetStateProperty.all<double>(3),
+                                    shape:
+                                        WidgetStateProperty.all<OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        side: BorderSide(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          width: 1,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        isInMyGames ? Icons.remove : Icons.add,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        isInMyGames ? 'My Games' : 'My Games',
+                                        // 'Add to currently playing',
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Container(
@@ -657,263 +914,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             indent: 0,
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (isInWishlist) {
-                                      await wishlist.removeFromWishlist(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                        builder: (context) {
-                                          return CustomToastCard(
-                                            title: Text(
-                                              'Removed from Want to Play!',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        position: DelightSnackbarPosition.top,
-                                        autoDismiss: true,
-                                        snackbarDuration:
-                                            const Duration(seconds: 3),
-                                      ).show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
-                                    } else {
-                                      await wishlist.addToWishlist(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Added to Want to Play!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
-                                    }
-                                    // setState(() {
-                                    //   isInWishlist = !isInWishlist;
-                                    // });
-                                    checkWishlistStatus();
-                                  },
-                                  // child: ElevatedButton(
-                                  // onPressed: () {
-                                  //   wishlist.addToWishlist(
-                                  //       gameDetails.id.toString());
-                                  //    ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text(
-                                  //             "Added to wishlist!"),
-                                  //         backgroundColor: Colors.green,
-                                  //       ));
-                                  //
-                                  // },
-                                  style: ButtonStyle(
-                                    backgroundColor: WidgetStateProperty.all<
-                                            Color>(
-                                        Theme.of(context).colorScheme.primary),
-                                    padding: WidgetStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                                    ),
-                                    elevation:
-                                        WidgetStateProperty.all<double>(3),
-                                    shape:
-                                        WidgetStateProperty.all<OutlinedBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                          isInWishlist
-                                              ? Icons.remove
-                                              : Icons.add,
-                                          color: Colors.black),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        isInWishlist
-                                            ? 'Want to Play'
-                                            : 'Want to Play',
-                                        // 'Add to wishlist',
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (isInMyGames) {
-                                      await myGames.removeFromMyGames(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Removed from My Games!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
-                                    } else {
-                                      await myGames.addToMyGames(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Added to My Games!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
-                                    } /*else {
-                                      await currentlyPlaying
-                                          .addToCurrentlyPlaying(
-                                              gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      context,
-                                    );
-                                  }*/
-                                    // setState(() {
-                                    //   isInWishlist = !isInWishlist;
-                                    // });
-                                    checkMyGamesStatus();
-                                  },
-                                  // child: ElevatedButton(
-                                  //   onPressed: () {
-                                  //     myGames.addTomyGames(
-                                  //         gameDetails.id.toString());
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //         const SnackBar(
-                                  //           content: Text(
-                                  //               "Successfully added game to "
-                                  //                   "currently playing list"),
-                                  //           backgroundColor: Colors.green,
-                                  //         ));
-                                  //
-                                  //   },
-
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStateProperty.all<Color>(
-                                      Theme.of(context).colorScheme.surface,
-                                    ),
-                                    padding: WidgetStateProperty.all<
-                                        EdgeInsetsGeometry>(
-                                      const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                                    ),
-                                    elevation:
-                                        WidgetStateProperty.all<double>(3),
-                                    shape:
-                                        WidgetStateProperty.all<OutlinedBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        side: BorderSide(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          width: 1,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        isInMyGames ? Icons.remove : Icons.add,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        isInMyGames ? 'My Games' : 'My Games',
-                                        // 'Add to currently playing',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),
