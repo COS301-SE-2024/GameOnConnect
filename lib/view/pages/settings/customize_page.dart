@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/edit_colourIcon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
@@ -573,98 +574,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               (item) => _deleteSelectedItem(item, _selectedInterests)),
 
           const SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          Icons.gamepad,
-                          color: Color.fromRGBO(0, 255, 117, 1.0),
-                        ),
-                        onPressed: () {
-                          _updateTheme(
-                            const Color.fromRGBO(0, 255, 117, 1.0),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.gamepad,
-                          color: Color.fromRGBO(173, 0, 255, 1.0),
-                        ),
-                        onPressed: () {
-                           _updateTheme(
-                            const Color.fromRGBO(173, 0, 255, 1.0),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.gamepad,
-                          color: Color.fromRGBO(0, 10, 255, 1.0),
-                        ),
-                        onPressed: () {
-                           _updateTheme(
-                            const Color.fromRGBO(0, 10, 255, 1.0),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.gamepad,
-                          color: Color.fromRGBO(235, 255, 0, 1.0),
-                        ),
-                        onPressed: () {
-                           _updateTheme(
-                            const Color.fromRGBO(235, 255, 0, 1.0),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.gamepad,
-                          color: Color.fromRGBO(255, 0, 199, 1.0),
-                        ),
-                        onPressed: () {
-                           _updateTheme(
-                            const Color.fromRGBO(255, 0, 199, 1.0),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child:
-                            Text('Dark mode:', style: TextStyle(fontSize: 15)),
-                      ),
-                      const Spacer(),
-                      Switch(
-                        value: isDarkMode,
-                        onChanged: (newValue) {
-                          setState(() {
-                            isDarkMode = newValue;
-                          });
-                          Provider.of<ThemeProvider>(context, listen: false)
-                              .toggleTheme();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+          ColorIconContainer(
+            updateTheme: _updateTheme,
+            isDarkMode: isDarkMode,
+            onDarkModeChanged: (newValue) {
+              setState(() {
+                isDarkMode = newValue;
+              });
+            },
+            currentColor: selectedColor,
           ),
           const SizedBox(height: 40.0),
           Center(
