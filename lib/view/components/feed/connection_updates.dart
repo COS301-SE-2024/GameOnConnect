@@ -38,7 +38,7 @@ class _ConnectionUpdatesState extends State<ConnectionUpdates> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No connection requests found.'));
+          return const Center(child: Text('No new connection updates 😊'));
         } else {
           final connectionRequests = snapshot.data!;
           return Column(
