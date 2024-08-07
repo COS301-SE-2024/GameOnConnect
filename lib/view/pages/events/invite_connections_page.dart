@@ -40,66 +40,65 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: SafeArea(
-          top: true,
-          child: FutureBuilder<List<AppUser>?>(
-              future: EventsService().getConnectionsForInvite(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  list = snapshot.data;
-                  List<AppUser> filteredUsers = list!
-                      .where((user) =>
-                          user.username
-                              .toLowerCase()
-                              .contains(_searchQuery.toLowerCase()) &&
-                          user.uid != _currentUserId) // Exclude current user
-                      .toList();
-                  return  Column(mainAxisSize: MainAxisSize.max, children: [
-
-                       Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: const AlignmentDirectional(-1, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16, 0, 0, 12),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      icon:
-                                          const Icon(Icons.keyboard_backspace)),
-                                  Text(
-                                    'Select users to invite',
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Theme.of(context).brightness == Brightness.light
-                                          ? Theme.of(context).colorScheme.secondary
-                                          : Colors.white,
-                                      fontSize: 24,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<List<AppUser>?>(
+            future: EventsService().getConnectionsForInvite(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                list = snapshot.data;
+                List<AppUser> filteredUsers = list!
+                    .where((user) =>
+                        user.username
+                            .toLowerCase()
+                            .contains(_searchQuery.toLowerCase()) &&
+                        user.uid != _currentUserId) // Exclude current user
+                    .toList();
+                return Column(mainAxisSize: MainAxisSize.max, children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: const AlignmentDirectional(-1, 0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0, 16, 0, 19),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: const Icon(Icons.keyboard_backspace)),
+                              Text(
+                                'Select users to invite',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Theme.of(context).colorScheme.secondary
+                                      : Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                    ),
-                    const SizedBox(height: 20),
-                    SearchField(
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
+                    child: SearchField(
                         controller: searchController,
                         onSearch: (query) {
                           setState(() {
@@ -113,23 +112,20 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                                 .toList();
                           });
                         }),
-                    if( filteredUsers.isEmpty)
-                      const Center(
-                          child: Text(
-                              'No results found.'))
-                    else
-
+                  ),
+                  if (filteredUsers.isEmpty)
+                    const Center(child: Text('No results found.'))
+                  else
                     SizedBox(
-                        height: 300,
+                        height: 360,
                         child: ListView.separated(
                           itemCount: filteredUsers.length,
                           padding: EdgeInsets.zero,
-                          scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             AppUser? i = filteredUsers[index];
 
                             return ConnectionCardWidget(
-                              invited: invites,
+                                invited: invites,
                                 image: i.profilePicture,
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
@@ -149,31 +145,28 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             return const SizedBox();
                           },
                         )),
-                    Container(
-                      constraints: const BoxConstraints(
-                        maxWidth: 770,
-                      ),
-
-                    ),
-
-                  ]
-
-                  );
-
-                }
-              }),
-        ),
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton:SizedBox( width: 350, child:MaterialButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ]);
+              }
+            }),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+        height: 35,
+        width: double.infinity,
+        child: MaterialButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
             onPressed: () {
               Navigator.pop(context, invites);
             },
             color: Theme.of(context).colorScheme.primary,
-            child: const Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-              Text("Save",style: TextStyle(color: Colors.black)),
-            ])),
-        ),
+            child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Save", style: TextStyle(color: Colors.black)),
+                ])),
+      ),
     );
   }
 }

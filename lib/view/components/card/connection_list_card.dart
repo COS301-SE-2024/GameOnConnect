@@ -168,8 +168,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
   @override
   Widget build(BuildContext context) {
     Widget cardContent = Container(
-      width: 388,
-      height: 72,
+      width: page =="events"?360:388,
+      height:  page =="events"?68:72,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -180,7 +180,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,15 +191,15 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: page!="events" ?44:60,
-                  height: page!="events" ?44:60,
+                  width: page!="events" ?44:50,
+                  height: page!="events" ?44:50,
 
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(44),
                       child: selected? Container(color:Theme.of(context).colorScheme.primary,
-                        child: Icon(Icons.check,color: Theme.of(context).brightness == Brightness.light
+                        child: Icon(Icons.check,size:24,color: Theme.of(context).brightness == Brightness.light
                             ? Theme.of(context).colorScheme.secondary
                             : Theme.of(context).colorScheme.surface,), ):CachedNetworkImage(
                         imageUrl: image,
@@ -219,10 +219,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                     Text(
                       username,
                       style: TextStyle(
-                        fontFamily: 'Inter',
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 16,
-                        letterSpacing: 0,
+                        fontSize: 14,
                         fontWeight: FontWeight.normal,
                       ),
                     ),
@@ -231,7 +229,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                       style: TextStyle(
                         fontFamily: 'Inter',
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 14,
+                        fontSize: 12,
                         letterSpacing: 0,
                         fontWeight: FontWeight.normal,
                       ),
