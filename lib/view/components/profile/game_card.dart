@@ -9,12 +9,14 @@ class ProfileGamesCard extends StatefulWidget {
     required this. name,
     required this. lastPlayedDate,
     required this. timePlayed,
+    required this. playing,
   });
 
   final String image;
   final String name;
   final lastPlayedDate;
   final timePlayed;
+  final bool playing;
 
   @override
   State<ProfileGamesCard> createState() => _ProfileGamesCardState();
@@ -27,7 +29,7 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0), // Adjust spacing as needed
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0), // Adjust spacing as needed
       child: Container(
   width: double.infinity,
   child: Align(
@@ -38,7 +40,31 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
       children: [
         Container(
           margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-          child: Container(
+          child: widget.playing
+          ?                 Container(
+                  //margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                  'https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg',
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xFF00FF75),
+                        offset: Offset(0, 0),
+                        blurRadius: 5.3499999046,
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    width: 112,
+                    height: 70,
+                  ),
+                )
+          :Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
@@ -78,6 +104,7 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
                     maxLines: 1,
                   ),
                 ),
+                if (widget.playing==false)
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: Align(
@@ -93,10 +120,24 @@ class _ProfileGamesCardState extends State<ProfileGamesCard> {
                     ),
                   ),
                 ),
+                if (widget.timePlayed > 0)
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 7.8, 0),
                   child: Text(
                     'last played ${widget.lastPlayedDate}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      height: 0.9,
+                      color: Color(0xFFBEBEBE),
+                    ),
+                  ),
+                ),
+                if (widget.playing== true)
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 7.8, 0),
+                  child: Text(
+                    'playing now',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,

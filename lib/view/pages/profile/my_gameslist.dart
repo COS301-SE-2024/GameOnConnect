@@ -14,9 +14,11 @@ class MyGameList extends StatefulWidget {
   const MyGameList({super.key, 
   required this. gameStats,
     required this.heading,
+    required this.currentlyPlaying,
   }) ;
   final List<GameStats> gameStats;
   final String heading;
+  final String currentlyPlaying;
 
   @override
   State<MyGameList> createState() => _MyGameListState();
@@ -65,7 +67,7 @@ double millisecondsToHours(int milliseconds) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+           padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
           child: Text(
             widget.heading,
             style: const TextStyle(
@@ -115,7 +117,45 @@ double millisecondsToHours(int milliseconds) {
             ),
           )
         else
-          ListView.builder(
+          widget.currentlyPlaying.isNotEmpty
+            ? FutureBuilder<GameDetails>(
+              future: GameService().fetchGameDetails(int.tryParse(widget.currentlyPlaying)),
+              builder: (context, gameSnapshot) {
+                if (gameSnapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (gameSnapshot.hasError) {
+                  return Text('Error: ${gameSnapshot.error}');
+                } else {
+                  final gameDetails = gameSnapshot.data!;
+                  return  
+                  /*Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    child:*/
+                    Column(
+                      children:  [
+                        ProfileGamesCard(
+                      image: gameDetails.backgroundImage,
+                      name: gameDetails.name,
+                      lastPlayedDate: '',
+                      timePlayed: -1,
+                      playing: true,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+                      child: Divider(
+                        color: Color(0xFF2A2A2A),//Dark grey,
+                      ),
+                    ),
+                                            ],
+                    //);
+                    
+                  );
+                }
+              },
+            )
+            : const SizedBox.shrink(), 
+
+          ListView.separated(
             physics: NeverScrollableScrollPhysics(), // Disable ListView's own scrolling
             shrinkWrap: true, // Make ListView take only the space it needs
             itemCount: widget.gameStats.length > 4 ? 4 : widget.gameStats.length,
@@ -136,18 +176,28 @@ double millisecondsToHours(int milliseconds) {
                     final formattedRelativeDate = timeago.format(lastPlayedDateTime);
                     final hours = millisecondsToHours(gameStats.timePlayedLast);
                     return Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: ProfileGamesCard(
+                      //padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      child:
+                       ProfileGamesCard(
                         image: gameDetails.backgroundImage,
                         name: gameDetails.name,
                         lastPlayedDate: formattedRelativeDate,
                         timePlayed: hours,
+                        playing: false,
                       ),
                     );
                   }
                 },
               );
             },
+            separatorBuilder: (context, index) => Padding(
+               padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+              child: Divider(
+              color: Color(0xFF2A2A2A),//Dark grey,
+              ),
+              //height: 1,
+            ),
           ),
         if (widget.gameStats.length > 4)
           Container(
