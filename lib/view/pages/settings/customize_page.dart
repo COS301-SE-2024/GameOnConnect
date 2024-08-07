@@ -33,13 +33,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _interests = [];
 
   bool isDarkMode = false;
-  bool isIconPressed = false;
   bool _isDataFetched = false;
   String _profileImageUrl = '';
   dynamic _profileImage;
   String _profileBannerUrl = '';
   dynamic _profileBanner;
   String testBannerurl = '';
+  Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
 
   Future<void> _fetchGenresFromAPI() async {
     try {
@@ -130,6 +130,25 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         currentTheme == darkBlueTheme ||
         currentTheme == darkYellowTheme ||
         currentTheme == darkPinkTheme;
+  }
+
+  void _updateTheme(Color color) {
+    setState(() {
+      selectedColor = color;
+    });
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    if (color == Color.fromRGBO(0, 255, 117, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
+    } else if (color == Color.fromRGBO(173, 0, 255, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
+    } else if (color == Color.fromRGBO(0, 10, 255, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
+    } else if (color == Color.fromRGBO(235, 255, 0, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
+    } else if (color == Color.fromRGBO(255, 0, 199, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
+    }
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
@@ -571,23 +590,55 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                           Icons.gamepad,
                           color: Color.fromRGBO(0, 255, 117, 1.0),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _updateTheme(
+                            const Color.fromRGBO(0, 255, 117, 1.0),
+                          );
+                        },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(173, 0, 255, 1.0),),
-                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.gamepad,
+                          color: Color.fromRGBO(173, 0, 255, 1.0),
+                        ),
+                        onPressed: () {
+                           _updateTheme(
+                            const Color.fromRGBO(173, 0, 255, 1.0),
+                          );
+                        },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(0, 10, 255, 1.0),),
-                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.gamepad,
+                          color: Color.fromRGBO(0, 10, 255, 1.0),
+                        ),
+                        onPressed: () {
+                           _updateTheme(
+                            const Color.fromRGBO(0, 10, 255, 1.0),
+                          );
+                        },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(235, 255, 0, 1.0),),
-                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.gamepad,
+                          color: Color.fromRGBO(235, 255, 0, 1.0),
+                        ),
+                        onPressed: () {
+                           _updateTheme(
+                            const Color.fromRGBO(235, 255, 0, 1.0),
+                          );
+                        },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(255, 0, 199, 1.0),),
-                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.gamepad,
+                          color: Color.fromRGBO(255, 0, 199, 1.0),
+                        ),
+                        onPressed: () {
+                           _updateTheme(
+                            const Color.fromRGBO(255, 0, 199, 1.0),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -595,7 +646,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                     children: <Widget>[
                       const Align(
                         alignment: Alignment.centerLeft,
-                        child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
+                        child:
+                            Text('Dark mode:', style: TextStyle(fontSize: 15)),
                       ),
                       const Spacer(),
                       Switch(

@@ -14,6 +14,12 @@ class ThemeProvider with ChangeNotifier{
     _themeData = themeData;
     notifyListeners();
   }
+
+  void setTheme(ThemeData theme) {
+    _themeData = theme;
+    notifyListeners();
+    _saveThemePreference(_getTheme(theme));
+  }
   
   void setLightGreenMode() {
     themeData = lightGreenTheme;
@@ -95,6 +101,20 @@ class ThemeProvider with ChangeNotifier{
       FirebaseFirestore db = FirebaseFirestore.instance;
       await db.collection('profile_data').doc(user.uid).update({'theme': theme});
     }
+  }
+
+  String _getTheme(ThemeData theme) {
+    if (theme == lightGreenTheme) return 'light_green';
+    if (theme == darkGreenTheme) return 'dark_green';
+    if (theme == lightPurpleTheme) return 'light_purple';
+    if (theme == darkPurpleTheme) return 'dark_purple';
+    if (theme == lightBlueTheme) return 'light_blue';
+    if (theme == darkBlueTheme) return 'dark_blue';
+    if (theme == lightYellowTheme) return 'light_yellow';
+    if (theme == darkYellowTheme) return 'dark_yellow';
+    if (theme == lightPinkTheme) return 'light_pink';
+    if (theme == darkPinkTheme) return 'dark_pink';
+    return 'unknown';
   }
 
 }
