@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ThemeProvider with ChangeNotifier{
 
-  ThemeData _themeData = darkTheme;
+  ThemeData _themeData = darkGreenTheme;
 
   // ignore: unnecessary_getters_setters
   ThemeData get themeData => _themeData;
@@ -16,17 +16,17 @@ class ThemeProvider with ChangeNotifier{
   }
   
   void setLightMode() {
-    themeData = lightTheme;
+    themeData = lightGreenTheme;
     _saveThemePreference('light');
   }
 
   void setDarkMode() {
-    themeData = darkTheme;
+    themeData = darkGreenTheme;
     _saveThemePreference('dark');
   }
 
   void toggleTheme() {
-    if (_themeData == lightTheme) {
+    if (_themeData == lightGreenTheme) {
       setDarkMode();
     } else {
       setLightMode();
