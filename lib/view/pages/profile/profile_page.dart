@@ -1,17 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
+import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
+import 'package:gameonconnect/view/components/card/game_list_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
+import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
-import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
+import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
 import 'package:gameonconnect/view/pages/profile/stats_list.dart';
+import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -48,6 +54,46 @@ Future<void> getTimePlayed() async {
   totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll();
   roundedTotalTime = totalTimePlayed.toStringAsFixed(2);
 }
+
+List<GameStats> summedMyGames(List<GameStats> gameStatsList) {
+  Map<String, GameStats> gameStatsMap = {};
+
+  for (var stats in gameStatsList) {
+    String key = '${stats.gameId}_${stats.uid}';
+    if (gameStatsMap.containsKey(key)) {
+      GameStats existingStats = gameStatsMap[key]!;
+      int totalTimePlayed = existingStats.timePlayedLast + stats.timePlayedLast;
+      String latestDate = existingStats.lastPlayedDate.compareTo(stats.lastPlayedDate) > 0
+          ? existingStats.lastPlayedDate
+          : stats.lastPlayedDate;
+
+      gameStatsMap[key] = GameStats(
+        gameId: stats.gameId,
+        lastPlayedDate: latestDate,
+        mood: stats.mood,
+        timePlayedLast: totalTimePlayed,
+        uid: stats.uid,
+      );
+    } else {
+      gameStatsMap[key] = stats;
+    }
+  }
+
+  return gameStatsMap.values.toList();
+}
+
+void navigateToConnections(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConnectionsList(
+          isOwnProfile: widget.isOwnProfile,
+          uid: widget.uid,
+          loggedInUser: widget.loggedInUser,
+        ),
+      ),
+    );
+  }
 
 @override
   void initState() {
@@ -104,6 +150,7 @@ Future<void> getTimePlayed() async {
             return const Center(child: Text('Profile data not found.'));
           } else {
             final profileData = snapshot.data!;
+            final sumOfMygames= summedMyGames(profileData.myGames);
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -121,9 +168,8 @@ Future<void> getTimePlayed() async {
                                     color: const Color.fromRGBO(42, 42, 42, 1.0),  
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      //image: CachedNetworkImageProvider(profileData.banner),
-                                      //image:CachedNetworkImageProvider('https://wallup.net/wp-content/uploads/2018/03/19/579265-water-green-nature-waterfall.jpg'),
-                                      image: const CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg'),
+                                      image: CachedNetworkImageProvider(profileData.banner),
+                                      //image: const CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg'),
                                       colorFilter: ColorFilter.mode(
                                         Colors.grey.withOpacity(0.6), // Adjust opacity here
                                         BlendMode.dstATop, // Use dstATop for transparency
@@ -132,16 +178,11 @@ Future<void> getTimePlayed() async {
                                   ),
                                   ),
                                 ),
-                      
-                                // Bottom container
-                                //Center(
-                               
-                                    //),
+
                               ],
                             ),
-                            // Profile picture
                             Positioned(
-                              top: 50, // Adjust this value to move the profile picture downwards
+                              top: 50, 
                               left: 19,
                               child:Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -220,29 +261,16 @@ Future<void> getTimePlayed() async {
                                     child: ProfileButton(value: '${profileData.myGames.length}', title: 'Games'),
                                   ),
                                   Expanded(
-                                    child: ProfileButton(value: '${profileData.numberOfconnections}', title: 'Connections'),
+                                    child: ProfileButton(
+                                      value: '${profileData.numberOfconnections}', 
+                                      title: 'Connections',
+                                      onPressed: () => navigateToConnections(context),
+                                      ),
                                   ),
                                   Expanded(
                                     child: ProfileButton(value: '${roundedTotalTime} hrs', title: 'Time Played'),
                                   ),
-                                 /* Expanded(
-                                  child: FutureBuilder<double>(
-                                    future: totalTimePlayed,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.waiting) {
-                                        return const Center(child: CircularProgressIndicator());
-                                      } else if (snapshot.hasError) {
-                                        return Center(child: Text('Error: ${snapshot.error}'));
-                                      } else {
-                                        final timePlayed = snapshot.data ?? 0.0;
-                                        return ProfileButton(
-                                          value: '$timePlayed hrs',
-                                          title: 'Time Played',
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),*/
+                                 
                                 ],
                               ),
                               
@@ -260,92 +288,20 @@ Future<void> getTimePlayed() async {
                           ),
                           
 
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 24),
                          Bio(bio: profileData.bio,),
+
+                         const SizedBox(height: 24),
+                         MyGameList(gameStats: sumOfMygames, heading: 'Games', currentlyPlaying: profileData.currentlyPlaying,),
                         
-                        //new
-
-                        /*if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
-                          
-                          // Conditionally display the CurrentlyPlaying widget
-                      profileData.currentlyPlaying.isNotEmpty
-                          ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
-                          : const SizedBox.shrink(), 
-                        
-
-                        //search
-                        const SizedBox(height: 10), //space 
-                        Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: TextField(
-                          key: const Key('searchTextField'),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 15, right: 15),
-                            labelText: 'Search',
-                            suffixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100)),
-                          ),
-                          //onSubmitted: _onSearchEntered,
-                        ),
-                        //friends, games, events
+                        const Padding(
+                      padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
+                      child: Divider(
+                        color: Color(0xFF2A2A2A),//Dark grey,
                       ),
+                    ),
 
-
-                      const SizedBox(height: 10), //space 
-                      profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
-                          ?  const SizedBox.shrink()
-                          : HorizontalGameList(
-                              gameIds: profileData.myGames,
-                              heading: 'My Games',
-                            ),
-                          
-                      
-                      const SizedBox(height: 5), //space 
-                      profileData.wantToPlay.isEmpty && widget.uid!= widget.loggedInUser
-                        ?  const SizedBox.shrink()
-                        : HorizontalGameList(
-                            gameIds: profileData.wantToPlay,
-                            heading: 'Want To Play',
-                          ),
-
-
-                      //change RECENT ACTIVITY 
-                      profileData. recentActivities.isEmpty
-                          ? const SizedBox.shrink()
-                          : RecentActivityList(
-                        gameStats: profileData. recentActivities,
-                        heading: 'Recent Activity',
-                      ),
-                                           
-                      const SizedBox(height: 20), //space 
-                      const StatsList (
-                        heading: 'Stats',
-                      ),
-                        ] else...[
-                          const SizedBox(height: 20), // space
-                          const Divider(),
-                           const SizedBox(height: 20), // space
-                           const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.lock,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10), // space
-                                Text(
-                                  'This account is private',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],*/
-                        
-                              
+                    WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'),       
                       ],
               ),
             );
