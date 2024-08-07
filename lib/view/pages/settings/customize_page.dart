@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,6 +33,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _interests = [];
 
   bool isDarkMode = false;
+  bool isIconPressed = false;
   bool _isDataFetched = false;
   String _profileImageUrl = '';
   dynamic _profileImage;
@@ -73,10 +73,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               .toList();
         });
       } else {
-        throw("Error fetching interest tags: ${response.statusCode}");
+        throw ("Error fetching interest tags: ${response.statusCode}");
       }
     } catch (e) {
-      throw("Error fetching interest tags: $e");
+      throw ("Error fetching interest tags: $e");
     }
   }
 
@@ -120,15 +120,16 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         _isDataFetched = true;
       });
     });
-    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-  ThemeData currentTheme = themeProvider.themeData;
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    ThemeData currentTheme = themeProvider.themeData;
 
-  // Check if the current theme is a dark theme
-  isDarkMode = currentTheme == darkGreenTheme ||
-               currentTheme == darkPurpleTheme ||
-               currentTheme == darkBlueTheme ||
-               currentTheme == darkYellowTheme ||
-               currentTheme == darkPinkTheme;
+    // Check if the current theme is a dark theme
+    isDarkMode = currentTheme == darkGreenTheme ||
+        currentTheme == darkPurpleTheme ||
+        currentTheme == darkBlueTheme ||
+        currentTheme == darkYellowTheme ||
+        currentTheme == darkPinkTheme;
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
@@ -165,7 +166,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         }
       }
     } catch (e) {
-      throw("Error fetching user selections: $e");
+      throw ("Error fetching user selections: $e");
     }
   }
 
@@ -230,7 +231,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             //_profileBannerFB = file.name;
           });
         }
-       /* ScaffoldMessenger.of(context).showSnackBar(
+        /* ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
         );*/
       } else {
@@ -342,13 +343,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Widget _buildContent(BuildContext context) {
     return Scaffold(
       appBar: BackButtonAppBar(
-          title: 'Customize Profile',
-          onBackButtonPressed: () {
-            Navigator.pop(context);
-          },
-          iconkey: const Key('Back_button_key'),
-          textkey: const Key('customize_profile_text'),
-        ),
+        title: 'Customize Profile',
+        onBackButtonPressed: () {
+          Navigator.pop(context);
+        },
+        iconkey: const Key('Back_button_key'),
+        textkey: const Key('customize_profile_text'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -401,17 +402,20 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  _profileImageUrl.isNotEmpty? CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage:
-                        CachedNetworkImageProvider(_profileImageUrl),
-                  ):
-              CircleAvatar(
-              radius: 60,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: FileImage(File(_profileImage)),
-              ),
+                  _profileImageUrl.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundImage:
+                              CachedNetworkImageProvider(_profileImageUrl),
+                        )
+                      : CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundImage: FileImage(File(_profileImage)),
+                        ),
                   Container(
                     height: 30,
                     width: 30,
@@ -550,24 +554,65 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               (item) => _deleteSelectedItem(item, _selectedInterests)),
 
           const SizedBox(height: 20),
-          Row(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.gamepad,
+                          color: Color.fromRGBO(0, 255, 117, 1.0),
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(173, 0, 255, 1.0),),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(0, 10, 255, 1.0),),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(235, 255, 0, 1.0),),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.gamepad,color: Color.fromRGBO(255, 0, 199, 1.0),),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
+                      ),
+                      const Spacer(),
+                      Switch(
+                        value: isDarkMode,
+                        onChanged: (newValue) {
+                          setState(() {
+                            isDarkMode = newValue;
+                          });
+                          Provider.of<ThemeProvider>(context, listen: false)
+                              .toggleTheme();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(width: 20),
-              Switch(
-                value: isDarkMode,
-                onChanged: (newValue) {
-                  setState(() {
-                    isDarkMode = newValue;
-                  });
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme();
-                },
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 40.0),
           Center(
@@ -674,11 +719,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileImage != null) {
           String imageUrl;
           if (kIsWeb) {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
+            imageUrl = await uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
           } else {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
+            imageUrl = await uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
           }
 
           await saveImageURL(imageUrl, 'Profile_picture');
@@ -692,9 +737,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileBanner != null) {
           String bannerUrl;
           if (kIsWeb) {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
+            bannerUrl =
+                await uploadImageToFirebase(File(_profileBanner!), 'banner');
           } else {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
+            bannerUrl =
+                await uploadImageToFirebase(File(_profileBanner!), 'banner');
           }
           await saveImageURL(bannerUrl, 'banner');
 
@@ -727,7 +774,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             content: Text('Failed to update profile.'),
             backgroundColor: Colors.red),
       );
-      throw("Error setting/updating profile data: $e");
+      throw ("Error setting/updating profile data: $e");
     }
   }
 }

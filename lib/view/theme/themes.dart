@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color primaryPurple = Color.fromRGBO(173, 0, 255, 1.0);
+//const Color primaryPurple = Color.fromRGBO(173, 0, 255, 1.0); //possible idea to extract the colors to easily maintain code is to extract colors here
 
 ThemeData darkGreenTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
