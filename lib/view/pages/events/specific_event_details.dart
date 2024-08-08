@@ -236,6 +236,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               indent: 12,
                               endIndent: 12,
                             ),
+                            e.description==""? const SizedBox():
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(

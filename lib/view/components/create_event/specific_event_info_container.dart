@@ -66,7 +66,7 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
       Divider(
         indent: 12,
         endIndent: 12,
-        color: Theme.of(context).colorScheme.secondary,
+        color: Theme.of(context).colorScheme.primaryContainer,
       )
     ]
     );
