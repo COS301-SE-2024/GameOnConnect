@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
@@ -81,7 +82,7 @@ class ColourIconContainer extends StatelessWidget {
       child: IconButton(
         color: Theme.of(context).colorScheme.primary,
         icon: Icon(
-          Icons.gamepad,
+          CupertinoIcons.game_controller,
           color: color,
         ),
         onPressed: () {

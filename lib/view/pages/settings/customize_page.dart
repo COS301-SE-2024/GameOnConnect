@@ -40,7 +40,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String _profileBannerUrl = '';
   dynamic _profileBanner;
   String testBannerurl = '';
-   bool _isMounted = false;
+  bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
 
   Future<void> _fetchGenresFromAPI() async {
@@ -73,19 +73,21 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Future<void> _fetchTagsFromAPI() async {
     try {
-      var url = Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        if (_isMounted) {
+      if (_isMounted) {
+        var url =
+            Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
+        var response = await http.get(url);
+        if (response.statusCode == 200) {
+          var decoded = json.decode(response.body);
+
           setState(() {
             _interests = (decoded['results'] as List)
                 .map((tag) => tag['name'].toString())
                 .toList();
           });
+        } else {
+          throw ("Error fetching interest tags: ${response.statusCode}");
         }
-      } else {
-        throw ("Error fetching interest tags: ${response.statusCode}");
       }
     } catch (e) {
       throw ("Error fetching interest tags: $e");
@@ -120,9 +122,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   //deletion of a selected item.
   void _deleteSelectedItem(String item, List<String> selectedList) {
     if (_isMounted) {
-    setState(() {
-      selectedList.remove(item);
-    });
+      setState(() {
+        selectedList.remove(item);
+      });
     }
   }
 
@@ -131,9 +133,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     super.initState();
     _isMounted = true;
     _fetchData().then((_) {
+      if (_isMounted) {
       setState(() {
         _isDataFetched = true;
       });
+    }
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
