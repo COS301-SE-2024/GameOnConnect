@@ -55,10 +55,26 @@ void main() async {
 
       if (userDoc.exists) {
         String theme = userDoc['theme'] as String;
-        if (theme == 'dark') {
-          themeProvider.setDarkMode();
-        } else {
-          themeProvider.setLightMode();
+        if (theme == 'dark_green') {
+          themeProvider.setDarkGreenMode();
+        } else if (theme == 'light_green') {
+          themeProvider.setLightGreenMode();
+        } else if (theme == 'dark_purple') {
+          themeProvider.setDarkPurpleMode();
+        } else if (theme == 'light_purple') {
+          themeProvider.setLightPurpleMode();
+        } else if (theme == 'dark_blue') {
+          themeProvider.setDarkBlueMode();
+        } else if (theme == 'light_blue') {
+          themeProvider.setLightBlueMode();
+        } else if (theme == 'dark_yellow') {
+          themeProvider.setDarkYellowMode();
+        } else if (theme == 'light_yellow') {
+          themeProvider.setLightYellowMode();
+        } else if (theme == 'dark_pink') {
+          themeProvider.setDarkPinkMode();
+        } else if (theme == 'light_pink') {
+          themeProvider.setLightPinkMode();
         }
       }
     }
