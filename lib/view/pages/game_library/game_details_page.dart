@@ -4,7 +4,6 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
@@ -14,6 +13,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -106,7 +106,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
           future: _gameDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
+              );
             } else if (snapshot.hasError) {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -697,8 +702,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             builder: (context, screenshotSnapshot) {
                               if (screenshotSnapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return Center(
+                                  child: LoadingAnimationWidget.halfTriangleDot(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 36,
+                                  ),
+                                );
                               } else if (screenshotSnapshot.hasError) {
                                 return const Center(
                                     child: Text('Error loading screenshots'));
@@ -722,28 +732,31 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               BorderRadius.circular(10.0),
                                           child: CachedNetworkImage(
                                             imageUrl: screenshots[index].image,
-                                            placeholder: (context, url) =>
-                                                const SizedBox(
+                                            placeholder: (context, url) => SizedBox(
+                                                width: 110, // Set the width of the images
+                                                height: 85, // Set the height of the images
+                                                child: Center(
+                                                  child: SizedBox(
                                                     width:
-                                                        110, // Set the width of the images
+                                                        30, // Adjust the size of the loader
                                                     height:
-                                                        85, // Set the height of the images
-                                                    child: Center(
-                                                      child: SizedBox(
-                                                        width:
-                                                            30, // Adjust the size of the loader
-                                                        height:
-                                                            30, // Adjust the size of the loader
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      ),
-                                                    )
-                                                    // placeholder: (context, url) => const CircularProgressIndicator(),
-                                                    // errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                    // width: 110,
-                                                    // height: 85,
-                                                    // fit: BoxFit.cover,
+                                                        30, // Adjust the size of the loader
+                                                    child:
+                                                        LoadingAnimationWidget
+                                                            .halfTriangleDot(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                      size: 36,
                                                     ),
+                                                  ),
+                                                )
+                                                // placeholder: (context, url) => const CircularProgressIndicator(),
+                                                // errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                // width: 110,
+                                                // height: 85,
+                                                // fit: BoxFit.cover,
+                                                ),
                                           ),
                                         ),
                                       );
