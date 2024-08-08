@@ -56,7 +56,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
 
-                child: Padding(padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),child: Container(
+                child: Padding(padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),child: Container(
                   width: 147,
                   height: 200,
                   decoration: BoxDecoration(
