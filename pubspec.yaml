@@ -63,6 +63,7 @@ dependencies:
   timeago: ^3.7.0
   syncfusion_flutter_charts: ^26.2.5+1
   loading_animation_widget:
+  auto_size_text: ^3.0.0
 
 
 dev_dependencies:
