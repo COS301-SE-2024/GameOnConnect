@@ -56,8 +56,8 @@ class _EditDateInput extends State<EditDateInput> {
                   filled: true,
                   fillColor: Theme.of(context).colorScheme.primaryContainer,
                   enabledBorder: OutlineInputBorder(
-                    // borderSide: BorderSide(
-                    //     color: Theme.of(context).colorScheme.primary),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.surface),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   focusedBorder: OutlineInputBorder(
