@@ -166,7 +166,7 @@ class _StatsPageState extends State<StatsPage> {
           title: Text(
             'Gaming Stats',
             style: TextStyle(
-              fontFamily: 'Inter',
+              
               color: Theme.of(context).colorScheme.secondary,
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -391,9 +391,9 @@ class _StatsPageState extends State<StatsPage> {
                                     ),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(0),
-                                      child: Image.network(
-                                        'assets/default_images/stats_icon1.png',
-                                        width: 110,
+                                      child: Image.asset(
+                                        'assets/images/stats_icon1.png',
+                                        width: 100,
                                         height: 100,
                                         fit: BoxFit.cover,
                                       ),
@@ -404,7 +404,7 @@ class _StatsPageState extends State<StatsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 30, 12),
+                            padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 12, 12),
                             child: Container(
                               width: double.infinity,
                               height: 100,
@@ -424,8 +424,8 @@ class _StatsPageState extends State<StatsPage> {
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(0),
-                                      child: Image.network(
-                                        'assets/default_images/stats_icon2.png',
+                                      child: Image.asset(
+                                        'assets/images/stats_icon2.png',
                                         width: 110,
                                         height: 100,
                                         fit: BoxFit.cover,
@@ -513,7 +513,7 @@ class _StatsPageState extends State<StatsPage> {
                             child: Text(
                               'You have not rated a gaming session yet',
                               style: TextStyle(
-                                fontFamily: 'Inter',
+                                
                                 color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -530,7 +530,7 @@ class _StatsPageState extends State<StatsPage> {
                                     PieChartData(
                                       borderData: FlBorderData(show: false),
                                       sectionsSpace: 0,
-                                      centerSpaceRadius: 70,
+                                      centerSpaceRadius: 60,
                                       sections: showingSectionsMood(),
                                       pieTouchData: PieTouchData(
                                         touchCallback: (FlTouchEvent event, pieTouchResponse) {
@@ -599,7 +599,7 @@ class _StatsPageState extends State<StatsPage> {
                             'Most played genres',
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              // fontFamily: 'Inter',
+                              // 
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -617,10 +617,11 @@ class _StatsPageState extends State<StatsPage> {
                                     Text(
                                       'Filter',
                                       style: TextStyle(
-                                        fontFamily: 'Inter',
+                                        
                                         color: Theme.of(context).colorScheme.secondary,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 0,
+                                        fontSize: 15,
                                       ),
                                     ),
                                     Padding(
@@ -646,9 +647,9 @@ class _StatsPageState extends State<StatsPage> {
                                 ? 'No playing sessions recorded'
                                 : 'No playing data was recorded in this time period',
                             style: TextStyle(
-                              fontFamily: 'Inter',
+                              
                               color: Theme.of(context).colorScheme.secondary,
-                              fontSize: 16,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -660,15 +661,15 @@ class _StatsPageState extends State<StatsPage> {
                                     ? 'No playing sessions recorded'
                                     : 'No playing data was recorded in this time period',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  
                                   color: Theme.of(context).colorScheme.secondary,
-                                  fontSize: 16,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             )
                           : SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.8,
+                              height: MediaQuery.of(context).size.height * 0.9,
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                                 child: SfCartesianChart(
@@ -699,6 +700,8 @@ class _StatsPageState extends State<StatsPage> {
                                     labelIntersectAction: AxisLabelIntersectAction.trim, 
                                     labelStyle: TextStyle(
                                       overflow: TextOverflow.ellipsis,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
                                     ),
                                     isVisible: true,                                    
                                   ),
@@ -707,6 +710,10 @@ class _StatsPageState extends State<StatsPage> {
                                     majorGridLines: MajorGridLines(width: 0), 
                                     axisLine: AxisLine(width: 1),
                                     labelAlignment: LabelAlignment.end,
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
                                   ),
                                   series: <CartesianSeries>[
                                     BarSeries<MapEntry<String, double>, String>(
@@ -734,7 +741,7 @@ class _StatsPageState extends State<StatsPage> {
                         'Leaderboard rankings',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          // fontFamily: 'Inter',
+                          // 
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -747,7 +754,7 @@ class _StatsPageState extends State<StatsPage> {
                               child: Text(
                                 'You have not achieved any top 10 finishes',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
+                                  
                                   fontSize: 20,
                                   color: Theme.of(context).colorScheme.onSurface,
                                   fontWeight: FontWeight.w500,
@@ -764,7 +771,7 @@ class _StatsPageState extends State<StatsPage> {
                                       PieChartData(
                                         borderData: FlBorderData(show: false),
                                         sectionsSpace: 0,
-                                        centerSpaceRadius: 70, 
+                                        centerSpaceRadius: 60, 
                                         sections: showingSectionsLB(),
                                         pieTouchData: PieTouchData(
                                           touchCallback: (FlTouchEvent event, pieTouchResponse) {
@@ -838,8 +845,8 @@ class _StatsPageState extends State<StatsPage> {
 
   List<PieChartSectionData> showingSectionsMood() {
     return List.generate(5, (i) {
-      const fontSize = 16.0;
-      const radius = 70.0;
+      const fontSize = 12.0;
+      const radius = 60.0;
       switch (i) {
         case 0:
           return PieChartSectionData(
@@ -933,8 +940,8 @@ class _StatsPageState extends State<StatsPage> {
 
   List<PieChartSectionData> showingSectionsLB() {
     return List.generate(5, (i) {
-      const fontSize = 16.0;
-      const radius = 70.0; 
+      const fontSize = 12.0;
+      const radius = 60.0; 
       switch (i) {
         case 0:
           return PieChartSectionData(
