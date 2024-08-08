@@ -43,7 +43,8 @@ class _EditSwitchState extends State<EditSwitch> {
           children: <Widget>[
             Text(
               widget.label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary,
+              fontSize: 12),
             ),
             Switch.adaptive(
               value: currentValue,

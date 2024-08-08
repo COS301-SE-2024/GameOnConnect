@@ -46,7 +46,8 @@ class _EditDateInput extends State<EditDateInput> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(widget.label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary,
+              fontSize: 12)),
           const SizedBox(height: 5),
           GestureDetector(
             onTap: () => _selectDate(context),
@@ -67,7 +68,7 @@ class _EditDateInput extends State<EditDateInput> {
                   ),
                 ),
                 initialValue: DateFormat('yyyy-MM-dd').format(_selectedDate!),
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 12),
               ),
             ),
           ),

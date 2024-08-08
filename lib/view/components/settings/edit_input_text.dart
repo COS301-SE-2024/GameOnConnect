@@ -28,7 +28,8 @@ class _EditInputText extends State<EditInputText> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(widget.label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary,
+              fontSize: 12)),
           const SizedBox(height: 5),
           TextFormField(
             key: widget.inputKey,
@@ -51,7 +52,7 @@ class _EditInputText extends State<EditInputText> {
               ),
             ),
             initialValue: widget.input,
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 12),
             maxLines: widget.maxLines,
           ),
         ],
