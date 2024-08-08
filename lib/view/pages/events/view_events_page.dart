@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/model/connection_M/user_model.dart';
 
 import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import '../../../services/events_S/event_service.dart';
+import '../../../services/profile_S/profile_service.dart';
+
 
 class ViewEvents extends StatefulWidget {
   const ViewEvents({super.key});
@@ -23,6 +26,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
   late List<Event>? subscribedEvents;
   late List<Event>? myEvents;
   late List<Event>? joinedEvents;
+  late List<String> creators;
 
   @override
   void initState() {
@@ -36,10 +40,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
   }
 
   void getAllEvents() async {
-    publicAllEvents =events.getPublicEvents(allEvents!);
-    subscribedEvents= events.getSubscribedEvents(allEvents );
-    myEvents = events.getMyEvents(allEvents );
+    publicAllEvents = events.getPublicEvents(allEvents!);
+    subscribedEvents = events.getSubscribedEvents(allEvents);
+    myEvents = events.getMyEvents(allEvents);
     joinedEvents = events.getJoinedEvents(allEvents);
+    //creators =  events.getCreator(allEvents!);
   }
 
   @override
@@ -120,7 +125,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                               (context, index, realIndex) {
                                             Event i = joinedEvents![index];
                                             return UpcomingEventCardWidget(
-                                                e: i);
+                                                e: i,);
                                           },
                                         ),
                                       ),
@@ -283,7 +288,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       publicAllEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i);
+                                                                      e: i,);
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
@@ -351,7 +356,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       subscribedEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i);
+                                                                      e: i,);
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
@@ -419,7 +424,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       myEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i);
+                                                                      e: i,);
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>

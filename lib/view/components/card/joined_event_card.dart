@@ -4,8 +4,9 @@ import '../../../model/events_M/events_model.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
    final Event? e;
+  //final String creatorName;
 
-  const UpcomingEventCardWidget({super.key , required this.e});
+  const UpcomingEventCardWidget({super.key , required this.e, });
 
   @override
   State<UpcomingEventCardWidget> createState() =>
@@ -14,6 +15,7 @@ class UpcomingEventCardWidget extends StatefulWidget {
 
 class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
   late Event e;
+  //late String creatorName = "";
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -23,6 +25,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
   void initState() {
     super.initState();
     e = widget.e!;
+
   }
 
   @override
@@ -34,7 +37,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell( onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ViewEventDetailsWidget(e: e)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  ViewEventDetailsWidget(e: e, )));
     },
       child:Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import '../../../model/connection_M/user_model.dart' as user;
 import '../connection_S/connection_service.dart';
 import '../../model/events_M/events_model.dart';
@@ -351,5 +352,14 @@ class EventsService {
       }
     }
   }
+
+  String myUid(){
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      return currentUser.uid;
+    }
+    return "";
+  }
+
 
 }

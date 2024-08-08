@@ -5,20 +5,23 @@ import '../../../services/events_S/event_service.dart';
 
 class EventCardWidget extends StatefulWidget {
   final Event e;
+  //final String creatorName;
 
   @override
   State<EventCardWidget> createState() => EventCard();
 
-  const EventCardWidget({super.key, required this.e});
+  const EventCardWidget({super.key, required this.e, });
 }
 
 class EventCard extends State<EventCardWidget> {
   late Event e;
+  //late String creatorName;
 
   @override
   void initState() {
     super.initState();
     e = widget.e;
+    //creatorName = widget.creatorName;
   }
 
   @override
@@ -40,7 +43,7 @@ class EventCard extends State<EventCardWidget> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ViewEventDetailsWidget(e: e)));
+                  builder: (context) => ViewEventDetailsWidget(e: e,)));
         },
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 1),

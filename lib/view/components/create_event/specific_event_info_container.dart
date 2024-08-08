@@ -30,7 +30,7 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
     return Column( children:[Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(
           12, 0, 12, 0),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: 28,
         child: Row(
@@ -41,9 +41,7 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
               child: Text(
                 startInfo,
                 style: TextStyle(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .secondary,
+                  color: Theme.of(context).brightness == Brightness.light?Colors.black:Colors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
