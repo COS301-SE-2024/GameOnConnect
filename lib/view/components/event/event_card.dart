@@ -91,7 +91,7 @@ class EventCard extends State<EventCardWidget> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
-                                12, 0, 0, 0),
+                                12, 5, 0, 0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,

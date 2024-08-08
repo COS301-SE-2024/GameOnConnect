@@ -55,12 +55,10 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     MaterialPageRoute(
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                    24, 13, 0, 0),
-                child: Container(
+
+                child: Padding(padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),child: Container(
                   width: 147,
-                  height: 190.44,
+                  height: 200,
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.rectangle,
@@ -89,7 +87,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                             children: [
                               CachedNetworkImage(
                                 height: 83.65,
-                                width: 123.79,
+                                width: 143,
                                 imageUrl: imageUrl,
                                 imageBuilder: (context, imageProvider) =>
                                     Container(
@@ -150,7 +148,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     ),
                   ),
                 ),
-              ),
+                ),
             );
           }
         });

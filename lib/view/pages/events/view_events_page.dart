@@ -102,14 +102,18 @@ class _HomePageWidgetState extends State<ViewEvents> {
                             length: 3,
                             child: Wrap(
                               children: [
+
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
 
                                   children: [
-                                    SizedBox(
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          24, 13, 0, 0),
+                                    child: SizedBox(
                                         width: double.infinity,
-                                        height: 190.44,
+                                        height: 230,
                                         child: CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
@@ -117,13 +121,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           options: CarouselOptions(
                                             padEnds: false,
                                             initialPage: 0,
-                                            viewportFraction: 0.4,
+                                            viewportFraction: 0.5,
                                             disableCenter: true,
                                             enlargeCenterPage: false,
                                             enableInfiniteScroll: false,
                                             scrollDirection: Axis.horizontal,
                                             autoPlay: false,
-                                            height: 190.44,
+                                            height: 250,
                                           ),
                                           itemBuilder:
                                               (context, index, realIndex) {
@@ -133,6 +137,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           },
                                         ),
                                       ),
+                                    ),
                                     Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
                                       child: Container(
@@ -183,6 +188,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 .colorScheme
                                                                 .primaryContainer,
                                                         elevation: 0,
+                                                        buttonMargin: const EdgeInsets.fromLTRB(0, 0, 14, 10),
                                                         backgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
@@ -218,7 +224,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                  BorderRadius.circular(10),
                                                             child: Container(
                                                               width: 100,
-                                                              height: 100,
+                                                              height: 30,
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Theme.of(
