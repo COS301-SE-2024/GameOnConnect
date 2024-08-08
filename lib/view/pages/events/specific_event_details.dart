@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import 'package:gameonconnect/view/components/create_event/specific_event_info_container.dart';
 import '../../../model/events_M/events_model.dart';
 import 'edit_event_page.dart';
 
@@ -67,16 +68,16 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                             Stack(children: [
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 51, 0, 0),
+                                    0, 13, 0, 0),
                                 child: CachedNetworkImage(
                                   height: 340,
                                   width: double.infinity,
                                   imageUrl: imageUrl,
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
-                                    decoration:  BoxDecoration(
+                                    decoration: BoxDecoration(
                                         shape: BoxShape.rectangle,
-                                        borderRadius:const  BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(0),
                                             topRight: Radius.circular(0),
                                             bottomLeft: Radius.circular(15),
@@ -96,7 +97,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 alignment: const AlignmentDirectional(-0.9, -1),
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 50, 0, 0),
+                                      0, 21, 0, 0),
                                   child: CircleAvatar(
                                     radius: 20,
                                     backgroundColor:
@@ -115,373 +116,253 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 ),
                               ),
                             ]),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
+                            Column(
                               children: [
-                                Flexible(
-                                  child: Column(
-                                    children: [
-                                      Row(
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Flexible(
+                                      child: Column(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(19, 0, 0, 0),
-                                            child: Text(
-                                              e.name,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                                fontSize: 20,
-                                                letterSpacing: 0,
-                                                fontWeight: FontWeight.bold,
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(12, 0, 0, 0),
+                                                child: Text(
+                                                  e.name,
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
+                                                    fontSize: 20,
+                                                    letterSpacing: 0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                              const Spacer(),
+                                              !isCreator
+                                                  ? IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          !selected;
+                                                        });
+                                                        if (selected) {
+                                                          EventsService()
+                                                              .unsubscribeToEvent(
+                                                                  e);
+                                                        } else {
+                                                          EventsService()
+                                                              .subscribeToEvent(
+                                                                  e);
+                                                        }
+                                                        getUpdatedEvent(
+                                                            e.eventID);
+                                                      },
+                                                      icon: selected
+                                                          ? Icon(
+                                                              Icons
+                                                                  .notifications,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                              size: 24,
+                                                            )
+                                                          : Icon(
+                                                              Icons
+                                                                  .notification_add_outlined,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary))
+                                                  : const SizedBox(),
+                                            ],
                                           ),
-                                          const Spacer(),
-                                          //TODO figure out how to do this button thing
-                                          IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  !selected;
-                                                });
-                                                if (selected) {
-                                                  EventsService()
-                                                      .unsubscribeToEvent(e);
-                                                } else {
-                                                  EventsService()
-                                                      .subscribeToEvent(e);
-                                                }
-                                                getUpdatedEvent(e.eventID);
-                                              },
-                                              icon: selected
-                                                  ? Icon(
-                                                      Icons.notifications,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    )
-                                                  : Icon(
-                                                      Icons
-                                                          .notification_add_outlined,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary)),
                                         ],
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 0, 6),
+                                    child: Text(
+                                      //TODO : get user name to display
+                                      "username",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 8, 24, 0),
-                              child: Text(
-                                e.description,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 14,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 16, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Type of event:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      e.eventType,
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
+                            //TODO: fix the coloring of the text
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 6, 12, 19),
+                                  child: Text(
+                                    "Saturday, 9 July 2024, 10 AM SAST",
+                                    style: TextStyle(
+                                        fontSize: 12,
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                            .secondary),
+                                  )),
                             ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Starting at:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${e.startDate.day}/${e.startDate.month}/${e.startDate.year}   |  ${e.startDate.hour}:${e.startDate.minute}',
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                            Divider(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
+                              indent: 12,
+                              endIndent: 12,
                             ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Ending at:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${e.endDate.day}/${e.endDate.month}/${e.startDate.year}   |  ${e.endDate.hour}:${e.endDate.minute}',
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        '# Joined:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      EventsService()
-                                          .getAmountJoined(e)
-                                          .toString(),
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: isCreator
-                                    ? Theme.of(context).colorScheme.primary
-                                    : isJoined
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                        : Theme.of(context).colorScheme.primary,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                    offset: const Offset(
-                                      0.0,
-                                      2,
-                                    ),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(0),
-                              ),
+                            Align(
+                              alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 12, 0, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 0, 4),
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                            if (isCreator) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          EditEvent(
-                                                              e: e,
-                                                              imageUrl:
-                                                                  imageUrl)));
-                                            }
-                                            if (!isJoined) {
-                                              EventsService().joinEvent(e);
-                                              getUpdatedEvent(e.eventID);
-                                              isJoined = true;
-                                            }
-                                          },
-                                          child: Text(
-                                            isCreator
-                                                ? 'Edit event'
-                                                : isJoined
-                                                    ? 'Joined event!'
-                                                    : 'Join event',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                              fontSize: 18,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    12, 19, 12, 19),
+                                child: Text(
+                                  e.description,
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontSize: 14,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
+                              ),
+                            ),
+                            SpecificEventInfoContainer(
+                                startInfo: "Event type", endInfo: e.eventType),
+                            SpecificEventInfoContainer(
+                              startInfo: "Participants",
+                              endInfo:
+                                  EventsService().getAmountJoined(e).toString(),
+                            ),
+                            SpecificEventInfoContainer(
+                                startInfo: "Starting at",
+                                endInfo: e.startDate.toString()),
+                            SpecificEventInfoContainer(
+                                startInfo: "Ending at",
+                                endInfo: e.endDate.toString()),
+                            SpecificEventInfoContainer(
+                                startInfo: "Visibility",
+                                endInfo: e.privacy ? "Public" : "Private"),
+                            const SizedBox(
+                              height: 36,
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12, 0, 12, 12),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                   Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Padding(padding: EdgeInsets.only(right: 32.0),child:
+                                            Container(
+                                              width: 152,
+                                              height: 36,
+                                              decoration: BoxDecoration(
+                                                color: isCreator
+                                                    ? Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    : isJoined
+                                                    ? Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary
+                                                    : Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                borderRadius: BorderRadius.circular(50),
+                                              ),
+                                              child: MaterialButton(
+                                              onPressed: () {
+                                                if (isCreator) {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditEvent(
+                                                                  e: e,
+                                                                  imageUrl:
+                                                                      imageUrl)));
+                                                }
+                                                if (!isJoined) {
+                                                  EventsService().joinEvent(e);
+                                                  getUpdatedEvent(e.eventID);
+                                                  isJoined = true;
+                                                }
+                                              },
+                                              child: Text(
+                                                isCreator
+                                                    ? 'Edit'
+                                                    : isJoined
+                                                        ? 'Joined'
+                                                        : 'Join',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .surface,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            ),
+                                            ),
+                                Container(
+                                  width: 152,
+                                  height: 36,
+                                  decoration: BoxDecoration(
+                                    color:
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .surface,
+                                    border: Border.all(color: Theme.of(context).colorScheme.primary),
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                            child:
+                                            MaterialButton(
+                                              onPressed: () {
+                                                //do nothing for now
+                                              },
+                                              child: Text(
+                                                'Add to Calendar',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                ],
                               ),
                             ),
                           ],
