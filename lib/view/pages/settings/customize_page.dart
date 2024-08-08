@@ -40,6 +40,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String _profileBannerUrl = '';
   dynamic _profileBanner;
   String testBannerurl = '';
+   bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
 
   Future<void> _fetchGenresFromAPI() async {
@@ -49,11 +50,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
-        setState(() {
-          _genres = (decoded['results'] as List)
-              .map((genre) => genre['name'].toString())
-              .toList();
-        });
+        if (_isMounted) {
+          setState(() {
+            _genres = (decoded['results'] as List)
+                .map((genre) => genre['name'].toString())
+                .toList();
+          });
+        }
       } else {
         //print("Error fetching genres: ${response.statusCode}");
       }
@@ -62,17 +65,25 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
   Future<void> _fetchTagsFromAPI() async {
     try {
       var url = Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
-        setState(() {
-          _interests = (decoded['results'] as List)
-              .map((tag) => tag['name'].toString())
-              .toList();
-        });
+        if (_isMounted) {
+          setState(() {
+            _interests = (decoded['results'] as List)
+                .map((tag) => tag['name'].toString())
+                .toList();
+          });
+        }
       } else {
         throw ("Error fetching interest tags: ${response.statusCode}");
       }
@@ -108,14 +119,17 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   //deletion of a selected item.
   void _deleteSelectedItem(String item, List<String> selectedList) {
+    if (_isMounted) {
     setState(() {
       selectedList.remove(item);
     });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    _isMounted = true;
     _fetchData().then((_) {
       setState(() {
         _isDataFetched = true;
@@ -143,7 +157,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
     } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color ==  const Color.fromRGBO(0, 10, 255, 1.0)) {
+    } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
     } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
@@ -175,14 +189,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               await storageService.getBannerUrl(currentUser.uid);
           String profileDownloadUrl =
               await storageService.getProfilePictureUrl(currentUser.uid);
-
-          setState(() {
-            _selectedGenres = genres;
-            _selectedAge = age;
-            _selectedInterests = interests;
-            _profileBannerUrl = bannerDownloadUrl;
-            _profileImageUrl = profileDownloadUrl;
-          });
+          if (_isMounted) {
+            setState(() {
+              _selectedGenres = genres;
+              _selectedAge = age;
+              _selectedInterests = interests;
+              _profileBannerUrl = bannerDownloadUrl;
+              _profileImageUrl = profileDownloadUrl;
+            });
+          }
         }
       }
     } catch (e) {
