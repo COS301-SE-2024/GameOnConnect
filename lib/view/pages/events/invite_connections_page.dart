@@ -156,7 +156,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
         width: double.infinity,
         child: MaterialButton(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             onPressed: () {
               Navigator.pop(context, invites);
             },

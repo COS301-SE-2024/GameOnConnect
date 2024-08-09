@@ -221,7 +221,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: 14,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: page=="events"?FontWeight.bold:FontWeight.normal,
                       ),
                     ),
                     Text(
