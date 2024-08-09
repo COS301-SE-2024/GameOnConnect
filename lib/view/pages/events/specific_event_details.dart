@@ -123,16 +123,18 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   ),
                                 ),
                               ]),
+                              Align(
+                              alignment: const Alignment(-1, -1),
+                              child:
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Flexible(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                    child: Align(
+                                      alignment: const Alignment(-1, 0),
 
-                                      children: [
+                                      child:
                                         Container(
-                                          width: 800,
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(12, 19, 12, 6),
                                           child: Text(
@@ -149,15 +151,12 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             ),
                                           ),
                                         ),
-                                      ],
                                     ),
                                   ),
-                                  Flexible(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+          Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
-                                          width: 24,
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(12, 19, 12, 6),
                                           child: !isCreator
@@ -179,8 +178,13 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                                   icon: selected
                                                       ? Icon(
                                                           Icons.notifications,
-                                                          color:
-                                                              Theme.of(context)
+                                                          color: Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .light
+                                                              ? Colors.black
+                                                              : Theme.of(
+                                                                      context)
                                                                   .colorScheme
                                                                   .primary,
                                                           size: 24,
@@ -188,16 +192,21 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                                       : Icon(
                                                           Icons
                                                               .notification_add_outlined,
-                                                          color:
-                                                              Theme.of(context)
+                                                          color: Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .light
+                                                              ? Colors.black
+                                                              : Theme.of(
+                                                                      context)
                                                                   .colorScheme
                                                                   .primary))
                                               : const SizedBox(),
                                         ),
                                       ],
                                     ),
-                                  ),
                                 ],
+                              ),
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
