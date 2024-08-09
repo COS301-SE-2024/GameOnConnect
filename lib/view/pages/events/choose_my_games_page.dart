@@ -19,11 +19,12 @@ class _ChooseGame extends State<ChooseGame> {
   late List<String> gameImages = [];
   late List<GameDetails>? games;
   late int gameID;
-  final bool _isMounted = false;
+  bool _isMounted = false;
 
   @override
   void initState() {
     super.initState();
+    _isMounted = true;
     chosenGame = widget.chosenGame;
   }
 
@@ -80,6 +81,7 @@ class _ChooseGame extends State<ChooseGame> {
                 body: SafeArea(
                     top: true,
                     child: Column(mainAxisSize: MainAxisSize.max, children: [
+                      const SizedBox(height: 18),
                       Flexible(
                           child: ListView.separated(
                         itemCount: gameNames.length,
@@ -116,6 +118,9 @@ class _ChooseGame extends State<ChooseGame> {
                               Navigator.pop(context, chosenGame);
                             },
                             color: Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                             child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
