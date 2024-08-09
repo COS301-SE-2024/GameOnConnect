@@ -4,7 +4,6 @@ import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
-import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 

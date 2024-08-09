@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/profile/custom_timeline_tile.dart';
-import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import '../../../model/Stats_M/game_stats.dart';
-import 'package:timeline_tile/timeline_tile.dart';
 
 
 // ignore: must_be_immutable
@@ -55,11 +49,11 @@ class _GameActivityState extends State<GameActivity> {
           : Column(
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(12, 0, 12, 19),
+                margin: const EdgeInsets.fromLTRB(12, 12, 12, 19),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    '${widget.gameName}',
+                    widget.gameName,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
@@ -70,10 +64,10 @@ class _GameActivityState extends State<GameActivity> {
                 ),
               ),
               Padding(
-              padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: specificGameActivity.length,
                 itemBuilder: (context, index) {
                   return CustomTimelineTile(

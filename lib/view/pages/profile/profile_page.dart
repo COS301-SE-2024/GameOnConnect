@@ -6,15 +6,11 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
-import 'package:gameonconnect/view/components/profile/custom_timeline_tile.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
-import 'package:gameonconnect/view/pages/profile/game_activity.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
-import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
-import 'package:timelines/timelines.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -306,23 +302,6 @@ void navigateToConnections(BuildContext context) {
                         WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'), 
                         const SizedBox(height: 24),
 
-                   
- //RecentActivityList(gameStats: profileData.recentActivities,heading: 'Recent'),
- //const SizedBox(height: 24),
-
-//GameActivity(),
-/*Padding(
-  padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
-  child: ListView(
-        shrinkWrap: true,
-  physics: NeverScrollableScrollPhysics(),
-        children: [
-          CustomTimelineTile(isFirst: true, isLast: false),
-          CustomTimelineTile(isFirst: false, isLast: false),
-          CustomTimelineTile(isFirst: false, isLast: true),
-        ],
-      ),
- ),*/
 
                       ],
               ),

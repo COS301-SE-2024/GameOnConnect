@@ -4,7 +4,7 @@ class ActivityIndicator extends StatelessWidget {
   final double size;
   final Color color;
 
-  ActivityIndicator({
+  const ActivityIndicator({super.key, 
     required this.size, 
     required this.color
   });

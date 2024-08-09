@@ -1,12 +1,8 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_typing_uninitialized_variables
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:intl/intl.dart';
-//import 'package:timelines/timelines.dart';
-import 'package:timeline_tile/timeline_tile.dart';
-//import 'package:timelines/timelines.dart';
 
 class ActivityCard extends StatefulWidget {
 
@@ -95,7 +91,7 @@ String getEmojiForMood(String mood) {
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 9),
                             child:  Text(
                               lastPlayedDateTime,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12,
                                 height: 0.9,
@@ -105,7 +101,7 @@ String getEmojiForMood(String mood) {
                           ),
                           Text(
                             timeRange ,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
                               height: 0.9,
@@ -124,7 +120,7 @@ String getEmojiForMood(String mood) {
                               margin: const EdgeInsets.fromLTRB(0, 0, 9, 0),
                               child: Text(
                                  getEmojiForMood(widget.game.mood),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 24,
                                   height: 0.9,
@@ -135,8 +131,8 @@ String getEmojiForMood(String mood) {
                             Container(
                               margin: const EdgeInsets.fromLTRB(0, 5.5, 0, 5.5),
                               child:  Text(
-                                '${widget.game.mood}',
-                                style: TextStyle(
+                                widget.game.mood,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
                                   height: 0.9,

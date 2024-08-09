@@ -1,13 +1,10 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_typing_uninitialized_variables
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
-import 'package:gameonconnect/view/components/profile/Activity_indicator.dart';
+import 'package:gameonconnect/view/components/profile/activity_indicator.dart';
 import 'package:gameonconnect/view/components/profile/activity_card.dart';
-//import 'package:timelines/timelines.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-//import 'package:timelines/timelines.dart';
 
 class CustomTimelineTile extends StatefulWidget {
 
@@ -54,7 +51,7 @@ class _CustomTimelineTileState extends State<CustomTimelineTile> {
       ),
 
       endChild: Padding(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child:  ActivityCard(game:widget.game),
         ) 
      

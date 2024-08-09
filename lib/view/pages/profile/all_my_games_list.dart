@@ -4,12 +4,11 @@ import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
-import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/profile/game_activity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class AllMyGamesList extends StatefulWidget {
-  AllMyGamesList({super.key, 
+  const AllMyGamesList({super.key, 
      required this. myGameStats,
     required this.heading,
     required this.currentlyPlaying,
