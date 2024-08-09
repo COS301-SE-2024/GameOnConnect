@@ -19,6 +19,7 @@ class _ChooseGame extends State<ChooseGame> {
   late List<String> gameImages = [];
   late List<GameDetails>? games;
   late int gameID;
+  bool _isMounted = false;
 
   @override
   void initState() {
@@ -81,29 +82,32 @@ class _ChooseGame extends State<ChooseGame> {
                     child: Column(mainAxisSize: MainAxisSize.max, children: [
                       Flexible(
                           child: ListView.separated(
-                            itemCount: gameNames.length,
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              String i = gameNames[index];
+                        itemCount: gameNames.length,
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          String i = gameNames[index];
 
-                              return GameCard(
-                                name: i,
-                                gameID: getGameID(i),
-                                chosen: chosenGame,
-                                image: gameImages[index],
-                                onSelected: (gameName) {
-                                  setState(() {
-                                    chosenGame = gameName;
-                                  });
-                                },
-                              );
+                          return GameCard(
+                            name: i,
+                            gameID: getGameID(i),
+                            chosen: chosenGame,
+                            image: gameImages[index],
+                            onSelected: (gameName) {
+                              if (_isMounted) {
+                                setState(() {
+                                  chosenGame = gameName;
+                                });
+                              }
                             },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const SizedBox(height: 18,);
-                            },
-                          )),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(
+                            height: 18,
+                          );
+                        },
+                      )),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             15, 12, 15, 12),
@@ -113,15 +117,18 @@ class _ChooseGame extends State<ChooseGame> {
                             },
                             color: Theme.of(context).colorScheme.primary,
                             child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                              Text("Save Game",
-                              style: TextStyle(
-                                fontSize: 14,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(24, 24, 24, 1.0),),),
-                            ])),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Save Game",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromRGBO(24, 24, 24, 1.0),
+                                    ),
+                                  ),
+                                ])),
                       )
                     ])));
           }
