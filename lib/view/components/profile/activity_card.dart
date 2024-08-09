@@ -2,6 +2,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
+import 'package:intl/intl.dart';
 //import 'package:timelines/timelines.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 //import 'package:timelines/timelines.dart';
@@ -10,11 +12,10 @@ class ActivityCard extends StatefulWidget {
 
   const ActivityCard({
     super.key,
-    //required this.isFirst,
-    //required this.isLast,
+    required this.game,
   });
-//final bool isFirst;
-//final bool isLast;
+
+  final GameStats game;
 
   @override
   State<ActivityCard> createState() => _ActivityCardState();
@@ -24,10 +25,41 @@ class ActivityCard extends StatefulWidget {
 
 class _ActivityCardState extends State<ActivityCard> {
 
+String formatLastPlayedDate(String lastPlayed) {
+  // Parse the lastPlayed string into a DateTime object
+  DateTime dateTime = DateTime.parse(lastPlayed);
+
+  // Format the DateTime object into the desired string format
+  DateFormat dateFormat = DateFormat('d MMMM yyyy');
+  String formattedDate = dateFormat.format(dateTime);
+
+  // Return the formatted date string
+  return formattedDate;
+}
+
+String formatTimeRange(String lastPlayed, int timePlayed) {
+  // Parse the lastPlayed string into a DateTime object
+  DateTime endTime = DateTime.parse(lastPlayed);
+
+  // Subtract the timePlayed duration from the endTime
+  DateTime startTime = endTime.subtract(Duration(milliseconds: timePlayed));
+
+  // Format the start and end times into the desired string format
+  DateFormat timeFormat = DateFormat('HH:mm');
+  String formattedStartTime = timeFormat.format(startTime);
+  String formattedEndTime = timeFormat.format(endTime);
+
+  // Return the formatted time range
+  return '$formattedStartTime - $formattedEndTime';
+}
+
+
   @override
   Widget build(BuildContext context) {
+    final lastPlayedDateTime = formatLastPlayedDate(widget.game.lastPlayedDate);
+    final timeRange =formatTimeRange(widget.game.lastPlayedDate, widget.game.timePlayedLast);
       return  Container(
-                margin: const EdgeInsets.fromLTRB(13, 0, 0, 19),
+                margin: const EdgeInsets.fromLTRB(13, 0, 0, 0),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2A2A2A),
                   borderRadius: BorderRadius.circular(10),
@@ -44,8 +76,8 @@ class _ActivityCardState extends State<ActivityCard> {
                         children: [
                           Container(
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 9),
-                            child: const Text(
-                              '12 July 2023',
+                            child:  Text(
+                              lastPlayedDateTime,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12,
@@ -54,8 +86,8 @@ class _ActivityCardState extends State<ActivityCard> {
                               ),
                             ),
                           ),
-                          const Text(
-                            '12:00 - 13:42',
+                          Text(
+                            timeRange ,
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,
