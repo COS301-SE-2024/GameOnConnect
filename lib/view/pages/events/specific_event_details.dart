@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/create_event/specific_event_info_container.dart';
+import 'package:intl/intl.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/profile_S/profile_service.dart';
 import 'edit_event_page.dart';
@@ -57,6 +58,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
+            String timezone =e.startDate.timeZoneName ;
             imageUrl = snapshot.data!;
             selected = EventsService().isSubscribed(e);
             isJoined = EventsService().isJoined(e);
@@ -232,8 +234,8 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 19),
                                     child: Text(
-                                      //TODO: get start time
-                                      "Saturday, 9 July 2024, 10 AM SAST",
+                                     DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.startDate)+ ' ' +timezone,
+                                     // "Saturday, 9 July 2024, 10 AM SAST",
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Theme.of(context).brightness ==
@@ -282,10 +284,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                               SpecificEventInfoContainer(
                                   startInfo: "Starting at",
-                                  endInfo: e.startDate.toString()),
+                                  endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.startDate)+ ' ' +timezone,),
                               SpecificEventInfoContainer(
                                   startInfo: "Ending at",
-                                  endInfo: e.endDate.toString()),
+                                  endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.endDate)+ ' ' +timezone,),
                               SpecificEventInfoContainer(
                                   startInfo: "Visibility",
                                   endInfo: e.privacy ? "Public" : "Private"),
