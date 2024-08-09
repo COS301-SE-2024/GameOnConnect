@@ -155,19 +155,18 @@ class _EditEventsState extends State<EditEvent> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Stack (
-                                              alignment: Alignment.center,
-                                              children: [SizedBox(
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .width,
-                                            child: FittedBox(
-                                              fit: BoxFit.cover,
-                                              child: InkWell(
-                                                onTap: () {
-                                                  pickImage();
-                                                },
-                                                child: ClipRRect(
+                                        InkWell(
+                                        onTap: () {
+                                  pickImage();
+                                  },
+                                      child: Stack (
+                                          alignment: Alignment.center,
+                                          children: [SizedBox(
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width,
+                                      child: const FittedBox(
+                                        fit: BoxFit.cover,)),ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -184,9 +183,6 @@ class _EditEventsState extends State<EditEvent> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
                                                 Container(
                                                     height: 40,
                                                     width :40,
@@ -197,6 +193,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 ),
                                               ],
                                           ),
+                                        ),
                                           const SizedBox(
                                             height: 10,
                                           ),
