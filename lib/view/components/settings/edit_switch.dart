@@ -55,6 +55,7 @@ class _EditSwitchState extends State<EditSwitch> {
                 });
               },
               activeTrackColor: Theme.of(context).colorScheme.primary,
+              activeColor: Colors.black,
               inactiveTrackColor: Theme.of(context).colorScheme.surface,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
             ),

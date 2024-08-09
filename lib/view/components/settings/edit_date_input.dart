@@ -5,6 +5,7 @@ class EditDateInput extends StatefulWidget {
   final DateTime currentDate;
   final String label;
   final void Function(DateTime value) onChanged;
+  
   const EditDateInput(
       {super.key,
       required this.currentDate,
@@ -31,6 +32,7 @@ class _EditDateInput extends State<EditDateInput> {
         firstDate: DateTime(1900),
         lastDate: DateTime.now());
     if (picked != null && picked != _selectedDate) {
+      // widget.onChanged(picked);
       setState(() {
         _selectedDate = picked;
       });
@@ -73,8 +75,12 @@ class _EditDateInput extends State<EditDateInput> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                initialValue: DateFormat('yyyy-MM-dd').format(_selectedDate!),
-                style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 12),
+                initialValue: DateFormat('yyyy/MM/dd').format(_selectedDate!),
+                key: ValueKey(_selectedDate),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary, 
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
