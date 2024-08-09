@@ -8,6 +8,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 import 'package:gameonconnect/view/components/stats/stats_filter.dart';
 import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+import 'package:gameonconnect/view/components/stats/mood_pie_chart_sections.dart';
+import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart_sections.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -439,6 +441,7 @@ class _StatsPageState extends State<StatsPage> {
                                           'You have played more than',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
+                                            fontSize: 12,
                                           ),
                                         ),
                                         Row(
@@ -451,6 +454,7 @@ class _StatsPageState extends State<StatsPage> {
                                                 style: TextStyle(
                                                   color: Theme.of(context).colorScheme.primary,
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ),
@@ -460,6 +464,7 @@ class _StatsPageState extends State<StatsPage> {
                                                 'of players',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
                                                 ),
                                               ),
                                             ),
@@ -513,9 +518,8 @@ class _StatsPageState extends State<StatsPage> {
                             child: Text(
                               'You have not rated a gaming session yet',
                               style: TextStyle(
-                                
                                 color: Theme.of(context).colorScheme.onSurface,
-                                fontSize: 18,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -531,7 +535,7 @@ class _StatsPageState extends State<StatsPage> {
                                       borderData: FlBorderData(show: false),
                                       sectionsSpace: 0,
                                       centerSpaceRadius: 60,
-                                      sections: showingSectionsMood(),
+                                      sections: MoodPieChartSections.showingSectionsMood(context, moodCounts),    // showingSectionsMood(),
                                       pieTouchData: PieTouchData(
                                         touchCallback: (FlTouchEvent event, pieTouchResponse) {
                                           if (event is FlLongPressEnd || event is FlTapUpEvent) {
@@ -585,8 +589,8 @@ class _StatsPageState extends State<StatsPage> {
                     ),
                     Divider(
                       thickness: 1,
-                      indent: 15,
-                      endIndent: 15,
+                      indent: 12,
+                      endIndent: 12,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     Padding(
@@ -599,7 +603,6 @@ class _StatsPageState extends State<StatsPage> {
                             'Most played genres',
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              // 
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -617,7 +620,6 @@ class _StatsPageState extends State<StatsPage> {
                                     Text(
                                       'Filter',
                                       style: TextStyle(
-                                        
                                         color: Theme.of(context).colorScheme.secondary,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 0,
@@ -647,7 +649,6 @@ class _StatsPageState extends State<StatsPage> {
                                 ? 'No playing sessions recorded'
                                 : 'No playing data was recorded in this time period',
                             style: TextStyle(
-                              
                               color: Theme.of(context).colorScheme.secondary,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -661,7 +662,6 @@ class _StatsPageState extends State<StatsPage> {
                                     ? 'No playing sessions recorded'
                                     : 'No playing data was recorded in this time period',
                                 style: TextStyle(
-                                  
                                   color: Theme.of(context).colorScheme.secondary,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -741,7 +741,6 @@ class _StatsPageState extends State<StatsPage> {
                         'Leaderboard rankings',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          // 
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -754,10 +753,9 @@ class _StatsPageState extends State<StatsPage> {
                               child: Text(
                                 'You have not achieved any top 10 finishes',
                                 style: TextStyle(
-                                  
-                                  fontSize: 20,
+                                  fontSize: 12,
                                   color: Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             )
@@ -772,7 +770,7 @@ class _StatsPageState extends State<StatsPage> {
                                         borderData: FlBorderData(show: false),
                                         sectionsSpace: 0,
                                         centerSpaceRadius: 60, 
-                                        sections: showingSectionsLB(),
+                                        sections: LeaderboardPieChartSections.showingSectionsLB(context, leaderboardData),       // showingSectionsLB(),
                                         pieTouchData: PieTouchData(
                                           touchCallback: (FlTouchEvent event, pieTouchResponse) {
                                             if (event is FlLongPressEnd || event is FlTapUpEvent) {
@@ -843,82 +841,6 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 
-  List<PieChartSectionData> showingSectionsMood() {
-    return List.generate(5, (i) {
-      const fontSize = 12.0;
-      const radius = 60.0;
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: Colors.yellow,
-            value: moodCounts['Happy']!.toDouble(),
-            title: '${moodCounts['Happy']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Inter",
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: Colors.green,
-            value: moodCounts['Disgusted']!.toDouble(),
-            title: '${moodCounts['Disgusted']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Inter",
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: Colors.blue,
-            value: moodCounts['Sad']!.toDouble(),
-            title: '${moodCounts['Sad']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Inter",
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: Colors.red,
-            value: moodCounts['Angry']!.toDouble(),
-            title: '${moodCounts['Angry']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Inter",
-            ),
-          );
-        case 4:
-          return PieChartSectionData(
-            color: Colors.purple,
-            value: moodCounts['Scared']!.toDouble(),
-            title: '${moodCounts['Scared']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Inter",
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
-  }
-
   void _navigateToGamesPageMood(String mood) async {
     List<Map<String, dynamic>> gameData = await fetchGameIDsByMood(mood); // Fetch the game IDs based on mood
     // ignore: use_build_context_synchronously
@@ -936,82 +858,6 @@ class _StatsPageState extends State<StatsPage> {
     } catch (e) {
       throw Exception('Error fetching game IDs for mood: $e');
     }
-  }
-
-  List<PieChartSectionData> showingSectionsLB() {
-    return List.generate(5, (i) {
-      const fontSize = 12.0;
-      const radius = 60.0; 
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color.fromRGBO(200, 235, 197, 1.0),
-            value: leaderboardData['1st']!.toDouble(),
-            title: '${leaderboardData['1st']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "inter",
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: const Color.fromRGBO(5, 94, 3, 1.0),
-            value: leaderboardData['2nd']!.toDouble(),
-            title: '${leaderboardData['2nd']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "inter",
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color.fromRGBO(0, 182, 40, 1.0),
-            value: leaderboardData['3rd']!.toDouble(),
-            title: '${leaderboardData['3rd']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "inter",
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color.fromRGBO(0, 216, 35, 1.0),
-            value: leaderboardData['Top 5']!.toDouble(),
-            title: '${leaderboardData['Top 5']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "inter",
-            ),
-          );
-        case 4:
-          return PieChartSectionData(
-            color: const Color.fromRGBO(72, 228, 88, 1.0),
-            value: leaderboardData['Top 10']!.toDouble(),
-            title: '${leaderboardData['Top 10']}',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "inter",
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
   }
 
   void _navigateToGamesPageLB(String position) async {
