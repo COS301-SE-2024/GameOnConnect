@@ -293,7 +293,7 @@ void navigateToConnections(BuildContext context) {
                         Bio(bio: profileData.bio,),
 
                         const SizedBox(height: 24),
-                        MyGameList(myGameStats: sumOfMygames, heading: 'Games', currentlyPlaying: profileData.currentlyPlaying,gameActivities: profileData.myGames,),
+                        MyGameList(myGameStats: sumOfMygames, heading: 'My Games', currentlyPlaying: profileData.currentlyPlaying,gameActivities: profileData.myGames,),
                         
                         const Padding(
                           padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
