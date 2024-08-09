@@ -30,9 +30,10 @@ class GameActivity extends StatefulWidget {
 class _GameActivityState extends State<GameActivity> {
 
   List<GameStats> getSpecificGameActivity() {
-    print('nr of games: ${widget.gameStatsList.length} ');
-    List<GameStats> activityList =widget.gameStatsList.where((game) => game.gameId == widget.gameId && game.timePlayedLast > 0).toList();
-    print('Activity list: ${activityList.length}');
+    //print('nr of games: ${widget.gameStatsList.length} ');
+    List<GameStats> activityList =widget.gameStatsList.where((game) => game.gameId == widget.gameId && game.timePlayedLast > 0)
+                                                      .toList()
+                                                      ..sort((a, b) => DateTime.parse(b.lastPlayedDate).compareTo(DateTime.parse(a.lastPlayedDate)));
     return activityList;  
   }
 
