@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
-import 'package:gameonconnect/view/components/profile/activity_indicator.dart';
+import 'package:gameonconnect/view/components/profile/activity_timeline_indicator.dart';
 import 'package:gameonconnect/view/components/profile/activity_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
