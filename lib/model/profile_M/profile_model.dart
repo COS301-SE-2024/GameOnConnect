@@ -9,7 +9,7 @@ class Profile {
   final String profileName;
   final int uniqueNumber;// since it has a larger range
   final String currentlyPlaying;
-  final List<String> myGames;
+  final List<GameStats> myGames;
   final List<String> wantToPlay;
   final List<GameStats> recentActivities;
   final int numberOfconnections; 

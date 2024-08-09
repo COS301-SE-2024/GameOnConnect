@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +10,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
+import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +40,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String _profileBannerUrl = '';
   dynamic _profileBanner;
   String testBannerurl = '';
+  bool _isMounted = false;
+  Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
 
   Future<void> _fetchGenresFromAPI() async {
     try {
@@ -47,11 +50,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
-        setState(() {
-          _genres = (decoded['results'] as List)
-              .map((genre) => genre['name'].toString())
-              .toList();
-        });
+        if (_isMounted) {
+          setState(() {
+            _genres = (decoded['results'] as List)
+                .map((genre) => genre['name'].toString())
+                .toList();
+          });
+        }
       } else {
         //print("Error fetching genres: ${response.statusCode}");
       }
@@ -60,22 +65,32 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
   Future<void> _fetchTagsFromAPI() async {
     try {
-      var url = Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        setState(() {
-          _interests = (decoded['results'] as List)
-              .map((tag) => tag['name'].toString())
-              .toList();
-        });
-      } else {
-        throw("Error fetching interest tags: ${response.statusCode}");
+      if (_isMounted) {
+        var url =
+            Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
+        var response = await http.get(url);
+        if (response.statusCode == 200) {
+          var decoded = json.decode(response.body);
+
+          setState(() {
+            _interests = (decoded['results'] as List)
+                .map((tag) => tag['name'].toString())
+                .toList();
+          });
+        } else {
+          throw ("Error fetching interest tags: ${response.statusCode}");
+        }
       }
     } catch (e) {
-      throw("Error fetching interest tags: $e");
+      throw ("Error fetching interest tags: $e");
     }
   }
 
@@ -106,23 +121,53 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   //deletion of a selected item.
   void _deleteSelectedItem(String item, List<String> selectedList) {
-    setState(() {
-      selectedList.remove(item);
-    });
+    if (_isMounted) {
+      setState(() {
+        selectedList.remove(item);
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    _isMounted = true;
     _fetchData().then((_) {
+      if (_isMounted) {
       setState(() {
         _isDataFetched = true;
       });
+    }
     });
-    isDarkMode = Provider.of<ThemeProvider>(context, listen: false)
-            .themeData
-            .brightness ==
-        Brightness.dark;
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    ThemeData currentTheme = themeProvider.themeData;
+
+    // Check if the current theme is a dark theme
+    isDarkMode = currentTheme == darkGreenTheme ||
+        currentTheme == darkPurpleTheme ||
+        currentTheme == darkBlueTheme ||
+        currentTheme == darkYellowTheme ||
+        currentTheme == darkPinkTheme;
+  }
+
+  void _updateTheme(Color color) {
+    setState(() {
+      selectedColor = color;
+    });
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+    if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
+    } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
+    } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
+    } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
+    } else if (color == const Color.fromRGBO(255, 0, 199, 1.0)) {
+      themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
+    }
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
@@ -148,18 +193,19 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               await storageService.getBannerUrl(currentUser.uid);
           String profileDownloadUrl =
               await storageService.getProfilePictureUrl(currentUser.uid);
-
-          setState(() {
-            _selectedGenres = genres;
-            _selectedAge = age;
-            _selectedInterests = interests;
-            _profileBannerUrl = bannerDownloadUrl;
-            _profileImageUrl = profileDownloadUrl;
-          });
+          if (_isMounted) {
+            setState(() {
+              _selectedGenres = genres;
+              _selectedAge = age;
+              _selectedInterests = interests;
+              _profileBannerUrl = bannerDownloadUrl;
+              _profileImageUrl = profileDownloadUrl;
+            });
+          }
         }
       }
     } catch (e) {
-      throw("Error fetching user selections: $e");
+      throw ("Error fetching user selections: $e");
     }
   }
 
@@ -224,7 +270,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             //_profileBannerFB = file.name;
           });
         }
-       /* ScaffoldMessenger.of(context).showSnackBar(
+        /* ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
         );*/
       } else {
@@ -336,13 +382,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Widget _buildContent(BuildContext context) {
     return Scaffold(
       appBar: BackButtonAppBar(
-          title: 'Customize Profile',
-          onBackButtonPressed: () {
-            Navigator.pop(context);
-          },
-          iconkey: const Key('Back_button_key'),
-          textkey: const Key('customize_profile_text'),
-        ),
+        title: 'Customize Profile',
+        onBackButtonPressed: () {
+          Navigator.pop(context);
+        },
+        iconkey: const Key('Back_button_key'),
+        textkey: const Key('customize_profile_text'),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -395,17 +441,20 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
-                  _profileImageUrl.isNotEmpty? CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage:
-                        CachedNetworkImageProvider(_profileImageUrl),
-                  ):
-              CircleAvatar(
-              radius: 60,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: FileImage(File(_profileImage)),
-              ),
+                  _profileImageUrl.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundImage:
+                              CachedNetworkImageProvider(_profileImageUrl),
+                        )
+                      : CircleAvatar(
+                          radius: 60,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundImage: FileImage(File(_profileImage)),
+                        ),
                   Container(
                     height: 30,
                     width: 30,
@@ -544,24 +593,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               (item) => _deleteSelectedItem(item, _selectedInterests)),
 
           const SizedBox(height: 20),
-          Row(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Dark mode:', style: TextStyle(fontSize: 15)),
-              ),
-              const SizedBox(width: 20),
-              Switch(
-                value: isDarkMode,
-                onChanged: (newValue) {
-                  setState(() {
-                    isDarkMode = newValue;
-                  });
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme();
-                },
-              ),
-            ],
+          ColourIconContainer(
+            updateTheme: _updateTheme,
+            isDarkMode: isDarkMode,
+            onDarkModeChanged: (newValue) {
+              setState(() {
+                isDarkMode = newValue;
+              });
+            },
+            currentColor: selectedColor,
           ),
           const SizedBox(height: 40.0),
           Center(
@@ -668,11 +708,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileImage != null) {
           String imageUrl;
           if (kIsWeb) {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
+            imageUrl = await uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
           } else {
-            imageUrl =
-                await uploadImageToFirebase(File(_profileImage!), 'Profile_picture');
+            imageUrl = await uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
           }
 
           await saveImageURL(imageUrl, 'Profile_picture');
@@ -686,9 +726,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileBanner != null) {
           String bannerUrl;
           if (kIsWeb) {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
+            bannerUrl =
+                await uploadImageToFirebase(File(_profileBanner!), 'banner');
           } else {
-            bannerUrl = await uploadImageToFirebase(File(_profileBanner!), 'banner');
+            bannerUrl =
+                await uploadImageToFirebase(File(_profileBanner!), 'banner');
           }
           await saveImageURL(bannerUrl, 'banner');
 
@@ -721,7 +763,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             content: Text('Failed to update profile.'),
             backgroundColor: Colors.red),
       );
-      throw("Error setting/updating profile data: $e");
+      throw ("Error setting/updating profile data: $e");
     }
   }
 }

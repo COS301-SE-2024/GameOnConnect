@@ -59,7 +59,7 @@ class _FeedPageState extends State<FeedPage> {
       const GameLibrary(),
       const CreateEvents(),
       const ViewEvents(),
-      Profilenew(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
+      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
   }
 
