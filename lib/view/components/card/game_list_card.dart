@@ -60,9 +60,7 @@ class _EventCardWidgetState extends State<GameCard> {
           width: double.infinity,
           height: 68,
           decoration: BoxDecoration(
-            color: selected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 blurRadius: 0,
@@ -83,7 +81,7 @@ class _EventCardWidgetState extends State<GameCard> {
                   width: 112,
                   height: 67,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: image,
                       placeholder: (context, url) => const Center(
@@ -106,15 +104,36 @@ class _EventCardWidgetState extends State<GameCard> {
                         Text(
                           name,
                           style: TextStyle(
-                            fontFamily: 'Inter',
                             color: Theme.of(context).colorScheme.secondary,
                             fontSize: 14,
                             letterSpacing: 0,
                             fontWeight: FontWeight.bold,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: selected
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.surface, 
+                    ),
+                    child: selected
+                        ? const Icon(
+                            Icons.check,
+                            color: Color.fromRGBO(24, 24, 24, 1.0),
+                            size: 16,
+                          )
+                        : null,
                   ),
                 ),
               ],

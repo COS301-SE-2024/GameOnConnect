@@ -119,7 +119,8 @@ class _ChooseGame extends State<ChooseGame> {
                               style: TextStyle(
                                 fontSize: 14,
                             letterSpacing: 0,
-                            fontWeight: FontWeight.bold,),),
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(24, 24, 24, 1.0),),),
                             ])),
                       )
                     ])));
