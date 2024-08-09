@@ -1,14 +1,16 @@
+//ignore_for_file:  prefer_interpolation_to_compose_strings
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
-import 'package:gameonconnect/view/components/create_event/specific_event_info_container.dart';
+import 'package:gameonconnect/view/components/events/specific_event_info_container.dart';
+import 'package:gameonconnect/view/components/events/specific_events_buttons.dart';
 import 'package:intl/intl.dart';
 import '../../../model/events_M/events_model.dart';
-import 'edit_event_page.dart';
+import '../../components/events/specific_event_name_subscribe.dart';
 
 class ViewEventDetailsWidget extends StatefulWidget {
   final Event e;
-  //final String creatorName;
   const ViewEventDetailsWidget({
     super.key,
     required this.e,
@@ -23,12 +25,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
   late bool selected;
   late bool isJoined;
   late bool isCreator;
-  //late String creatorName;
   @override
   void initState() {
     super.initState();
     e = widget.e;
-    //creatorName = widget.creatorName;
   }
 
   void getImage(String id) async {
@@ -59,8 +59,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
           } else {
             String timezone = e.startDate.timeZoneName;
             imageUrl = snapshot.data!;
-            selected = EventsService().isSubscribed(e);
-            isJoined = EventsService().isJoined(e);
             isCreator = EventsService().isCreator(e);
             return GestureDetector(
                 child: Scaffold(
@@ -72,6 +70,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Stack(children: [
+                                //event image:
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 13, 0, 0),
@@ -99,6 +98,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         const Icon(Icons.error),
                                   ),
                                 ),
+                                //back button:
                                 Align(
                                   alignment:
                                       const AlignmentDirectional(-0.9, -1),
@@ -124,88 +124,8 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   ),
                                 ),
                               ]),
-                              Align(
-                                alignment: const Alignment(-1, -1),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Flexible(
-                                      child: Align(
-                                        alignment: const Alignment(-1, 0),
-                                        child: Container(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 0, 12, 0),
-                                          child: Text(
-                                            e.name,
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.light
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                              fontSize: 20,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 0, 12, 0),
-                                          child: !isCreator
-                                              ? IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      !selected;
-                                                    });
-                                                    if (selected) {
-                                                      EventsService()
-                                                          .unsubscribeToEvent(
-                                                              e);
-                                                    } else {
-                                                      EventsService()
-                                                          .subscribeToEvent(e);
-                                                    }
-                                                    getUpdatedEvent(e.eventID);
-                                                  },
-                                                  icon: selected
-                                                      ? Icon(
-                                                          Icons.notifications,
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Colors.black
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                          size: 24,
-                                                        )
-                                                      : Icon(
-                                                          Icons
-                                                              .notification_add_outlined,
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Colors.black
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary))
-                                              : const SizedBox(),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              SpecificEventNameSubscribe(
+                                  e: e, isCreator: isCreator),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
@@ -221,7 +141,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   ),
                                 ),
                               ),
-
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
@@ -300,120 +219,10 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               const SizedBox(
                                 height: 36,
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    12, 0, 12, 0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 32.0),
-                                              child: Container(
-                                                width: 152,
-                                                height: 36,
-                                                decoration: BoxDecoration(
-                                                  color: isCreator
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                      : isJoined
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary,
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                child: MaterialButton(
-                                                  onPressed: () {
-                                                    if (isCreator) {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  EditEvent(
-                                                                      e: e,
-                                                                      imageUrl:
-                                                                          imageUrl)));
-                                                    }
-                                                    if (!isJoined) {
-                                                      EventsService()
-                                                          .joinEvent(e);
-                                                      getUpdatedEvent(
-                                                          e.eventID);
-                                                      isJoined = true;
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    isCreator
-                                                        ? 'Edit'
-                                                        : isJoined
-                                                            ? 'Joined'
-                                                            : 'Join',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .surface,
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 152,
-                                              height: 36,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .surface,
-                                                border: Border.all(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primary),
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                              ),
-                                              child: MaterialButton(
-                                                onPressed: () {
-                                                  //do nothing for now
-                                                },
-                                                child: Text(
-                                                  'Add to Calendar',
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              /*   ],
-                        ),
-                      ),*/
-                              //),
+                              SpecificEventsButtons(
+                                  e: e,
+                                  isCreator: isCreator,
+                                  imageUrl: imageUrl)
                             ],
                           ),
                         ),

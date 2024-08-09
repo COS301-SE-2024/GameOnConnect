@@ -85,10 +85,8 @@ class _FeedPageState extends State<FeedPage> {
     String userId = currentUserID ?? '';
     String? profileName = await profileService.getProfileName(userId);
 
-    if (profileName == '' || profileName?.toLowerCase() == 'default user') {
+    if (profileName == '' || profileName.toLowerCase() == 'default user') {
       _showDialogOnStart();
-    } else if (profileName == null) {
-      //print('Error: Username could not be set');
     } else {
       //print('Username is set to: $profileName');
     }

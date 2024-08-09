@@ -31,7 +31,7 @@ class _EventInvitationState extends State<EventInvitation> {
         await _profileService.getProfileName(widget.inviterId);
 
     setState(() {
-      widget.inviterName = inviterName!;
+      widget.inviterName = inviterName;
     });
   }
 
