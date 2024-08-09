@@ -117,6 +117,7 @@ class _ChooseGame extends State<ChooseGame> {
                             onPressed: () {
                               Navigator.pop(context, chosenGame);
                             },
+                            height: 35,
                             color: Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
