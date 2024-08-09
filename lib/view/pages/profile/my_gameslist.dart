@@ -10,11 +10,13 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class MyGameList extends StatefulWidget {
   const MyGameList({super.key, 
-  required this. gameStats,
+  required this. myGameStats,
     required this.heading,
     required this.currentlyPlaying,
+    required this.gameActivities,
   }) ;
-  final List<GameStats> gameStats;
+  final List<GameStats> myGameStats;
+  final List<GameStats> gameActivities;
   final String heading;
   final String currentlyPlaying;
 
@@ -54,7 +56,7 @@ double millisecondsToHours(int milliseconds) {
             ),
           ),
         ),
-        if (widget.gameStats.isEmpty)
+        if (widget.myGameStats.isEmpty)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -137,10 +139,12 @@ double millisecondsToHours(int milliseconds) {
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(), // Disable ListView's own scrolling
             shrinkWrap: true, // Make ListView take only the space it needs
-            itemCount: widget.gameStats.length > 4 ? 4 : widget.gameStats.length,
+            //itemCount: widget.myGameStats.length > 4 ? 4 : widget.myGameStats.length,
+            itemCount: widget.myGameStats.length,
+
             itemBuilder: (context, index) {
               return FutureBuilder<GameDetails>(
-                future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
+                future: GameService().fetchGameDetails(widget.myGameStats[index].gameId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -150,7 +154,7 @@ double millisecondsToHours(int milliseconds) {
                     return const Center(child: Text('No data'));
                   } else {
                     final gameDetails = snapshot.data!;
-                    final gameStat = widget.gameStats[index];
+                    final gameStat = widget.myGameStats[index];
                     final lastPlayedDateTime = _parseTimestampString(gameStat.lastPlayedDate);
                     final formattedRelativeDate = timeago.format(lastPlayedDateTime);
                     final hours = millisecondsToHours(gameStat.timePlayedLast);
@@ -164,7 +168,7 @@ double millisecondsToHours(int milliseconds) {
                               Navigator.push(
                                 context, MaterialPageRoute(
                                   builder: (context) =>  GameActivity(
-                                      gameStatsList: widget.gameStats,
+                                      gameStatsList: widget.gameActivities,
                                       gameId: gameStat.gameId,
                                       gameName: gameDetails.name,
                                       ),
@@ -203,7 +207,7 @@ double millisecondsToHours(int milliseconds) {
               //height: 1,
             ),
           ),
-        if (widget.gameStats.length > 4)
+        if (widget.myGameStats.length > 4)
           Container(
             margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
             child: Align(

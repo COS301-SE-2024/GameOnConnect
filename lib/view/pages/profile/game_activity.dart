@@ -30,9 +30,9 @@ class GameActivity extends StatefulWidget {
 class _GameActivityState extends State<GameActivity> {
 
   List<GameStats> getSpecificGameActivity() {
-    print('the game id: ${widget.gameId} , and ');
+    print('nr of games: ${widget.gameStatsList.length} ');
     List<GameStats> activityList =widget.gameStatsList.where((game) => game.gameId == widget.gameId && game.timePlayedLast > 0).toList();
-    print('Activity list: $activityList');
+    print('Activity list: ${activityList.length}');
     return activityList;  
   }
 
@@ -49,7 +49,7 @@ class _GameActivityState extends State<GameActivity> {
           iconkey: const Key('Back_button_key'),
           textkey: const Key('activity_text'),
         ),
-      body: getSpecificGameActivity().isEmpty
+      body: specificGameActivity.isEmpty
           ? Center(child: Text('No recorded activity for ${widget.gameName}'))
           : Column(
             children: [
@@ -58,7 +58,7 @@ class _GameActivityState extends State<GameActivity> {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'widget.gameName',
+                    '${widget.gameName}',
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
