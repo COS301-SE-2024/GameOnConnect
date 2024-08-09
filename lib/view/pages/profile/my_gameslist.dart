@@ -4,6 +4,7 @@ import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/profile/game_activity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 
@@ -149,21 +150,45 @@ double millisecondsToHours(int milliseconds) {
                     return const Center(child: Text('No data'));
                   } else {
                     final gameDetails = snapshot.data!;
-                    final gameStats = widget.gameStats[index];
-                    final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
+                    final gameStat = widget.gameStats[index];
+                    final lastPlayedDateTime = _parseTimestampString(gameStat.lastPlayedDate);
                     final formattedRelativeDate = timeago.format(lastPlayedDateTime);
-                    final hours = millisecondsToHours(gameStats.timePlayedLast);
+                    final hours = millisecondsToHours(gameStat.timePlayedLast);
                     return Padding(
                       //padding: EdgeInsets.all(8.0),
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child:
-                       ProfileGamesCard(
-                        image: gameDetails.backgroundImage,
-                        name: gameDetails.name,
-                        lastPlayedDate: formattedRelativeDate,
-                        timePlayed: hours,
-                        playing: false,
-                      ),
+                      child: gameStat.timePlayedLast > 0
+                        ? InkWell(
+                            onTap: () {
+                              // Your click event action here
+                              Navigator.push(
+                                context, MaterialPageRoute(
+                                  builder: (context) =>  GameActivity(
+                                      gameStatsList: widget.gameStats,
+                                      gameId: gameStat.gameId,
+                                      gameName: gameDetails.name,
+                                      ),
+                                )
+                              );
+                              
+                            },
+                            child: ProfileGamesCard(
+                                image: gameDetails.backgroundImage,
+                                name: gameDetails.name,
+                                lastPlayedDate: formattedRelativeDate,
+                                timePlayed: hours,
+                                playing: false,
+                              ),
+                          )
+                        :ProfileGamesCard(
+                                image: gameDetails.backgroundImage,
+                                name: gameDetails.name,
+                                lastPlayedDate: formattedRelativeDate,
+                                timePlayed: hours,
+                                playing: false,
+                              ),
+                     
+                       
                     );
                   }
                 },
