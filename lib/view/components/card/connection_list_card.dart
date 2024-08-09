@@ -328,7 +328,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
           {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
+              MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
             );
           }
             
@@ -337,7 +337,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
         {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
+            MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
           );
         }
         else{
