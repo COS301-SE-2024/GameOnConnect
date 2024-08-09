@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
-import 'package:gameonconnect/view/pages/profile/all_my_games_list.dart';
 import 'package:gameonconnect/view/pages/profile/game_activity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-
-class MyGameList extends StatefulWidget {
-  const MyGameList({super.key, 
-  required this. myGameStats,
+class AllMyGamesList extends StatefulWidget {
+  AllMyGamesList({super.key, 
+     required this. myGameStats,
     required this.heading,
     required this.currentlyPlaying,
     required this.gameActivities,
   }) ;
-  final List<GameStats> myGameStats;
+   final List<GameStats> myGameStats;
   final List<GameStats> gameActivities;
   final String heading;
   final String currentlyPlaying;
 
+
   @override
-  State<MyGameList> createState() => _MyGameListState();
+  State<AllMyGamesList> createState() => _AllMyGamesListState();
 }
 
-class _MyGameListState extends State<MyGameList> {
+class _AllMyGamesListState extends State<AllMyGamesList> {
 
   DateTime _parseTimestampString(String timestampString) {
   try {
@@ -40,64 +40,21 @@ double millisecondsToHours(int milliseconds) {
   final hours = milliseconds / (1000 * 3600);
   return double.parse(hours.toStringAsFixed(3));
 }
-
   @override
   Widget build(BuildContext context) {
-  return SingleChildScrollView(
+  return Scaffold(
+      appBar: BackButtonAppBar(
+          title: widget.heading,
+          onBackButtonPressed: () {
+            Navigator.pop(context);
+          },
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('activity_text'),
+        ),
+      body:SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-           padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
-          child: Text(
-            widget.heading,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        if (widget.myGameStats.isEmpty)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'You currently don\'t have any games in ${widget.heading}. Would you like to add games?',
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const GameLibrary(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
-        else
           widget.currentlyPlaying.isNotEmpty
             ? FutureBuilder<GameDetails>(
               future: GameService().fetchGameDetails(int.tryParse(widget.currentlyPlaying)),
@@ -140,7 +97,7 @@ double millisecondsToHours(int milliseconds) {
           ListView.separated(
             physics: const NeverScrollableScrollPhysics(), // Disable ListView's own scrolling
             shrinkWrap: true, // Make ListView take only the space it needs
-            itemCount: widget.myGameStats.length > 4 ? 4 : widget.myGameStats.length,
+            itemCount: widget.myGameStats.length,
             itemBuilder: (context, index) {
               return FutureBuilder<GameDetails>(
                 future: GameService().fetchGameDetails(widget.myGameStats[index].gameId),
@@ -206,54 +163,11 @@ double millisecondsToHours(int milliseconds) {
               //height: 1,
             ),
           ),
-        if (widget.myGameStats.length > 4)
-          InkWell(
-            onTap: () {
-              // Your click event action here
-              Navigator.push(
-                context, MaterialPageRoute(
-                  builder: (context) =>  AllMyGamesList(
-                      myGameStats:widget.myGameStats,
-                      heading: widget.heading,
-                      currentlyPlaying: widget.currentlyPlaying,
-                      gameActivities: widget.gameActivities
-                  ),
-                )
-              );
-              
-            },
-            child: Container(
-            margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                width: 102,
-                padding: const EdgeInsets.fromLTRB(0, 7, 0.9, 7),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  'See more',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    letterSpacing: 0,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          )
-          
+        
       ],
     ),
-  );
+  ),
+      ); 
+  
 }
-
-
 }
-
-
