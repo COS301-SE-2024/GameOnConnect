@@ -53,6 +53,23 @@ String formatTimeRange(String lastPlayed, int timePlayed) {
   return '$formattedStartTime - $formattedEndTime';
 }
 
+String getEmojiForMood(String mood) {
+  switch (mood) {
+    case 'Scared':
+      return '😱';
+    case 'Disgusted':
+      return '🤢';
+    case 'Angry':
+      return '😡';
+    case 'Sad':
+      return '😢';
+    case 'Happy':
+      return '😄';
+    default:
+      return '😶'; // Default emoji if mood is not recognized
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +122,8 @@ String formatTimeRange(String lastPlayed, int timePlayed) {
                           children: [
                             Container(
                               margin: const EdgeInsets.fromLTRB(0, 0, 9, 0),
-                              child: const Text(
-                                '😄',
+                              child: Text(
+                                 getEmojiForMood(widget.game.mood),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 24,
@@ -117,8 +134,8 @@ String formatTimeRange(String lastPlayed, int timePlayed) {
                             ),
                             Container(
                               margin: const EdgeInsets.fromLTRB(0, 5.5, 0, 5.5),
-                              child: const Text(
-                                'Happy',
+                              child:  Text(
+                                '${widget.game.mood}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12,
