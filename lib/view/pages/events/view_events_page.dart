@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gameonconnect/model/connection_M/user_model.dart';
 
 import '../../../model/events_M/events_model.dart';
 import '../../components/card/event_card.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import '../../../services/events_S/event_service.dart';
-import '../../../services/profile_S/profile_service.dart';
 
 
 class ViewEvents extends StatefulWidget {
@@ -68,7 +66,6 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         allEvents = [];
                         for (var x in snapshot.data!.docs) {
                           var data = x.data() as Map<String, dynamic>;
-
                           Event event = Event.fromMap(data, x.id);
                           allEvents?.add(event);
                         }

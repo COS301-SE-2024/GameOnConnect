@@ -54,6 +54,7 @@ class EventsService {
     DocumentSnapshot doc = await db.collection('events').doc(id).get();
     if (doc.exists) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
       e = Event.fromMap(data, id);
     }
     return e;
@@ -98,6 +99,7 @@ class EventsService {
 
       if (currentUser != null) {
         String id = db.collection('events').doc().id;
+        final String creatorName = await ProfileService().getProfileName(currentUser.uid);
 
         final data = <String, dynamic>{
           "name": name,
@@ -114,6 +116,7 @@ class EventsService {
           "subscribed": [],
           // image url is in bucket, under events/eventID
           "description": description,
+          "creatorName": creatorName,
         };
 
         if (!url.startsWith('assets')) {

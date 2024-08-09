@@ -4,7 +4,6 @@ import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/create_event/specific_event_info_container.dart';
 import 'package:intl/intl.dart';
 import '../../../model/events_M/events_model.dart';
-import '../../../services/profile_S/profile_service.dart';
 import 'edit_event_page.dart';
 
 class ViewEventDetailsWidget extends StatefulWidget {
@@ -58,7 +57,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            String timezone =e.startDate.timeZoneName ;
+            String timezone = e.startDate.timeZoneName;
             imageUrl = snapshot.data!;
             selected = EventsService().isSubscribed(e);
             isJoined = EventsService().isJoined(e);
@@ -126,19 +125,16 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 ),
                               ]),
                               Align(
-                              alignment: const Alignment(-1, -1),
-                              child:
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Flexible(
-                                    child: Align(
-                                      alignment: const Alignment(-1, 0),
-
-                                      child:
-                                        Container(
+                                alignment: const Alignment(-1, -1),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Flexible(
+                                      child: Align(
+                                        alignment: const Alignment(-1, 0),
+                                        child: Container(
                                           padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 19, 12, 6),
+                                              .fromSTEB(12, 0, 12, 0),
                                           child: Text(
                                             e.name,
                                             style: TextStyle(
@@ -153,14 +149,14 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                             ),
                                           ),
                                         ),
+                                      ),
                                     ),
-                                  ),
-          Row(
+                                    Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Container(
                                           padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 19, 12, 6),
+                                              .fromSTEB(12, 0, 12, 0),
                                           child: !isCreator
                                               ? IconButton(
                                                   onPressed: () {
@@ -207,8 +203,8 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         ),
                                       ],
                                     ),
-                                ],
-                              ),
+                                  ],
+                                ),
                               ),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -216,8 +212,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       12, 0, 12, 0),
                                   child: Text(
-                                    //TODO : get user name to display
-                                    isCreator ? "You" : "userame",
+                                    isCreator ? "You" : e.creatorName,
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: Theme.of(context)
@@ -234,8 +229,11 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 19),
                                     child: Text(
-                                     DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.startDate)+ ' ' +timezone,
-                                     // "Saturday, 9 July 2024, 10 AM SAST",
+                                      DateFormat('EEEE, dd MMMM yyyy, kk:mm')
+                                              .format(e.startDate) +
+                                          ' ' +
+                                          timezone,
+                                      // "Saturday, 9 July 2024, 10 AM SAST",
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Theme.of(context).brightness ==
@@ -283,11 +281,19 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                     .toString(),
                               ),
                               SpecificEventInfoContainer(
-                                  startInfo: "Starting at",
-                                  endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.startDate)+ ' ' +timezone,),
+                                startInfo: "Starting at",
+                                endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm')
+                                        .format(e.startDate) +
+                                    ' ' +
+                                    timezone,
+                              ),
                               SpecificEventInfoContainer(
-                                  startInfo: "Ending at",
-                                  endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm').format(e.endDate)+ ' ' +timezone,),
+                                startInfo: "Ending at",
+                                endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm')
+                                        .format(e.endDate) +
+                                    ' ' +
+                                    timezone,
+                              ),
                               SpecificEventInfoContainer(
                                   startInfo: "Visibility",
                                   endInfo: e.privacy ? "Public" : "Private"),
