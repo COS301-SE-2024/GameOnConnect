@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/view/components/profile/Activity_indicator.dart';
 import 'package:gameonconnect/view/components/profile/activity_card.dart';
 //import 'package:timelines/timelines.dart';
@@ -14,9 +15,11 @@ class CustomTimelineTile extends StatefulWidget {
     super.key,
     required this.isFirst,
     required this.isLast,
+    required this.game,
   });
 final bool isFirst;
 final bool isLast;
+final GameStats game;
 
   @override
   State<CustomTimelineTile> createState() => _CustomTimelineTileState();
@@ -52,7 +55,7 @@ class _CustomTimelineTileState extends State<CustomTimelineTile> {
 
       endChild: Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child:  ActivityCard(),
+        child:  ActivityCard(game:widget.game),
         ) 
      
     ),
