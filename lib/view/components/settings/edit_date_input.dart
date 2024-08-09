@@ -45,9 +45,15 @@ class _EditDateInput extends State<EditDateInput> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary,
-              fontSize: 12)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+            child: Text(widget.label,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 12,
+              )
+            ),
+          ),
           const SizedBox(height: 5),
           GestureDetector(
             onTap: () => _selectDate(context),
