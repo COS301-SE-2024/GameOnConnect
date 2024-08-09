@@ -20,7 +20,7 @@ class ChatBubble extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: isCurrentuser
-            ? Theme.of(context).colorScheme.tertiary
+            ? Theme.of(context).colorScheme.onPrimary
             : Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(17),
       ),
@@ -31,17 +31,19 @@ class ChatBubble extends StatelessWidget {
           Text(
             message,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 16,
               color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w700
+              fontWeight: FontWeight.w300,
+              fontFamily: 'Inter',
             ),
           ),
           Text(
-            DateFormat('yyyy/MM/dd – kk:mm').format(dateTime),
+            DateFormat('yyyy/MM/dd \'at\' kk:mm').format(dateTime),
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 10,
               color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w300,
+              fontFamily: 'Inter',
             ),
           ),
         ],

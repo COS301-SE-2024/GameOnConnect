@@ -168,4 +168,34 @@ class StatsTotalTimeService {
       return 0.0;
     }
   }
+
+   Future<double> getTotalTimePlayedAll() async {
+    try {
+      User? currentUser = await getCurrentUser();
+      if (currentUser == null) return 0.0;
+
+      // DateTime now = DateTime.now();
+      // DateTime startOfYear = DateTime(now.year);
+      // print("Fetching data for last year: $startOfYear to $now");
+
+      QuerySnapshot<Map<String, dynamic>> snapshot = await db
+          .collection('game_session_stats')
+          .where('user_id', isEqualTo: currentUser.uid)
+          .get();
+
+      double totalTimePlayedLastYear = 0.0;
+      // print("Documents found for last year: ${snapshot.docs.length}");
+      for (var doc in snapshot.docs) {
+        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        // print("Adding time: $timePlayed hours from doc: ${doc.id}");
+        totalTimePlayedLastYear += timePlayed;
+      }
+
+      // print("Total time played last year: $totalTimePlayedLastYear hours");
+      return totalTimePlayedLastYear;
+    } catch (e) {
+      // print("Error fetching last year's data: $e");
+      return 0.0;
+    }
+  }
 }
