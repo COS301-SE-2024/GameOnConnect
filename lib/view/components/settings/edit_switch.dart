@@ -6,11 +6,11 @@ class EditSwitch extends StatefulWidget {
   final void Function(bool value) onChanged;
 
   const EditSwitch({
-    Key? key,
+    super.key,
     required this.currentValue,
     required this.label,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<EditSwitch> createState() => _EditSwitchState();

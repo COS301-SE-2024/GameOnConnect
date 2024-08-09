@@ -50,6 +50,7 @@ class _EditProfilePage extends State<EditProfilePage> {
         if (_formKey.currentState?.validate() == true) {
           _formKey.currentState?.save();
           editProfile();
+          // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
         }
       } else {
@@ -74,6 +75,7 @@ class _EditProfilePage extends State<EditProfilePage> {
       await EditProfileService().editProfile(
           _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error updating profile'),
