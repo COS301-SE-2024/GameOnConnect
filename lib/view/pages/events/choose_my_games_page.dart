@@ -19,7 +19,7 @@ class _ChooseGame extends State<ChooseGame> {
   late List<String> gameImages = [];
   late List<GameDetails>? games;
   late int gameID;
-  bool _isMounted = false;
+  final bool _isMounted = false;
 
   @override
   void initState() {
