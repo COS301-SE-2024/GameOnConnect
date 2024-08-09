@@ -194,16 +194,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                               decoration: InputDecoration(
                                                 labelText: 'Event name*',
                                                 labelStyle: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
                                                   fontSize: 16,
                                                   letterSpacing: 0,
-                                                  fontWeight: FontWeight.w500,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                                 hintStyle: TextStyle(
-                                                  fontFamily: 'Inter',
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
