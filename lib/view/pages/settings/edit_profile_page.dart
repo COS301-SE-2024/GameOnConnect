@@ -8,37 +8,13 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import '../../../services/settings/edit_profile_service.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  const EditProfilePage({super.key});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePage();
 }
 
 class _EditProfilePage extends State<EditProfilePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Edit Profile',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('edit_profile_text'),
-      ),
-      body: const EditProfileForm(),
-    );
-  }
-}
-
-class EditProfileForm extends StatefulWidget {
-  const EditProfileForm({Key? key}) : super(key: key);
-
-  @override
-  EditProfileFormState createState() => EditProfileFormState();
-}
-
-class EditProfileFormState extends State<EditProfileForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -109,7 +85,16 @@ class EditProfileFormState extends State<EditProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
+    return Scaffold(
+      appBar: BackButtonAppBar(
+        title: 'Edit Profile',
+        onBackButtonPressed: () {
+          Navigator.pop(context);
+        },
+        iconkey: const Key('Back_button_key'),
+        textkey: const Key('edit_profile_text'),
+      ),
+      body: FutureBuilder<Map<String, dynamic>?>(
         future: EditProfileService().databaseAccess(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
@@ -132,43 +117,38 @@ class EditProfileFormState extends State<EditProfileForm> {
                           EditInputText(
                             inputKey: const Key('usernameField'),
                             maxLines: 1,
-                            label: 'Username:',
+                            label: 'Username',
                             onChanged: (value) => _username = value,
                             input: _username,
                           ),
-                          // const SizedBox(height: 2),
                           EditInputText(
                             inputKey: const Key('firstNameField'),
                             maxLines: 1,
-                            label: 'First name:',
+                            label: 'First name',
                             onChanged: (value) => _firstName = value,
                             input: _firstName,
                           ),
-                          // const SizedBox(height: 4),
                           EditInputText(
                             inputKey: const Key('lastNameField'),
                             maxLines: 1,
-                            label: 'Last Name:',
+                            label: 'Last Name',
                             onChanged: (value) => _lastName = value,
                             input: _lastName,
                           ),
-                          // const SizedBox(height: 6),
                           EditInputText(
                             inputKey: const Key('bioField'),
                             maxLines: 5,
-                            label: 'Bio:',
+                            label: 'Bio',
                             onChanged: (value) => _bio = value,
                             input: _bio,
                           ),
-                          // const SizedBox(height: 8),
                           EditDateInput(
                             currentDate: _birthday!,
-                            label: 'Birthday:',
+                            label: 'Birthday',
                             onChanged: (value) => {_birthday = value},
                           ),
-                          // const SizedBox(height: 10),
                           EditSwitch(
-                            label: 'Private Account:',
+                            label: 'Private',
                             currentValue: _isPrivate,
                             onChanged: (value) => {_isPrivate = value},
                           ),
@@ -180,7 +160,8 @@ class EditProfileFormState extends State<EditProfileForm> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: SizedBox(
-                          width: double.infinity, // Make the button take the full width
+                          width: double.infinity,
+                          height: 35,
                           child: TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -201,6 +182,8 @@ class EditProfileFormState extends State<EditProfileForm> {
               ),
             );
           }
-        });
+        },
+      ),
+    );
   }
 }
