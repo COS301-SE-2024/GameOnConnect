@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/card/game_list_card.dart';
 import '../../../model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
-
 
 class ChooseGame extends StatefulWidget {
   final int chosenGame;
@@ -34,7 +34,7 @@ class _ChooseGame extends State<ChooseGame> {
   void getGames() async {
     gameNames = [];
     gameImages = [];
-    if(games != null) {
+    if (games != null) {
       for (var i in games!) {
         gameNames.add(i.name);
         gameImages.add(i.backgroundImage);
@@ -42,8 +42,8 @@ class _ChooseGame extends State<ChooseGame> {
     }
   }
 
-  int getGameID(String gameName)  {
-    int id=-1;
+  int getGameID(String gameName) {
+    int id = -1;
     for (var i in games!) {
       if (i.name == gameName) {
         id = i.id;
@@ -56,82 +56,38 @@ class _ChooseGame extends State<ChooseGame> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<GameDetails>>(
         future: EventsService().getMyGames(),
-    builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null ) {
-    return const Center(child: CircularProgressIndicator());
-    } else if (snapshot.hasError) {
-    return Text('Error: ${snapshot.error}');
-    } else {
-    games = snapshot.data;
-    getGames();
-    return Scaffold(
-        key: scaffoldKey,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        body: SafeArea(
-          top: true,
-          child:Column(mainAxisSize: MainAxisSize.max, children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 3,
-                            color: Theme.of(context).colorScheme.secondary,
-                            offset: const Offset(
-                              0,
-                              1,
-                            ),
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Align(
-                            alignment: const AlignmentDirectional(-1, 0),
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  16, 0, 0, 12),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      icon:
-                                      const Icon(Icons.keyboard_backspace)),
-                                  Text(
-                                    'Select a game to play',
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontSize: 16,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-            ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    SizedBox(
-                        height: 300,
-                        child: ListView.separated(
-                          itemCount: gameNames.length,
-                          padding: EdgeInsets.zero,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, index) {
-                            String i = gameNames[index];
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              snapshot.data == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            games = snapshot.data;
+            getGames();
+            return Scaffold(
+                appBar: BackButtonAppBar(
+                  title: 'Select a game',
+                  onBackButtonPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  iconkey: const Key('Back_button_key'),
+                  textkey: const Key('select_a_game_text'),
+                ),
+                key: scaffoldKey,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                body: SafeArea(
+                    top: true,
+                    child: Column(mainAxisSize: MainAxisSize.max, children: [
+                      Flexible(
+                          child: ListView.separated(
+                            itemCount: gameNames.length,
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              String i = gameNames[index];
 
-                            return GameCard(
+                              return GameCard(
                                 name: i,
                                 gameID: getGameID(i),
                                 chosen: chosenGame,
@@ -140,26 +96,34 @@ class _ChooseGame extends State<ChooseGame> {
                                   setState(() {
                                     chosenGame = gameName;
                                   });
+                                },
+                              );
                             },
-    );},
-                            separatorBuilder: (BuildContext context, int index) {
-                              return const SizedBox();
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return const SizedBox(height: 18,);
                             },
                           )),
                       Padding(
-                        padding:const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 12),
-                        child: MaterialButton(onPressed: () {Navigator.pop(context,chosenGame);},
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            15, 12, 15, 12),
+                        child: MaterialButton(
+                            onPressed: () {
+                              Navigator.pop(context, chosenGame);
+                            },
                             color: Theme.of(context).colorScheme.primary,
-                            child: const Row(children: [
-                              Text("Save my game choice"),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                              Text("Save Game",
+                              style: TextStyle(
+                                fontSize: 14,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.bold,),),
                             ])),
                       )
-                    ]
-                    )
-                )
-            );
+                    ])));
           }
         });
-
   }
 }
