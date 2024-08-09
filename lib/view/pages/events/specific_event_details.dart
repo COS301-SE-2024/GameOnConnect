@@ -9,7 +9,10 @@ import 'edit_event_page.dart';
 class ViewEventDetailsWidget extends StatefulWidget {
   final Event e;
   //final String creatorName;
-  const ViewEventDetailsWidget({super.key, required this.e, });
+  const ViewEventDetailsWidget({
+    super.key,
+    required this.e,
+  });
   @override
   State<ViewEventDetailsWidget> createState() => _ViewEventDetailsWidgetState();
 }
@@ -30,7 +33,6 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
 
   void getImage(String id) async {
     imageUrl = await EventsService().getEventImage(e.eventID);
-
   }
 
   void getUpdatedEvent(String id) async {
@@ -60,336 +62,346 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
             isJoined = EventsService().isJoined(e);
             isCreator = EventsService().isCreator(e);
             return GestureDetector(
-              child: Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                body: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Stack(children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 13, 0, 0),
-                                child: CachedNetworkImage(
-                                  height: 340,
-                                  width: double.infinity,
-                                  imageUrl: imageUrl,
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(0),
-                                            topRight: Radius.circular(0),
-                                            bottomLeft: Radius.circular(15),
-                                            bottomRight: Radius.circular(15)),
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover)),
-                                  ),
-                                  placeholder: (context, url) => const Center(
-                                      child:
-                                          CircularProgressIndicator()), // Loading indicator for banner
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                ),
-                              ),
-                              Align(
-                                alignment: const AlignmentDirectional(-0.9, -1),
-                                child: Padding(
+                child: Scaffold(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    body: Column(mainAxisSize: MainAxisSize.max, children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Stack(children: [
+                                Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 21, 0, 0),
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.surface,
-                                    child: IconButton(
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                      },
-                                      icon:
-                                          const Icon(Icons.keyboard_backspace),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      0, 13, 0, 0),
+                                  child: CachedNetworkImage(
+                                    height: 340,
+                                    width: double.infinity,
+                                    imageUrl: imageUrl,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(0),
+                                              topRight: Radius.circular(0),
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15)),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover)),
                                     ),
+                                    placeholder: (context, url) => const Center(
+                                        child:
+                                            CircularProgressIndicator()), // Loading indicator for banner
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
-                                ),
-                              ),
-                            ]),
-                            Column(
-                              children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Flexible(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(12, 19, 12, 6),
-                                                child: Text(
-                                                  e.name,
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.light
-                                                        ? Colors.black
-                                                        : Colors.white,
-                                                    fontSize: 20,
-                                                    letterSpacing: 0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                              !isCreator
-                                                  ? IconButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          !selected;
-                                                        });
-                                                        if (selected) {
-                                                          EventsService()
-                                                              .unsubscribeToEvent(
-                                                                  e);
-                                                        } else {
-                                                          EventsService()
-                                                              .subscribeToEvent(
-                                                                  e);
-                                                        }
-                                                        getUpdatedEvent(
-                                                            e.eventID);
-                                                      },
-                                                      icon: selected
-                                                          ? Icon(
-                                                              Icons
-                                                                  .notifications,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary,
-                                                              size: 24,
-                                                            )
-                                                          : Icon(
-                                                              Icons
-                                                                  .notification_add_outlined,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .primary))
-                                                  : const SizedBox(),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
                                 ),
                                 Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment:
+                                      const AlignmentDirectional(-0.9, -1),
                                   child: Padding(
                                     padding:
                                         const EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 12, 0),
-                                    child: Text(
-                                      //TODO : get user name to display
-                                      isCreator?"You":"userame",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary),
+                                            0, 21, 0, 0),
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.surface,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(
+                                            Icons.keyboard_backspace),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 12, 19),
-                                  child: Text(
-                                    //TODO: get start time
-                                    "Saturday, 9 July 2024, 10 AM SAST",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? Colors.black
-                                          : Colors.white,
+                              ]),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+
+                                      children: [
+                                        Container(
+                                          width: 800,
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(12, 19, 12, 6),
+                                          child: Text(
+                                            e.name,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                              fontSize: 20,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  )),
-                            ),
-                            Divider(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
-                              indent: 12,
-                              endIndent: 12,
-                            ),
-                            e.description==""? const SizedBox():
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    12, 19, 12, 19),
-                                child: Text(
-                                  e.description,
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 14,
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  Flexible(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          width: 24,
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(12, 19, 12, 6),
+                                          child: !isCreator
+                                              ? IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      !selected;
+                                                    });
+                                                    if (selected) {
+                                                      EventsService()
+                                                          .unsubscribeToEvent(
+                                                              e);
+                                                    } else {
+                                                      EventsService()
+                                                          .subscribeToEvent(e);
+                                                    }
+                                                    getUpdatedEvent(e.eventID);
+                                                  },
+                                                  icon: selected
+                                                      ? Icon(
+                                                          Icons.notifications,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary,
+                                                          size: 24,
+                                                        )
+                                                      : Icon(
+                                                          Icons
+                                                              .notification_add_outlined,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .primary))
+                                              : const SizedBox(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 12, 0),
+                                  child: Text(
+                                    //TODO : get user name to display
+                                    isCreator ? "You" : "userame",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                   ),
                                 ),
                               ),
-                            ),
-                            SpecificEventInfoContainer(
-                                startInfo: "Event type", endInfo: e.eventType),
-                            SpecificEventInfoContainer(
-                              startInfo: "Participants",
-                              endInfo:
-                                  EventsService().getAmountJoined(e).toString(),
-                            ),
-                            SpecificEventInfoContainer(
-                                startInfo: "Starting at",
-                                endInfo: e.startDate.toString()),
-                            SpecificEventInfoContainer(
-                                startInfo: "Ending at",
-                                endInfo: e.endDate.toString()),
-                            SpecificEventInfoContainer(
-                                startInfo: "Visibility",
-                                endInfo: e.privacy ? "Public" : "Private"),
-                            const SizedBox(
-                              height: 36,
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  12, 0, 12, 0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 32.0),
-                                            child: Container(
+
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 12, 19),
+                                    child: Text(
+                                      //TODO: get start time
+                                      "Saturday, 9 July 2024, 10 AM SAST",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    )),
+                              ),
+                              Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                                indent: 12,
+                                endIndent: 12,
+                              ),
+                              e.description == ""
+                                  ? const SizedBox()
+                                  : Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(12, 19, 12, 19),
+                                        child: Text(
+                                          e.description,
+                                          style: TextStyle(
+                                            fontFamily: 'Inter',
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                            fontSize: 14,
+                                            letterSpacing: 0,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Event type",
+                                  endInfo: e.eventType),
+                              SpecificEventInfoContainer(
+                                startInfo: "Participants",
+                                endInfo: EventsService()
+                                    .getAmountJoined(e)
+                                    .toString(),
+                              ),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Starting at",
+                                  endInfo: e.startDate.toString()),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Ending at",
+                                  endInfo: e.endDate.toString()),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Visibility",
+                                  endInfo: e.privacy ? "Public" : "Private"),
+                              const SizedBox(
+                                height: 36,
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    12, 0, 12, 0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 32.0),
+                                              child: Container(
+                                                width: 152,
+                                                height: 36,
+                                                decoration: BoxDecoration(
+                                                  color: isCreator
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                      : isJoined
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                child: MaterialButton(
+                                                  onPressed: () {
+                                                    if (isCreator) {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  EditEvent(
+                                                                      e: e,
+                                                                      imageUrl:
+                                                                          imageUrl)));
+                                                    }
+                                                    if (!isJoined) {
+                                                      EventsService()
+                                                          .joinEvent(e);
+                                                      getUpdatedEvent(
+                                                          e.eventID);
+                                                      isJoined = true;
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    isCreator
+                                                        ? 'Edit'
+                                                        : isJoined
+                                                            ? 'Joined'
+                                                            : 'Join',
+                                                    style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .surface,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
                                               width: 152,
                                               height: 36,
                                               decoration: BoxDecoration(
-                                                color: isCreator
-                                                    ? Theme.of(context)
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .surface,
+                                                border: Border.all(
+                                                    color: Theme.of(context)
                                                         .colorScheme
-                                                        .primary
-                                                    : isJoined
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary
-                                                        : Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
+                                                        .primary),
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                               ),
                                               child: MaterialButton(
                                                 onPressed: () {
-                                                  if (isCreator) {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditEvent(
-                                                                    e: e,
-                                                                    imageUrl:
-                                                                        imageUrl)));
-                                                  }
-                                                  if (!isJoined) {
-                                                    EventsService()
-                                                        .joinEvent(e);
-                                                    getUpdatedEvent(e.eventID);
-                                                    isJoined = true;
-                                                  }
+                                                  //do nothing for now
                                                 },
                                                 child: Text(
-                                                  isCreator
-                                                      ? 'Edit'
-                                                      : isJoined
-                                                          ? 'Joined'
-                                                          : 'Join',
+                                                  'Add to Calendar',
                                                   style: TextStyle(
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .surface,
+                                                        .secondary,
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: 152,
-                                            height: 36,
-                                            decoration: BoxDecoration(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                              border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary),
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                            ),
-                                            child: MaterialButton(
-                                              onPressed: () {
-                                                //do nothing for now
-                                              },
-                                              child: Text(
-                                                'Add to Calendar',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .secondary,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              /*   ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+                      ),*/
+                              //),
+                            ],
+                          ),
+                        ),
+                      )
+                    ])));
           }
         });
   }
