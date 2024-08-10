@@ -167,13 +167,18 @@ class _EditProfilePage extends State<EditProfilePage> {
                           child: TextButton(
                             style: TextButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
-                              foregroundColor: Theme.of(context).colorScheme.surface,
+                              foregroundColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
                             onPressed: _saveProfile,
-                            child: const Text('Save Changes'),
+                            child: const Text(
+                              'Save Changes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ),
