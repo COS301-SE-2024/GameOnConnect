@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gameonconnect/view/pages/feed/welcome_splash.dart';
 import '../../../services/authentication_S/auth_service.dart';
 import 'login_page.dart';
-import '../feed/feed_page.dart';
 
 
 class SignUp extends StatefulWidget {
