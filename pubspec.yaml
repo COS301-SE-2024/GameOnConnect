@@ -63,6 +63,8 @@ dependencies:
   timeago: ^3.7.0
   syncfusion_flutter_charts: ^26.2.5+1
   auto_size_text: ^3.0.0
+  timelines: ^0.1.0
+  timeline_tile: ^2.0.0
 
 
 dev_dependencies:
