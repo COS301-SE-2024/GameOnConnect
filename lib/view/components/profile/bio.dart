@@ -5,9 +5,12 @@ class Bio extends StatefulWidget {
   const Bio({
     super.key,
     required this. bio,
+    required this.isOwnProfile,
+
   });
 
   final String bio;
+   final bool isOwnProfile;
 
   @override
   State<Bio> createState() => _BioState();
@@ -26,8 +29,18 @@ class _BioState extends State<Bio> {
           child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              (widget.isOwnProfile)
+              ? const Text(
               'My bio',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                
+              ),
+              textAlign: TextAlign.left,
+            )
+            : const Text(
+              'bio',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 20,
