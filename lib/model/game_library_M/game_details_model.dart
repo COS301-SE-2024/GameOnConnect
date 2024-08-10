@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GameDetails {
   final int id;
@@ -57,7 +58,7 @@ class GameDetails {
     );
   }
 
-  List<Widget> getPlatformIcons(BuildContext context) {
+  List<Widget> getPlatformIcons(BuildContext context, Color color) {
     List<Widget> icons = [];
     bool pc, xbox, playstation;
     pc = false;
@@ -69,7 +70,7 @@ class GameDetails {
         pc = true;
         icons.add(Icon(
           Icons.computer,
-          color: Theme.of(context).colorScheme.secondary,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,
@@ -77,8 +78,8 @@ class GameDetails {
       } else if (platform.toString().toLowerCase().contains('xbox') && !xbox) {
         xbox = true;
         icons.add(Icon(
-          Icons.gamepad,
-          color: Theme.of(context).colorScheme.secondary,
+          FontAwesomeIcons.xbox,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,
@@ -87,8 +88,8 @@ class GameDetails {
           !playstation) {
         playstation = true;
         icons.add(Icon(
-          Icons.videogame_asset,
-          color: Theme.of(context).colorScheme.secondary,
+          FontAwesomeIcons.playstation,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,

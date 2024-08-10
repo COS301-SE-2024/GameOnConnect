@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+
 import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +30,7 @@ class _GameLibraryState extends State<GameLibrary> {
     ),
   );*/
 
-  final List<Game> _games = [];
+  final List<GameDetails> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
@@ -58,7 +60,7 @@ class _GameLibraryState extends State<GameLibrary> {
     super.dispose();
   }
 
-  void _navigateToGameDetails(Game game) async {
+  void _navigateToGameDetails(GameDetails game) async {
     // ignore_for_file: use_build_context_synchronously
     bool result = await InternetConnection().hasInternetAccess;
     if (result) {
@@ -113,7 +115,7 @@ class _GameLibraryState extends State<GameLibrary> {
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
       final games = (jsonData['results'] as List)
-          .map((gameJson) => Game.fromJson(gameJson))
+          .map((gameJson) => GameDetails.fromJson(gameJson))
           .toList();
 
       setState(() {
@@ -430,7 +432,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(children: game.getPlatformIcons(context)),
+                          Row(children: game.getPlatformIcons(context, Theme.of(context).colorScheme.primary)),
                           Text("Released: ${game.released}"),
                           Row(
                             children: [

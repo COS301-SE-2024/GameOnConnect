@@ -801,7 +801,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children:
-                                      gameDetails.getPlatformIcons(context),
+                                      gameDetails.getPlatformIcons(context, Theme.of(context).colorScheme.secondary),
                                 )
                               ],
                             ),
