@@ -36,7 +36,6 @@ class SoftwareRequirements {
   });
 }
 
-
 class GameDetails {
   final int id;
   final String name;
@@ -55,30 +54,32 @@ class GameDetails {
   List<Screenshot>? screenshots;
   SoftwareRequirements? softwareRequirements;
 
-  GameDetails(
-      {required this.id,
-      required this.name,
-      required this.developer,
-      required this.description,
-      required this.released,
-      required this.platforms,
-      required this.backgroundImage,
-      required this.score,
-      required this.genres,
-      required this.reviewsCount,
-      required this.playtime,
-      required this.screenshots,
-      required this.publisher,
-      required this.rating,
-      required this.website,
-      this.softwareRequirements,});
+  GameDetails({
+    required this.id,
+    required this.name,
+    required this.developer,
+    required this.description,
+    required this.released,
+    required this.platforms,
+    required this.backgroundImage,
+    required this.score,
+    required this.genres,
+    required this.reviewsCount,
+    required this.playtime,
+    required this.screenshots,
+    required this.publisher,
+    required this.rating,
+    required this.website,
+    this.softwareRequirements,
+  });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
     String? minimumRequirements;
     String? recommendedRequirements;
 
     for (var platform in json['platforms']) {
-      if (platform['platform']['slug'] == 'pc' && platform['requirements'] != null) {
+      if (platform['platform']['slug'] == 'pc' &&
+          platform['requirements'] != null) {
         minimumRequirements = platform['requirements']['minimum'];
         recommendedRequirements = platform['requirements']['recommended'];
         break;
@@ -86,7 +87,9 @@ class GameDetails {
     }
 
     SoftwareRequirements? softwareRequirements;
-    if (minimumRequirements != null && recommendedRequirements != null) {
+    if ((minimumRequirements != null && minimumRequirements.isNotEmpty) ||
+        (recommendedRequirements != null &&
+            recommendedRequirements.isNotEmpty)) {
       String requirementsString =
           'Minimum:\n$minimumRequirements\nRecommended:\n$recommendedRequirements';
       softwareRequirements = parseRequirements(requirementsString);
@@ -216,24 +219,41 @@ SoftwareRequirements parseRequirements(String requirementsString) {
   final soundCardPattern = RegExp(r'Sound Card: (.+?)(Additional Notes|$)');
   final additionalNotesPattern = RegExp(r'Additional Notes: (.+)$');
 
-  final minimumOS = osPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumProcessor = processorPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumMemory = memoryPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumGraphics = graphicsPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumStorage = storagePattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumSoundCard = soundCardPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
-  final minimumAdditionalNotes = additionalNotesPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumOS =
+      osPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumProcessor =
+      processorPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumMemory =
+      memoryPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumGraphics =
+      graphicsPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumStorage =
+      storagePattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumSoundCard =
+      soundCardPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumAdditionalNotes =
+      additionalNotesPattern.firstMatch(requirementsString)?.group(1)?.trim() ??
+          '';
 
   final recommendedSectionStart = requirementsString.indexOf('Recommended:');
-  final recommendedString = requirementsString.substring(recommendedSectionStart);
+  final recommendedString =
+      requirementsString.substring(recommendedSectionStart);
 
-  final recommendedOS = osPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedProcessor = processorPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedMemory = memoryPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedGraphics = graphicsPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedStorage = storagePattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedSoundCard = soundCardPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
-  final recommendedAdditionalNotes = additionalNotesPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedOS =
+      osPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedProcessor =
+      processorPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedMemory =
+      memoryPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedGraphics =
+      graphicsPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedStorage =
+      storagePattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedSoundCard =
+      soundCardPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedAdditionalNotes =
+      additionalNotesPattern.firstMatch(recommendedString)?.group(1)?.trim() ??
+          '';
 
   return SoftwareRequirements(
     minimumOS: minimumOS,

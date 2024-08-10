@@ -800,8 +800,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ), // This spacer will push the icons to the right edge
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children:
-                                      gameDetails.getPlatformIcons(context, Theme.of(context).colorScheme.secondary),
+                                  children: gameDetails.getPlatformIcons(
+                                      context,
+                                      Theme.of(context).colorScheme.secondary),
                                 )
                               ],
                             ),
@@ -928,13 +929,199 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,
                           ),
-                          const Text("Software requirements"),
-                          Text(gameDetails.softwareRequirements!.minimumAdditionalNotes),
-                          Text(gameDetails.softwareRequirements!.minimumGraphics),
-                          Text(gameDetails.softwareRequirements!.minimumOS),
-                          Text(gameDetails.softwareRequirements!.minimumProcessor),
-                          Text(gameDetails.softwareRequirements!.minimumSoundCard),
-                          Text(gameDetails.softwareRequirements!.minimumStorage),
+                          const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text("System requirements",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20)),
+                          ),
+                          gameDetails.softwareRequirements != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Minimum",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Windows OS",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumOS),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Processor",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumProcessor),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Storage",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumStorage),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Memory",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumMemory),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Graphics",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumGraphics),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Sound Card",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumSoundCard),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Additional Notes",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .minimumAdditionalNotes),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 12,
+                                        child: VerticalDivider(
+                                            thickness: 1,
+                                            width: 1,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primaryContainer),
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text("Recommended",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Windows OS",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedOS),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Processor",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedProcessor),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Storage",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedStorage),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Memory",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedMemory),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Graphics",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedGraphics),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Sound Card",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedSoundCard),
+                                            const SizedBox(
+                                              height: 17,
+                                            ),
+                                            const Text("Additional Notes",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey)),
+                                            Text(gameDetails
+                                                .softwareRequirements!
+                                                .recommendedAdditionalNotes),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : const Text(
+                                  "Check the game's website for the software requirements.")
                         ],
                       ),
                     ),
