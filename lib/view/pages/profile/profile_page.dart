@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
+import 'package:gameonconnect/model/connection_M/friend_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
-import 'package:gameonconnect/view/components/profile/view_stats_button.dart';
+import 'package:gameonconnect/view/components/profile/action_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
@@ -75,6 +80,33 @@ List<GameStats> summedMyGames(List<GameStats> gameStatsList) {
   return gameStatsMap.values.toList();
 }
 
+void _sendConnectionRequest(String targetUserId) async {
+    try {
+      await UserService().sendConnectionRequest(widget.loggedInUser, targetUserId);
+
+    } catch (e) {
+      //Error sending Connection request.
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error sending friend request. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
 void navigateToConnections(BuildContext context) {
     Navigator.push(
       context,
@@ -122,7 +154,7 @@ void navigateToConnections(BuildContext context) {
                     return IconButton(
                       key: const Key('settings_icon_button'),
                       icon: const Icon(Icons.settings),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pushNamed(context, '/settings');
                       },
@@ -132,7 +164,20 @@ void navigateToConnections(BuildContext context) {
               ]
             : null,
       ),
-      body: FutureBuilder<Profile?>(
+      body:  StreamBuilder<Friend?>(
+        stream: UserService().getCurrentUserConnectionsStream(widget.loggedInUser),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null) {
+            return const Center(child: Text('Profile data not found.'));
+          } else {
+            final connections = snapshot.data;
+            isConnectionParent = connections?.friends.contains(widget.uid) ?? false;
+
+            return FutureBuilder<Profile?>(
         future: ProfileService().fetchProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -276,20 +321,32 @@ void navigateToConnections(BuildContext context) {
                           ],
                         ),
  
-                        const Row(
-                          children: [
-                            Expanded(
-                              child: StatsButton(),
+                      if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
+                        
+                         
+                        
+
+                        const SizedBox(height: 24),
+                        Bio(bio: profileData.bio, isOwnProfile: widget.isOwnProfile,),
+
+                        const SizedBox(height: 24),
+                        profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
+                        ?  const SizedBox.shrink()
+                        :  widget.uid!= widget.loggedInUser
+                          ? MyGameList(
+                            myGameStats: sumOfMygames, 
+                            heading: 'Games', 
+                            currentlyPlaying: profileData.currentlyPlaying,
+                            gameActivities: profileData.myGames,
+                            )
+                          : MyGameList(
+                            myGameStats: sumOfMygames, 
+                            heading: 'My Games', 
+                            currentlyPlaying: profileData.currentlyPlaying,
+                            gameActivities: profileData.myGames,
                             ),
-                          ],
-                        ),
-                          
-
-                        const SizedBox(height: 24),
-                        Bio(bio: profileData.bio,),
-
-                        const SizedBox(height: 24),
-                        MyGameList(myGameStats: sumOfMygames, heading: 'My Games', currentlyPlaying: profileData.currentlyPlaying,gameActivities: profileData.myGames,),
+                        
+                       
                         
                         const Padding(
                           padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
@@ -302,13 +359,41 @@ void navigateToConnections(BuildContext context) {
                         WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'), 
                         const SizedBox(height: 24),
 
+                       ] else...[
+                          const SizedBox(height: 20), // space
+                          const Divider(),
+                           const SizedBox(height: 20), // space
+                           const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.lock,
+                                  size: 50,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 10), // space
+                                Text(
+                                  'This account is private',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],  
+
 
                       ],
               ),
             );
       }
         },
+      );
+          }
+        },
       ),
+      
+      
     );
   }
 }
