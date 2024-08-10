@@ -49,7 +49,7 @@ class _SpecificEventNameSubscribe extends State<SpecificEventNameSubscribe> {
               child: Align(
                 alignment: const Alignment(-1, 0),
                 child: Container(
-                  padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(12, 19, 12, 0),
                   child: Text(
                     e.name,
                     style: TextStyle(

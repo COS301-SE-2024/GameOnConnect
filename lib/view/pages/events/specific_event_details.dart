@@ -75,7 +75,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       0, 13, 0, 0),
                                   child: CachedNetworkImage(
-                                    height: 340,
+                                    height: 213,
                                     width: double.infinity,
                                     imageUrl: imageUrl,
                                     imageBuilder: (context, imageProvider) =>
