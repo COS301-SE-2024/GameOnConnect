@@ -154,7 +154,7 @@ void navigateToConnections(BuildContext context) {
                     return IconButton(
                       key: const Key('settings_icon_button'),
                       icon: const Icon(Icons.settings),
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.secondary,
                       onPressed: () {
                         Navigator.pushNamed(context, '/settings');
                       },
@@ -384,27 +384,64 @@ void navigateToConnections(BuildContext context) {
                         const SizedBox(height: 24),
 
                        ] else...[
-                          const SizedBox(height: 20), // space
-                          const Divider(),
-                           const SizedBox(height: 20), // space
-                           const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.lock,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10), // space
-                                Text(
-                                  'This account is private',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],  
+
+                         Padding(
+                          padding: EdgeInsets.fromLTRB(12, 19, 12, 50),
+                          child: Row(
+                            children: [
+                                  Expanded(
+                                    child: ActionButton(
+                                      type: 'connect',
+                                      onPressed: () => _sendConnectionRequest(widget.uid),
+                                    ),
+                                  ),
+                            ],
+                        ),
+                          
+                        ),
+                           //Expanded(
+  //child: 
+  Align(
+    alignment: Alignment.center,
+    child: Column(
+      mainAxisSize: MainAxisSize.min, // This ensures the Column takes up only the necessary space
+      children: [
+        Container(
+          width: 70, // Adjust the size as needed
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 2,
+            ),
+          ),
+          child: Icon(
+            Icons.lock_outline,
+            size: 40,
+            color:Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 82),
+          child: const Text(
+            'This account is Private',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Color(0xFFBEBEBE),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+//)
+
+                        ], 
 
 
                       ],
