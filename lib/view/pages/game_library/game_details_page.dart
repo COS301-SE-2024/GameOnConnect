@@ -1120,8 +1120,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ],
                                   ),
                                 )
-                              : const Text(
-                                  "Check the game's website for the software requirements.")
+                              : const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                    "Check the game's website for the software requirements.", style: TextStyle(color: Colors.grey)),
+                              )
                         ],
                       ),
                     ),
