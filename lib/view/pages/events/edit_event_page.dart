@@ -368,7 +368,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     ),
                                                   ),
                                                   Icon(
-                                                    Icons.add_circle_outline,
+                                                    Icons
+                                                        .check_circle_outline_rounded,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .secondary,
