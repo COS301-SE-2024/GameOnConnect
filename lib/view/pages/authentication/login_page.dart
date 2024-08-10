@@ -2,8 +2,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/pages/feed/welcome_splash.dart';
 import 'sign_up_page.dart';
-import '../feed/feed_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../services/authentication_S/auth_service.dart';
 
@@ -205,9 +205,7 @@ class _LoginState extends State<Login> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          FeedPage(
-                                            title: 'GameOnConnect',
-                                          )),
+                                          SplashScreen()),
                                       (Route<dynamic> route) => false,
                                 );
                               }
@@ -218,9 +216,7 @@ class _LoginState extends State<Login> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) => FeedPage(
-                                        title: 'GameOnConnect',
-                                      )),
+                                  builder: (BuildContext context) => SplashScreen()),
                               (Route<dynamic> route) => false,
                             );
                           } else {
@@ -287,9 +283,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) => FeedPage(
-                                      title: 'GameOnConnect',
-                                    )),
+                                builder: (BuildContext context) => SplashScreen()),
                             (Route<dynamic> route) => false,
                           );
                         }
