@@ -928,6 +928,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             color:
                                 Theme.of(context).colorScheme.primaryContainer,
                           ),
+                          const Text("Software requirements"),
+                          Text(gameDetails.softwareRequirements!.minimumAdditionalNotes),
+                          Text(gameDetails.softwareRequirements!.minimumGraphics),
+                          Text(gameDetails.softwareRequirements!.minimumOS),
+                          Text(gameDetails.softwareRequirements!.minimumProcessor),
+                          Text(gameDetails.softwareRequirements!.minimumSoundCard),
+                          Text(gameDetails.softwareRequirements!.minimumStorage),
                         ],
                       ),
                     ),

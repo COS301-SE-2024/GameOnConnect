@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
-import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-
+import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../components/game_library/game_library_filter.dart';
-import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -30,7 +28,7 @@ class _GameLibraryState extends State<GameLibrary> {
     ),
   );*/
 
-  final List<GameDetails> _games = [];
+  final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
   final ScrollController _scrollController = ScrollController();
@@ -60,7 +58,7 @@ class _GameLibraryState extends State<GameLibrary> {
     super.dispose();
   }
 
-  void _navigateToGameDetails(GameDetails game) async {
+  void _navigateToGameDetails(Game game) async {
     // ignore_for_file: use_build_context_synchronously
     bool result = await InternetConnection().hasInternetAccess;
     if (result) {
@@ -115,7 +113,7 @@ class _GameLibraryState extends State<GameLibrary> {
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
       final games = (jsonData['results'] as List)
-          .map((gameJson) => GameDetails.fromJson(gameJson))
+          .map((gameJson) => Game.fromJson(gameJson))
           .toList();
 
       setState(() {
