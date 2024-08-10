@@ -706,6 +706,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         Theme.of(context)
                                                             .colorScheme
                                                             .surface,
+                                                    activeColor: Colors.black,
+
                                                     value: isChanged,
                                                     onChanged: (bool value) {
                                                       setState(() {
