@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class ActionButton extends StatefulWidget {
 
   const ActionButton({
-    Key? key,
+    super.key,
     required this.type,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final String type; // Either 'stats' or 'connect'
   final VoidCallback onPressed;
@@ -54,7 +54,7 @@ class _ActionButtonState extends State<ActionButton> {
                 showPending ? Icons.hourglass_bottom : (isStats ? Icons.bar_chart : Icons.person_add),
                 color: showPending ? Colors.black : (isStats ? Theme.of(context).colorScheme.primary : Colors.black),
               ),
-              SizedBox(width: 8), // Space between icon and text
+              const SizedBox(width: 8), // Space between icon and text
               Text(
                 showPending ? 'Pending' : (isStats ? 'View Stats' : 'Connect'),
                 style: TextStyle(

@@ -324,7 +324,7 @@ void navigateToConnections(BuildContext context) {
                       if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
                         
                          Padding(
-                          padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                           child: Row(
                             children: [
                               if(profileData.visibility && !isConnectionParent )
@@ -336,7 +336,7 @@ void navigateToConnections(BuildContext context) {
                                   ),
 
                               if(profileData.visibility && !isConnectionParent )
-                                  SizedBox(width: 12),
+                                  const SizedBox(width: 12),
 
                               Expanded(
                                 child: ActionButton(
@@ -371,22 +371,32 @@ void navigateToConnections(BuildContext context) {
                             ),
                         
                        
-                        
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
-                          child: Divider(
-                            color: Color(0xFF2A2A2A),//Dark grey,
-                            thickness: 0.5,
-                          ),
-                        ),
+                        profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
+                        ?  const SizedBox.shrink()
+                        : Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
+                              child: Divider(
+                                color: Color(0xFF2A2A2A),//Dark grey,
+                                thickness: 0.5,
+                              ),
+                            ),
 
-                        WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'), 
-                        const SizedBox(height: 24),
+                            WantToPlayList(
+                              gameIds: profileData.wantToPlay, 
+                              heading: 'Want to play'
+                            ), 
+                            const SizedBox(height: 24),
+                          ]
+                        ),
+                        
+                        
 
                        ] else...[
 
                          Padding(
-                          padding: EdgeInsets.fromLTRB(12, 19, 12, 50),
+                          padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
                           child: Row(
                             children: [
                                   Expanded(
