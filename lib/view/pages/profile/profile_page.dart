@@ -323,7 +323,31 @@ void navigateToConnections(BuildContext context) {
  
                       if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
                         
-                         
+                         Padding(
+                          padding: EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          child: Row(
+                            children: [
+                              if(profileData.visibility && !isConnectionParent )
+                                  Expanded(
+                                    child: ActionButton(
+                                      type: 'connect',
+                                      onPressed: () => _sendConnectionRequest(widget.uid),
+                                    ),
+                                  ),
+
+                              if(profileData.visibility && !isConnectionParent )
+                                  SizedBox(width: 12),
+
+                              Expanded(
+                                child: ActionButton(
+                                  type: 'stats',
+                                  onPressed: () => navigateToConnections(context), //change to go to stats page 
+                                ),
+                              ),
+                            ],
+                        ),
+                          
+                        ),
                         
 
                         const SizedBox(height: 24),
