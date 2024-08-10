@@ -1,82 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class EditDateInput extends StatefulWidget{
+class EditDateInput extends StatefulWidget {
   final DateTime currentDate;
   final String label;
-  final void Function(DateTime date) onChanged;
+  final void Function(DateTime value) onChanged;
+  
+  const EditDateInput(
+      {super.key,
+      required this.currentDate,
+      required this.label,
+      required this.onChanged});
 
-  const EditDateInput({super.key, required this.currentDate, required this.label,required this.onChanged});
-   @override
+  @override
   State<EditDateInput> createState() => _EditDateInput();
 }
 
-class _EditDateInput extends State<EditDateInput>{
-  late DateTime currentDate ;
-  late String label;
+class _EditDateInput extends State<EditDateInput> {
+  DateTime? _selectedDate;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    currentDate = widget.currentDate;
-    label = widget.label;
+    _selectedDate = widget.currentDate;
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate!,
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now());
+    if (picked != null && picked != _selectedDate) {
+      // widget.onChanged(picked);
+      setState(() {
+        _selectedDate = picked;
+      });
+      widget.onChanged(picked);
+    }
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-
-  @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Text(
-              label,
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+            child: Text(widget.label,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 12,
+              )
             ),
           ),
-          Expanded(
-            flex: 4,
-            child: InkWell(
-              onTap: () async {
-                DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2100),
-                  builder: (context, child) {
-                    return Theme(
-                      data: ThemeData.from(
-                          colorScheme: Theme.of(context).colorScheme),
-                      child: child!,
-                    );
-                  },
-                );
-                if (picked != null && picked != widget.currentDate) {
-                 widget.onChanged(picked);
-                 setState(() {
-                   currentDate = picked;
-                 });
-                }
-              },
-              child: InputDecorator(
+          const SizedBox(height: 5),
+          GestureDetector(
+            onTap: () => _selectDate(context),
+            child: AbsorbPointer(
+              child: TextFormField(
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.primaryContainer,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.surface),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.primary),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: Text(
-                  DateFormat('d/MM/yyyy').format(currentDate),
-                  style:
-                  TextStyle(color: Theme.of(context).colorScheme.secondary),
+                initialValue: DateFormat('yyyy/MM/dd').format(_selectedDate!),
+                key: ValueKey(_selectedDate),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary, 
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -85,5 +88,4 @@ class _EditDateInput extends State<EditDateInput>{
       ),
     );
   }
-
 }
