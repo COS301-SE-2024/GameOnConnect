@@ -27,6 +27,7 @@ class Options extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
+                    key: const Key('Edit_Profile'),
                     leading: Icon(
                       Icons.edit_outlined,
                       color: Theme.of(context).colorScheme.primary,
@@ -58,6 +59,7 @@ class Options extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
+                    key: const Key('Customize_Profile'),
                     leading: Icon(
                       Icons.dashboard_customize_outlined,
                       color: Theme.of(context).colorScheme.primary,
@@ -89,6 +91,7 @@ class Options extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
+                    key: const Key('Help_Centre'),
                     leading: Icon(
                       Icons.help_outline_rounded,
                       color: Theme.of(context).colorScheme.primary,
@@ -120,6 +123,7 @@ class Options extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
+                    key: const Key('Logout'),
                     leading: Icon(
                       Icons.logout,
                       color: Theme.of(context).colorScheme.primary,
