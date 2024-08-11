@@ -64,6 +64,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: IconButton(
+                      key: const Key('history_icon_button'),
                       onPressed: () {
                         //Navigate to history page
                         },

@@ -105,7 +105,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
-
                                         const EdgeInsetsDirectional.fromSTEB(
                                             16, 12, 16, 0),
                                     child: Column(
@@ -114,17 +113,22 @@ class _CreateEventsState extends State<CreateEvents> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           InkWell(
-                                                onTap: () {
-                                                  pickImage();
-                                                },
-                                                child: Stack (
-                                                    alignment: Alignment.center,
-                                                    children: [SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                    child: const FittedBox(
-                                      fit: BoxFit.cover,)),ClipRRect(
+                                            onTap: () {
+                                              pickImage();
+                                            },
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: const FittedBox(
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                ClipRRect(
+                                                  
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -141,17 +145,23 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
-
-                                             Container(
-                                              height: 40,
-                                              width :40,
-                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
-                                                  shape:BoxShape.circle ),
-                                              child:
-                                            Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
+                                                Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primaryContainer
+                                                            .withOpacity(0.7),
+                                                        shape: BoxShape.circle),
+                                                    child: Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    )),
+                                              ],
                                             ),
-                                  ],
-                                          ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -409,10 +419,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                           ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
-                                            selectedOption = option;
-                                          }));}
-                                          ),
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -435,7 +448,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               final datePickedDate =
-                                              await showDatePicker(
+                                                  await showDatePicker(
                                                 context: context,
                                                 initialDate: DateTime.now(),
                                                 lastDate: DateTime(2050),
@@ -444,7 +457,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   return Theme(
                                                     data: ThemeData.from(
                                                         colorScheme:
-
                                                             Theme.of(context)
                                                                 .colorScheme),
                                                     child: child!,
@@ -531,8 +543,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height:10),
-
+                                          const SizedBox(height: 10),
                                           Text(
                                             'End*',
                                             style: TextStyle(
@@ -743,7 +754,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-
                                             child: Container(
                                               padding:
                                                   const EdgeInsetsDirectional
@@ -802,7 +812,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                     16, 12, 16, 12),
                                 child: MaterialButton(
                                   height: 50,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
                                   minWidth: double.infinity,
                                   onPressed: () {
                                     name = nameController.text;
@@ -818,10 +829,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                       create();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                        content:
-                                        const Text("Event created successfully!"),
-                                        backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
+                                        content: const Text(
+                                            "Event created successfully!"),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                       ));
                                       nameController.clear();
                                       descriptionController.clear();
@@ -836,26 +848,26 @@ class _CreateEventsState extends State<CreateEvents> {
                                       });
                                     } else {
                                       if (!validName) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered an event name "),
                                                 backgroundColor: Colors.red));
                                       } else if (gameChosen == -1) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you chose a game to play "),
                                                 backgroundColor: Colors.red));
                                       } else if (!validStartDate) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered a valid start date and time "),
                                                 backgroundColor: Colors.red));
                                       } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered a valid end date and time "),
                                                 backgroundColor: Colors.red));
@@ -866,7 +878,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                   child: Text(
                                     'Create event',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.surface,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -880,4 +894,3 @@ class _CreateEventsState extends State<CreateEvents> {
                 ))));
   }
 }
-
