@@ -1,23 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/Stats_M/game_stats.dart';
+import 'package:gameonconnect/model/connection_M/friend_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
+import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/profile/bio.dart';
+import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
+import 'package:gameonconnect/view/components/profile/action_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
-import 'package:gameonconnect/view/pages/profile/currently_playing.dart';
-import 'package:gameonconnect/view/pages/profile/horizontal_gameslist.dart';
-import 'package:gameonconnect/view/pages/profile/recent_activities.dart';
-import 'package:gameonconnect/view/pages/profile/stats_list.dart';
+import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
+import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 
 
-class Profilenew extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final String uid;
   final bool isOwnProfile;
   final bool isConnection;
   final String loggedInUser;
 
   // ignore: use_super_parameters
-  const Profilenew({ // Use named parameters
+  const ProfilePage({ // Use named parameters
     Key? key,
     required this.uid, //u
     required this.isOwnProfile,
@@ -26,39 +34,152 @@ class Profilenew extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Profilenew> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfileState();
 }
 
 //NB rename
-class _ProfileState extends State<Profilenew>  {
-  bool isConnectionParent= false;
-  //String? parentId ;
+class _ProfileState extends State<ProfilePage>  {
+  bool isParentsConnection= false;
+  late double totalTimePlayed ;
+  late String roundedTotalTime;
+  bool isParentsPending= false;
 
- Future<void> isConnectionOfParent() async {
+ /*Future<void> isConnectionOfParent() async {
   final connections = await ConnectionService().getConnections('connections');
   isConnectionParent= connections.contains(widget.uid);
+}*/
+
+ Future<void> isPendingOfParent() async {
+  final connections = await ConnectionService().getConnections('pending');
+  isParentsPending= connections.contains(widget.uid);
 }
 
+Future<void> getTimePlayed() async {
+  totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll();
+  roundedTotalTime = totalTimePlayed.toStringAsFixed(2);
+}
 
+List<GameStats> summedMyGames(List<GameStats> gameStatsList) {
+  Map<String, GameStats> gameStatsMap = {};
 
- /* void getParent() {
-   FirebaseAuth auth = FirebaseAuth.instance;
-    parentId = auth.currentUser?.uid;
-  }*/
+  for (var stats in gameStatsList) {
+    String key = '${stats.gameId}_${stats.uid}';
+    if (gameStatsMap.containsKey(key)) {
+      GameStats existingStats = gameStatsMap[key]!;
+      int totalTimePlayed = existingStats.timePlayedLast + stats.timePlayedLast;
+      String latestDate = existingStats.lastPlayedDate.compareTo(stats.lastPlayedDate) > 0
+          ? existingStats.lastPlayedDate
+          : stats.lastPlayedDate;
+
+      gameStatsMap[key] = GameStats(
+        gameId: stats.gameId,
+        lastPlayedDate: latestDate,
+        mood: stats.mood,
+        timePlayedLast: totalTimePlayed,
+        uid: stats.uid,
+      );
+    } else {
+      gameStatsMap[key] = stats;
+    }
+  }
+
+  return gameStatsMap.values.toList();
+}
+
+void _sendConnectionRequest(String targetUserId) async {
+    try {
+      await UserService().sendConnectionRequest(widget.loggedInUser, targetUserId);
+    } catch (e) {
+      //Error sending Connection request.
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error sending friend request. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
+  void _undoConnectionRequest(String targetUserId) async {
+    try {
+      await UserService().undoConnectionRequest(widget.loggedInUser, targetUserId);
+       setState(() {
+      });
+    } catch (e) {
+      //'Error canceling friend request'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'An error occurred. Please retry',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
+void navigateToConnections(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConnectionsList(
+          isOwnProfile: widget.isOwnProfile,
+          uid: widget.uid,
+          loggedInUser: widget.loggedInUser,
+        ),
+      ),
+    );
+  }
 
 @override
   void initState() {
     super.initState();
-    isConnectionOfParent();
-   // getParent();
+    isPendingOfParent();
+    getTimePlayed();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile',
-        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),),
+        title: widget.isOwnProfile
+        ? const Text(
+          'My Profile',
+          style: TextStyle(
+            fontSize: 32, 
+            fontWeight: 
+            FontWeight.bold
+            ),
+          )
+        : const Text('Profile',
+            style: TextStyle(
+            fontSize: 32, 
+            fontWeight: 
+            FontWeight.bold
+            ),
+          ),
         actions: widget.isOwnProfile
             ? [
                 Builder(
@@ -76,7 +197,20 @@ class _ProfileState extends State<Profilenew>  {
               ]
             : null,
       ),
-      body: FutureBuilder<Profile?>(
+      body:  StreamBuilder<Friend?>(
+        stream: UserService().getCurrentUserConnectionsStream(widget.loggedInUser),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.data == null) {
+            return const Center(child: Text('Profile data not found.'));
+          } else {
+            final connections = snapshot.data;
+           isParentsConnection = connections?.friends.contains(widget.uid) ?? false;
+
+            return FutureBuilder<Profile?>(
         future: ProfileService().fetchProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -87,6 +221,7 @@ class _ProfileState extends State<Profilenew>  {
             return const Center(child: Text('Profile data not found.'));
           } else {
             final profileData = snapshot.data!;
+            final sumOfMygames= summedMyGames(profileData.myGames);
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -96,87 +231,41 @@ class _ProfileState extends State<Profilenew>  {
                             Column(
                               children: [
                                 // Banner
-                                SizedBox(
-                                  height: 170,
+                               SizedBox(
+                                  height: 250,
                                   width: MediaQuery.of(context).size.width,
-                                  child: CachedNetworkImage(
-                                    imageUrl: profileData.banner,
-                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                // Bottom container
-                                //Center(
-                                Container(
-                                  margin: const EdgeInsets.fromLTRB(50, 0, 3, 13),
-                                  child:Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(height: 55), //space 
-                                        Text(
-                                          profileData.profileName,
-                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          '#${profileData.uniqueNumber}',
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                        Text(
-                                          profileData.bio,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                        const SizedBox(height: 10), //space 
-                                      GestureDetector(
-                                        onTap: () {
-                                          //Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile,))); 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  ConnectionsList(isOwnProfile: widget.isOwnProfile, uid: widget.uid, loggedInUser: widget.loggedInUser,))); 
-                                        },
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: '${profileData.numberOfconnections}',
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              const TextSpan(
-                                                text: ' Connections',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                   color: Colors.black,
-                                                  ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                    color: const Color.fromRGBO(42, 42, 42, 1.0),  
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: CachedNetworkImageProvider(profileData.banner),
+                                      //image: const CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/portrait-young-pretty-female-gamer-playing-shooter-neon-lighting-portrait-young-pretty-female-gamer-playing-272077632.jpg'),
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.grey.withOpacity(0.6), // Adjust opacity here
+                                        BlendMode.dstATop, // Use dstATop for transparency
                                       ),
-                                      ],
                                     ),
                                   ),
+                                  ),
                                 ),
-                                    //),
+
                               ],
                             ),
-                            // Profile picture
                             Positioned(
-                              top: 120, // Adjust this value to move the profile picture downwards
-                              //left: (MediaQuery.of(context).size.width - 100) / 2, // Center the profile picture
-                              left: 50,
-                              child:Container(
+                              top: 50, 
+                              left: 19,
+                              child:Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 19, 0),
+                          child: Container(
                                 height: 100,
                                 width: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle, // Make it circular
-                                  border: Border.all(
-                                    color: Theme.of(context).colorScheme.primary, // Set your desired border color
-                                    width: 3, // Set the border width
-                                  ),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, 
                                 ),
                                 child: ClipOval(
                                   child: CachedNetworkImage(
@@ -187,96 +276,243 @@ class _ProfileState extends State<Profilenew>  {
                                   ),
                                 ),
                               ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 45),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                                child: Text(
+                                  profileData.profileName,
+                                  style:  const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24,
+                                    letterSpacing: 0,
+                                    color: Color(0xFFFFFFFF),
+                                  ),
+                                ),
+                              ), 
+                              if(profileData.currentlyPlaying !='')
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.radio_button_checked,
+                                      color: Theme.of(context).colorScheme.primary ,
+                                      size: 15,
+                                      ),
+                                     const SizedBox(width: 5),   
+                                    const Text(
+                                      'Currently playing',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        //fontSize: 12,
+                                        letterSpacing: 0,
+                                        color: Color(0xFFFFFFFF),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              //),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                             ),
+                             Positioned(
+                              left: 12,
+                              bottom: 20,
+                              right: 12,
+                              child:
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ProfileButton(
+                                      value: '${profileData.myGames.length}',
+                                      title: 'Games'),
+                                  ),
+                                  Expanded(
+                                    child: ProfileButton(
+                                      value: '${profileData.numberOfconnections}', 
+                                      title: 'Connections',
+                                      onPressed: () => navigateToConnections(context),
+                                      ),
+                                  ),
+                                  Expanded(
+                                    child: ProfileButton(
+                                      value: '$roundedTotalTime hrs', 
+                                      title: 'Time Played'),
+                                  ),
+                                 
+                                ],
+                              ),
+                              
+                            ),
+                                                  
                           ],
                         ),
-                        if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
-                          
-                          // Conditionally display the CurrentlyPlaying widget
-                      profileData.currentlyPlaying.isNotEmpty
-                          ? CurrentlyPlaying(gameId: int.tryParse(profileData.currentlyPlaying) ?? 0)
-                          : const SizedBox.shrink(), 
+ 
+                      if ( profileData.visibility ||isParentsConnection ||widget.uid== widget.loggedInUser)...[
                         
+                         Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                          child: Row(
+                            children: [
+                              if(profileData.visibility && !isParentsConnection )
+                                  Expanded(
+                                    child: ActionButton(
+                                      type: 'connect',
+                                      onPressed: () => _sendConnectionRequest(widget.uid),
+                                    ),
+                                  ),
+                              if (profileData.visibility&&isParentsPending)
+                                Expanded(
+                                    child: ActionButton(
+                                      type: 'pending',
+                                      onPressed: () => _undoConnectionRequest(widget.uid),
+                                    ),
+                                  ),
 
-                        //search
-                        const SizedBox(height: 10), //space 
-                        Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: TextField(
-                          key: const Key('searchTextField'),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 15, right: 15),
-                            labelText: 'Search',
-                            suffixIcon: const Icon(Icons.search),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(100)),
-                          ),
-                          //onSubmitted: _onSearchEntered,
+                              if(profileData.visibility && (!isParentsConnection || isParentsPending) )
+                                  const SizedBox(width: 12),
+
+                              Expanded(
+                                child: ActionButton(
+                                  type: 'stats',
+                                  onPressed: () => navigateToConnections(context), //change to go to stats page 
+                                ),
+                              ),
+                            ],
                         ),
-                        //friends, games, events
-                      ),
-
-
-                      const SizedBox(height: 10), //space 
-                      profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
-                          ?  const SizedBox.shrink()
-                          : HorizontalGameList(
-                              gameIds: profileData.myGames,
-                              heading: 'My Games',
-                            ),
                           
-                      
-                      const SizedBox(height: 5), //space 
-                      profileData.wantToPlay.isEmpty && widget.uid!= widget.loggedInUser
-                        ?  const SizedBox.shrink()
-                        : HorizontalGameList(
-                            gameIds: profileData.wantToPlay,
-                            heading: 'Want To Play',
-                          ),
-
-
-                      //change RECENT ACTIVITY 
-                      profileData. recentActivities.isEmpty
-                          ? const SizedBox.shrink()
-                          : RecentActivityList(
-                        gameStats: profileData. recentActivities,
-                        heading: 'Recent Activity',
-                      ),
-                                           
-                      const SizedBox(height: 20), //space 
-                      const StatsList (
-                        heading: 'Stats',
-                      ),
-                        ] else...[
-                          const SizedBox(height: 20), // space
-                          const Divider(),
-                           const SizedBox(height: 20), // space
-                           const Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.lock,
-                                  size: 50,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 10), // space
-                                Text(
-                                  'This account is private',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                        ),
                         
-                              
+
+                        const SizedBox(height: 24),
+                        Bio(bio: profileData.bio, isOwnProfile: widget.isOwnProfile,),
+
+                        const SizedBox(height: 24),
+                        profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
+                        ?  const SizedBox.shrink()
+                        :  widget.uid!= widget.loggedInUser
+                          ? MyGameList(
+                            myGameStats: sumOfMygames, 
+                            heading: 'Games', 
+                            currentlyPlaying: profileData.currentlyPlaying,
+                            gameActivities: profileData.myGames,
+                            )
+                          : MyGameList(
+                            myGameStats: sumOfMygames, 
+                            heading: 'My Games', 
+                            currentlyPlaying: profileData.currentlyPlaying,
+                            gameActivities: profileData.myGames,
+                            ),
+                        
+                       
+                        profileData.myGames.isEmpty && widget.uid!= widget.loggedInUser
+                        ?  const SizedBox.shrink()
+                        : Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
+                              child: Divider(
+                                color: Color(0xFF2A2A2A),//Dark grey,
+                                thickness: 0.5,
+                              ),
+                            ),
+
+                            WantToPlayList(
+                              gameIds: profileData.wantToPlay, 
+                              heading: 'Want to play'
+                            ), 
+                            const SizedBox(height: 24),
+                          ]
+                        ),
+                        
+                        
+
+                       ] else...[
+
+                         Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
+                          child: Row(
+                            children: [
+                                  (isParentsPending)
+                                ? Expanded(
+                                    child: ActionButton(
+                                      type: 'pending',
+                                      onPressed: () => _undoConnectionRequest(widget.uid),
+                                    ),
+                                  )
+                                  : Expanded(
+                                    child: ActionButton(
+                                      type: 'connect',
+                                      onPressed: () => _sendConnectionRequest(widget.uid),
+                                    ),
+                                  ),
+                            ],
+                        ),
+                          
+                        ),
+                           //Expanded(
+  //child: 
+  Align(
+    alignment: Alignment.center,
+    child: Column(
+      mainAxisSize: MainAxisSize.min, // This ensures the Column takes up only the necessary space
+      children: [
+        Container(
+          width: 70, // Adjust the size as needed
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 2,
+            ),
+          ),
+          child: Icon(
+            Icons.lock_outline,
+            size: 40,
+            color:Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          margin: const EdgeInsets.fromLTRB(0, 0, 0, 82),
+          child: const Text(
+            'This account is Private',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Color(0xFFBEBEBE),
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+//)
+
+                        ], 
+
+
                       ],
               ),
             );
       }
         },
+      );
+          }
+        },
       ),
+      
+      
     );
   }
 }

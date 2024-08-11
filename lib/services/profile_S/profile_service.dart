@@ -44,6 +44,12 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
         final recentActivitiesRefs = List<DocumentReference>.from(data['recent_activity'] ?? []);
        final recentActivities = await fetchRecentActivities(recentActivitiesRefs);
 
+       final mygames = List<String>.from(data['my_games'] ?? []);
+       //print("my games ids: $mygames");
+       final myGamesList= await getMyGame(mygames, uid);
+       //print("my game stats: $myGamesList");
+
+
           return Profile(
           banner: bannerUrl,
           bio: data['bio'] ?? '',
@@ -52,7 +58,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
           profileName: name, 
           uniqueNumber: uniqueNum,
           currentlyPlaying: data['currently_playing'] ?? '',
-          myGames: List<String>.from(data['my_games'] ?? []),
+          myGames: myGamesList,
           wantToPlay: List<String>.from(data['want_to_play'] ?? []),
           numberOfconnections: connectionsCount,
           recentActivities: recentActivities, 
@@ -126,6 +132,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
           lastPlayedDate:  _convertTimestampToString(statsData['last_played']),
           mood: statsData['mood'] as String? ?? '',
           timePlayedLast: statsData['time_played'] as int? ?? 0, 
+          uid: ''
         );
 
         recentActivities.add(statsModel);
@@ -144,7 +151,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
 
 String _convertTimestampToString(Timestamp? timestamp) {
   if (timestamp != null) {
-    final dateTime = timestamp.toDate(); // Convert to DateTime
+    final dateTime = timestamp.toDate();
     return dateTime.toString(); // Customize the format as needed
   }
   return ''; // Return an empty string if timestamp is null
@@ -175,6 +182,47 @@ String _convertTimestampToString(Timestamp? timestamp) {
       //print('username was not updated');
     }
   }
+
+  Future<List<GameStats>> getMyGame(List<String> myGames, String uid) async {
+  List<GameStats> gameStatsList = [];
+try{
+  for (String gameId in myGames) {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('game_session_stats')
+        .where('game_id', isEqualTo: gameId)
+        .where('user_id', isEqualTo: uid)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      gameStatsList.add(GameStats(
+        gameId: gameId,
+        lastPlayedDate: '',
+        mood: '',
+        timePlayedLast: 0,
+        uid: uid,
+      ));
+    } else {
+        for (var doc in querySnapshot.docs) {
+        gameStatsList.add(GameStats(
+          gameId: doc['game_id'],
+          lastPlayedDate: _convertTimestampToString(doc['last_played']),
+          mood: doc['mood'],
+          timePlayedLast: doc['time_played'],
+          uid: doc['user_id'],
+        ));
+      }
+    }
+    
+  }
+
+ 
+}catch(e){
+  //print("Error from myGames: $e");
+}
+   return gameStatsList;
+}
+
+
 }
 
 

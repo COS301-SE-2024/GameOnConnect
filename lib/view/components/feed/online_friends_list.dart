@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pulsator/pulsator.dart';
 
 class CurrentlyOnlineBar extends StatefulWidget {
@@ -42,7 +43,12 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
       constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width, maxHeight: 100),
       child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            )
           : ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: _friends!.length,

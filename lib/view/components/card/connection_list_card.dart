@@ -168,10 +168,9 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
   @override
   Widget build(BuildContext context) {
     Widget cardContent = Container(
-      width: 388,
-      height: 72,
+      width: page =="events"?360:388,
+      height:  page =="events"?68:72,
       decoration: BoxDecoration(
-        color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             blurRadius: 0,
@@ -181,7 +180,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+        padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,23 +190,18 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: (page != "events")
-                        ? null // No border for profiles
-                        : Border.all(
-                            width: 1, // Add a border for non-profiles
-                            color: Colors.black,
-                          ),
-                  ),
+                SizedBox(
+                  width: page!="events" ?44:50,
+                  height: page!="events" ?44:50,
+
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(44),
-                      child: CachedNetworkImage(
+                      child: selected? Container(color:Theme.of(context).colorScheme.primary,
+                        child: Icon(Icons.check,size:24,color: Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).colorScheme.secondary
+                            : Theme.of(context).colorScheme.surface,), ):CachedNetworkImage(
                         imageUrl: image,
                         placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
                         errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -225,19 +219,17 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                     Text(
                       username,
                       style: TextStyle(
-                        fontFamily: 'Inter',
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 16,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                        fontWeight: page=="events"?FontWeight.bold:FontWeight.normal,
                       ),
                     ),
                     Text(
-                      '# $uniqueNum',
+                      '#$uniqueNum',
                       style: TextStyle(
                         fontFamily: 'Inter',
                         color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 14,
+                        fontSize: 12,
                         letterSpacing: 0,
                         fontWeight: FontWeight.normal,
                       ),
@@ -269,6 +261,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                         builder: (context) => ChatPage(
                           profileName: username,
                           receiverID: uid,
+                          profilePicture: image,
                         ),
                       ),
                     );
@@ -335,7 +328,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
           {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
+              MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
             );
           }
             
@@ -344,7 +337,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
         {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Profilenew(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
+            MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
           );
         }
         else{
