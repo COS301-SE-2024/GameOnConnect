@@ -39,13 +39,19 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage>  {
-  bool isConnectionParent= false;
+  bool isParentsConnection= false;
   late double totalTimePlayed ;
   late String roundedTotalTime;
+  bool isParentsPending= false;
 
- Future<void> isConnectionOfParent() async {
+ /*Future<void> isConnectionOfParent() async {
   final connections = await ConnectionService().getConnections('connections');
   isConnectionParent= connections.contains(widget.uid);
+}*/
+
+ Future<void> isPendingOfParent() async {
+  final connections = await ConnectionService().getConnections('pending');
+  isParentsPending= connections.contains(widget.uid);
 }
 
 Future<void> getTimePlayed() async {
@@ -83,7 +89,6 @@ List<GameStats> summedMyGames(List<GameStats> gameStatsList) {
 void _sendConnectionRequest(String targetUserId) async {
     try {
       await UserService().sendConnectionRequest(widget.loggedInUser, targetUserId);
-
     } catch (e) {
       //Error sending Connection request.
       DelightToastBar(
@@ -91,6 +96,34 @@ void _sendConnectionRequest(String targetUserId) async {
                 return CustomToastCard(
                   title: Text(
                     'Error sending friend request. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
+  void _undoConnectionRequest(String targetUserId) async {
+    try {
+      await UserService().undoConnectionRequest(widget.loggedInUser, targetUserId);
+       setState(() {
+      });
+    } catch (e) {
+      //'Error canceling friend request'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'An error occurred. Please retry',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
@@ -123,7 +156,7 @@ void navigateToConnections(BuildContext context) {
 @override
   void initState() {
     super.initState();
-    isConnectionOfParent();
+    isPendingOfParent();
     getTimePlayed();
   }
 
@@ -175,7 +208,7 @@ void navigateToConnections(BuildContext context) {
             return const Center(child: Text('Profile data not found.'));
           } else {
             final connections = snapshot.data;
-            isConnectionParent = connections?.friends.contains(widget.uid) ?? false;
+           isParentsConnection = connections?.friends.contains(widget.uid) ?? false;
 
             return FutureBuilder<Profile?>(
         future: ProfileService().fetchProfileData(widget.uid),
@@ -321,21 +354,28 @@ void navigateToConnections(BuildContext context) {
                           ],
                         ),
  
-                      if ( profileData.visibility ||isConnectionParent ||widget.uid== widget.loggedInUser)...[
+                      if ( profileData.visibility ||isParentsConnection ||widget.uid== widget.loggedInUser)...[
                         
                          Padding(
                           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                           child: Row(
                             children: [
-                              if(profileData.visibility && !isConnectionParent )
+                              if(profileData.visibility && !isParentsConnection )
                                   Expanded(
                                     child: ActionButton(
                                       type: 'connect',
                                       onPressed: () => _sendConnectionRequest(widget.uid),
                                     ),
                                   ),
+                              if (profileData.visibility&&isParentsPending)
+                                Expanded(
+                                    child: ActionButton(
+                                      type: 'pending',
+                                      onPressed: () => _undoConnectionRequest(widget.uid),
+                                    ),
+                                  ),
 
-                              if(profileData.visibility && !isConnectionParent )
+                              if(profileData.visibility && (!isParentsConnection || isParentsPending) )
                                   const SizedBox(width: 12),
 
                               Expanded(
@@ -399,7 +439,14 @@ void navigateToConnections(BuildContext context) {
                           padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
                           child: Row(
                             children: [
-                                  Expanded(
+                                  (isParentsPending)
+                                ? Expanded(
+                                    child: ActionButton(
+                                      type: 'pending',
+                                      onPressed: () => _undoConnectionRequest(widget.uid),
+                                    ),
+                                  )
+                                  : Expanded(
                                     child: ActionButton(
                                       type: 'connect',
                                       onPressed: () => _sendConnectionRequest(widget.uid),
