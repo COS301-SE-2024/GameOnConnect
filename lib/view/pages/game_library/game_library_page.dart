@@ -342,6 +342,7 @@ class _GameLibraryState extends State<GameLibrary> {
       Padding(
         padding: const EdgeInsets.all(12),
         child: SearchField(
+          key: const Key('searchTextField'),
           controller: _searchController,
           onSearch: (query) {
             _onSearchEntered(query);

@@ -26,18 +26,23 @@ void main() {
 
       //taps on the search icon
       await tester.tap(searchIcon);
-      await tester.pump(const Duration(seconds: 3));
+      await tester.pumpAndSettle();
 
       //finds the searchbar
       var searchField = find.byKey(const Key('searchTextField'));
-      await tester.enterText(searchField, 'the witcher 3');
-      await tester.pump();
+      await tester.enterText(searchField, 'destiny 2');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+
+      //indicates the text to search has been filled and submits it.
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 2));
 
-      //indicates the text to search has been filled and submits it. 
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pump(const Duration(seconds: 12));
-      await Future.delayed(const Duration(seconds: 2));
+      //tap on the search icon
+      await tester.tap(find.byKey(const Key('searchButton')));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
 
       return;
     });
