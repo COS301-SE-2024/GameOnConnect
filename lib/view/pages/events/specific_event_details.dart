@@ -148,7 +148,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                         const EdgeInsetsDirectional.fromSTEB(
                                             12, 0, 12, 19),
                                     child: Text(
-                                      DateFormat('EEEE, dd MMMM yyyy, kk:mm')
+                                      DateFormat('EEE, y/MM/d, kk:mm')
                                               .format(e.startDate) +
                                           ' ' +
                                           timezone,
@@ -201,16 +201,14 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                               SpecificEventInfoContainer(
                                 startInfo: "Starting at",
-                                endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm')
-                                        .format(e.startDate) +
-                                    ' ' +
-                                    timezone,
+                                endInfo: DateFormat('EEE, y/MM/d, kk:mm')
+                                        .format(e.startDate) + ' \n' + timezone,
                               ),
                               SpecificEventInfoContainer(
                                 startInfo: "Ending at",
-                                endInfo: DateFormat('EEEE, dd MMMM yyyy, kk:mm')
+                                endInfo: DateFormat('EEE, y/MM/d, kk:mm')
                                         .format(e.endDate) +
-                                    ' ' +
+                                    ' \n' +
                                     timezone,
                               ),
                               SpecificEventInfoContainer(

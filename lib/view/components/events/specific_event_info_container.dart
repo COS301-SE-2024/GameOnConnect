@@ -32,7 +32,6 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
           12, 0, 12, 0),
       child: SizedBox(
         width: double.infinity,
-        height: 28,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -50,7 +49,6 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
             Text(
               endInfo,
               style: TextStyle(
-                fontFamily: 'Inter',
                 color: Theme.of(context)
                     .colorScheme
                     .secondary,
