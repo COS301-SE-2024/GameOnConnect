@@ -16,6 +16,7 @@ class _ConnectionUpdateCardState extends State<ConnectionUpdateCard> {
     return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).colorScheme.primaryContainer,
         ),
         child: Row(
@@ -23,8 +24,8 @@ class _ConnectionUpdateCardState extends State<ConnectionUpdateCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             widget.connectionStatus == "connect"
-                ? Text("${widget.user} wants to connect")
-                : Text("${widget.user} disconnected"),
+                ? Text("${widget.user} wants to connect", style: const TextStyle(fontWeight: FontWeight.bold))
+                : Text("${widget.user} disconnected", style: const TextStyle(fontWeight: FontWeight.bold)),
             const Icon(Icons.close_sharp)
           ],
         ));

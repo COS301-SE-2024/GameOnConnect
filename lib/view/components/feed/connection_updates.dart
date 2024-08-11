@@ -41,21 +41,19 @@ class _ConnectionUpdatesState extends State<ConnectionUpdates> {
           return const Center(child: Text('No new connection updates 😊'));
         } else {
           final connectionRequests = snapshot.data!;
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: connectionRequests.length,
-                  itemBuilder: (context, index) {
-                    final appUser = connectionRequests[index];
-                    return ConnectionUpdateCard(
-                      user: appUser.username,
-                      connectionStatus: "connect",
-                    );
-                  },
-                ),
-              ),
-            ],
+          return ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 300),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: connectionRequests.length,
+              itemBuilder: (context, index) {
+                final appUser = connectionRequests[index];
+                return ConnectionUpdateCard(
+                  user: appUser.username,
+                  connectionStatus: "connect",
+                );
+              },
+            ),
           );
         }
       }
