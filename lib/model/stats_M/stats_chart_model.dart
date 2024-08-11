@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Indicator extends StatelessWidget {
-  final Color color;
+  final Color? color;
   final String text;
   final bool isSquare;
   final double size;
@@ -9,7 +9,7 @@ class Indicator extends StatelessWidget {
 
   const Indicator({
     super.key,
-    required this.color,
+    this.color,
     required this.text,
     this.isSquare = true,
     this.size = 16,
