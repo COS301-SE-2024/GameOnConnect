@@ -8,7 +8,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 **[SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki)** <br>
 **[Github project board](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
 **[User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual)** <br>
-**Our technical installation manual can be found here when we finalize it**<br>
+**[Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual)**<br>
 **[Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards)**
 <br>
 # 🎮Badges: #
