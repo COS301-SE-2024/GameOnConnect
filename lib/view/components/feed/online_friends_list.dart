@@ -41,7 +41,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width, maxHeight: 130),
+          maxWidth: MediaQuery.of(context).size.width, maxHeight: 100),
       child: _isLoading
           ? Center(
               child: LoadingAnimationWidget.halfTriangleDot(
@@ -57,8 +57,8 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: 100,
-                      width: 100,
+                      height: 80,
+                      width: 80,
                       child: Pulsator(
                           style: PulseStyle(
                               color: Theme.of(context).colorScheme.primary),
@@ -66,8 +66,8 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
                           duration: const Duration(seconds: 2),
                           autoStart: true,
                           child: Container(
-                            width: 70,
-                            height: 70,
+                            width: 50,
+                            height: 50,
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),

@@ -42,8 +42,7 @@ class _EventInvitationState extends State<EventInvitation> {
           padding: const EdgeInsets.only(top: 5, bottom: 5),
           child: Expanded(
               child: Container(
-            padding:
-                const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(15),
@@ -53,6 +52,7 @@ class _EventInvitationState extends State<EventInvitation> {
                   Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
                   title: Row(
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -62,88 +62,64 @@ class _EventInvitationState extends State<EventInvitation> {
                         size: 24,
                       ),
                       const SizedBox(width: 15),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${widget.inviterName} invited you to join',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              overflow: TextOverflow.ellipsis,),
-                          Text(widget.event.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.primary),
-                              overflow: TextOverflow.ellipsis,),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${widget.inviterName} invited you to join',
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.bold)),
+                            Text(widget.event.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.primary)),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Description',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12)),
-                            Text(widget.event.description,
-                                style: const TextStyle(fontSize: 12))
-                          ],
-                        ),
-                        const SizedBox(height:10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Date and time',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 12)),
-                            Text(widget.event.startDate.toIso8601String(),
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.primary))
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              //accept
-                              onTap: () {
-                                _eventsService
-                                    .declineEventInvitation(widget.event);
-                                _eventsService.joinEvent(widget.event);
-                                setState(() {
-                                  _isWidgetVisible = false;
-                                });
-                              },
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  height: 30,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                  child: Text('Accept',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Theme.of(context).colorScheme.surface
-                                      ))),
-                            ),
-                            InkWell(
-                                //decline
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Description',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 12)),
+                              Text(widget.event.description,
+                                  style: const TextStyle(fontSize: 12))
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Date and time',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 12)),
+                              Text(widget.event.startDate.toIso8601String(),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          Theme.of(context).colorScheme.primary))
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                //accept
                                 onTap: () {
                                   _eventsService
                                       .declineEventInvitation(widget.event);
+                                  _eventsService.joinEvent(widget.event);
                                   setState(() {
                                     _isWidgetVisible = false;
                                   });
@@ -157,41 +133,69 @@ class _EventInvitationState extends State<EventInvitation> {
                                           Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.circular(7),
                                     ),
-                                    child: Text('Decline',
+                                    child: Text('Accept',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                          color: Theme.of(context).colorScheme.surface
-                                        )))),
-                            InkWell(
-                                //stay notified
-                                onTap: () {
-                                  _eventsService
-                                      .declineEventInvitation(widget.event);
-                                  _eventsService.subscribeToEvent(widget.event);
-                                  setState(() {
-                                    _isWidgetVisible = false;
-                                  });
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    height: 30,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                      borderRadius: BorderRadius.circular(7),
-                                    ),
-                                    child: const Text('Stay notified',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12,
-                                        )))),
-                          ],
-                        )
-                      ],
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface))),
+                              ),
+                              InkWell(
+                                  //decline
+                                  onTap: () {
+                                    _eventsService
+                                        .declineEventInvitation(widget.event);
+                                    setState(() {
+                                      _isWidgetVisible = false;
+                                    });
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      height: 30,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Theme.of(context).colorScheme.primary,
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: Text('Decline',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface)))),
+                              InkWell(
+                                  //stay notified
+                                  onTap: () {
+                                    _eventsService
+                                        .declineEventInvitation(widget.event);
+                                    _eventsService.subscribeToEvent(widget.event);
+                                    setState(() {
+                                      _isWidgetVisible = false;
+                                    });
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      height: 30,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: const Text('Stay notified',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          )))),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ]),
             ),

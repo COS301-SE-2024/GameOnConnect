@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/feed/connection_updates.dart';
 import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
 import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
 import 'package:gameonconnect/view/components/feed/start_timer.dart';
@@ -17,7 +18,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-
 
 class FeedPage extends StatefulWidget {
   final String title;
@@ -37,24 +37,22 @@ class _FeedPageState extends State<FeedPage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
-  
-
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
-
 
   @override
   void initState() {
     super.initState();
     usernamecontroller = TextEditingController();
     currentUserId = getCurrentUserId(); // Initialize currentUserId
-    WidgetsBinding.instance.addPostFrameCallback((_) => _checkProfileAndShowDialog());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _checkProfileAndShowDialog());
 
     // Initialize _pages after currentUserId is set
     _pages = <Widget>[
       Center(
-        child:  _FeedPageDisplay(),
+        child: _FeedPageDisplay(),
       ),
       const GameLibrary(),
       const CreateEvents(),
@@ -68,10 +66,8 @@ class _FeedPageState extends State<FeedPage> {
     return currentUserId;
 
     //WidgetsBinding.instance
-        //.addPostFrameCallback((_) => _checkProfileAndShowDialog());      
-
+    //.addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
-
 
   @override
   void dispose() {
@@ -304,65 +300,108 @@ class _FeedPageState extends State<FeedPage> {
   }
 }
 
-class _FeedPageDisplay extends StatelessWidget {
+class _FeedPageDisplay extends StatefulWidget {
+  @override
+  State<_FeedPageDisplay> createState() => _FeedPageDisplayState();
+}
+
+class _FeedPageDisplayState extends State<_FeedPageDisplay> {
   // final MessagingService messagingService = MessagingService();
+  late String currentUserName = "";
+  late String currentUserId;
+  final ProfileService _profileService = ProfileService();
+
+  @override
+  initState() {
+    super.initState();
+    currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    fetchUsername();
+  }
+
+  Future<void> fetchUsername() async {
+    String? userName = await getUserName();
+    setState(() {
+      currentUserName = userName!;
+    });
+  }
+
+  Future<String?> getUserName() async {
+    return await _profileService.getProfileName(currentUserId);
+  }
+
   Widget _feedBody() {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          GameTimer(),
-          SizedBox(height: 30),
-          Text("Friends currently online", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          SizedBox(height: 15),
-          CurrentlyOnlineBar(),
-          SizedBox(height: 30),
-          Text("Event Invites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          SizedBox(height: 15),
-          EventInvitesList()
-        ]
-      ),
+      child: ListView(children: [
+        Text("Ready to game,",
+            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+        Text("$currentUserName?",
+            style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary)),
+        SizedBox(height: 15),
+        GameTimer(),
+        SizedBox(height: 15),
+        Divider(
+          thickness: 1,
+          color: Theme.of(context).colorScheme.primaryContainer,
+        ),
+        SizedBox(height: 19),
+        Text("Friends currently online",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        SizedBox(height: 15),
+        CurrentlyOnlineBar(),
+        SizedBox(height: 30),
+        Text("Connection updates",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        SizedBox(height: 15),
+        ConnectionUpdates(),
+        SizedBox(height: 30),
+        Text("Event invites",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        SizedBox(height: 15),
+        EventInvitesList()
+      ]),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Feed',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Messaging(),
-                  ),
-                );
-              },
-              icon: Icon(
-                Icons.message,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          automaticallyImplyLeading: false,
+          title: Text(
+            'Feed',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-        ],
-        centerTitle: false,
-        elevation: 0,
-      ),
-      body: _feedBody()
-    );
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Messaging(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.message,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+          ],
+          centerTitle: false,
+          elevation: 0,
+        ),
+        body: _feedBody());
   }
 }
