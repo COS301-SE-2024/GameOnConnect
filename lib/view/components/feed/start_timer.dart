@@ -7,6 +7,7 @@ import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -37,7 +38,7 @@ class _GameTimer extends State<GameTimer> {
   Future<void> _fetchUserGames() async {
     try {
       List<String> myGameIds = await _currentlyPlaying.getMyGames();
-      
+
       Future<List<GameDetails>> gameDetailsFutures = Future.wait(
         myGameIds.map((id) => _gameService.fetchGameDetails(id)),
       );
@@ -64,7 +65,7 @@ class _GameTimer extends State<GameTimer> {
     _stopwatch.start();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {});
-      });
+    });
     _profileService.setCurrentlyPlaying(_selectedItem!);
   }
 
@@ -103,48 +104,56 @@ class _GameTimer extends State<GameTimer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _stopwatch.isRunning ? 
-                Row(
-                  children: [
-                    const Icon(Icons.radio_button_checked, color: Colors.red,),
-                    const SizedBox(width: 10),
-                    Text(
-                      _formatElapsedTime(),
-                      style: const TextStyle(color: Colors.red),
-                    )
-                  ],
-                ) 
-                : 
-                FutureBuilder<List<GameDetails>>(
-                  future: _userGames, 
-                  builder: (BuildContext context, AsyncSnapshot<List<GameDetails>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Text('No data found');
-                    } else {
-                      return 
-                      DropdownButton<String>(
-                        underline: const SizedBox(),
-                        value: _selectedItem,
-                        hint: const Text('What are you playing?'),
-                        items: snapshot.data!.map((GameDetails game) {
-                          return DropdownMenuItem<String>(
-                            value: game.id.toString(),
-                            child: Text(game.name),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedItem = newValue;
-                          });
-                        },
-                      );
-                    }
-                  }
-                ),
+                _stopwatch.isRunning
+                    ? Row(
+                        children: [
+                          const Icon(
+                            Icons.radio_button_checked,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            _formatElapsedTime(),
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        ],
+                      )
+                    : FutureBuilder<List<GameDetails>>(
+                        future: _userGames,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<GameDetails>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 36,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (!snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return const Text('No data found');
+                          } else {
+                            return DropdownButton<String>(
+                              underline: const SizedBox(),
+                              value: _selectedItem,
+                              hint: const Text('What are you playing?'),
+                              items: snapshot.data!.map((GameDetails game) {
+                                return DropdownMenuItem<String>(
+                                  value: game.id.toString(),
+                                  child: Text(game.name),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedItem = newValue;
+                                });
+                              },
+                            );
+                          }
+                        }),
                 FilledButton.icon(
                   icon: _stopwatch.isRunning
                       ? const Icon(Icons.stop)
@@ -175,32 +184,33 @@ class _GameTimer extends State<GameTimer> {
                                     EmojiFeedback(
                                       emojiPreset: const [
                                         EmojiModel(
-                                          src:Assets.classicTerrible,
+                                          src: Assets.classicTerrible,
                                           label: 'Scared',
                                           package: 'flutter_emoji_feedback',
                                         ),
                                         EmojiModel(
-                                          src:Assets.classicBad,
+                                          src: Assets.classicBad,
                                           label: 'Disgusted',
                                           package: 'flutter_emoji_feedback',
                                         ),
                                         EmojiModel(
-                                          src:Assets.flatTerrible,
+                                          src: Assets.flatTerrible,
                                           label: 'Angry',
                                           package: 'flutter_emoji_feedback',
                                         ),
                                         EmojiModel(
-                                          src:Assets.flatBad,
+                                          src: Assets.flatBad,
                                           label: 'Sad',
                                           package: 'flutter_emoji_feedback',
                                         ),
                                         EmojiModel(
-                                          src:Assets.flatVeryGood,
+                                          src: Assets.flatVeryGood,
                                           label: 'Happy',
                                           package: 'flutter_emoji_feedback',
                                         )
                                       ],
-                                      inactiveElementBlendColor: Theme.of(context).colorScheme.surface,
+                                      inactiveElementBlendColor:
+                                          Theme.of(context).colorScheme.surface,
                                       onChanged: (value) {
                                         setState(() {
                                           switch (value) {
@@ -229,11 +239,21 @@ class _GameTimer extends State<GameTimer> {
                                   onPressed: () async {
                                     Navigator.of(context).pop();
                                     //add data to the database
-                                    if (_userGames != null && _selectedItem != null) {
-                                      List<GameDetails> games = await _userGames!;
-                                      GameDetails? selectedGame = games.firstWhere((game) => game.id.toString() == _selectedItem);
+                                    if (_userGames != null &&
+                                        _selectedItem != null) {
+                                      List<GameDetails> games =
+                                          await _userGames!;
+                                      GameDetails? selectedGame =
+                                          games.firstWhere((game) =>
+                                              game.id.toString() ==
+                                              _selectedItem);
                                       List genres = selectedGame.genres;
-                                      _sessionStatsService.addSession(_stopwatch.elapsedMilliseconds, _selectedItem!, _mood, genres, _startTime);
+                                      _sessionStatsService.addSession(
+                                          _stopwatch.elapsedMilliseconds,
+                                          _selectedItem!,
+                                          _mood,
+                                          genres,
+                                          _startTime);
                                     }
                                   },
                                 ),

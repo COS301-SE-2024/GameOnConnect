@@ -151,7 +151,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
 
 String _convertTimestampToString(Timestamp? timestamp) {
   if (timestamp != null) {
-    final dateTime = timestamp.toDate(); // Convert to DateTime
+    final dateTime = timestamp.toDate();
     return dateTime.toString(); // Customize the format as needed
   }
   return ''; // Return an empty string if timestamp is null

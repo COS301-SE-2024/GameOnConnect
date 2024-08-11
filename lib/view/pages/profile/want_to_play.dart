@@ -4,6 +4,7 @@ import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/profile/all_want_to_play_list.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 
@@ -42,11 +43,6 @@ class _WantToPlayListState extends State<WantToPlayList> {
       }
   }
 
-
-double millisecondsToHours(int milliseconds) {
-  final hours = milliseconds / (1000 * 3600);
-  return double.parse(hours.toStringAsFixed(3));
-}
 
   @override
   Widget build(BuildContext context) {
@@ -126,14 +122,19 @@ double millisecondsToHours(int milliseconds) {
                     return Padding(
                       //padding: EdgeInsets.all(8.0),
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child:
-                       ProfileGamesCard(
-                        image: gameDetails.backgroundImage,
-                        name: gameDetails.name,
-                        lastPlayedDate: '',
-                        timePlayed: '',
-                        playing: false,
+                      child:InkWell(
+                        onTap: () {
+                          _navigateToGameDetails(gameDetails.id);
+                        },
+                        child:ProfileGamesCard(
+                          image: gameDetails.backgroundImage,
+                          name: gameDetails.name,
+                          lastPlayedDate: '',
+                          timePlayed: '',
+                          playing: false,
+                        ),
                       ),
+                       
                     );
                   }
                 },
@@ -149,7 +150,20 @@ double millisecondsToHours(int milliseconds) {
             ),
           ),
         if (widget.gameIds.length > 4)
-          Container(
+        InkWell(
+            onTap: () {
+              // Your click event action here
+              Navigator.push(
+                context, MaterialPageRoute(
+                  builder: (context) =>  AllWantToPlayList(
+                    gameIds: widget.gameIds,
+                     heading: widget.heading)
+                  ),
+              );
+              
+            },
+            child:
+              Container(
             margin: const EdgeInsets.fromLTRB(12, 0, 12, 24),
             child: Align(
               alignment: Alignment.topRight,
@@ -173,6 +187,8 @@ double millisecondsToHours(int milliseconds) {
               ),
             ),
           ),
+            ),
+          
       ],
     ),
   );

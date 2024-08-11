@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gameonconnect/view/pages/feed/welcome_splash.dart';
 import '../../../services/authentication_S/auth_service.dart';
 import 'login_page.dart';
-import '../feed/feed_page.dart';
 
 
 class SignUp extends StatefulWidget {
@@ -242,7 +242,7 @@ class _SignUpState extends State<SignUp> {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Signed Up successfully!")));
                         Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                            builder: (BuildContext context) => FeedPage(title: 'GameOnConnect',)),
+                            builder: (BuildContext context) => SplashScreen()),
                               (Route<dynamic> route) => false,
                         );
                       }
@@ -302,9 +302,7 @@ class _SignUpState extends State<SignUp> {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => FeedPage(
-                              title: 'GameOnConnect',
-                            )),
+                            builder: (BuildContext context) => SplashScreen()),
                             (Route<dynamic> route) => false,
                       );
                     }

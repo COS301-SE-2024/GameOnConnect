@@ -37,5 +37,6 @@ class GameService {
       throw Exception('No Internet connection');
     }
   }
+
 }
 
