@@ -107,33 +107,10 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                                       touchCallback: (FlTouchEvent event, pieTouchResponse) {
                                         if (event is FlLongPressEnd || event is FlTapUpEvent) {
                                           final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
-                                          print('Touched index: $touchedIndex');
                                           if (touchedIndex != null && touchedIndex < nonZeroMoods.length) {
                                             final touchedMood = nonZeroMoods[touchedIndex];
                                             _navigateToGamesPage(touchedMood);
                                           }
-                                          // if (touchedIndex != null) {
-                                          //   String mood = '';
-                                          //   switch (touchedIndex) {
-                                          //     case 0:
-                                          //       mood = 'Happy';
-                                          //       break;
-                                          //     case 1:
-                                          //       mood = 'Disgusted';
-                                          //       break;
-                                          //     case 2:
-                                          //       mood = 'Sad';
-                                          //       break;
-                                          //     case 3:
-                                          //       mood = 'Angry';
-                                          //       break;
-                                          //     case 4:
-                                          //       mood = 'Scared';
-                                          //       break;
-                                          //   }
-                                          //   print('Touched index: $touchedIndex'); 
-                                          //   _navigateToGamesPage(mood);
-                                          // }
                                         }
                                       },
                                     ),
@@ -177,21 +154,6 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                                 );
                               }).toList(),
                             ),
-                            // const Column(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   crossAxisAlignment: CrossAxisAlignment.start,
-                            //   children: <Widget>[
-                            //     Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 12),
-                            //     SizedBox(height: 25),
-                            //     Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 12),
-                            //     SizedBox(height: 25),
-                            //     Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 12),
-                            //     SizedBox(height: 25),
-                            //     Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 12),
-                            //     SizedBox(height: 25),
-                            //     Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 12),
-                            //   ],
-                            // ),
                           ],
                         ),
                   ),
@@ -213,20 +175,9 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   Future<List<Map<String, dynamic>>> fetchGameIDsByMood(String mood2) async {
     try {
-      print('Fetching games for mood: $mood2');
       List<Map<String, dynamic>> gameData = await _statsMoodService.fetchGameIDsAndTimestamps(mood2);
-      
-      if (gameData.isEmpty) {
-        print('No games found for mood: $mood2');
-      } else {
-        print('Found ${gameData.length} games for mood: $mood2');
-      }
-
-      print('gameData given to games page: $gameData');
-
       return gameData;
     } catch (e) {
-      print('Error fetching game IDs for mood: $e');
       throw Exception('Error fetching game IDs for mood: $e');
     }
   }
