@@ -295,6 +295,7 @@ void navigateToConnections(BuildContext context) {
                                   ),
                                 ),
                               ), 
+                              if(profileData.currentlyPlaying !='')
                                 Row(
                                   children: [
                                     Icon(
@@ -304,7 +305,7 @@ void navigateToConnections(BuildContext context) {
                                       ),
                                      const SizedBox(width: 5),   
                                     const Text(
-                                      'Currently Online',
+                                      'Currently playing',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         //fontSize: 12,
