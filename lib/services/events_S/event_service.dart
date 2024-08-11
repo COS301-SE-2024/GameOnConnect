@@ -307,6 +307,7 @@ class EventsService {
   }
 
   Future<void> editEvent(
+      bool imageChanged,
       String? type,
       DateTime? startDate,
       String name,
@@ -341,7 +342,7 @@ class EventsService {
           "description": description,
         };
 
-        if (!url.startsWith('assets')) {
+        if (imageChanged && !url.startsWith('assets')) {
           // default image not stored, there will just not be a event image with the event id
           final imageStorage = storage.child('events/$eventId');
           await imageStorage.putFile(File(url));
