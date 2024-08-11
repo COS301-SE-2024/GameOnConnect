@@ -16,7 +16,7 @@ import 'package:gameonconnect/view/components/profile/action_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
-
+import 'package:gameonconnect/view/pages/stats/stats_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -382,7 +382,7 @@ void navigateToConnections(BuildContext context) {
                               Expanded(
                                 child: ActionButton(
                                   type: 'stats',
-                                  onPressed: () => navigateToConnections(context), //change to go to stats page 
+                                  onPressed: () => const StatsPage(), //change to go to stats page 
                                 ),
                               ),
                             ],
