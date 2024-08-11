@@ -7,7 +7,6 @@ import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
