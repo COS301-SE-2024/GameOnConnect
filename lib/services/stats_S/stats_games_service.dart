@@ -16,6 +16,8 @@ class StatsGamesService {
       String lastPlayed = (game['last_played'] as Timestamp).toDate().toString();
 
       try {
+        await Future.delayed(const Duration(milliseconds: 500));
+
         final response = await http.get(Uri.parse(
             'https://api.rawg.io/api/games/$gameID?key=$apikey'));
         if (response.statusCode == 200) {
@@ -26,12 +28,13 @@ class StatsGamesService {
             'lastPlayed': lastPlayed,
           });
         } else {
-          throw Exception('Failed to load game details');
+          throw Exception('Failed to load game details for gameID: $gameID');
         }
       } on SocketException {
-        throw Exception('No Internet connection');
+        throw Exception('No Internet connection for gameID: $gameID');
       }
     }
+    // print('Game images fetched for mood: $gameImages');
     return gameImages;   //returns image urls and timestamp
   }
 }
