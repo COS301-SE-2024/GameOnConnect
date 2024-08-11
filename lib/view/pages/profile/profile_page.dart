@@ -361,14 +361,14 @@ void navigateToConnections(BuildContext context) {
                           padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                           child: Row(
                             children: [
-                              if(profileData.visibility && !isParentsConnection )
+                              if(profileData.visibility && !isParentsConnection && widget.uid!= widget.loggedInUser )
                                   Expanded(
                                     child: ActionButton(
                                       type: 'connect',
                                       onPressed: () => _sendConnectionRequest(widget.uid),
                                     ),
                                   ),
-                              if (profileData.visibility&&isParentsPending)
+                              if (profileData.visibility&&isParentsPending && widget.uid!= widget.loggedInUser)
                                 Expanded(
                                     child: ActionButton(
                                       type: 'pending',
@@ -376,7 +376,7 @@ void navigateToConnections(BuildContext context) {
                                     ),
                                   ),
 
-                              if(profileData.visibility && (!isParentsConnection || isParentsPending) )
+                              if(profileData.visibility && (!isParentsConnection || isParentsPending)&& widget.uid!= widget.loggedInUser )
                                   const SizedBox(width: 12),
 
                               Expanded(
