@@ -276,30 +276,33 @@ void navigateToConnections(BuildContext context) {
                           ],
                         ),
  
-                          const Row(
-                            children: [
-                              Expanded(
-                                child: StatsButton(),
-                              ),
-                            ],
-                          ),
+                        const Row(
+                          children: [
+                            Expanded(
+                              child: StatsButton(),
+                            ),
+                          ],
+                        ),
                           
 
                         const SizedBox(height: 24),
-                         Bio(bio: profileData.bio,),
+                        Bio(bio: profileData.bio,),
 
-                         const SizedBox(height: 24),
-                         MyGameList(gameStats: sumOfMygames, heading: 'Games', currentlyPlaying: profileData.currentlyPlaying,),
+                        const SizedBox(height: 24),
+                        MyGameList(myGameStats: sumOfMygames, heading: 'My Games', currentlyPlaying: profileData.currentlyPlaying,gameActivities: profileData.myGames,),
                         
                         const Padding(
-                      padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
-                      child: Divider(
-                        color: Color(0xFF2A2A2A),//Dark grey,
-                        thickness: 0.5,
-                      ),
-                    ),
+                          padding: EdgeInsets.fromLTRB(12, 10, 12, 24),
+                          child: Divider(
+                            color: Color(0xFF2A2A2A),//Dark grey,
+                            thickness: 0.5,
+                          ),
+                        ),
 
-                    WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'),       
+                        WantToPlayList(gameIds: profileData.wantToPlay, heading: 'Want to play'), 
+                        const SizedBox(height: 24),
+
+
                       ],
               ),
             );

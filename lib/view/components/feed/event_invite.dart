@@ -67,12 +67,14 @@ class _EventInvitationState extends State<EventInvitation> {
                         children: [
                           Text('${widget.inviterName} invited you to join',
                               style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,),
                           Text(widget.event.name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color:
-                                      Theme.of(context).colorScheme.primary)),
+                                      Theme.of(context).colorScheme.primary),
+                              overflow: TextOverflow.ellipsis,),
                         ],
                       ),
                     ],

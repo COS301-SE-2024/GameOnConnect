@@ -164,7 +164,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           const Alignment(
                                                               0, 1),
                                                       child: ButtonsTabBar(
-                                                        width: 100,
+                                                        width: 101,
                                                         contentCenter: true,
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
@@ -188,7 +188,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 .colorScheme
                                                                 .primaryContainer,
                                                         elevation: 0,
-                                                        buttonMargin: const EdgeInsets.fromLTRB(0, 0, 14, 10),
+                                                        buttonMargin: const EdgeInsets.fromLTRB(0, 0, 13, 10),
                                                         backgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme

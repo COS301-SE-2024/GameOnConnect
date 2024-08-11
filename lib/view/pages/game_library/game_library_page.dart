@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../components/game_library/game_library_filter.dart';
-import '../../../model/game_library_M/game_model.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -430,7 +430,7 @@ class _GameLibraryState extends State<GameLibrary> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(children: game.getPlatformIcons(context)),
+                          Row(children: game.getPlatformIcons(context, Theme.of(context).colorScheme.primary)),
                           Text("Released: ${game.released}"),
                           Row(
                             children: [

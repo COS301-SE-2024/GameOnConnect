@@ -62,7 +62,10 @@ dependencies:
   logger: ^2.4.0
   timeago: ^3.7.0
   syncfusion_flutter_charts: ^26.2.5+1
+  loading_animation_widget:
   auto_size_text: ^3.0.0
+  timelines: ^0.1.0
+  timeline_tile: ^2.0.0
 
 
 dev_dependencies:
@@ -101,6 +104,7 @@ flutter:
     - assets/videos/GameLibrary_2.mp4
     - assets/videos/GameLibrary_3.mp4
     - "assets/default_images/"
+    - assets/gifs/gaming_animation.gif
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
