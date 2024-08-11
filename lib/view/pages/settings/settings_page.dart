@@ -23,7 +23,7 @@ class Options extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
               child: Column(
                 children: [
                   ListTile(
@@ -54,7 +54,7 @@ class Options extends StatelessWidget {
               endIndent: 12,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: Column(
                 children: [
                   ListTile(
@@ -85,7 +85,7 @@ class Options extends StatelessWidget {
               endIndent: 12,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: Column(
                 children: [
                   ListTile(
@@ -116,7 +116,7 @@ class Options extends StatelessWidget {
               endIndent: 12,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: Column(
                 children: [
                   ListTile(
