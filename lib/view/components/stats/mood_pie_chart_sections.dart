@@ -15,10 +15,10 @@ class MoodPieChartSections {
             value: moodCounts['Happy']!.toDouble(),
             title: '${moodCounts['Happy']}',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Colors.black,
             ),
           );
         case 1:
@@ -27,10 +27,10 @@ class MoodPieChartSections {
             value: moodCounts['Disgusted']!.toDouble(),
             title: '${moodCounts['Disgusted']}',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Colors.black,
             ),
           );
         case 2:
@@ -39,10 +39,10 @@ class MoodPieChartSections {
             value: moodCounts['Sad']!.toDouble(),
             title: '${moodCounts['Sad']}',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Colors.white,
             ),
           );
         case 3:
@@ -51,10 +51,10 @@ class MoodPieChartSections {
             value: moodCounts['Angry']!.toDouble(),
             title: '${moodCounts['Angry']}',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color:  Colors.white,
             ),
           );
         case 4:
@@ -63,10 +63,10 @@ class MoodPieChartSections {
             value: moodCounts['Scared']!.toDouble(),
             title: '${moodCounts['Scared']}',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+              color:  Colors.white,
             ),
           );
         default:

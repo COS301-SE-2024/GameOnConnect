@@ -24,6 +24,19 @@ class StatsMoodService {
 
     final moods = snapshot.docs.map((doc) => doc['mood']).toList();
 
+    // final hap = moods.where((mood) => mood == 'Happy').length;
+    // final dis = moods.where((mood) => mood == 'Disgusted').length;
+    // final sad = moods.where((mood) => mood == 'Sad').length;
+    // final ang = moods.where((mood) => mood == 'Angry').length;
+    // final sca = moods.where((mood) => mood == 'Scared').length;
+
+    // print('returned moods $moods');
+    // print('returned moods: happy: $hap + disgusted: $dis + sad: $sad + angry: $ang + scared: $sca');
+
+    //returned moods [Disgusted, Angry, Angry, Happy, Happy, No mood, Angry, No mood, Happy, Angry,
+// Happy, Sad, Sad, No mood, Happy, Happy, Happy]
+// returned moods: happy: 7 + disgusted: 1 + sad: 2 + angry: 4 + 0
+
     return {
       'Happy': moods.where((mood) => mood == 'Happy').length,
       'Disgusted': moods.where((mood) => mood == 'Disgusted').length,
@@ -38,6 +51,8 @@ class StatsMoodService {
     if (currentUser == null) {
       return [];
     }
+
+    // print('Mood used in function to get time and ids: $mood');
 
     final snapshot = await _firestore
         .collection('game_session_stats')
