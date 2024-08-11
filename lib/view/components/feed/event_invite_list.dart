@@ -32,18 +32,15 @@ class _EventInvitesListState extends State<EventInvitesList> {
   Widget build(BuildContext context) {
     return Expanded(
       child: _invitedEvents.isEmpty ? const Text('No new event invites') : 
-      Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _invitedEvents.length,
-              itemBuilder: (context, index) {
-                return EventInvitation(inviterId: _invitedEvents[index].creatorID, event: _invitedEvents[index]);
-              },
-            ),
-          )
-        ]     
+      ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 300),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _invitedEvents.length,
+          itemBuilder: (context, index) {
+            return EventInvitation(inviterId: _invitedEvents[index].creatorID, event: _invitedEvents[index]);
+          },
+        ),
       ),
     );
   }

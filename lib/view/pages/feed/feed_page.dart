@@ -339,7 +339,7 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
   Widget _feedBody() {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      child: ListView(children: [
         Text("Ready to game,",
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         Text("$currentUserName?",
