@@ -382,9 +382,14 @@ void navigateToConnections(BuildContext context) {
                               Expanded(
                                 child: ActionButton(
                                   type: 'stats',
-                                  onPressed: () => const StatsPage(), //change to go to stats page 
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const StatsPage()),
+                                    );
+                                  },
                                 ),
-                              ),
+                              )
                             ],
                         ),
                           
