@@ -91,6 +91,7 @@ class _ChooseGame extends State<ChooseGame> {
                           String i = gameNames[index];
 
                           return GameCard(
+                            key: Key(i),
                             name: i,
                             gameID: getGameID(i),
                             chosen: chosenGame,

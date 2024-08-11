@@ -137,7 +137,7 @@ void navigateToConnections(BuildContext context) {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return  const Center(
-              key: const Key('loadingScaffold'),
+              key: Key('loadingScaffold'),
               child: CircularProgressIndicator()); // Show loading indicator
           } else if (snapshot.hasError) {
             return Center(

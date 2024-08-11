@@ -93,6 +93,7 @@ class _CreateEventsState extends State<CreateEvents> {
                     children: [
                       Expanded(
                         child: SingleChildScrollView(
+                          key: const Key('createEventScroll'),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -169,6 +170,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           SizedBox(
                                             height: 70,
                                             child: TextFormField(
+                                              key: const Key('nameTextField'),
                                               onFieldSubmitted: (val) {
                                                 name = nameController.text;
                                                 if (name.isNotEmpty) {
@@ -296,6 +298,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               });
                                             },
                                             child: Container(
+                                              key: const Key('gameSelector'),
                                               padding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 0, 16, 0),
