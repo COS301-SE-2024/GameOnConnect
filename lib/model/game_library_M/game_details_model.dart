@@ -1,4 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+class SoftwareRequirements {
+  String minimumOS;
+  String minimumProcessor;
+  String minimumMemory;
+  String minimumGraphics;
+  String minimumStorage;
+  String minimumSoundCard;
+  String minimumAdditionalNotes;
+
+  String recommendedOS;
+  String recommendedProcessor;
+  String recommendedMemory;
+  String recommendedGraphics;
+  String recommendedStorage;
+  String recommendedSoundCard;
+  String recommendedAdditionalNotes;
+
+  SoftwareRequirements({
+    required this.minimumOS,
+    required this.minimumProcessor,
+    required this.minimumMemory,
+    required this.minimumGraphics,
+    required this.minimumStorage,
+    required this.minimumSoundCard,
+    required this.minimumAdditionalNotes,
+    required this.recommendedOS,
+    required this.recommendedProcessor,
+    required this.recommendedMemory,
+    required this.recommendedGraphics,
+    required this.recommendedStorage,
+    required this.recommendedSoundCard,
+    required this.recommendedAdditionalNotes,
+  });
+}
 
 class GameDetails {
   final int id;
@@ -16,6 +52,7 @@ class GameDetails {
   final double rating;
   final String website;
   List<Screenshot>? screenshots;
+  SoftwareRequirements? softwareRequirements;
 
   GameDetails({
     required this.id,
@@ -33,9 +70,31 @@ class GameDetails {
     required this.publisher,
     required this.rating,
     required this.website,
+    this.softwareRequirements,
   });
 
   factory GameDetails.fromJson(Map<String, dynamic> json) {
+    String? minimumRequirements;
+    String? recommendedRequirements;
+
+    for (var platform in json['platforms']) {
+      if (platform['platform']['slug'] == 'pc' &&
+          platform['requirements'] != null) {
+        minimumRequirements = platform['requirements']['minimum'];
+        recommendedRequirements = platform['requirements']['recommended'];
+        break;
+      }
+    }
+
+    SoftwareRequirements? softwareRequirements;
+    if ((minimumRequirements != null && minimumRequirements.isNotEmpty) ||
+        (recommendedRequirements != null &&
+            recommendedRequirements.isNotEmpty)) {
+      String requirementsString =
+          'Minimum:\n$minimumRequirements\nRecommended:\n$recommendedRequirements';
+      softwareRequirements = parseRequirements(requirementsString);
+    }
+
     return GameDetails(
       id: json['id'],
       name: json['name'],
@@ -43,7 +102,8 @@ class GameDetails {
       description: json['description'] ?? "No description available.",
       released: json['released'] ?? "Unknown",
       platforms: json['platforms'],
-      backgroundImage: json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
+      backgroundImage:
+          json['background_image'] ?? "https://i.sstatic.net/y9DpT.jpg",
       score: json['metacritic'] ?? 0,
       genres: json['genres'],
       reviewsCount: json['reviews_count'] ?? 0,
@@ -54,10 +114,11 @@ class GameDetails {
       publisher: json['publishers'] ?? [],
       rating: json['rating'] ?? 0.0,
       website: json['website'] ?? "No website available",
+      softwareRequirements: softwareRequirements,
     );
   }
 
-  List<Widget> getPlatformIcons(BuildContext context) {
+  List<Widget> getPlatformIcons(BuildContext context, Color color) {
     List<Widget> icons = [];
     bool pc, xbox, playstation;
     pc = false;
@@ -69,7 +130,7 @@ class GameDetails {
         pc = true;
         icons.add(Icon(
           Icons.computer,
-          color: Theme.of(context).colorScheme.secondary,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,
@@ -77,8 +138,8 @@ class GameDetails {
       } else if (platform.toString().toLowerCase().contains('xbox') && !xbox) {
         xbox = true;
         icons.add(Icon(
-          Icons.gamepad,
-          color: Theme.of(context).colorScheme.secondary,
+          FontAwesomeIcons.xbox,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,
@@ -87,8 +148,8 @@ class GameDetails {
           !playstation) {
         playstation = true;
         icons.add(Icon(
-          Icons.videogame_asset,
-          color: Theme.of(context).colorScheme.secondary,
+          FontAwesomeIcons.playstation,
+          color: color,
         ));
         icons.add(const SizedBox(
           width: 10,
@@ -110,7 +171,7 @@ class GameDetails {
             style: TextStyle(
               decoration: TextDecoration.underline,
               decorationColor: Theme.of(context).colorScheme.secondary,
-              fontSize: 14,
+              fontSize: 12,
               color: Theme.of(context).colorScheme.secondary,
             ),
             // overflow: TextOverflow.fade,
@@ -147,4 +208,67 @@ class Screenshot {
       image: json['image'],
     );
   }
+}
+
+SoftwareRequirements parseRequirements(String requirementsString) {
+  final osPattern = RegExp(r'OS: (.+?)(Processor|$)');
+  final processorPattern = RegExp(r'Processor: (.+?)(Memory|$)');
+  final memoryPattern = RegExp(r'Memory: (.+?)(Graphics|$)');
+  final graphicsPattern = RegExp(r'Graphics: (.+?)(Storage|$)');
+  final storagePattern = RegExp(r'Storage: (.+?)(Sound Card|$)');
+  final soundCardPattern = RegExp(r'Sound Card: (.+?)(Additional Notes|$)');
+  final additionalNotesPattern = RegExp(r'Additional Notes: (.+)$');
+
+  final minimumOS =
+      osPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumProcessor =
+      processorPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumMemory =
+      memoryPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumGraphics =
+      graphicsPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumStorage =
+      storagePattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumSoundCard =
+      soundCardPattern.firstMatch(requirementsString)?.group(1)?.trim() ?? '';
+  final minimumAdditionalNotes =
+      additionalNotesPattern.firstMatch(requirementsString)?.group(1)?.trim() ??
+          '';
+
+  final recommendedSectionStart = requirementsString.indexOf('Recommended:');
+  final recommendedString =
+      requirementsString.substring(recommendedSectionStart);
+
+  final recommendedOS =
+      osPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedProcessor =
+      processorPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedMemory =
+      memoryPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedGraphics =
+      graphicsPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedStorage =
+      storagePattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedSoundCard =
+      soundCardPattern.firstMatch(recommendedString)?.group(1)?.trim() ?? '';
+  final recommendedAdditionalNotes =
+      additionalNotesPattern.firstMatch(recommendedString)?.group(1)?.trim() ??
+          '';
+
+  return SoftwareRequirements(
+    minimumOS: minimumOS,
+    minimumProcessor: minimumProcessor,
+    minimumMemory: minimumMemory,
+    minimumGraphics: minimumGraphics,
+    minimumStorage: minimumStorage,
+    minimumSoundCard: minimumSoundCard,
+    minimumAdditionalNotes: minimumAdditionalNotes,
+    recommendedOS: recommendedOS,
+    recommendedProcessor: recommendedProcessor,
+    recommendedMemory: recommendedMemory,
+    recommendedGraphics: recommendedGraphics,
+    recommendedStorage: recommendedStorage,
+    recommendedSoundCard: recommendedSoundCard,
+    recommendedAdditionalNotes: recommendedAdditionalNotes,
+  );
 }
