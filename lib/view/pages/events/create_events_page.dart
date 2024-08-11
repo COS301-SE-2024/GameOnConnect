@@ -351,6 +351,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 20,
                                           ),
                                           TextFormField(
+                                            key: const Key('descriptionTextField'),
                                             onTapOutside: (event) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
@@ -445,6 +446,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           InkWell(
+                                            key: const Key('start_date_picker'),
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
                                             hoverColor: Colors.transparent,
@@ -560,6 +562,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           InkWell(
+                                            key: const Key('end_date_picker'),
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
                                             hoverColor: Colors.transparent,
@@ -710,6 +713,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   ),
                                                   const Spacer(),
                                                   Switch.adaptive(
+                                                    key: const Key('switch'),
                                                     activeTrackColor:
                                                         Theme.of(context)
                                                             .colorScheme
@@ -814,6 +818,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 12, 16, 12),
                                 child: MaterialButton(
+                                  key: const Key('create_event_button'),
                                   height: 50,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
