@@ -352,7 +352,7 @@ class EventsService {
           await imageStorage.putFile(File(url));
         }
 
-        db.collection("events").doc(eventId).set(data);
+        db.collection("events").doc(eventId).set(data, SetOptions(merge: true));
       }
     }
   }
