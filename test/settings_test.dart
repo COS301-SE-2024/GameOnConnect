@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gameonconnect/pages/settings.dart';
+import 'package:gameonconnect/view/pages/settings/settings_page.dart';
 
 void main() {
   testWidgets('Navigates to Customize Profile on tap',
@@ -10,12 +10,12 @@ void main() {
 
     expect(
         find.byKey(
-          const Key('Settings'),
+          const Key('settings_text'),
         ),
         findsOneWidget);
     expect(
         find.byKey(
-          const Key('back_button'),
+          const Key('Back_button_key'),
         ),
         findsOneWidget);
     expect(
