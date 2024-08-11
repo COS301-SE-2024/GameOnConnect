@@ -41,11 +41,13 @@ class _EditEventsState extends State<EditEvent> {
   final descriptionController = TextEditingController();
   late int gameID;
   late String imageUrl;
+  bool imageChanged = false;
 
   List<String> invites = [];
 
   Future<void> editEvent() async {
     await EventsService().editEvent(
+      imageChanged,
         selectedOption,
         _datePicked,
         name,
@@ -64,6 +66,7 @@ class _EditEventsState extends State<EditEvent> {
     if (file != null) {
       setState(() {
         filePath = file;
+        imageChanged = true;
       });
     }
   }
@@ -99,7 +102,6 @@ class _EditEventsState extends State<EditEvent> {
     descriptionController.text = e.description;
     isChanged = e.privacy;
     gameChosen = e.gameID;
-    selectedOption = e.eventType;
     imageUrl = widget.imageUrl;
     invites = e.invited;
   }
