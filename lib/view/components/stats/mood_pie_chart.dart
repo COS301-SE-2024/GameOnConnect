@@ -23,6 +23,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
     'Angry': 0,
     'Scared': 0,
   };
+  List<String> nonZeroMoods = [];
   bool _isLoading = true;
 
   @override
@@ -36,6 +37,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
       final fetchedMoodCounts = await _statsMoodService.fetchMoodData();
       setState(() {
         moodCounts = fetchedMoodCounts;
+        nonZeroMoods = _getNonZeroMoods();
         _isLoading = false;
       });
     } catch (e) {
@@ -43,6 +45,13 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
         _isLoading = false;
       });
     }
+  }
+
+   List<String> _getNonZeroMoods() {
+    return moodCounts.entries
+        .where((entry) => entry.value > 0)
+        .map((entry) => entry.key)
+        .toList();
   }
 
   @override
@@ -93,34 +102,38 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                                     borderData: FlBorderData(show: false),
                                     sectionsSpace: 0,
                                     centerSpaceRadius: 60,
-                                    sections: MoodPieChartSections.showingSectionsMood(context, moodCounts),    // showingSectionsMood(),
+                                    sections: MoodPieChartSections.showingSectionsMood(context, moodCounts), 
                                     pieTouchData: PieTouchData(
                                       touchCallback: (FlTouchEvent event, pieTouchResponse) {
                                         if (event is FlLongPressEnd || event is FlTapUpEvent) {
                                           final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
-                                          // print('Touched index: $touchedIndex');
-                                          if (touchedIndex != null) {
-                                            String mood = '';
-                                            switch (touchedIndex) {
-                                              case 0:
-                                                mood = 'Happy';
-                                                break;
-                                              case 1:
-                                                mood = 'Disgusted';
-                                                break;
-                                              case 2:
-                                                mood = 'Sad';
-                                                break;
-                                              case 3:
-                                                mood = 'Angry';
-                                                break;
-                                              case 4:
-                                                mood = 'Scared';
-                                                break;
-                                            }
-                                            // print('Touched index: $touchedIndex'); 
-                                            _navigateToGamesPage(mood);
+                                          print('Touched index: $touchedIndex');
+                                          if (touchedIndex != null && touchedIndex < nonZeroMoods.length) {
+                                            final touchedMood = nonZeroMoods[touchedIndex];
+                                            _navigateToGamesPage(touchedMood);
                                           }
+                                          // if (touchedIndex != null) {
+                                          //   String mood = '';
+                                          //   switch (touchedIndex) {
+                                          //     case 0:
+                                          //       mood = 'Happy';
+                                          //       break;
+                                          //     case 1:
+                                          //       mood = 'Disgusted';
+                                          //       break;
+                                          //     case 2:
+                                          //       mood = 'Sad';
+                                          //       break;
+                                          //     case 3:
+                                          //       mood = 'Angry';
+                                          //       break;
+                                          //     case 4:
+                                          //       mood = 'Scared';
+                                          //       break;
+                                          //   }
+                                          //   print('Touched index: $touchedIndex'); 
+                                          //   _navigateToGamesPage(mood);
+                                          // }
                                         }
                                       },
                                     ),
@@ -129,21 +142,56 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                               ),
                             ),
                             const SizedBox(width: 16),
-                            const Column(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 12),
-                                SizedBox(height: 25),
-                                Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 12),
-                                SizedBox(height: 25),
-                                Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 12),
-                                SizedBox(height: 25),
-                                Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 12),
-                                SizedBox(height: 25),
-                                Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 12),
-                              ],
+                              children: nonZeroMoods.map((mood) {
+                                Color color;
+                                switch (mood) {
+                                  case 'Happy':
+                                    color = Colors.yellow;
+                                    break;
+                                  case 'Disgusted':
+                                    color = Colors.green;
+                                    break;
+                                  case 'Sad':
+                                    color = Colors.blue;
+                                    break;
+                                  case 'Angry':
+                                    color = Colors.red;
+                                    break;
+                                  case 'Scared':
+                                    color = Colors.purple;
+                                    break;
+                                  default:
+                                    color = Colors.grey;
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 25.0),
+                                  child: Indicator(
+                                    color: color,
+                                    text: mood,
+                                    isSquare: false,
+                                    size: 12,
+                                  ),
+                                );
+                              }).toList(),
                             ),
+                            // const Column(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: <Widget>[
+                            //     Indicator(color: Colors.yellow, text: 'Happy', isSquare: false, size: 12),
+                            //     SizedBox(height: 25),
+                            //     Indicator(color: Colors.green, text: 'Disgusted', isSquare: false, size: 12),
+                            //     SizedBox(height: 25),
+                            //     Indicator(color: Colors.blue, text: 'Sad', isSquare: false, size: 12),
+                            //     SizedBox(height: 25),
+                            //     Indicator(color: Colors.red, text: 'Angry', isSquare: false, size: 12),
+                            //     SizedBox(height: 25),
+                            //     Indicator(color: Colors.purple, text: 'Scared', isSquare: false, size: 12),
+                            //   ],
+                            // ),
                           ],
                         ),
                   ),
@@ -165,20 +213,20 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   Future<List<Map<String, dynamic>>> fetchGameIDsByMood(String mood2) async {
     try {
-      // print('Fetching games for mood: $mood2');
+      print('Fetching games for mood: $mood2');
       List<Map<String, dynamic>> gameData = await _statsMoodService.fetchGameIDsAndTimestamps(mood2);
       
       if (gameData.isEmpty) {
-        // print('No games found for mood: $mood2');
+        print('No games found for mood: $mood2');
       } else {
-        // print('Found ${gameData.length} games for mood: $mood2');
+        print('Found ${gameData.length} games for mood: $mood2');
       }
 
-      // print('gameData given to games page: $gameData');
+      print('gameData given to games page: $gameData');
 
       return gameData;
     } catch (e) {
-      // print('Error fetching game IDs for mood: $e');
+      print('Error fetching game IDs for mood: $e');
       throw Exception('Error fetching game IDs for mood: $e');
     }
   }
