@@ -105,6 +105,8 @@ flutter:
     - assets/videos/GameLibrary_3.mp4
     - "assets/default_images/"
     - assets/gifs/gaming_animation.gif
+    - assets/images/stats_icon1.png
+    - assets/images/stats_icon2.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

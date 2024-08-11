@@ -21,6 +21,7 @@ class _GamesWidgetState extends State<GamesWidget> {
 
   void _fetchGameData() async {
     setState(() {
+      // print('gameData given to function form games page: ${widget.gameData}');
       _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
     });
   }
@@ -45,7 +46,6 @@ class _GamesWidgetState extends State<GamesWidget> {
         title: Text(
           'Games',
           style: TextStyle(
-            fontFamily: 'Inter',
             color: Theme.of(context).colorScheme.secondary,
             fontSize: 32,
             letterSpacing: 0,
@@ -60,7 +60,7 @@ class _GamesWidgetState extends State<GamesWidget> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Error loading game data'));
+            return Center(child: Text('Error loading game data: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No game data available'));
           } else {
