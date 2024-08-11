@@ -22,11 +22,7 @@ import 'view/pages/settings/edit_profile_page.dart';
 import 'view/pages/connections/connection_requests_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'view/pages/stats/stats_total_time.dart';
-import 'view/pages/stats/stats_leaderboard_page.dart';
 import 'globals.dart' as globals;
-import 'view/pages/stats/stats_mood.dart';
-import 'view/pages/stats/stats_genres.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -126,10 +122,6 @@ class MyApp extends StatelessWidget {
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
         '/messages' : (context) => Messaging(),
-        '/stats_total_time' : (context) => TotalTimeStatsWidget(),
-        '/stats_leaderboard' : (context) => StatsLeaderboardPage(),
-        '/stats_mood' : (context) => StatsMoodPage(),
-        '/stats_genres' : (context) => GenresStatsPage(),
       },
       initialRoute: '/',
     );
