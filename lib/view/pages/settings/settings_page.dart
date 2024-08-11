@@ -124,9 +124,9 @@ class Options extends StatelessWidget {
                 children: [
                   ListTile(
                     key: const Key('Logout'),
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.logout,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Colors.red,
                       size: 24,
                     ),
                     title: Text(
