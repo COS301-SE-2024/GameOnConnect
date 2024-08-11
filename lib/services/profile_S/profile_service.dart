@@ -86,7 +86,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
   }
 
 
-  Future<String?> getProfileName(String userId) async {
+  Future<String> getProfileName(String userId) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
 
     DocumentSnapshot profileSnapshot = await db.collection("profile_data").doc(userId).get(); //get the document

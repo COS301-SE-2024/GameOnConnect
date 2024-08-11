@@ -1,12 +1,20 @@
+//ignore_for_file:  prefer_interpolation_to_compose_strings
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
+import 'package:gameonconnect/view/components/events/specific_event_info_container.dart';
+import 'package:gameonconnect/view/components/events/specific_events_buttons.dart';
+import 'package:intl/intl.dart';
 import '../../../model/events_M/events_model.dart';
-import 'edit_event_page.dart';
+import '../../components/events/specific_event_name_subscribe.dart';
 
 class ViewEventDetailsWidget extends StatefulWidget {
   final Event e;
-  const ViewEventDetailsWidget({super.key, required this.e});
+  const ViewEventDetailsWidget({
+    super.key,
+    required this.e,
+  });
   @override
   State<ViewEventDetailsWidget> createState() => _ViewEventDetailsWidgetState();
 }
@@ -27,7 +35,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
     imageUrl = await EventsService().getEventImage(e.eventID);
   }
 
-  void getUpdatedEvent(String id) async{
+  void getUpdatedEvent(String id) async {
     Event updated = (await EventsService().getEvent(id))!;
     setState(() {
       e = updated;
@@ -49,412 +57,175 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
+            String timezone = e.startDate.timeZoneName;
             imageUrl = snapshot.data!;
-            selected = EventsService().isSubscribed(e);
-            isJoined = EventsService().isJoined(e);
             isCreator = EventsService().isCreator(e);
             return GestureDetector(
-              child: Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                body: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Stack(children: [
-                              CachedNetworkImage(
-                                height: 340,
-                                width: double.infinity,
-                                imageUrl: imageUrl,
-                                placeholder: (context, url) => const Center(
-                                    child:
-                                    CircularProgressIndicator()), // Loading indicator for banner
-                                errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                                fit: BoxFit.cover,
-                              ),
-                              Align(
-                                alignment:
-                                    const AlignmentDirectional(0.85, -1.24),
-                                child: Padding(
+                child: Scaffold(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    body: Column(mainAxisSize: MainAxisSize.max, children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Stack(children: [
+                                //event image:
+                                Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0, 50, 0, 0),
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor:
-                                        Theme.of(context).colorScheme.surface,
-                                    child: IconButton(
-                                      onPressed: () async {
-                                        Navigator.pop(context);
-                                      },
-                                      icon: const Icon(Icons.close_outlined),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      0, 13, 0, 0),
+                                  child: CachedNetworkImage(
+                                    height: 213,
+                                    width: double.infinity,
+                                    imageUrl: imageUrl,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.rectangle,
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(0),
+                                              topRight: Radius.circular(0),
+                                              bottomLeft: Radius.circular(15),
+                                              bottomRight: Radius.circular(15)),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover)),
+                                    ),
+                                    placeholder: (context, url) => const Center(
+                                        child:
+                                            CircularProgressIndicator()), // Loading indicator for banner
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                ),
+                                //back button:
+                                Align(
+                                  alignment:
+                                      const AlignmentDirectional(-0.9, -1),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 21, 0, 0),
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.surface,
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                        },
+                                        icon: const Icon(
+                                            Icons.keyboard_backspace),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
                                     ),
                                   ),
                                 ),
+                              ]),
+                              SpecificEventNameSubscribe(
+                                  e: e, isCreator: isCreator),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 12, 0),
+                                  child: Text(
+                                    isCreator ? "You" : e.creatorName,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
+                                  ),
+                                ),
                               ),
-                            ]),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Flexible(
-                                  child: Column(
-                                    children: [
-                                      Padding(
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 12, 19),
+                                    child: Text(
+                                      DateFormat('EEE, y/MM/d, kk:mm')
+                                              .format(e.startDate) +
+                                          ' ' +
+                                          timezone,
+                                      // "Saturday, 9 July 2024, 10 AM SAST",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).brightness ==
+                                                Brightness.light
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    )),
+                              ),
+                              Divider(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                                indent: 12,
+                                endIndent: 12,
+                              ),
+                              e.description == ""
+                                  ? const SizedBox()
+                                  : Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 20, 0, 0),
+                                            .fromSTEB(12, 19, 12, 19),
                                         child: Text(
-                                          e.name,
-                                          textAlign: TextAlign.center,
+                                          e.description,
                                           style: TextStyle(
                                             fontFamily: 'Inter',
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            fontSize: 24,
+                                            fontSize: 14,
                                             letterSpacing: 0,
-                                            fontWeight: FontWeight.w500,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                        ),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              !selected;
-                                            });
-                                            if (selected) {
-                                              EventsService().unsubscribeToEvent(e);
-                                            } else {
-                                              EventsService().subscribeToEvent(e);
-                                            }
-                                            getUpdatedEvent(e.eventID);
-                                          },
-                                          icon: selected
-                                              ? const Icon(Icons.notifications)
-                                              : const Icon(Icons
-                                                  .notification_add_outlined)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 8, 24, 0),
-                              child: Text(
-                                e.description,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontSize: 14,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 16, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Type of event:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      e.eventType,
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Starting at:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${e.startDate.day}/${e.startDate.month}/${e.startDate.year}   |  ${e.startDate.hour}:${e.startDate.minute}',
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Ending at:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      '${e.endDate.day}/${e.endDate.month}/${e.startDate.year}   |  ${e.endDate.hour}:${e.endDate.minute}',
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  24, 1, 24, 0),
-                              child: Container(
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 0,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                      offset: const Offset(
-                                        0.0,
-                                        1,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        '# Joined:',
-                                        style: TextStyle(
-                                          fontFamily: 'Inter',
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                          fontSize: 16,
-                                          letterSpacing: 0,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      EventsService().getAmountJoined(e).toString(),
-                                      style: TextStyle(
-                                        fontFamily: 'Inter',
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        fontSize: 16,
-                                        letterSpacing: 0,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: isCreator
-                                    ? Theme.of(context).colorScheme.primary
-                                    : isJoined
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                        : Theme.of(context).colorScheme.primary,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                    offset: const Offset(
-                                      0.0,
-                                      2,
-                                    ),
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0, 12, 0, 0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(0, 0, 0, 4),
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                            if(isCreator){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  EditEvent(e: e,imageUrl: imageUrl)));
-                                            }
-                                            if (!isJoined) {
-                                              EventsService().joinEvent(e);
-                                              getUpdatedEvent(e.eventID);
-                                              isJoined = true;
-                                            }
-
-                                          },
-                                          child: Text(
-                                            isCreator
-                                                ? 'Edit event'
-                                                : isJoined
-                                                    ? 'Joined event!'
-                                                    : 'Join event',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .surface,
-                                              fontSize: 18,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                            fontWeight: FontWeight.normal,
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Event type",
+                                  endInfo: e.eventType),
+                              SpecificEventInfoContainer(
+                                startInfo: "Participants",
+                                endInfo: EventsService()
+                                    .getAmountJoined(e)
+                                    .toString(),
                               ),
-                            ),
-                          ],
+                              SpecificEventInfoContainer(
+                                startInfo: "Starting at",
+                                endInfo: DateFormat('EEE, y/MM/d, kk:mm')
+                                        .format(e.startDate) + ' \n' + timezone,
+                              ),
+                              SpecificEventInfoContainer(
+                                startInfo: "Ending at",
+                                endInfo: DateFormat('EEE, y/MM/d, kk:mm')
+                                        .format(e.endDate) +
+                                    ' \n' +
+                                    timezone,
+                              ),
+                              SpecificEventInfoContainer(
+                                  startInfo: "Visibility",
+                                  endInfo: e.privacy ? "Public" : "Private"),
+                              const SizedBox(
+                                height: 36,
+                              ),
+                              SpecificEventsButtons(
+                                  e: e,
+                                  isCreator: isCreator,
+                                  imageUrl: imageUrl)
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+                      )
+                    ])));
           }
         });
   }
