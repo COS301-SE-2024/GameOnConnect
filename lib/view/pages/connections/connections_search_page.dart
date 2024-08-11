@@ -4,6 +4,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import '../../../services/connection_S/connection_request_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../../model/connection_M/friend_model.dart';
@@ -316,7 +317,14 @@ Widget build(BuildContext context) {
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
+                      child: GestureDetector(
+                        onTap: (){
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ProfilePage(uid: user.uid, isOwnProfile:false, isConnection: false, loggedInUser: _currentUserId)), // Navigate to ConnectionsList page
+                          );
+                        },
+                       child: Row(
                         children: [
                           /*CircleAvatar(
                           radius: 24, // Adjust the radius as needed
@@ -401,6 +409,8 @@ Widget build(BuildContext context) {
                           ),
                         ],
                       ),
+                      ),
+                      
                     );
                   },
                 ),
