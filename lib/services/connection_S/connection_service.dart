@@ -38,12 +38,18 @@ class ConnectionService {
               List<String>.from(snapshot.data()!['connections']);
           return connections;
         }
-        if (who == "requests") {
+        else if (who == "requests") {
           // Cast the friends request array to List<String>
           List<String> requests =
               List<String>.from(snapshot.data()!['connection_requests']);
           return requests;
-        } else {
+        } 
+        else if (who == "pending"){
+          List<String> pending =
+              List<String>.from(snapshot.data()!['pending']);
+          return pending;
+        }
+        else {
           print("no snapshot");
           return []; //return an empty array
         }
