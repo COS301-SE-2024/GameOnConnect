@@ -214,9 +214,13 @@ void navigateToConnections(BuildContext context) {
         future: ProfileService().fetchProfileData(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  const Center(child: CircularProgressIndicator()); // Show loading indicator
+            return  const Center(
+              key: Key('loadingScaffold'),
+              child: CircularProgressIndicator()); // Show loading indicator
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              key: const Key('errorScaffold'),
+              child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.data == null) {
             return const Center(child: Text('Profile data not found.'));
           } else {

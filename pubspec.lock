@@ -455,10 +455,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_emoji_feedback
-      sha256: "1a8ab7bbc258cfd8b3d84e61d28dedd6563a878fa9f44ce131368efa90a5de87"
+      sha256: "5a4a580eaf4a44014889a65d4445267d8a98fe0baa0085658a5f61bafb3de4f4"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.2"
+    version: "0.4.0"
   flutter_html:
     dependency: "direct main"
     description:

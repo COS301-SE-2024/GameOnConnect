@@ -91,6 +91,7 @@ class _ChooseGame extends State<ChooseGame> {
                           String i = gameNames[index];
 
                           return GameCard(
+                            key: Key(i),
                             name: i,
                             gameID: getGameID(i),
                             chosen: chosenGame,
@@ -114,6 +115,7 @@ class _ChooseGame extends State<ChooseGame> {
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             15, 12, 15, 12),
                         child: MaterialButton(
+                          key: const Key('save_game_button'),
                             onPressed: () {
                               Navigator.pop(context, chosenGame);
                             },
@@ -133,6 +135,7 @@ class _ChooseGame extends State<ChooseGame> {
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(24, 24, 24, 1.0),
                                     ),
+                                    key: Key('save_game_text'),
                                   ),
                                 ])),
                       )

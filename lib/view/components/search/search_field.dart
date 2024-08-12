@@ -31,6 +31,7 @@ class _SearchFieldState extends State<SearchField> {
         ),
         const SizedBox(width: 15),
         IconButton.filled(
+          key: const Key('searchButton'),
           color: Colors.black,
           icon: const Icon(Icons.search),
           onPressed: () {
