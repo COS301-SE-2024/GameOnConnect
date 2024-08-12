@@ -3,7 +3,8 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 <br><br>
 
 **Link to Demo 1 video: [here](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing)** <br>
-**Link to Demo 2 video: [here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing)**<br><br>
+**Link to Demo 2 video: [here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing)** <br>
+**Link to Demo 3 video: [here](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing)** <br><br>
 # Documentation Links: #
 **[SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki)** <br>
 **[Github project board](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
