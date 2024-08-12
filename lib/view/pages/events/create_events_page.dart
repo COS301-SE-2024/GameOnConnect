@@ -93,6 +93,7 @@ class _CreateEventsState extends State<CreateEvents> {
                     children: [
                       Expanded(
                         child: SingleChildScrollView(
+                          key: const Key('createEventScroll'),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -105,7 +106,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
-
                                         const EdgeInsetsDirectional.fromSTEB(
                                             16, 12, 16, 0),
                                     child: Column(
@@ -114,17 +114,22 @@ class _CreateEventsState extends State<CreateEvents> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           InkWell(
-                                                onTap: () {
-                                                  pickImage();
-                                                },
-                                                child: Stack (
-                                                    alignment: Alignment.center,
-                                                    children: [SizedBox(
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                    child: const FittedBox(
-                                      fit: BoxFit.cover,)),ClipRRect(
+                                            onTap: () {
+                                              pickImage();
+                                            },
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: const FittedBox(
+                                                      fit: BoxFit.cover,
+                                                    )),
+                                                ClipRRect(
+                                                  
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -141,17 +146,23 @@ class _CreateEventsState extends State<CreateEvents> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
-
-                                             Container(
-                                              height: 40,
-                                              width :40,
-                                              decoration: BoxDecoration(color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.7),
-                                                  shape:BoxShape.circle ),
-                                              child:
-                                            Icon(Icons.camera_alt_outlined,color: Theme.of(context).colorScheme.primary, )
+                                                Container(
+                                                    height: 40,
+                                                    width: 40,
+                                                    decoration: BoxDecoration(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primaryContainer
+                                                            .withOpacity(0.7),
+                                                        shape: BoxShape.circle),
+                                                    child: Icon(
+                                                      Icons.camera_alt_outlined,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary,
+                                                    )),
+                                              ],
                                             ),
-                                  ],
-                                          ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -159,6 +170,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           SizedBox(
                                             height: 70,
                                             child: TextFormField(
+                                              key: const Key('nameTextField'),
                                               onFieldSubmitted: (val) {
                                                 name = nameController.text;
                                                 if (name.isNotEmpty) {
@@ -284,6 +296,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               });
                                             },
                                             child: Container(
+                                              key: const Key('gameSelector'),
                                               padding:
                                                   const EdgeInsetsDirectional
                                                       .fromSTEB(16, 0, 16, 0),
@@ -336,6 +349,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 20,
                                           ),
                                           TextFormField(
+                                            key: const Key('descriptionTextField'),
                                             onTapOutside: (event) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
@@ -407,10 +421,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                           ChipSelector(selectedOption: selectedOption,onSelected:(option) {( setState(() {
-                                            selectedOption = option;
-                                          }));}
-                                          ),
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -427,13 +444,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           InkWell(
+                                            key: const Key('start_date_picker'),
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               final datePickedDate =
-                                              await showDatePicker(
+                                                  await showDatePicker(
                                                 context: context,
                                                 initialDate: DateTime.now(),
                                                 lastDate: DateTime(2050),
@@ -442,7 +460,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   return Theme(
                                                     data: ThemeData.from(
                                                         colorScheme:
-
                                                             Theme.of(context)
                                                                 .colorScheme),
                                                     child: child!,
@@ -529,8 +546,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height:10),
-
+                                          const SizedBox(height: 10),
                                           Text(
                                             'End*',
                                             style: TextStyle(
@@ -544,6 +560,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           InkWell(
+                                            key: const Key('end_date_picker'),
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
                                             hoverColor: Colors.transparent,
@@ -694,6 +711,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   ),
                                                   const Spacer(),
                                                   Switch.adaptive(
+                                                    key: const Key('switch'),
                                                     activeTrackColor:
                                                         Theme.of(context)
                                                             .colorScheme
@@ -743,7 +761,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 });
                                               });
                                             },
-
                                             child: Container(
                                               padding:
                                                   const EdgeInsetsDirectional
@@ -801,8 +818,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     16, 12, 16, 12),
                                 child: MaterialButton(
+                                  key: const Key('create_event_button'),
                                   height: 50,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
                                   minWidth: double.infinity,
                                   onPressed: () {
                                     name = nameController.text;
@@ -818,10 +837,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                       create();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
-                                        content:
-                                        const Text("Event created successfully!"),
-                                        backgroundColor:
-                                        Theme.of(context).colorScheme.primary,
+                                        content: const Text(
+                                            "Event created successfully!"),
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                       ));
                                       nameController.clear();
                                       descriptionController.clear();
@@ -836,26 +856,26 @@ class _CreateEventsState extends State<CreateEvents> {
                                       });
                                     } else {
                                       if (!validName) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered an event name "),
                                                 backgroundColor: Colors.red));
                                       } else if (gameChosen == -1) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you chose a game to play "),
                                                 backgroundColor: Colors.red));
                                       } else if (!validStartDate) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered a valid start date and time "),
                                                 backgroundColor: Colors.red));
                                       } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     "Please ensure you entered a valid end date and time "),
                                                 backgroundColor: Colors.red));
@@ -866,7 +886,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                   child: Text(
                                     'Create event',
                                     style: TextStyle(
-                                        color: Theme.of(context).colorScheme.surface,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -880,4 +902,3 @@ class _CreateEventsState extends State<CreateEvents> {
                 ))));
   }
 }
-
