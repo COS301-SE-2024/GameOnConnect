@@ -71,12 +71,12 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                 : Padding(
                     padding: const EdgeInsets.all(12),
                     child: allZero
-                        ? Center(
+                        ? const Center(
                             child: Text(
                               'You have not achieved any top 10 finishes',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).colorScheme.onSurface,
+                                color: Colors.grey,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
