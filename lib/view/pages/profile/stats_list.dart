@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/stats/stats_page.dart';
+// import 'package:gameonconnect/view/pages/stats/stats_page.dart';
 
 class StatsList extends StatefulWidget {
   const StatsList({super.key ,required this.heading}) ;
@@ -27,28 +27,28 @@ final List<String> labels = ['Mood', 'Genres', 'Total Time', 'Leaderboard'];
   void _navigateToPage(int index) {
     switch (index) {
       case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StatsPage()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsPage()),
+        // );
         break;
       case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StatsPage()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsPage()),
+        // );
         break;
       case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StatsPage()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsPage()),
+        // );
         break;
       case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StatsPage()),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const StatsPage()),
+        // );
         break;
     }
   }
