@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -95,10 +96,10 @@ class AuthService {
       if (currentUser != null) {
         final defaultData = <String, dynamic>{
           "age_rating_tags": [],
-          "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
+          "banner": dotenv.env['DEFAUlT_BANNER_URL'],
           "bio": "",
           "birthday": Timestamp.now(),
-          "profilepicture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
+          "profile_picture": dotenv.env['DEFAUlT_IMAGE_URL'],
           "username": {"profile_name": username, "unique_num": _nextNum},
           "currently_playing":"",
           "my_games": [],
