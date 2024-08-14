@@ -8,7 +8,7 @@ import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../model/game_library_M/game_details_model.dart';
 import 'choose_my_games_page.dart';
-import '../../components/event/create_event_chips.dart';
+import '../../components/events/create_event_chips.dart';
 
 
 
