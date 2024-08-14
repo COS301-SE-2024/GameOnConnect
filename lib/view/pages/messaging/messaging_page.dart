@@ -80,6 +80,15 @@ class _MessagingState extends State<Messaging> {
           );
         }
 
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              'No existing chats found.',
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+            ),
+          );
+        }
+
         String currentUserID =
             _authService.getCurrentUser()!.uid; //get the logged in user
         //get the user data and the last message stream
