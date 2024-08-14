@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
+import 'package:gameonconnect/services/feed_S/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
-import 'package:gameonconnect/services/game_library_S/game_service.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -17,68 +15,36 @@ class GameTimer extends StatefulWidget {
 }
 
 class _GameTimer extends State<GameTimer> {
-  final MyGamesService _currentlyPlaying = MyGamesService();
-  final GameService _gameService = GameService();
   final ProfileService _profileService = ProfileService();
+  final TimerService _timerService = TimerService();
   Future<List<GameDetails>>? _userGames;
-  String? _selectedItem;
-  static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
-  final SessionStatsService _sessionStatsService = SessionStatsService();
   String _mood = "No mood";
-  DateTime _startTime = DateTime.timestamp();
 
   @override
   void initState() {
     super.initState();
-    _fetchUserGames();
-  }
-
-  Future<void> _fetchUserGames() async {
-    try {
-      List<String> myGameIds = await _currentlyPlaying.getMyGames();
-
-      Future<List<GameDetails>> gameDetailsFutures = Future.wait(
-        myGameIds.map((id) => _gameService.fetchGameDetails(id)),
-      );
-
-      List<GameDetails> gameDetails = await gameDetailsFutures;
-
-      setState(() {
-        _userGames = Future.value(gameDetails);
-      });
-    } catch (e) {
-      rethrow;
-    }
+    _userGames = _timerService.fetchUserGames();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _timerService.stopTimer();
     _timer?.cancel();
   }
 
   void _startStopWatch() {
-    _startTime = DateTime.timestamp();
-    _stopwatch.reset();
-    _stopwatch.start();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timerService.resetTimer();
+    _timerService.startTimer(() {
       setState(() {});
     });
-    _profileService.setCurrentlyPlaying(_selectedItem!);
+    
   }
 
   void _stopStopwatch() {
-    _stopwatch.stop();
-    _timer?.cancel();
+    _timerService.stopTimer();
     _profileService.setCurrentlyPlaying("");
-  }
-
-  String _formatElapsedTime() {
-    final int hours = _stopwatch.elapsed.inHours;
-    final int minutes = (_stopwatch.elapsed.inMinutes % 60);
-    final int seconds = (_stopwatch.elapsed.inSeconds % 60);
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -92,7 +58,7 @@ class _GameTimer extends State<GameTimer> {
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           title: Text(
-            _stopwatch.isRunning ? 'Done playing?' : "Start playing",
+            _timerService.isRunning() ? 'Done playing?' : "Start playing",
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -105,7 +71,7 @@ class _GameTimer extends State<GameTimer> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _stopwatch.isRunning
+                  _timerService.isRunning()
                       ? Row(
                           children: [
                             const Icon(
@@ -113,10 +79,15 @@ class _GameTimer extends State<GameTimer> {
                               color: Colors.red,
                             ),
                             const SizedBox(width: 10),
-                            Text(
-                              _formatElapsedTime(),
-                              style: const TextStyle(color: Colors.red),
-                            )
+                            ValueListenableBuilder<String>(
+                              valueListenable: _timerService.elapsedTime,
+                              builder: (context, value, child) {
+                                return Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.red),
+                                );
+                              },
+                            ),
                           ],
                         )
                       : FutureBuilder<List<GameDetails>>(
@@ -135,7 +106,6 @@ class _GameTimer extends State<GameTimer> {
                               return DropdownButton<String>(
                                 isDense: true,
                                 underline: const SizedBox(),
-                                value: _selectedItem,
                                 hint: const Text('What are you playing?'),
                                 items: snapshot.data!.map((GameDetails game) {
                                   return DropdownMenuItem<String>(
@@ -144,23 +114,22 @@ class _GameTimer extends State<GameTimer> {
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
-                                  setState(() {
-                                    _selectedItem = newValue;
-                                  });
+                                  _timerService.setGame(newValue);
                                 },
                               );
                             }
                           }),
                   IconButton.filled(
                     style: IconButton.styleFrom(
-                      backgroundColor: _stopwatch.isRunning ? Colors.red : Theme.of(context).colorScheme.primary
-                    ),
-                    icon: _stopwatch.isRunning
-                        ? const Icon(Icons.stop)
-                        : const Icon(Icons.play_arrow),
+                        backgroundColor: _timerService.isRunning()
+                            ? Colors.red
+                            : Theme.of(context).colorScheme.primary),
+                    icon: _timerService.isRunning()
+                        ? const Icon(Icons.stop, color: Colors.white)
+                        : const Icon(Icons.play_arrow, color: Colors.white),
                     onPressed: () {
                       setState(() {
-                        if (_stopwatch.isRunning) {
+                        if (_timerService.isRunning()) {
                           _stopStopwatch();
                           //show emoji feedback
                           showDialog(
@@ -234,22 +203,9 @@ class _GameTimer extends State<GameTimer> {
                                     onPressed: () async {
                                       Navigator.of(context).pop();
                                       //add data to the database
-                                      if (_userGames != null &&
-                                          _selectedItem != null) {
-                                        List<GameDetails> games =
-                                            await _userGames!;
-                                        GameDetails? selectedGame =
-                                            games.firstWhere((game) =>
-                                                game.id.toString() ==
-                                                _selectedItem);
-                                        List genres = selectedGame.genres;
-                                        _sessionStatsService.addSession(
-                                            _stopwatch.elapsedMilliseconds,
-                                            _selectedItem!,
-                                            _mood,
-                                            genres,
-                                            _startTime);
-                                      }
+                                      
+                                        _timerService.addSession(_mood);
+                                      
                                     },
                                   ),
                                 ],
