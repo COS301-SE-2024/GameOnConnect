@@ -96,10 +96,10 @@ class AuthService {
       if (currentUser != null) {
         final defaultData = <String, dynamic>{
           "age_rating_tags": [],
-          "banner": dotenv.env['DEFAUlT_BANNER_URL'],
+          "banner": dotenv.env['DEFAULT_BANNER_URL'],
           "bio": "",
           "birthday": Timestamp.now(),
-          "profile_picture": dotenv.env['DEFAUlT_IMAGE_URL'],
+          "profile_picture": dotenv.env['DEFAULT_IMAGE_URL'],
           "username": {"profile_name": username, "unique_num": _nextNum},
           "currently_playing":"",
           "my_games": [],
