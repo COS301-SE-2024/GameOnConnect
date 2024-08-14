@@ -393,84 +393,114 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       body: ListView(
         padding: const EdgeInsets.all(12.0),
         children: [
-          InkWell(
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+            child:  Stack(
+
+            alignment: Alignment.bottomCenter,
+            clipBehavior: Clip.none,
+            children: <Widget>[
+
+              //banner
+              InkWell(
             onTap: _pickBanner,
             child: Stack(
               alignment: Alignment.center, // Change to Alignment.center
               children: [
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   width: double.infinity,
                   height: 150,
-                  child: _profileBannerUrl.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: _profileBannerUrl,
-                          placeholder: (context, url) => const Center(
-                              child:
-                                  CircularProgressIndicator()), // Loading indicator for banner
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          File(_profileBanner),
-                          width: 359,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: _profileBannerUrl.isNotEmpty
+                        ? CachedNetworkImage(
+                            imageUrl: _profileBannerUrl,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()), // Loading indicator for banner
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_profileBanner),
+                            width: 359,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
                 Container(
-                  height: 30,
-                  width: 30,
+                  height: 40,
+                  width: 40,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.7),
+                      shape: BoxShape.circle),
                   child: Icon(
-                    Icons.camera_alt,
-                    size: 15,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
+                    Icons.camera_alt_outlined,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary,
+                  )
                 ),
               ],
             ),
           ),
-
-          const SizedBox(height: 30),
-          Center(
-            child: InkWell(
+              
+               Positioned(
+                bottom: -50, // Half of the CircleAvatar's radius to align it properly
+                left: 20,
+                //profile picture
+                child: InkWell(
               onTap: _pickImage,
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
                   _profileImageUrl.isNotEmpty
                       ? CircleAvatar(
-                          radius: 60,
+                          radius: 50,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           backgroundImage:
                               CachedNetworkImageProvider(_profileImageUrl),
                         )
                       : CircleAvatar(
-                          radius: 60,
+                          radius: 50,
                           backgroundColor:
                               Theme.of(context).colorScheme.primary,
                           backgroundImage: FileImage(File(_profileImage)),
                         ),
                   Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.camera_alt,
-                        size: 15, color: Theme.of(context).colorScheme.surface),
-                  ),
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.7),
+                      shape: BoxShape.circle),
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary,
+                    size: 17,
+                  )
+                ),
                 ],
               ),
             ),
+              ),
+            ],
           ),
 
+
+          ),
+          
           TagContainer(
             tagType: 'Genre',
             onPressed: () => _showSelectableDialog(
