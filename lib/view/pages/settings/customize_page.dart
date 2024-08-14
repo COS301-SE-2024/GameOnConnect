@@ -545,8 +545,21 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           
           
           
-          const SizedBox(height: 20),
-        
+          
+
+          const Padding(
+            padding: EdgeInsets.fromLTRB(2, 25, 0, 12),
+            child: Text(
+            'Theme',
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              color: Colors.white,
+            ),
+          ),
+
+          ),
+          
           ColourIconContainer(
             updateTheme: _updateTheme,
             isDarkMode: isDarkMode,

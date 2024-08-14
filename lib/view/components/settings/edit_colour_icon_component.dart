@@ -45,8 +45,10 @@ class ColourIconContainer extends StatelessWidget {
                   child: Text(
                     isDarkMode ? 'Light mode:' : 'Dark mode:',
                     style: const TextStyle(
-                      fontSize: 12,
-                    ),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: Color(0xFFBEBEBE), // dark green in dark mode
+                  ),
                   ),
                 ),
                 const Spacer(),
