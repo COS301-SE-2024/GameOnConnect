@@ -95,6 +95,10 @@ class TimerService {
     _game = game;
   }
 
+  bool isGameSelected() {
+    return _game != null;
+  }
+
   void addSession(String mood) async {
     if (_cachedGames != null && _game != null) {
       GameDetails? selectedGame =

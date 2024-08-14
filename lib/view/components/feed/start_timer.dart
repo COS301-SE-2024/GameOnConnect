@@ -20,6 +20,7 @@ class _GameTimer extends State<GameTimer> {
   Future<List<GameDetails>>? _userGames;
   Timer? _timer;
   String _mood = "No mood";
+  String? _selectedGameName;
 
   @override
   void initState() {
@@ -38,7 +39,6 @@ class _GameTimer extends State<GameTimer> {
     _timerService.startTimer(() {
       setState(() {});
     });
-    
   }
 
   void _stopStopwatch() {
@@ -105,7 +105,8 @@ class _GameTimer extends State<GameTimer> {
                               return DropdownButton<String>(
                                 isDense: true,
                                 underline: const SizedBox(),
-                                hint: const Text('What are you playing?'),
+                                hint: Text(_selectedGameName ??
+                                    'What are you playing?'),
                                 items: snapshot.data!.map((GameDetails game) {
                                   return DropdownMenuItem<String>(
                                     value: game.id.toString(),
@@ -113,7 +114,13 @@ class _GameTimer extends State<GameTimer> {
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
-                                  _timerService.setGame(newValue);
+                                  setState(() {
+                                    final selectedGame = snapshot.data!
+                                        .firstWhere((game) =>
+                                            game.id.toString() == newValue);
+                                    _selectedGameName = selectedGame.name;
+                                    _timerService.setGame(newValue);
+                                  });
                                 },
                               );
                             }
@@ -122,98 +129,106 @@ class _GameTimer extends State<GameTimer> {
                     style: IconButton.styleFrom(
                         backgroundColor: _timerService.isRunning()
                             ? Colors.red
-                            : Theme.of(context).colorScheme.primary),
+                            : !_timerService.isGameSelected()
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.primary),
                     icon: _timerService.isRunning()
                         ? const Icon(Icons.stop, color: Colors.white)
                         : const Icon(Icons.play_arrow, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        if (_timerService.isRunning()) {
-                          _stopStopwatch();
-                          //show emoji feedback
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text(
-                                    'How was your experience playing this game?'),
-                                content: SizedBox(
-                                  width: double.maxFinite,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      EmojiFeedback(
-                                        emojiPreset: const [
-                                          EmojiModel(
-                                            src: Assets.classicTerrible,
-                                            label: 'Scared',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.classicBad,
-                                            label: 'Disgusted',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatTerrible,
-                                            label: 'Angry',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatBad,
-                                            label: 'Sad',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatVeryGood,
-                                            label: 'Happy',
-                                            package: 'flutter_emoji_feedback',
-                                          )
-                                        ],
-                                        inactiveElementBlendColor:
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .surface,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            switch (value) {
-                                              case 1:
-                                                _mood = "Scared";
-                                              case 2:
-                                                _mood = "Disgusted";
-                                              case 3:
-                                                _mood = "Angry";
-                                              case 4:
-                                                _mood = "Sad";
-                                              case 5:
-                                                _mood = "Happy";
-                                              default:
-                                                _mood = "No mood";
-                                            }
-                                          });
-                                        },
+                    onPressed: !_timerService.isGameSelected()
+                        ? null
+                        : () {
+                            setState(() {
+                              if (_timerService.isRunning()) {
+                                _stopStopwatch();
+                                //show emoji feedback
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'How was your experience playing this game?'),
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            EmojiFeedback(
+                                              emojiPreset: const [
+                                                EmojiModel(
+                                                  src: Assets.classicTerrible,
+                                                  label: 'Scared',
+                                                  package:
+                                                      'flutter_emoji_feedback',
+                                                ),
+                                                EmojiModel(
+                                                  src: Assets.classicBad,
+                                                  label: 'Disgusted',
+                                                  package:
+                                                      'flutter_emoji_feedback',
+                                                ),
+                                                EmojiModel(
+                                                  src: Assets.flatTerrible,
+                                                  label: 'Angry',
+                                                  package:
+                                                      'flutter_emoji_feedback',
+                                                ),
+                                                EmojiModel(
+                                                  src: Assets.flatBad,
+                                                  label: 'Sad',
+                                                  package:
+                                                      'flutter_emoji_feedback',
+                                                ),
+                                                EmojiModel(
+                                                  src: Assets.flatVeryGood,
+                                                  label: 'Happy',
+                                                  package:
+                                                      'flutter_emoji_feedback',
+                                                )
+                                              ],
+                                              inactiveElementBlendColor:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .surface,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  switch (value) {
+                                                    case 1:
+                                                      _mood = "Scared";
+                                                    case 2:
+                                                      _mood = "Disgusted";
+                                                    case 3:
+                                                      _mood = "Angry";
+                                                    case 4:
+                                                      _mood = "Sad";
+                                                    case 5:
+                                                      _mood = "Happy";
+                                                    default:
+                                                      _mood = "No mood";
+                                                  }
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('Okay'),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                        _timerService.addSession(_mood);
-                                      
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          _startStopWatch();
-                        }
-                      });
-                    },
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Okay'),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            _timerService.addSession(_mood);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                _startStopWatch();
+                              }
+                            });
+                          },
                   ),
                 ],
               ),
