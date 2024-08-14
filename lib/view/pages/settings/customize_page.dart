@@ -99,39 +99,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  Widget _displaySelectedItems(
-      List<String> selectedItems, void Function(String) onDeleted) {
-    return Wrap(
-      spacing: 8.0,
-      children: selectedItems
-          .map((item) => Chip(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                label: Text(
-                  item,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                shape: const StadiumBorder(),
-                side: BorderSide.none,
-                onDeleted: () => onDeleted(item),
-                deleteIcon: const Icon(
-                  Icons.close,
-                  size: 16,
-                  color: Colors.black,
-                ),
-              ))
-          .toList(),
-    );
-  }
-
-  //deletion of a selected item.
-  void _deleteSelectedItem(String item, List<String> selectedList) {
-    if (_isMounted) {
-      setState(() {
-        selectedList.remove(item);
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -547,7 +514,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           ),
 
            Padding(
-            padding: EdgeInsets.fromLTRB(2, 25, 0, 12),
+            padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
             child: Text(
             'Theme',
             style: TextStyle(
@@ -587,7 +554,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.black54,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           onPressed: () {
