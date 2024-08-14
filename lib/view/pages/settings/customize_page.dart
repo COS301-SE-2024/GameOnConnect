@@ -390,7 +390,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         iconkey: const Key('Back_button_key'),
         textkey: const Key('customize_profile_text'),
       ),
-      body: ListView(
+      body:
+      Stack(
+  children: [
+      ListView(
         padding: const EdgeInsets.all(12.0),
         children: [
           Container(
@@ -539,14 +542,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 ),
           ),
 
-
-
-             
-          
-          
-          
-          
-
           const Padding(
             padding: EdgeInsets.fromLTRB(2, 25, 0, 12),
             child: Text(
@@ -570,30 +565,67 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             },
             currentColor: selectedColor,
           ),
-          const SizedBox(height: 40.0),
-          Center(
-            child: ElevatedButton(
-              key: const Key('saveButton'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              onPressed: () {
-                _saveProfileData();
-                Navigator.of(context).pop();
-              },
-              child: const Text(
-                'Save Changes',
-                style: TextStyle(
-                  color: Colors.black
-                  )),
-            ),
+          
+         
+    /*SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        key: const Key('saveButton'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.black54,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
+        ),
+        onPressed: () {
+          _saveProfileData();
+          Navigator.of(context).pop();
+        },
+        child: const Text(
+          'Save Changes',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+    ),*/
+
         ],
       ),
+      Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        width: double.infinity,
+        height: 35,
+        child: ElevatedButton(
+          key: const Key('saveButton'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.black54,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+          onPressed: () {
+            _saveProfileData();
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            'Save Changes',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    ),
+        )
+      
+  ],
+), 
     );
   }
 
