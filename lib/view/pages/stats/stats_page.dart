@@ -24,6 +24,7 @@ class _StatsPageState extends State<StatsPage> {
   final StatsLeaderboardService leaderboardService = StatsLeaderboardService();
 
   bool _isLoading = true;
+  bool _isLoadingT = true;
 
   double todayTime = 0;
   double pastWeekTime = 0;
@@ -47,19 +48,29 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<void> _fetchTotalTimeStats() async {
-    double today = await totalTimeService.getTotalTimePlayedToday();
-    double week = await totalTimeService.getTotalTimePlayedLastWeek();
-    double month = await totalTimeService.getTotalTimePlayedLastMonth();
-    double all = await totalTimeService.getTotalTimePlayedAll();
-    double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers();
+    try {
+      double today = await totalTimeService.getTotalTimePlayedToday();
+      double week = await totalTimeService.getTotalTimePlayedLastWeek();
+      double month = await totalTimeService.getTotalTimePlayedLastMonth();
+      double all = await totalTimeService.getTotalTimePlayedAll();
+      double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers();
 
-    setState(() {
-      todayTime = today;
-      pastWeekTime = week;
-      pastMonthTime = month;
-      allTime = all;
-      playPercentage = percentage;
-    });
+      setState(() {
+        todayTime = today;
+        pastWeekTime = week;
+        pastMonthTime = month;
+        allTime = all;
+        playPercentage = percentage;
+
+        _isLoadingT = false;
+      });
+    } catch (e) {
+        setState(() {
+        _isLoadingT = false;
+        });
+    }
+
+
   }
 
   Future<void> _fetchLeaderboardData() async {
@@ -113,7 +124,9 @@ class _StatsPageState extends State<StatsPage> {
                 top: true,
                 child: Column(
                   children: [
-                    TotalTimeComponent(
+                    _isLoadingT
+                    ? const Center(child: CircularProgressIndicator())
+                    : TotalTimeComponent(
                       todayTime: todayTime,
                       pastWeekTime: pastWeekTime,
                       pastMonthTime: pastMonthTime,
