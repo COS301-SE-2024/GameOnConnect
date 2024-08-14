@@ -675,6 +675,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 child: Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
                                       Icons.language_outlined,
