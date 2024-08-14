@@ -4,7 +4,8 @@ import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 import 'package:gameonconnect/view/components/stats/stats_filter.dart';
 
 class GenresStatsComponent extends StatefulWidget {
-  const GenresStatsComponent({super.key});
+  final String userID;
+  const GenresStatsComponent({super.key, required this.userID});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -27,7 +28,7 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
     setState(() {
       _isLoading = true;
     });
-    final data = await _statsGenresService.getGenrePlayTime(startDate: startDate);
+    final data = await _statsGenresService.getGenrePlayTime(userID: widget.userID, startDate: startDate);
     setState(() {
       genrePlayTime = data;
       _isLoading = false;

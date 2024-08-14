@@ -6,7 +6,8 @@ import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart_sections.dart';
 
 class StatsLeaderboardPage extends StatefulWidget {
-  const StatsLeaderboardPage({super.key});
+  final String userID;
+  const StatsLeaderboardPage({super.key, required this.userID});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -32,7 +33,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
 
   Future<void> _fetchLeaderboardData() async {
     try {
-      final data = await _leaderboardService.fetchLeaderboardData();
+      final data = await _leaderboardService.fetchLeaderboardData(widget.userID);
       setState(() {
         leaderboardData = data;
         _isLoading = false;
@@ -173,7 +174,7 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
 
   Future<List<Map<String, dynamic>>> fetchGameIDsByPositionLB(String position) async {
     try {
-      List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(position);
+      List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(widget.userID, position);
       return gameData;
     } catch (e) {
       throw Exception('Error fetching game IDs for leaderboard: $e');
