@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
@@ -390,7 +391,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         textkey: const Key('customize_profile_text'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0),
         children: [
           InkWell(
             onTap: _pickBanner,
@@ -470,20 +471,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             ),
           ),
 
-          const SizedBox(height: 30),
-          //genre title
-          Row(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Genre',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.secondary)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+          TagContainer(
+            tagType: 'Genre',
+            onPressed: () => _showSelectableDialog(
                   'Select Genre',
                   _genres,
                   (results) {
@@ -492,38 +482,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'genre',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              )
-            ],
           ),
 
-          const SizedBox(height: 8),
-          _displaySelectedItems(_selectedGenres,
-              (item) => _deleteSelectedItem(item, _selectedGenres)),
-
-          const SizedBox(height: 20),
-
-          // age rating title
-          Row(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Age rating ', style: TextStyle(fontSize: 15)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+          TagContainer(
+            tagType: 'Age rating',
+            onPressed: () =>_showSelectableDialog(
                   'Select Age rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
                   (results) {
@@ -532,38 +495,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'age',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              ),
-            ],
           ),
-          const SizedBox(height: 8),
-          _displaySelectedItems(
-              _selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
-
-          const SizedBox(height: 20),
-
-          // social interest title
-          Row(
-            children: <Widget>[
-              const Align(
-                alignment: Alignment.centerLeft,
-                child:
-                    Text('Social interests ', style: TextStyle(fontSize: 15)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+          TagContainer(
+            tagType: 'Social interests',
+            onPressed: () => _showSelectableDialog(
                   'Select Social interest',
                   _interests,
                   (results) {
@@ -572,27 +507,16 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'interest',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              )
-            ],
           ),
 
-          const SizedBox(height: 8),
-          _displaySelectedItems(_selectedInterests,
-              (item) => _deleteSelectedItem(item, _selectedInterests)),
 
+
+             
+          
+          
+          
           const SizedBox(height: 20),
+        
           ColourIconContainer(
             updateTheme: _updateTheme,
             isDarkMode: isDarkMode,
@@ -618,7 +542,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 _saveProfileData();
                 Navigator.of(context).pop();
               },
-              child: const Text('Save Changes'),
+              child: const Text(
+                'Save Changes',
+                style: TextStyle(
+                  color: Colors.black
+                  )),
             ),
           ),
         ],
