@@ -329,7 +329,6 @@ class EventsService {
       final currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser != null) {
-        print(type);
         final data = <String, dynamic>{
           "name": name,
           "eventType": type,
