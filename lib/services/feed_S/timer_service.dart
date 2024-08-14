@@ -13,8 +13,7 @@ class TimerService {
   DateTime _startTime = DateTime.timestamp();
   final SessionStatsService _sessionStatsService = SessionStatsService();
   String? _game;
-  
-  Future<List<GameDetails>>? _userGames;
+  List<GameDetails>? _cachedGames;
   final MyGamesService _currentlyPlaying = MyGamesService();
   final GameService _gameService = GameService();
   final ProfileService _profileService = ProfileService();
@@ -71,6 +70,10 @@ class TimerService {
   }
 
   Future<List<GameDetails>>? fetchUserGames() async {
+    if (_cachedGames != null) {
+      return Future.value(_cachedGames);
+    }
+
     try {
       List<String> myGameIds = await _currentlyPlaying.getMyGames();
 
@@ -80,7 +83,7 @@ class TimerService {
 
       List<GameDetails> gameDetails = await gameDetailsFutures;
 
-      _userGames = Future.value(gameDetails);
+      _cachedGames = gameDetails;
 
       return gameDetails;
     } catch (e) {
@@ -93,10 +96,9 @@ class TimerService {
   }
 
   void addSession(String mood) async {
-    if (_userGames != null && _game != null) {
-      List<GameDetails> games = await _userGames!;
+    if (_cachedGames != null && _game != null) {
       GameDetails? selectedGame =
-          games.firstWhere((game) => game.id.toString() == _game);
+          _cachedGames!.firstWhere((game) => game.id.toString() == _game);
       List genres = selectedGame.genres;
       _sessionStatsService.addSession(
           getElapsedSeconds(), _game!, mood, genres, _startTime);

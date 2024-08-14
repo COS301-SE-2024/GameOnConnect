@@ -30,7 +30,6 @@ class _GameTimer extends State<GameTimer> {
   @override
   void dispose() {
     super.dispose();
-    _timerService.stopTimer();
     _timer?.cancel();
   }
 
@@ -202,8 +201,6 @@ class _GameTimer extends State<GameTimer> {
                                     child: const Text('Okay'),
                                     onPressed: () async {
                                       Navigator.of(context).pop();
-                                      //add data to the database
-                                      
                                         _timerService.addSession(_mood);
                                       
                                     },
