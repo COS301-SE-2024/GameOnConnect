@@ -44,6 +44,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
 
+  bool isCurrentlyDarkMode(BuildContext context) {
+  return MediaQuery.of(context).platformBrightness == Brightness.dark;
+}
+
   Future<void> _fetchGenresFromAPI() async {
     try {
       var url =
@@ -542,14 +546,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 ),
           ),
 
-          const Padding(
+           Padding(
             padding: EdgeInsets.fromLTRB(2, 25, 0, 12),
             child: Text(
             'Theme',
             style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 12,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.secondary
             ),
           ),
 
@@ -566,30 +570,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             currentColor: selectedColor,
           ),
           
-         
-    /*SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        key: const Key('saveButton'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-        onPressed: () {
-          _saveProfileData();
-          Navigator.of(context).pop();
-        },
-        child: const Text(
-          'Save Changes',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-      ),
-    ),*/
+        
 
         ],
       ),

@@ -44,10 +44,10 @@ class ColourIconContainer extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     isDarkMode ? 'Light mode:' : 'Dark mode:',
-                    style: const TextStyle(
+                    style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
-                    color: Color(0xFFBEBEBE), // dark green in dark mode
+                    color: Theme.of(context).colorScheme.secondary, // dark green in dark mode
                   ),
                   ),
                 ),

@@ -36,16 +36,16 @@ class _TagContainerState extends State<TagContainer> {
         children: [
           Text(
             widget.tagType,
-            style: const TextStyle(
+            style:  TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 12,
-              color: Color(0xFFBEBEBE), // dark green in dark mode
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_drop_down,
-              color: Color(0xFFBEBEBE),
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () {
               widget.onPressed();
