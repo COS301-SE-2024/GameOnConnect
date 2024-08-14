@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameCard extends StatefulWidget {
   final String name;
@@ -84,9 +85,12 @@ class _EventCardWidgetState extends State<GameCard> {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: image,
-                      placeholder: (context, url) => const Center(
-                          child:
-                              CircularProgressIndicator()), // Loading indicator for banner
+                      placeholder: (context, url) => Center(
+                        child: LoadingAnimationWidget.halfTriangleDot(
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 36,
+                        ),
+                      ), // Loading indicator for banner
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                       fit: BoxFit.cover,
@@ -125,7 +129,7 @@ class _EventCardWidgetState extends State<GameCard> {
                       shape: BoxShape.circle,
                       color: selected
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.surface, 
+                          : Theme.of(context).colorScheme.surface,
                     ),
                     child: selected
                         ? const Icon(

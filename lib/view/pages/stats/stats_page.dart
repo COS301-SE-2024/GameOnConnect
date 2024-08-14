@@ -8,6 +8,7 @@ import 'package:gameonconnect/view/components/stats/total_time_boxes.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart.dart';
 import 'package:gameonconnect/view/components/stats/genres_bar_graph.dart';
 import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -51,7 +52,8 @@ class _StatsPageState extends State<StatsPage> {
     double week = await totalTimeService.getTotalTimePlayedLastWeek();
     double month = await totalTimeService.getTotalTimePlayedLastMonth();
     double all = await totalTimeService.getTotalTimePlayedAll();
-    double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers();
+    double percentage =
+        await totalTimeService.getPercentageTimePlayedComparedToOthers();
 
     setState(() {
       todayTime = today;
@@ -107,59 +109,64 @@ class _StatsPageState extends State<StatsPage> {
           elevation: 2,
         ),
         body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: SafeArea(
-                top: true,
-                child: Column(
-                  children: [
-                    TotalTimeComponent(
-                      todayTime: todayTime,
-                      pastWeekTime: pastWeekTime,
-                      pastMonthTime: pastMonthTime,
-                      allTime: allTime,
-                      playPercentage: playPercentage,
-                    ),
-                    Divider(
-                      thickness: 1,
-                      indent: 15,
-                      endIndent: 15,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Click on any pie chart segment to view the games *",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+            ? Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
+              )
+            : SingleChildScrollView(
+                child: SafeArea(
+                  top: true,
+                  child: Column(
+                    children: [
+                      TotalTimeComponent(
+                        todayTime: todayTime,
+                        pastWeekTime: pastWeekTime,
+                        pastMonthTime: pastMonthTime,
+                        allTime: allTime,
+                        playPercentage: playPercentage,
+                      ),
+                      Divider(
+                        thickness: 1,
+                        indent: 15,
+                        endIndent: 15,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      const Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Click on any pie chart segment to view the games *",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const StatsMoodPage(),
-                    Divider(
-                      thickness: 1,
-                      indent: 12,
-                      endIndent: 12,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    const GenresStatsComponent(),
-                    Divider(
-                      thickness: 1,
-                      indent: 15,
-                      endIndent: 15,
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                    ),
-                    const StatsLeaderboardPage(),
-                  ],
+                      const StatsMoodPage(),
+                      Divider(
+                        thickness: 1,
+                        indent: 12,
+                        endIndent: 12,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      const GenresStatsComponent(),
+                      Divider(
+                        thickness: 1,
+                        indent: 15,
+                        endIndent: 15,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      const StatsLeaderboardPage(),
+                    ],
+                  ),
                 ),
               ),
-          ),
-        ),
+      ),
     );
   }
 }

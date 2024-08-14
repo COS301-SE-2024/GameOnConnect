@@ -5,6 +5,7 @@ import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart_sections.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StatsMoodPage extends StatefulWidget {
   const StatsMoodPage({super.key});
@@ -77,7 +78,10 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),)
                 : Padding(
                     padding: const EdgeInsets.all(12),
                     child: allZero
