@@ -25,6 +25,7 @@ class _StatsPageState extends State<StatsPage> {
   late final StatsLeaderboardService leaderboardService = StatsLeaderboardService();
 
   bool _isLoading = true;
+  bool _isLoadingT = true;
 
   double todayTime = 0;
   double pastWeekTime = 0;
@@ -48,19 +49,27 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<void> _fetchTotalTimeStats() async {
-    double today = await totalTimeService.getTotalTimePlayedToday(widget.userID);
-    double week = await totalTimeService.getTotalTimePlayedLastWeek(widget.userID);
-    double month = await totalTimeService.getTotalTimePlayedLastMonth(widget.userID);
-    double all = await totalTimeService.getTotalTimePlayedAll(widget.userID);
-    double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers(widget.userID);
+    try {
+      double today = await totalTimeService.getTotalTimePlayedToday(widget.userID);
+      double week = await totalTimeService.getTotalTimePlayedLastWeek(widget.userID);
+      double month = await totalTimeService.getTotalTimePlayedLastMonth(widget.userID);
+      double all = await totalTimeService.getTotalTimePlayedAll(widget.userID);
+      double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers(widget.userID);
 
-    setState(() {
-      todayTime = today;
-      pastWeekTime = week;
-      pastMonthTime = month;
-      allTime = all;
-      playPercentage = percentage;
-    });
+      setState(() {
+        todayTime = today;
+        pastWeekTime = week;
+        pastMonthTime = month;
+        allTime = all;
+        playPercentage = percentage;
+
+        _isLoadingT = false;
+      });
+    } catch (e) {
+        setState(() {
+        _isLoadingT = false;
+        });
+    }
   }
 
   Future<void> _fetchLeaderboardData() async {
@@ -114,7 +123,9 @@ class _StatsPageState extends State<StatsPage> {
                 top: true,
                 child: Column(
                   children: [
-                    TotalTimeComponent(
+                    _isLoadingT
+                    ? const Center(child: CircularProgressIndicator())
+                    : TotalTimeComponent(
                       todayTime: todayTime,
                       pastWeekTime: pastWeekTime,
                       pastMonthTime: pastMonthTime,

@@ -82,11 +82,11 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
                 : Padding(
                     padding: const EdgeInsets.all(12),
                     child: allZero
-                      ? Center(
+                      ? const Center(
                           child: Text(
                             'You have not rated a gaming session yet',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Colors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),

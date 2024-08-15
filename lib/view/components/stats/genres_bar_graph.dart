@@ -127,8 +127,8 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                       _selectedFilter == 'All Time'
                           ? 'No playing sessions recorded'
                           : 'No playing data was recorded in this time period',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
+                      style: const TextStyle(
+                        color: Colors.grey,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -140,8 +140,8 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                           _selectedFilter == 'All Time'
                               ? 'No playing sessions recorded'
                               : 'No playing data was recorded in this time period',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
+                          style: const TextStyle(
+                            color: Colors.grey,
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
                           ),
