@@ -55,7 +55,7 @@ class _ProfileState extends State<ProfilePage>  {
 }
 
 Future<void> getTimePlayed() async {
-  totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll();
+  totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll(widget.uid);
   roundedTotalTime = totalTimePlayed.toStringAsFixed(2);
 }
 
@@ -389,7 +389,7 @@ void navigateToConnections(BuildContext context) {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const StatsPage()),
+                                      MaterialPageRoute(builder: (context) => StatsPage(userID: widget.uid)),     //how do i get the correct userID t display here - get it and use it here
                                     );
                                   },
                                 ),
