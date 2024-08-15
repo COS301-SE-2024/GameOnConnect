@@ -158,6 +158,7 @@ class _GameTimer extends State<GameTimer> {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             EmojiFeedback(
+                                              enableFeedback: true,
                                               emojiPreset: const [
                                                 EmojiModel(
                                                   src: Assets.classicTerrible,
