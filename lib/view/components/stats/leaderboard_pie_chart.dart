@@ -4,6 +4,7 @@ import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart_sections.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StatsLeaderboardPage extends StatefulWidget {
   final String userID;
@@ -68,7 +69,12 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: LoadingAnimationWidget.halfTriangleDot(
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 36,
+                    ),
+                  )
                 : Padding(
                     padding: const EdgeInsets.all(12),
                     child: allZero
@@ -92,12 +98,18 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                                     PieChartData(
                                       borderData: FlBorderData(show: false),
                                       sectionsSpace: 0,
-                                      centerSpaceRadius: 60, 
-                                      sections: LeaderboardPieChartSections.showingSectionsLB(context, leaderboardData),       // showingSectionsLB(),
+                                      centerSpaceRadius: 60,
+                                      sections: LeaderboardPieChartSections
+                                          .showingSectionsLB(context,
+                                              leaderboardData), // showingSectionsLB(),
                                       pieTouchData: PieTouchData(
-                                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                                          if (event is FlLongPressEnd || event is FlTapUpEvent) {
-                                            final touchedIndex = pieTouchResponse?.touchedSection?.touchedSectionIndex;
+                                        touchCallback: (FlTouchEvent event,
+                                            pieTouchResponse) {
+                                          if (event is FlLongPressEnd ||
+                                              event is FlTapUpEvent) {
+                                            final touchedIndex =
+                                                pieTouchResponse?.touchedSection
+                                                    ?.touchedSectionIndex;
                                             if (touchedIndex != null) {
                                               String position = '';
                                               switch (touchedIndex) {
@@ -132,24 +144,53 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 15),
-                                    child: Indicator(color: Theme.of(context).colorScheme.primary, text: '1st', isSquare: false, size: 12),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    child: Indicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        text: '1st',
+                                        isSquare: false,
+                                        size: 12),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 15),
-                                    child: Indicator(color: Theme.of(context).colorScheme.tertiary, text: '2nd', isSquare: false, size: 12),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    child: Indicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        text: '2nd',
+                                        isSquare: false,
+                                        size: 12),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 15),
-                                    child: Indicator(color: Theme.of(context).colorScheme.onPrimary, text: '3rd', isSquare: false, size: 12),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    child: Indicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                        text: '3rd',
+                                        isSquare: false,
+                                        size: 12),
                                   ),
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 15),
-                                    child: Indicator(color: Colors.black, text: 'Top 5', isSquare: false, size: 12),
+                                    child: Indicator(
+                                        color: Colors.black,
+                                        text: 'Top 5',
+                                        isSquare: false,
+                                        size: 12),
                                   ),
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 15),
-                                    child: Indicator(color: Colors.white, text: 'Top 10', isSquare: false, size: 12),
+                                    child: Indicator(
+                                        color: Colors.white,
+                                        text: 'Top 10',
+                                        isSquare: false,
+                                        size: 12),
                                   ),
                                 ],
                               ),
@@ -163,7 +204,8 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
   }
 
   void _navigateToGamesPageLB(String position) async {
-    List<Map<String, dynamic>> gameData = await fetchGameIDsByPositionLB(position); // Fetch the game IDs based on position
+    List<Map<String, dynamic>> gameData = await fetchGameIDsByPositionLB(
+        position); // Fetch the game IDs based on position
     // ignore: use_build_context_synchronously
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -172,7 +214,8 @@ class _StatsLeaderboardPageState extends State<StatsLeaderboardPage> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> fetchGameIDsByPositionLB(String position) async {
+  Future<List<Map<String, dynamic>>> fetchGameIDsByPositionLB(
+      String position) async {
     try {
       List<Map<String, dynamic>> gameData = await _leaderboardService.fetchGameIDsAndTimestamps(widget.userID, position);
       return gameData;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
 import '../../components/settings/edit_switch.dart';
@@ -101,13 +102,17 @@ class _EditProfilePage extends State<EditProfilePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
               snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             databaseAccess(snapshot.data);
-            return 
-            Padding(
+            return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Form(
                 key: _formKey,
@@ -166,7 +171,8 @@ class _EditProfilePage extends State<EditProfilePage> {
                           height: 35,
                           child: TextButton(
                             style: TextButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
                               foregroundColor: Colors.black,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -183,7 +189,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                         ),
                       ),
                     ),
-                  const SizedBox(height: 15),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),

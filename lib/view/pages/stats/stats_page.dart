@@ -22,7 +22,8 @@ class _StatsPageState extends State<StatsPage> {
   late final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
   late final StatsMoodService statsMoodService = StatsMoodService();
   late final StatsGenresService statsGenresService = StatsGenresService();
-  late final StatsLeaderboardService leaderboardService = StatsLeaderboardService();
+  late final StatsLeaderboardService leaderboardService =
+      StatsLeaderboardService();
 
   bool _isLoading = true;
   bool _isLoadingT = true;
@@ -50,11 +51,15 @@ class _StatsPageState extends State<StatsPage> {
 
   Future<void> _fetchTotalTimeStats() async {
     try {
-      double today = await totalTimeService.getTotalTimePlayedToday(widget.userID);
-      double week = await totalTimeService.getTotalTimePlayedLastWeek(widget.userID);
-      double month = await totalTimeService.getTotalTimePlayedLastMonth(widget.userID);
+      double today =
+          await totalTimeService.getTotalTimePlayedToday(widget.userID);
+      double week =
+          await totalTimeService.getTotalTimePlayedLastWeek(widget.userID);
+      double month =
+          await totalTimeService.getTotalTimePlayedLastMonth(widget.userID);
       double all = await totalTimeService.getTotalTimePlayedAll(widget.userID);
-      double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers(widget.userID);
+      double percentage = await totalTimeService
+          .getPercentageTimePlayedComparedToOthers(widget.userID);
 
       setState(() {
         todayTime = today;
@@ -66,9 +71,9 @@ class _StatsPageState extends State<StatsPage> {
         _isLoadingT = false;
       });
     } catch (e) {
-        setState(() {
+      setState(() {
         _isLoadingT = false;
-        });
+      });
     }
   }
 
@@ -89,34 +94,34 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Scaffold(
-        key: scaffoldKey,
+        child: Scaffold(
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
           ),
-          title: Text(
-            'Gaming Stats',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: false,
-          elevation: 2,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        body: _isLoading
+        title: Text(
+          'Gaming Stats',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: false,
+        elevation: 2,
+      ),
+      body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: SafeArea(
@@ -124,14 +129,14 @@ class _StatsPageState extends State<StatsPage> {
                 child: Column(
                   children: [
                     _isLoadingT
-                    ? const Center(child: CircularProgressIndicator())
-                    : TotalTimeComponent(
-                      todayTime: todayTime,
-                      pastWeekTime: pastWeekTime,
-                      pastMonthTime: pastMonthTime,
-                      allTime: allTime,
-                      playPercentage: playPercentage,
-                    ),
+                        ? const Center(child: CircularProgressIndicator())
+                        : TotalTimeComponent(
+                            todayTime: todayTime,
+                            pastWeekTime: pastWeekTime,
+                            pastMonthTime: pastMonthTime,
+                            allTime: allTime,
+                            playPercentage: playPercentage,
+                          ),
                     Divider(
                       thickness: 1,
                       indent: 15,
@@ -170,8 +175,7 @@ class _StatsPageState extends State<StatsPage> {
                   ],
                 ),
               ),
-          ),
-        ),
-    );
+            ),
+    ));
   }
 }

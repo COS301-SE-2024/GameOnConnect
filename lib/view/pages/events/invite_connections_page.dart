@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/card/connection_list_card.dart';
 import '../../../services/events_S/event_service.dart';
 import '../../../model/connection_M/user_model.dart';
@@ -48,7 +49,12 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
             future: EventsService().getConnectionsForInvite(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(
+                  child: LoadingAnimationWidget.halfTriangleDot(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 36,
+                  ),
+                );
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
