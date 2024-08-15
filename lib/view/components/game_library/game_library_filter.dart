@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
   final Function(String) apiFunction;
@@ -71,7 +72,12 @@ class _FilterPageState extends State<FilterPage> {
           future: _filterListFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
+              );
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (snapshot.hasData) {

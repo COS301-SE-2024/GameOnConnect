@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/card/game_list_card.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 
@@ -61,7 +62,12 @@ class _ChooseGame extends State<ChooseGame> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting &&
               snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -115,7 +121,7 @@ class _ChooseGame extends State<ChooseGame> {
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             15, 12, 15, 12),
                         child: MaterialButton(
-                          key: const Key('save_game_button'),
+                            key: const Key('save_game_button'),
                             onPressed: () {
                               Navigator.pop(context, chosenGame);
                             },

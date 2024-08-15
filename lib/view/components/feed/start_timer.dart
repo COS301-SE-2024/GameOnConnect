@@ -5,6 +5,7 @@ import 'package:gameonconnect/services/feed_S/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -95,7 +96,10 @@ class _GameTimer extends State<GameTimer> {
                               AsyncSnapshot<List<GameDetails>> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 36,
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (!snapshot.hasData ||

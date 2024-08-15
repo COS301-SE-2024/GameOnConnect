@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../pages/events/specific_event_details.dart';
 import '../../../services/events_S/event_service.dart';
@@ -80,9 +81,12 @@ class EventCard extends State<EventCardWidget> {
                                     image: imageProvider, fit: BoxFit.cover),
                               ),
                             ),
-                            placeholder: (context, url) => const Center(
-                                child:
-                                    CircularProgressIndicator()), // Loading indicator for banner
+                            placeholder: (context, url) => Center(
+                              child: LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 36,
+                              ),
+                            ), // Loading indicator for banner
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                             fit: BoxFit.cover,
