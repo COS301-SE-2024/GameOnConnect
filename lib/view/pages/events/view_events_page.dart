@@ -146,7 +146,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
                                       child: Container(
                                         width: double.infinity,
-                                        height: 360,
+                                        height: joinedEvents?.length ==0? 600:360,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
