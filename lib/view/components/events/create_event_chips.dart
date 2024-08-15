@@ -83,6 +83,7 @@ class _ChipSelectorState extends State<ChipSelector> {
           onSelected: (bool selected) {
             setState(() {
               selectedOption = (selected ? option.label : null)!;
+              widget.onSelected(selectedOption);
             });
           },
           backgroundColor: selectedOption == option.label
