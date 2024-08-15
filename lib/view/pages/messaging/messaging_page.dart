@@ -160,36 +160,27 @@ class _MessagingState extends State<Messaging> {
     if (lastMessageSnapshot.exists) {
       Map<String, dynamic>? lastMessageData = lastMessageSnapshot.data()
           as Map<String, dynamic>?; // use the last message
-      print('Last Message Data: $lastMessageData');
       String lastMessage =
           lastMessageData?['message_text'] ?? 'No message'; // use the text
-      print('Last Message: $lastMessage');
       Timestamp timestamp = lastMessageData?['timestamp']; // get the time
       DateTime messageDateTime =
           timestamp.toDate(); // use date and time from the stored time
-      print('Timestamp: $timestamp');
-      print('Message DateTime: $messageDateTime');
-
       String messageTime = "";
       DateTime today = DateTime.now();
-      print('Today\'s DateTime: $today');
       if (messageDateTime.year == today.year &&
           messageDateTime.month == today.month &&
           messageDateTime.day == today.day) {
         messageTime = DateFormat('kk:mm').format(
             messageDateTime); //if the message is today then show the time
-        print('Message Time (Today): $messageTime');
       } else {
         messageTime = DateFormat('yyyy-MM-dd').format(
             messageDateTime); //if the message was sent on a different day then show the date
-        print('Message Time (Different Day): $messageTime');
       }
 
       String profilePictureUrl = userData[
           'profile_picture']; // get the profile picture from the user data
       String profileName =
           userData['username']['profile_name'] as String? ?? "Not found";
-      print('Profile Name: $profileName');
       String userID = userData['userID'] as String? ?? "default_user_id";
       String receiverID = userID;
 

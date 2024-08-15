@@ -38,7 +38,11 @@ class _ChatPageState extends State<ChatPage> {
     });
     Future.delayed(
       const Duration(milliseconds: 500),
-      () => scrollDownPage(),
+      () {
+        if (mounted) {
+      scrollDownPage();
+    }
+      } 
     );
   }
 
@@ -51,12 +55,14 @@ class _ChatPageState extends State<ChatPage> {
 
   final ScrollController _scrollController = ScrollController();
   void scrollDownPage() {
+  if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
+}
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
