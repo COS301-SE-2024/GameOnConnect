@@ -246,7 +246,10 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
         child: CheckboxListTile(
           value: _selectedValues.contains(value.id),
           onChanged: (newValue) => _onCheckboxChanged(newValue, value.id),
-          title: Text(value.value),
+          title: Text(
+            value.value,
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),  
+          ),
           tileColor: Theme.of(context).colorScheme.surface,
           activeColor: Theme.of(context).colorScheme.primary,
           checkColor: Theme.of(context).colorScheme.surface,
