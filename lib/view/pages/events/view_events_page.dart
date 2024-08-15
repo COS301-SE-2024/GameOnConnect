@@ -116,7 +116,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           24, 13, 0, 0),
                                     child: SizedBox(
                                         width: double.infinity,
-                                        height: joinedEvents?.length==0? 0 :230,
+                                        height: joinedEvents!.isEmpty? 0 :230,
                                         child:
                                          CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
@@ -146,7 +146,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
                                       child: Container(
                                         width: double.infinity,
-                                        height: joinedEvents?.length ==0? 600:360,
+                                        height: joinedEvents!.isEmpty? 600:360,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
