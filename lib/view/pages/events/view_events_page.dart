@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../model/events_M/events_model.dart';
-import '../../components/event/event_card.dart';
-import '../../components/event/joined_event_card.dart';
+import '../../components/events/event_card.dart';
+import '../../components/events/joined_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';

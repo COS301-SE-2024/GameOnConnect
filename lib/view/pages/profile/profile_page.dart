@@ -57,7 +57,8 @@ class _ProfileState extends State<ProfilePage> {
   }
 
   Future<void> getTimePlayed() async {
-    totalTimePlayed = await StatsTotalTimeService().getTotalTimePlayedAll();
+    totalTimePlayed =
+        await StatsTotalTimeService().getTotalTimePlayedAll(widget.uid);
     roundedTotalTime = totalTimePlayed.toStringAsFixed(2);
   }
 
@@ -423,8 +424,9 @@ class _ProfileState extends State<ProfilePage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const StatsPage()),
+                                            builder: (context) => StatsPage(
+                                                userID: widget
+                                                    .uid)), //how do i get the correct userID t display here - get it and use it here
                                       );
                                     },
                                   ),
@@ -432,6 +434,30 @@ class _ProfileState extends State<ProfilePage> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 24),
+                          Bio(
+                            bio: profileData.bio,
+                            isOwnProfile: widget.isOwnProfile,
+                          ),
+                          const SizedBox(height: 24),
+                          profileData.myGames.isEmpty &&
+                                  widget.uid != widget.loggedInUser
+                              ? const SizedBox.shrink()
+                              : widget.uid != widget.loggedInUser
+                                  ? MyGameList(
+                                      myGameStats: sumOfMygames,
+                                      heading: 'Games',
+                                      currentlyPlaying:
+                                          profileData.currentlyPlaying,
+                                      gameActivities: profileData.myGames,
+                                    )
+                                  : MyGameList(
+                                      myGameStats: sumOfMygames,
+                                      heading: 'My Games',
+                                      currentlyPlaying:
+                                          profileData.currentlyPlaying,
+                                      gameActivities: profileData.myGames,
+                                    ),
                           const SizedBox(height: 24),
                           Bio(
                             bio: profileData.bio,
