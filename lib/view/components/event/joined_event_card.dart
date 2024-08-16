@@ -85,26 +85,29 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CachedNetworkImage(
-                                height: 83.65,
-                                width: 143,
-                                imageUrl: imageUrl,
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(2, 0, 2, 6),
+                                child: CachedNetworkImage(
+                                  height: 83.65,
+                                  width: double.infinity,
+                                  imageUrl: imageUrl,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
                                   ),
+                                  placeholder: (context, url) => const Center(
+                                      child:
+                                          CircularProgressIndicator()), // Loading indicator for banner
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                  fit: BoxFit.cover,
                                 ),
-                                placeholder: (context, url) => const Center(
-                                    child:
-                                        CircularProgressIndicator()), // Loading indicator for banner
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                fit: BoxFit.cover,
                               ),
                               Text(
                                 'Upcoming: ${widget.e?.name}',
