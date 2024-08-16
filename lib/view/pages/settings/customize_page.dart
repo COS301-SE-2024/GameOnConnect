@@ -166,7 +166,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
     } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
-    } else if (color == const Color.fromRGBO(255, 0, 199, 1.0)) {
+    } else if (color == const Color.fromRGBO(204, 0, 160, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }
   }
@@ -526,9 +526,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           // age rating title
           Row(
             children: <Widget>[
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Age rating ', style: TextStyle(fontSize: 15)),
+                child: Text('Age rating ',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 15)),
               ),
               const SizedBox(width: 20),
               InkWell(
@@ -565,10 +568,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           // social interest title
           Row(
             children: <Widget>[
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child:
-                    Text('Social interests ', style: TextStyle(fontSize: 15)),
+                    Text('Social interests ', style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 15)),
               ),
               const SizedBox(width: 20),
               InkWell(
@@ -627,7 +630,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 _saveProfileData();
                 Navigator.of(context).pop();
               },
-              child: const Text('Save Changes'),
+              child: Text(
+                'Save Changes',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
             ),
           ),
         ],

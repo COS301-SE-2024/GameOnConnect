@@ -357,9 +357,9 @@ class _GameLibraryState extends State<GameLibrary> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Text('Clear filters'),
-                  Icon(Icons.clear),
+                children: [
+                  Text('Clear filters', style: TextStyle(color: Theme.of(context).colorScheme.secondary,),),
+                  Icon(Icons.clear, color: Theme.of(context).colorScheme.secondary,),
                 ],
               )),
         ),

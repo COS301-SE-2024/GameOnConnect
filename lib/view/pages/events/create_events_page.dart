@@ -211,7 +211,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       .secondary,
                                                   fontSize: 16,
                                                   letterSpacing: 0,
-                                                  fontWeight: FontWeight.bold,
                                                 ),
                                                 hintStyle: TextStyle(
                                                   color: Theme.of(context)
