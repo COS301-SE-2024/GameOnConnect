@@ -27,23 +27,23 @@ class ChatBubble extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             message,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 12,
               color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w300,
-              fontFamily: 'Inter',
             ),
           ),
+          const SizedBox(height: 10),
           Text(
             DateFormat('yyyy/MM/dd \'at\' kk:mm').format(dateTime),
             style: TextStyle(
               fontSize: 10,
               color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w300,
-              fontFamily: 'Inter',
             ),
           ),
         ],
