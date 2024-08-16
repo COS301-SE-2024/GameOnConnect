@@ -7,7 +7,9 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class ConnectionCardWidget extends StatefulWidget {
   final String image;
@@ -44,6 +46,7 @@ class ConnectionCardWidget extends StatefulWidget {
 }
 
 class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
+  final MessagingService _messagingService = MessagingService();
   late List<String>? invited;
   late String image;
   late String username;
@@ -163,6 +166,32 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     }
   }
 
+  void _handleMenuSelection(
+      String value, String uid, String username, String image) async {
+    if (value == 'disconnect') {
+      _disconnect(uid);
+    } else if (value == 'message') {
+      String conversationID =
+          await _messagingService.findConversationID(widget.loggedInUser, uid);
+      if (conversationID == 'Not found') {
+        List<String> newList = [widget.loggedInUser, uid];
+        conversationID = await _messagingService.createConversation(newList);
+      }
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatPage(
+              profileName: username,
+              receiverID: uid,
+              profilePicture: image,
+            ),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget cardContent = Container(
@@ -209,6 +238,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                             )
                           : CachedNetworkImage(
                               imageUrl: image,
+
                               placeholder: (context, url) => Center(
                                 child: LoadingAnimationWidget.halfTriangleDot(
                                   color: Theme.of(context).colorScheme.primary,
@@ -269,20 +299,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                   ),
                 ],
                 onSelected: (value) {
-                  if (value == 'disconnect') {
-                    _disconnect(uid);
-                  } else if (value == 'message') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatPage(
-                          profileName: username,
-                          receiverID: uid,
-                          profilePicture: image,
-                        ),
-                      ),
-                    );
-                  }
+                  _handleMenuSelection(value, uid, username, image);
                 },
               )
             else if (page == 'requests')
