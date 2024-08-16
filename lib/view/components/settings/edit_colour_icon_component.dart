@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
+import 'package:gameonconnect/view/theme/themes.dart';
 
 class ColourIconContainer extends StatelessWidget {
   final Function(Color) updateTheme;
@@ -31,11 +32,11 @@ class ColourIconContainer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildIconButton(context, const Color.fromRGBO(0, 255, 117, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(173, 0, 255, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(0, 10, 255, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(235, 255, 0, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(255, 0, 199, 1.0)),
+                _buildIconButton(context, darkPrimaryGreen),
+                _buildIconButton(context, darkPrimaryPurple),
+                _buildIconButton(context, darkPrimaryBlue),
+                _buildIconButton(context, darkPrimaryYellow),
+                _buildIconButton(context, darkPrimaryPink),
               ],
             ),
             Row(

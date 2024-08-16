@@ -158,15 +158,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
+    if (color == darkPrimaryGreen) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == const Color.fromRGBO(174, 87, 255, 1.0)) {
+    } else if (color == darkPrimaryPurple) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
+    } else if (color == darkPrimaryBlue) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
+    } else if (color == darkPrimaryYellow) {
       themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
-    } else if (color == const Color.fromRGBO(204, 0, 160, 1.0)) {
+    } else if (color == darkPrimaryPink) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }
   }
@@ -633,7 +633,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Text(
                 'Save Changes',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary),
+                    color: Theme.of(context).colorScheme.surface),
               ),
             ),
           ),
