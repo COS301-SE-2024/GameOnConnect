@@ -22,12 +22,12 @@ class ConnectionsList extends StatefulWidget {
 }
 
 class _ConnectionsListState extends State<ConnectionsList> {
-  List<user.AppUser>? list;
+  late List<user.AppUser> list;
 
   @override
   void initState() {
     super.initState();
-    getConnectionsInvite();
+    getConnectionsInvite(); 
   }
 
   @override
@@ -36,13 +36,29 @@ class _ConnectionsListState extends State<ConnectionsList> {
   }
 
   Future<void> getConnectionsInvite() async {
-    list = await EventsService().getConnectionsForInvite();
+    list = (await EventsService().getConnectionsForInvite())!;
     setState(() {});
   }
+  
+  void sortlist(List<user.AppUser> connections)
+  {
+     connections.sort((a, b) => a.username.compareTo(b.username));
+  }
+
+  void moveYouToTheFront(List<user.AppUser> connections, String yourUid) {  
+  for (int i = 0; i < connections.length; i++) {
+    if (connections[i].uid == yourUid) {
+      user.AppUser you = connections.removeAt(i);
+      connections.insert(0, you);
+      break;
+    }
+  }
+}
+
 
   void _handleDisconnection(String uid) {
     setState(() {
-      list = list?.where((user) => user.uid != uid).toList();
+      list = list.where((user) => user.uid != uid).toList();
     });
   }
 
@@ -67,8 +83,12 @@ class _ConnectionsListState extends State<ConnectionsList> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}, ');
             } else {
-              list = snapshot.data;
-              if (list!.isEmpty) {
+              list = snapshot.data!;
+              sortlist(list);
+              if(!widget.isOwnProfile)
+              {moveYouToTheFront(list, widget.loggedInUser);}
+
+              if (list.isEmpty) {
                 // Display "No connections" when the list is empty
                 return Column(mainAxisSize: MainAxisSize.max, children: [
                   if (widget.isOwnProfile)
@@ -134,12 +154,11 @@ class _ConnectionsListState extends State<ConnectionsList> {
                   SizedBox(
                       height: 300,
                       child: ListView.separated(
-                        itemCount: list!.length,
+                        itemCount: list.length,
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
-                          user.AppUser? i = list![index];
-
+                          user.AppUser? i = list[index];
                           if (i.uid == widget.loggedInUser) {
                             return ConnectionCardWidget(
                                 image: i.profilePicture,
