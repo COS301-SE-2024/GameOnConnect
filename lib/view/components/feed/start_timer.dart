@@ -151,7 +151,10 @@ class _GameTimer extends State<GameTimer> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: const Text(
-                                          'How was your experience playing this game?'),
+                                          'How was your experience playing this game?',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
                                       content: SizedBox(
                                         width: double.maxFinite,
                                         child: Column(
@@ -200,16 +203,22 @@ class _GameTimer extends State<GameTimer> {
                                                   switch (value) {
                                                     case 1:
                                                       _mood = "Scared";
+                                                      break;
                                                     case 2:
                                                       _mood = "Disgusted";
+                                                      break;
                                                     case 3:
                                                       _mood = "Angry";
+                                                      break;
                                                     case 4:
                                                       _mood = "Sad";
+                                                      break;
                                                     case 5:
                                                       _mood = "Happy";
+                                                      break;
                                                     default:
                                                       _mood = "No mood";
+                                                      break;
                                                   }
                                                 });
                                               },
