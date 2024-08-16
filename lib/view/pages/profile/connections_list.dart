@@ -90,7 +90,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
 
               if (list.isEmpty) {
                 // Display "No connections" when the list is empty
-                return Column(mainAxisSize: MainAxisSize.max, children: [
+                return ListView( children: [
                   if (widget.isOwnProfile)
                     GestureDetector(
                       onTap: () {
@@ -123,7 +123,8 @@ class _ConnectionsListState extends State<ConnectionsList> {
                   )
                 ]);
               } else {
-                return Column(mainAxisSize: MainAxisSize.max, children: [
+                return ListView( 
+                  children: [
                   if (widget.isOwnProfile)
                     GestureDetector(
                       onTap: () {
@@ -151,9 +152,10 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         ),
                       ),
                     ),
-                  SizedBox(
-                      height: 300,
-                      child: ListView.separated(
+                SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child:
+                       ListView.separated(
                         itemCount: list.length,
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
@@ -186,7 +188,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox();
                         },
-                      )),
+                      ),),
                 ]);
               }
             }
