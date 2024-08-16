@@ -658,7 +658,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           const Align(
                             alignment: Alignment(-1, -1),
                             child: Padding(
-                              padding: EdgeInsets.all(12),
+                              padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
                               child: Text(
                                 'About',
                                 style: TextStyle(
@@ -670,26 +670,33 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
-                            child: Row(
-                              children: [
-                                Icon(Icons.language_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                const SizedBox(width: 10),
-                                InkWell(
-                                  child: const Text("Game website",
+                            child: InkWell(
+                              onTap: () => launchUrlString(gameDetails.website),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.language_outlined,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      "Game website",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  onTap: () =>
-                                      launchUrlString(gameDetails.website),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                           Align(
                             alignment: const AlignmentDirectional(0, -1),
                             child: Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),  
                               child: CarouselNetworkImageWithPlaceholder(
                                 imageUrl: gameDetails.backgroundImage,
                                 width: 464,

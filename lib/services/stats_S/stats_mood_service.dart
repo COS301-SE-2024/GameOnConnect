@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 class StatsMoodService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<Map<String, int>> fetchMoodData() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser == null) {
+  Future<Map<String, int>> fetchMoodData(String userID) async {
+    // User? currentUser = _auth.currentUser;
+
+    if (userID == "") {
       return {
         'Happy': 0,
         'Disgusted': 0,
@@ -19,7 +20,7 @@ class StatsMoodService {
 
     final snapshot = await _firestore
         .collection('game_session_stats')
-        .where('user_id', isEqualTo: currentUser.uid)
+        .where('user_id', isEqualTo: userID)
         .get();
 
     final moods = snapshot.docs.map((doc) => doc['mood']).toList();
@@ -46,9 +47,9 @@ class StatsMoodService {
     };
   }
 
-  Future<List<Map<String, dynamic>>> fetchGameIDsAndTimestamps(String mood) async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser == null) {
+  Future<List<Map<String, dynamic>>> fetchGameIDsAndTimestamps(String userID, String mood) async {
+    // User? currentUser = _auth.currentUser;
+    if (userID == "") {
       return [];
     }
 
@@ -56,7 +57,7 @@ class StatsMoodService {
 
     final snapshot = await _firestore
         .collection('game_session_stats')
-        .where('user_id', isEqualTo: currentUser.uid).where('mood', isEqualTo: mood)
+        .where('user_id', isEqualTo: userID).where('mood', isEqualTo: mood)
         .get();
 
     final gameData = snapshot.docs.map((doc) {

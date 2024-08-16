@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/events_S/event_service.dart';
 
@@ -43,7 +44,12 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
         future: EventsService().getEventImage(e.eventID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -55,8 +61,9 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     MaterialPageRoute(
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
-
-                child: Padding(padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),child: Container(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                child: Container(
                   width: 147,
                   height: 200,
                   decoration: BoxDecoration(
@@ -74,8 +81,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         )
                       ]),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(11.61, 11.61, 11.61, 11.61),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        11.61, 11.61, 11.61, 11.61),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -111,9 +118,10 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                               ),
                               Text(
                                 'Upcoming: ${widget.e?.name}',
-                                style:  TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'Inter',
-                                  color: Theme.of(context).brightness == Brightness.light
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
                                       ? Colors.black
                                       : Colors.white,
                                   fontSize: 16,
@@ -124,16 +132,16 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                 maxLines: 2,
                               ),
                               Expanded(
-                                  child: Text(
-                                    '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
-                                    style: const TextStyle(
-                                      fontFamily: 'Inter',
-                                      color: Colors.grey,
-                                      fontSize: 14,
-                                      letterSpacing: 0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                child: Text(
+                                  '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
+                                  style: const TextStyle(
+                                    fontFamily: 'Inter',
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.w500,
                                   ),
+                                ),
                               ),
                               Icon(
                                 e.eventType == "Gaming Session"
@@ -151,7 +159,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                     ),
                   ),
                 ),
-                ),
+              ),
             );
           }
         });

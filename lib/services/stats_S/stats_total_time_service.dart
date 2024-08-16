@@ -10,17 +10,17 @@ class StatsTotalTimeService {
     return user;
   }
 
-  Future<double> getTotalTimePlayedToday() async {
+  Future<double> getTotalTimePlayedToday(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfDay = DateTime(now.year, now.month, now.day);
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfDay)
           .get();
 
@@ -36,17 +36,17 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getTotalTimePlayedLastWeek() async {
+  Future<double> getTotalTimePlayedLastWeek(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfWeek = now.subtract(Duration(days: now.weekday));
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfWeek)
           .get();
 
@@ -62,17 +62,17 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getTotalTimePlayedLastMonth() async {
+  Future<double> getTotalTimePlayedLastMonth(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfMonth = DateTime(now.year, now.month);
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfMonth)
           .get();
 
@@ -88,10 +88,10 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getPercentageTimePlayedComparedToOthers() async {
+  Future<double> getPercentageTimePlayedComparedToOthers(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
@@ -102,7 +102,7 @@ class StatsTotalTimeService {
 
       for (var doc in snapshot.docs) {
         double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
-        if (doc.data()['user_id'] == currentUser.uid) {
+        if (doc.data()['user_id'] == userID) {
           totalTimePlayedByCurrentUser += timePlayed;
         }
         totalTimePlayedByAllUsers += timePlayed;
@@ -117,14 +117,14 @@ class StatsTotalTimeService {
     }
   }
 
-   Future<double> getTotalTimePlayedAll() async {
+   Future<double> getTotalTimePlayedAll(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .get();
 
       double totalTimePlayedLastYear = 0.0;

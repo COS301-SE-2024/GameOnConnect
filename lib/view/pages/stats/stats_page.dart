@@ -10,7 +10,8 @@ import 'package:gameonconnect/view/components/stats/genres_bar_graph.dart';
 import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
 
 class StatsPage extends StatefulWidget {
-  const StatsPage({super.key});
+  final String userID;
+  const StatsPage({super.key, required this.userID});
 
   @override
   State<StatsPage> createState() => _StatsPageState();
@@ -18,12 +19,14 @@ class StatsPage extends StatefulWidget {
 
 class _StatsPageState extends State<StatsPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
-  final StatsMoodService statsMoodService = StatsMoodService();
-  final StatsGenresService statsGenresService = StatsGenresService();
-  final StatsLeaderboardService leaderboardService = StatsLeaderboardService();
+  late final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
+  late final StatsMoodService statsMoodService = StatsMoodService();
+  late final StatsGenresService statsGenresService = StatsGenresService();
+  late final StatsLeaderboardService leaderboardService =
+      StatsLeaderboardService();
 
   bool _isLoading = true;
+  bool _isLoadingT = true;
 
   double todayTime = 0;
   double pastWeekTime = 0;
@@ -47,24 +50,36 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<void> _fetchTotalTimeStats() async {
-    double today = await totalTimeService.getTotalTimePlayedToday();
-    double week = await totalTimeService.getTotalTimePlayedLastWeek();
-    double month = await totalTimeService.getTotalTimePlayedLastMonth();
-    double all = await totalTimeService.getTotalTimePlayedAll();
-    double percentage = await totalTimeService.getPercentageTimePlayedComparedToOthers();
+    try {
+      double today =
+          await totalTimeService.getTotalTimePlayedToday(widget.userID);
+      double week =
+          await totalTimeService.getTotalTimePlayedLastWeek(widget.userID);
+      double month =
+          await totalTimeService.getTotalTimePlayedLastMonth(widget.userID);
+      double all = await totalTimeService.getTotalTimePlayedAll(widget.userID);
+      double percentage = await totalTimeService
+          .getPercentageTimePlayedComparedToOthers(widget.userID);
 
-    setState(() {
-      todayTime = today;
-      pastWeekTime = week;
-      pastMonthTime = month;
-      allTime = all;
-      playPercentage = percentage;
-    });
+      setState(() {
+        todayTime = today;
+        pastWeekTime = week;
+        pastMonthTime = month;
+        allTime = all;
+        playPercentage = percentage;
+
+        _isLoadingT = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingT = false;
+      });
+    }
   }
 
   Future<void> _fetchLeaderboardData() async {
     try {
-      final data = await leaderboardService.fetchLeaderboardData();
+      final data = await leaderboardService.fetchLeaderboardData(widget.userID);
       setState(() {
         leaderboardData = data;
         _isLoading = false;
@@ -79,47 +94,49 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Scaffold(
-        key: scaffoldKey,
+        child: Scaffold(
+      key: scaffoldKey,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
           ),
-          title: Text(
-            'Gaming Stats',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: false,
-          elevation: 2,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        body: _isLoading
+        title: Text(
+          'Gaming Stats',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: false,
+        elevation: 2,
+      ),
+      body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: SafeArea(
                 top: true,
                 child: Column(
                   children: [
-                    TotalTimeComponent(
-                      todayTime: todayTime,
-                      pastWeekTime: pastWeekTime,
-                      pastMonthTime: pastMonthTime,
-                      allTime: allTime,
-                      playPercentage: playPercentage,
-                    ),
+                    _isLoadingT
+                        ? const Center(child: CircularProgressIndicator())
+                        : TotalTimeComponent(
+                            todayTime: todayTime,
+                            pastWeekTime: pastWeekTime,
+                            pastMonthTime: pastMonthTime,
+                            allTime: allTime,
+                            playPercentage: playPercentage,
+                          ),
                     Divider(
                       thickness: 1,
                       indent: 15,
@@ -140,26 +157,25 @@ class _StatsPageState extends State<StatsPage> {
                         ),
                       ),
                     ),
-                    const StatsMoodPage(),
+                    StatsMoodPage(userID: widget.userID),
                     Divider(
                       thickness: 1,
                       indent: 12,
                       endIndent: 12,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    const GenresStatsComponent(),
+                    GenresStatsComponent(userID: widget.userID),
                     Divider(
                       thickness: 1,
                       indent: 15,
                       endIndent: 15,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    const StatsLeaderboardPage(),
+                    StatsLeaderboardPage(userID: widget.userID),
                   ],
                 ),
               ),
-          ),
-        ),
-    );
+            ),
+    ));
   }
 }

@@ -6,6 +6,7 @@ import '../../../services/events_S/event_service.dart';
 class SpecificEventNameSubscribe extends StatefulWidget {
   final Event e;
   final bool isCreator;
+
   const SpecificEventNameSubscribe(
       {super.key, required this.e, required this.isCreator});
 
@@ -22,6 +23,8 @@ class _SpecificEventNameSubscribe extends State<SpecificEventNameSubscribe> {
     Event updated = (await EventsService().getEvent(id))!;
     setState(() {
       e = updated;
+      selected = EventsService().isSubscribed(e);
+
     });
   }
 
@@ -68,7 +71,7 @@ class _SpecificEventNameSubscribe extends State<SpecificEventNameSubscribe> {
                       setState(() {
                         selected = !selected;
                       });
-                      if (selected) {
+                      if (!selected) {
                         EventsService().unsubscribeToEvent(e);
                       } else {
                         EventsService().subscribeToEvent(e);
