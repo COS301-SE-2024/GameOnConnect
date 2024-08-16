@@ -50,7 +50,8 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
               ),
             )
           : _friends != null
-              ? const Text("None of your friends are currently online", style: TextStyle(fontWeight: FontWeight.bold))
+              ? const Text("None of your friends are currently online",
+                  style: TextStyle(fontWeight: FontWeight.bold))
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _friends!.length,
