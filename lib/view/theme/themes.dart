@@ -5,12 +5,12 @@ const darkPrimaryContainer = Color.fromRGBO(42, 42, 42, 1.0);
 const darkPrimaryPurple = Color.fromRGBO(171, 140, 243, 1.0);
 const darkPrimaryGreen = Color.fromRGBO(0, 255, 117, 1.0);
 const darkPrimaryBlue = Color.fromRGBO(84, 235, 255, 1.0);
-const darkPrimaryYellow = Color.fromRGBO(235, 255, 0, 1.0);
+const darkPrimaryOrange = Color.fromRGBO(255, 184, 102, 1.0);
 const darkPrimaryPink = Color.fromRGBO(249, 159, 199, 1.0);
 const lightPrimaryGreen = Color.fromRGBO(0, 185, 86, 1);
 const lightPrimaryPurple = Color.fromRGBO(174, 87, 255, 1.0);
 const lightPrimaryBlue = Color.fromRGBO(77, 82, 255, 1.0);
-const lightPrimaryYellow = Color.fromRGBO(235, 255, 0, 1.0);
+const lightPrimaryOrange = Color.fromRGBO(218,118,0, 1.0);
 const lightPrimaryPink = Color.fromRGBO(204, 0, 160, 1.0);
 const darkSurface = Color.fromRGBO(24, 24, 24, 1.0);
 const lightSurface = Color.fromRGBO(255, 255, 255, 1.0);
@@ -75,24 +75,24 @@ ThemeData lightBlueTheme = ThemeData(
   onPrimary: Color.fromRGBO(179, 181, 255, 1.0),
 ));
 
-ThemeData darkYellowTheme = ThemeData(
+ThemeData darkOrangeTheme = ThemeData(
     colorScheme: const ColorScheme.dark(
   surface: darkSurface,
-  primary: darkPrimaryYellow,
+  primary: darkPrimaryOrange,
   secondary: Color.fromRGBO(190, 190, 190, 1.0),
   tertiary: Color.fromRGBO(242, 255, 102, 1), //note this should be checked
   primaryContainer: darkPrimaryContainer,
-  onPrimary: Color.fromRGBO(0, 144, 66, 1.0),
+  onPrimary: Color.fromRGBO(218,118,0, 0.7),
 ));
 
-ThemeData lightYellowTheme = ThemeData(
+ThemeData lightOrangeTheme = ThemeData(
     colorScheme: const ColorScheme.light(
   surface: lightSurface,
-  primary: lightPrimaryYellow,
+  primary: lightPrimaryOrange,
   secondary: Color.fromRGBO(42, 42, 42, 1.0),
   tertiary: Color.fromRGBO(242, 255, 102, 1), //note this should be checked
   primaryContainer: lightPrimaryContainer,
-  onPrimary: Color.fromRGBO(136, 255, 191, 1.0),
+  onPrimary: Color.fromRGBO(218,118,0, 0.5),
 ));
 
 ThemeData darkPinkTheme = ThemeData(

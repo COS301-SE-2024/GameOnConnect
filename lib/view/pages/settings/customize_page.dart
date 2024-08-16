@@ -148,7 +148,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     isDarkMode = currentTheme == darkGreenTheme ||
         currentTheme == darkPurpleTheme ||
         currentTheme == darkBlueTheme ||
-        currentTheme == darkYellowTheme ||
+        currentTheme == darkOrangeTheme ||
         currentTheme == darkPinkTheme;
   }
 
@@ -164,8 +164,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
     } else if (color == darkPrimaryBlue) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == darkPrimaryYellow) {
-      themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
+    } else if (color == darkPrimaryOrange) {
+      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
     } else if (color == darkPrimaryPink) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }

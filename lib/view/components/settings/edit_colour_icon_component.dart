@@ -35,7 +35,7 @@ class ColourIconContainer extends StatelessWidget {
                 _buildIconButton(context, darkPrimaryGreen),
                 _buildIconButton(context, darkPrimaryPurple),
                 _buildIconButton(context, darkPrimaryBlue),
-                _buildIconButton(context, darkPrimaryYellow),
+                _buildIconButton(context, darkPrimaryOrange),
                 _buildIconButton(context, darkPrimaryPink),
               ],
             ),
