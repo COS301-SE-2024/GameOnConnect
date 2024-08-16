@@ -120,7 +120,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       child: SizedBox(
                                         width: double.infinity,
                                         height: 230,
-                                        child: CarouselSlider.builder(
+                                        child: joinedEvents!.isEmpty? const Align(alignment: Alignment(0, 0), child: Text("You currently have no upcoming events")):
+                                         CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
                                               CarouselController(),

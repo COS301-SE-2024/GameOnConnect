@@ -137,7 +137,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 ),
                               ]),
                               SpecificEventNameSubscribe(
-                                  e: e, isCreator: isCreator),
+                                  e: e, isCreator: isCreator,),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
