@@ -1,9 +1,12 @@
+//import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 
-class ColourIconContainer extends StatelessWidget {
+class ColourIconContainer extends StatefulWidget {
+
   final Function(Color) updateTheme;
   final bool isDarkMode;
   final Function(bool) onDarkModeChanged;
@@ -16,6 +19,23 @@ class ColourIconContainer extends StatelessWidget {
     required this.onDarkModeChanged,
     required this.currentColor,
   });
+
+  @override
+  State<ColourIconContainer> createState() => _ColourIconContainerState();
+  
+  }
+
+
+class _ColourIconContainerState extends State<ColourIconContainer> {
+  
+  int _selectedIconIndex = -1;
+
+  void _onIconPressed(int index, Color color) {
+    widget.updateTheme(color);
+    setState(() {
+      _selectedIconIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +54,11 @@ class ColourIconContainer extends StatelessWidget {
               child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildIconButton(context, const Color.fromRGBO(0, 255, 117, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(173, 0, 255, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(0, 10, 255, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(235, 255, 0, 1.0)),
-                _buildIconButton(context, const Color.fromRGBO(255, 0, 199, 1.0)),
+                _buildIconButton(context, const Color.fromRGBO(0, 255, 117, 1.0),0),
+                _buildIconButton(context, const Color.fromRGBO(173, 0, 255, 1.0),1),
+                _buildIconButton(context, const Color.fromRGBO(0, 10, 255, 1.0),2),
+                _buildIconButton(context, const Color.fromRGBO(235, 255, 0, 1.0),3),
+                _buildIconButton(context, const Color.fromRGBO(255, 0, 199, 1.0),4),
               ],
             ),
             ),
@@ -50,7 +70,7 @@ class ColourIconContainer extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    isDarkMode ? 'Light mode:' : 'Dark mode:',
+                    widget.isDarkMode ? 'Light mode:' : 'Dark mode:',
                     style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
@@ -62,9 +82,9 @@ class ColourIconContainer extends StatelessWidget {
                 Transform.scale(
   scale: 0.8, // Adjust this value to change the size
   child:Switch(
-                    value: isDarkMode,
+                    value: widget.isDarkMode,
                     onChanged: (newValue) {
-                      onDarkModeChanged(newValue);
+                      widget.onDarkModeChanged(newValue);
                       Provider.of<ThemeProvider>(context, listen: false)
                           .toggleTheme();
                     },
@@ -78,33 +98,32 @@ class ColourIconContainer extends StatelessWidget {
               ],
             ),
               ),
-            
+                                
           ],
         ),
       ),
     );
   }
 
-  Widget _buildIconButton(BuildContext context, Color color) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.transparent,
-          width: 0.5,
-        ),
-      ),
-      child: IconButton(
-        color: Theme.of(context).colorScheme.primary,
-        icon: Icon(
-          CupertinoIcons.game_controller,
-          color: color,
-        ),
-        onPressed: () {
-          updateTheme(color);
-        },
-      ),
-    );
+  Widget _buildIconButton(BuildContext context, Color color, int index) {
+    return GestureDetector(
+          onTap: () => _onIconPressed(index,color),
+          child: Container(
+            height: 30,
+            width: 30,
+            decoration: BoxDecoration(
+              color: _selectedIconIndex == index
+                  ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.game_controller,
+              color: color,
+            ),
+          ),
+        );
+        
   }
 }
 
