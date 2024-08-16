@@ -633,7 +633,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Text(
                 'Save Changes',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.surface),
+                    color: Theme.of(context).colorScheme.primaryContainer),
               ),
             ),
           ),
