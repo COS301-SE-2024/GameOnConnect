@@ -160,7 +160,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         Provider.of<ThemeProvider>(context, listen: false);
     if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
+    } else if (color == const Color.fromRGBO(174, 87, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
     } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
