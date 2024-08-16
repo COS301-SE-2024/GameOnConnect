@@ -116,8 +116,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                           24, 13, 0, 0),
                                     child: SizedBox(
                                         width: double.infinity,
-                                        height: joinedEvents!.isEmpty? 0 :230,
-                                        child:
+                                        height: 230,
+                                        child: joinedEvents!.isEmpty? const Align(alignment: Alignment(0, 0), child: Text("You currently have no upcoming events")):
                                          CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
@@ -146,7 +146,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                       padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
                                       child: Container(
                                         width: double.infinity,
-                                        height: joinedEvents!.isEmpty? 600:360,
+                                        height: 360,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
