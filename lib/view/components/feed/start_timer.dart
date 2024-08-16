@@ -149,82 +149,88 @@ class _GameTimer extends State<GameTimer> {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
+                                    int? selectedRating = 1;
                                     return AlertDialog(
                                       title: const Text(
                                           'How was your experience playing this game?',
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold)),
-                                      content: SizedBox(
-                                        width: double.maxFinite,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            EmojiFeedback(
-                                              enableFeedback: true,
-                                              emojiPreset: const [
-                                                EmojiModel(
-                                                  src: Assets.classicTerrible,
-                                                  label: 'Scared',
-                                                  package:
-                                                      'flutter_emoji_feedback',
+                                      content: StatefulBuilder(
+                                        builder: (context, StateSetter setDialogState) {
+                                          return SizedBox(
+                                            width: double.maxFinite,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                EmojiFeedback(
+                                                  rating: selectedRating,
+                                                  enableFeedback: true,
+                                                  emojiPreset: const [
+                                                    EmojiModel(
+                                                      src: Assets.classicTerrible,
+                                                      label: 'Scared',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.classicBad,
+                                                      label: 'Disgusted',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatTerrible,
+                                                      label: 'Angry',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatBad,
+                                                      label: 'Sad',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatVeryGood,
+                                                      label: 'Happy',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    )
+                                                  ],
+                                                  inactiveElementBlendColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .surface,
+                                                  onChanged: (value) {
+                                                    setDialogState(() {
+                                                      selectedRating = value;
+                                                      switch (value) {
+                                                        case 1:
+                                                          _mood = "Scared";
+                                                          break;
+                                                        case 2:
+                                                          _mood = "Disgusted";
+                                                          break;
+                                                        case 3:
+                                                          _mood = "Angry";
+                                                          break;
+                                                        case 4:
+                                                          _mood = "Sad";
+                                                          break;
+                                                        case 5:
+                                                          _mood = "Happy";
+                                                          break;
+                                                        default:
+                                                          _mood = "No mood";
+                                                      }
+                                                    });
+                                                  },
                                                 ),
-                                                EmojiModel(
-                                                  src: Assets.classicBad,
-                                                  label: 'Disgusted',
-                                                  package:
-                                                      'flutter_emoji_feedback',
-                                                ),
-                                                EmojiModel(
-                                                  src: Assets.flatTerrible,
-                                                  label: 'Angry',
-                                                  package:
-                                                      'flutter_emoji_feedback',
-                                                ),
-                                                EmojiModel(
-                                                  src: Assets.flatBad,
-                                                  label: 'Sad',
-                                                  package:
-                                                      'flutter_emoji_feedback',
-                                                ),
-                                                EmojiModel(
-                                                  src: Assets.flatVeryGood,
-                                                  label: 'Happy',
-                                                  package:
-                                                      'flutter_emoji_feedback',
-                                                )
                                               ],
-                                              inactiveElementBlendColor:
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  switch (value) {
-                                                    case 1:
-                                                      _mood = "Scared";
-                                                      break;
-                                                    case 2:
-                                                      _mood = "Disgusted";
-                                                      break;
-                                                    case 3:
-                                                      _mood = "Angry";
-                                                      break;
-                                                    case 4:
-                                                      _mood = "Sad";
-                                                      break;
-                                                    case 5:
-                                                      _mood = "Happy";
-                                                      break;
-                                                    default:
-                                                      _mood = "No mood";
-                                                      break;
-                                                  }
-                                                });
-                                              },
                                             ),
-                                          ],
-                                        ),
+                                          );
+                                        }
                                       ),
                                       actions: <Widget>[
                                         TextButton(
