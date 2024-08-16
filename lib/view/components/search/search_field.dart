@@ -27,17 +27,12 @@ class _SearchFieldState extends State<SearchField> {
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
             ),
+            onSubmitted: (value) {
+              widget.onSearch(value);
+            },
           ),
         ),
         const SizedBox(width: 15),
-        IconButton.filled(
-          key: const Key('searchButton'),
-          color: Colors.black,
-          icon: const Icon(Icons.search),
-          onPressed: () {
-            widget.onSearch(widget.controller.text);
-          },
-        ),
       ],
     );
   }
