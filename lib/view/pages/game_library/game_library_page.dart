@@ -189,97 +189,99 @@ class _GameLibraryState extends State<GameLibrary> {
                 TextButton(
                   onPressed: () => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Sort by'),
-                      content:
-                          Column(mainAxisSize: MainAxisSize.min, children: [
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Name'),
-                            value: 'name',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
+                    builder: (BuildContext context) => StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                        title: const Text('Sort by'),
+                        content:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Name'),
+                              value: 'name',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Released'),
+                              value: 'released',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Added'),
+                              value: 'added',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Created'),
+                              value: 'created',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Updated'),
+                              value: 'updated',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Rating'),
+                              value: 'rating',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Metacritic'),
+                              value: 'metacritic',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                        ]),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              Navigator.pop(context, 'Sort');
                               setState(() {
-                                _sortValue = value;
+                                _games.clear();
                               });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Released'),
-                            value: 'released',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Added'),
-                            value: 'added',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Created'),
-                            value: 'created',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Updated'),
-                            value: 'updated',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Rating'),
-                            value: 'rating',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Metacritic'),
-                            value: 'metacritic',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                      ]),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            Navigator.pop(context, 'Sort');
-                            setState(() {
-                              _games.clear();
-                            });
-                            await _loadGames(1);
-                          },
-                          child: const Text('Sort'),
-                        ),
-                      ],
+                              await _loadGames(1);
+                            },
+                            child: const Text('Sort'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   child: Row(
