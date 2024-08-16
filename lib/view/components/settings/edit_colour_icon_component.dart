@@ -7,10 +7,11 @@ import 'package:gameonconnect/view/theme/theme_provider.dart';
 
 class ColourIconContainer extends StatefulWidget {
 
-  final Function(Color) updateTheme;
+  final Function(Color,int) updateTheme;
   final bool isDarkMode;
   final Function(bool) onDarkModeChanged;
   final Color currentColor;
+  final int currentIndex;
 
   const ColourIconContainer({
     super.key,
@@ -18,6 +19,7 @@ class ColourIconContainer extends StatefulWidget {
     required this.isDarkMode,
     required this.onDarkModeChanged,
     required this.currentColor,
+    required this.currentIndex,
   });
 
   @override
@@ -28,17 +30,25 @@ class ColourIconContainer extends StatefulWidget {
 
 class _ColourIconContainerState extends State<ColourIconContainer> {
   
-  int _selectedIconIndex = -1;
+  int _selectedIconIndex = 0;
 
   void _onIconPressed(int index, Color color) {
-    widget.updateTheme(color);
+    widget.updateTheme(color,index);
     setState(() {
       _selectedIconIndex = index;
+
     });
+
   }
+@override
+  void initState() {
+    super.initState();
+    _selectedIconIndex= widget.currentIndex;
+    }
 
   @override
   Widget build(BuildContext context) {
+    //_selectedIconIndex= widget.currentIndex;
     return Container(
       height: 96,
       decoration: BoxDecoration(
@@ -63,7 +73,7 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
             ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
               child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

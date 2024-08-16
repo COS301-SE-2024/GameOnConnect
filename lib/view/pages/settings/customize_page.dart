@@ -43,6 +43,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String testBannerurl = '';
   bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
+  int selectedIndex=0;
 
   bool isCurrentlyDarkMode(BuildContext context) {
   return MediaQuery.of(context).platformBrightness == Brightness.dark;
@@ -67,6 +68,34 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       }
     } catch (e) {
       //print("Error fetching genres: $e");
+    }
+  }
+
+  void  getCurrentIndex()
+  {
+    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 255, 117, 1.0))
+    {
+      selectedIndex=0;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(173, 0, 255, 1.0))
+    {
+      selectedIndex=1;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 10, 255, 1.0))
+    {
+      selectedIndex=2;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(235, 255, 0, 1.0))
+    {
+      selectedIndex=3;
+      return; 
+    }
+    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(255, 0, 199, 1.0)){
+      selectedIndex=4;
+      return; 
     }
   }
 
@@ -109,6 +138,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       setState(() {
         _isDataFetched = true;
       });
+      getCurrentIndex();
     }
     });
     ThemeProvider themeProvider =
@@ -123,7 +153,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         currentTheme == darkPinkTheme;
   }
 
-  void _updateTheme(Color color) {
+  void _updateTheme(Color color, int index) {
     setState(() {
       selectedColor = color;
     });
@@ -432,41 +462,37 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 child: InkWell(
               onTap: _pickImage,
               child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  _profileImageUrl.isNotEmpty
-                      ? CircleAvatar(
-                          radius: 50,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          backgroundImage:
-                              CachedNetworkImageProvider(_profileImageUrl),
-                        )
-                      : CircleAvatar(
-                          radius: 50,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          backgroundImage: FileImage(File(_profileImage)),
-                        ),
-                  Container(
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.7),
-                      shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary,
-                    size: 17,
-                  )
-                ),
-                ],
+  alignment: Alignment.center, // Center the camera icon in the middle of the avatar
+  children: [
+    _profileImageUrl.isNotEmpty
+        ? CircleAvatar(
+            radius: 50,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+          )
+        : CircleAvatar(
+            radius: 50,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundImage: FileImage(File(_profileImage)),
+          ),
+          Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withOpacity(0.7),
+                shape: BoxShape.circle,
               ),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                color: Theme.of(context).colorScheme.primary,
+                size: 17,
+              ),
+            ),
+  ],
+),
             ),
               ),
             ],
@@ -535,6 +561,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               });
             },
             currentColor: selectedColor,
+            currentIndex: selectedIndex,
           ),
           
         
