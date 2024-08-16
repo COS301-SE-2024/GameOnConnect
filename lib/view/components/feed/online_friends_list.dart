@@ -49,39 +49,41 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
                 size: 36,
               ),
             )
-          : ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _friends!.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 80,
-                      width: 80,
-                      child: Pulsator(
-                          style: PulseStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                          count: 3,
-                          duration: const Duration(seconds: 2),
-                          autoStart: true,
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(_friends![index].profilePicture),
-                            ),
-                          )),
-                    ),
-                    Text(_friends![index].username,
-                        style: const TextStyle(fontSize: 10)),
-                  ],
-                );
-              }),
+          : _friends != null
+              ? const Text("None of your friends are currently online", style: TextStyle(fontWeight: FontWeight.bold))
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _friends!.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 80,
+                          width: 80,
+                          child: Pulsator(
+                              style: PulseStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                              count: 3,
+                              duration: const Duration(seconds: 2),
+                              autoStart: true,
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      _friends![index].profilePicture),
+                                ),
+                              )),
+                        ),
+                        Text(_friends![index].username,
+                            style: const TextStyle(fontSize: 10)),
+                      ],
+                    );
+                  }),
     );
   }
 }
