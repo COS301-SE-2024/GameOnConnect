@@ -40,7 +40,11 @@ class _ChatPageState extends State<ChatPage> {
     });
     Future.delayed(
       const Duration(milliseconds: 500),
-      () => scrollDownPage(),
+      () {
+        if (mounted) {
+      scrollDownPage();
+    }
+      } 
     );
   }
 
@@ -52,16 +56,20 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void scrollDownPage() {
+  if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
   }
+}
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
-    if (_textEditingController.text.isNotEmpty) {
+    String messageText = _textEditingController.text.trim();
+
+    if (messageText.isNotEmpty) {
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
           currentUser, widget.receiverID);
@@ -212,7 +220,9 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                   onFieldSubmitted: (value) {
+                    if (value.trim().isNotEmpty) {
                     sendMessage();
+                  }
                   },
                 );
               },
@@ -221,7 +231,7 @@ class _ChatPageState extends State<ChatPage> {
           ValueListenableBuilder<TextEditingValue>(
             valueListenable: _textEditingController,
             builder: (context, value, child) {
-              return value.text.isNotEmpty
+              return value.text.trim().isNotEmpty
                   ? IconButton(
                       onPressed: sendMessage,
                       icon: Icon(

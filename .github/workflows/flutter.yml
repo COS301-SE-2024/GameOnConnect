@@ -39,6 +39,8 @@ jobs:
           echo "STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }}" >> .env
           echo "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" >> .env
           echo "IOS_BUNDLE_ID=${{ secrets.IOS_BUNDLE_ID }}" >> .env
+          echo "DEFAULT_IMAGE_URL=${{ secrets.DEFAULT_IMAGE_URL }}" >> .env
+          echo "DEFAULT_BANNER_URL=${{ secrets.DEFAULT_BANNER_URL }}" >> .env
         shell: bash
 
       # Step 4: Install all the dependencies

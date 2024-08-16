@@ -184,7 +184,6 @@ class MessagingService {
         usersWithConversations.add(user);
       }
     }
-
     yield usersWithConversations; //yield the results
   }
 
