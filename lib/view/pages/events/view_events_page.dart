@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../model/events_M/events_model.dart';
-import '../../components/event/event_card.dart';
-import '../../components/event/joined_event_card.dart';
+import '../../components/events/event_card.dart';
+import '../../components/events/joined_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import '../../../services/events_S/event_service.dart';
-
 
 class ViewEvents extends StatefulWidget {
   const ViewEvents({super.key});
@@ -52,15 +52,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
             appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.surface,
                 automaticallyImplyLeading: false,
-                title:Text(
+                title: Text(
                   'Events',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 actions: <Widget>[
@@ -70,29 +68,34 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       key: const Key('history_icon_button'),
                       onPressed: () {
                         //Navigate to history page
-                        },
+                      },
                       icon: Icon(
                         Icons.history,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),
-                ]
-            ),
+                ]),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
                 top: true,
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance .collection('events')
+                    stream: FirebaseFirestore.instance
+                        .collection('events')
                         .orderBy('start_date', descending: false)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return Center(
+                          child: LoadingAnimationWidget.halfTriangleDot(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 36,
+                          ),
+                        );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
-                      } else if(snapshot.hasData){
+                      } else if (snapshot.hasData) {
                         allEvents = [];
                         for (var x in snapshot.data!.docs) {
                           var data = x.data() as Map<String, dynamic>;
@@ -105,16 +108,16 @@ class _HomePageWidgetState extends State<ViewEvents> {
                             length: 3,
                             child: Wrap(
                               children: [
-
                                 Column(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24, 13, 0, 0),
-                                    child: SizedBox(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24, 13, 0, 0),
+                                      child: SizedBox(
                                         width: double.infinity,
                                         height: 230,
                                         child: CarouselSlider.builder(
@@ -136,13 +139,16 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                               (context, index, realIndex) {
                                             Event i = joinedEvents![index];
                                             return UpcomingEventCardWidget(
-                                                e: i,);
+                                              e: i,
+                                            );
                                           },
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(12, 42.56, 12, 12),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              12, 42.56, 12, 12),
                                       child: Container(
                                         width: double.infinity,
                                         height: 360,
@@ -164,39 +170,54 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                   children: [
                                                     Align(
                                                       alignment:
-                                                          const Alignment(
-                                                              0, 1),
+                                                          const Alignment(0, 1),
                                                       child: ButtonsTabBar(
                                                         width: 101,
                                                         contentCenter: true,
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
-                                                          color:
-                                                          Theme.of(context).brightness == Brightness.light
-                                                              ? Theme.of(context).colorScheme.secondary
-                                                              : Theme.of(context).colorScheme.surface,
+                                                          color: Theme.of(context)
+                                                                      .brightness ==
+                                                                  Brightness
+                                                                      .light
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .surface,
                                                           fontSize: 16,
                                                           letterSpacing: 0,
                                                           fontWeight:
                                                               FontWeight.w500,
-
                                                         ),
-                                                        unselectedLabelStyle:
-                                                            TextStyle(
-                                                                color: Theme.of(context).brightness == Brightness.light
-                                                                    ? Theme.of(context).colorScheme.secondary
-                                                                    : Colors.white),
+                                                        unselectedLabelStyle: TextStyle(
+                                                            color: Theme.of(
+                                                                            context)
+                                                                        .brightness ==
+                                                                    Brightness
+                                                                        .light
+                                                                ? Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary
+                                                                : Colors.white),
                                                         unselectedBackgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
                                                                 .primaryContainer,
                                                         elevation: 0,
-                                                        buttonMargin: const EdgeInsets.fromLTRB(0, 0, 13, 10),
+                                                        buttonMargin:
+                                                            const EdgeInsets
+                                                                .fromLTRB(
+                                                                0, 0, 13, 10),
                                                         backgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
                                                                 .primary,
-                                                        tabs:  const [
+                                                        tabs: const [
                                                           Tab(
                                                             text: 'All',
                                                           ),
@@ -217,14 +238,15 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                       ),
                                                     ),
                                                     Expanded(
-
                                                       child: TabBarView(
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
                                                         children: [
                                                           ClipRRect(
                                                             borderRadius:
-                                                                 BorderRadius.circular(10),
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
                                                             child: Container(
                                                               width: 100,
                                                               height: 30,
@@ -235,7 +257,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     .colorScheme
                                                                     .surface,
                                                                 borderRadius:
-                                                                     BorderRadius.circular(10),
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
                                                               ),
                                                               child: ListView
                                                                   .separated(
@@ -254,12 +278,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       publicAllEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i,);
+                                                                    e: i,
+                                                                  );
                                                                 },
-                                                                separatorBuilder: (context,
-                                                                        index) =>
-                                                                    const SizedBox(
-                                                                        ),
+                                                                separatorBuilder:
+                                                                    (context,
+                                                                            index) =>
+                                                                        const SizedBox(),
                                                               ),
                                                             ),
                                                           ),
@@ -321,7 +346,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       subscribedEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i,);
+                                                                    e: i,
+                                                                  );
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
@@ -389,7 +415,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       myEvents![
                                                                           index];
                                                                   return EventCardWidget(
-                                                                      e: i,);
+                                                                    e: i,
+                                                                  );
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
@@ -416,7 +443,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                             ),
                           ),
                         );
-                      }else{
+                      } else {
                         return const Text('No data found');
                       }
                     }))));

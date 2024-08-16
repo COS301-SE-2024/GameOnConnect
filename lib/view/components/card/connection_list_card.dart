@@ -8,6 +8,8 @@ import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class ConnectionCardWidget extends StatefulWidget {
   final String image;
@@ -236,9 +238,13 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                             )
                           : CachedNetworkImage(
                               imageUrl: image,
-                              placeholder: (context, url) => const Center(
-                                  child:
-                                      CircularProgressIndicator()), // Loading indicator for banner
+
+                              placeholder: (context, url) => Center(
+                                child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),
+                              ), // Loading indicator for banner
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                               fit: BoxFit.cover,

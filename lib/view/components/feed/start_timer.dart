@@ -7,6 +7,7 @@ import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -125,7 +126,10 @@ class _GameTimer extends State<GameTimer> {
                               AsyncSnapshot<List<GameDetails>> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 36,
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (!snapshot.hasData ||
@@ -153,8 +157,9 @@ class _GameTimer extends State<GameTimer> {
                           }),
                   IconButton.filled(
                     style: IconButton.styleFrom(
-                      backgroundColor: _stopwatch.isRunning ? Colors.red : Theme.of(context).colorScheme.primary
-                    ),
+                        backgroundColor: _stopwatch.isRunning
+                            ? Colors.red
+                            : Theme.of(context).colorScheme.primary),
                     icon: _stopwatch.isRunning
                         ? const Icon(Icons.stop)
                         : const Icon(Icons.play_arrow),

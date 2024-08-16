@@ -312,7 +312,7 @@ class EventsService {
 
   Future<void> editEvent(
       bool imageChanged,
-      String? type,
+      String type,
       DateTime? startDate,
       String name,
       DateTime? endDate,

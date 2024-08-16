@@ -3,16 +3,17 @@ import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../model/Stats_M/game_stats.dart';
 
-
 // ignore: must_be_immutable
 class RecentActivityList extends StatefulWidget {
-  RecentActivityList({super.key, 
-    required this. gameStats,
+  RecentActivityList({
+    super.key,
+    required this.gameStats,
     required this.heading,
-  }) ;
+  });
   //final List<String>  gameIds;
   List<GameStats> gameStats;
   final String heading;
@@ -22,42 +23,37 @@ class RecentActivityList extends StatefulWidget {
 }
 
 class _RecentActivityListState extends State<RecentActivityList> {
-
- void _navigateToGameDetails(int game) async {
+  void _navigateToGameDetails(int game) async {
     // ignore_for_file: use_build_context_synchronously
     bool result = await InternetConnection().hasInternetAccess;
-    if(result) {
+    if (result) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => GameDetailsPage(gameId: game),
         ),
       );
-    }else
-      {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  "Unable to fetch data, check internet connection"),
-              backgroundColor: Colors.red,
-            ));
-      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Unable to fetch data, check internet connection"),
+        backgroundColor: Colors.red,
+      ));
+    }
   }
 
- DateTime _parseTimestampString(String timestampString) {
-  try {
-    return DateTime.parse(timestampString);
-  } catch (e) {
-    //print('Error parsing timestamp string: $e');
-    return DateTime.now(); // Return current date/time as a fallback
+  DateTime _parseTimestampString(String timestampString) {
+    try {
+      return DateTime.parse(timestampString);
+    } catch (e) {
+      //print('Error parsing timestamp string: $e');
+      return DateTime.now(); // Return current date/time as a fallback
+    }
   }
-}
 
-double millisecondsToHours(int milliseconds) {
-  final hours = milliseconds / (1000 * 3600);
-  return double.parse(hours.toStringAsFixed(3));
-}
-
+  double millisecondsToHours(int milliseconds) {
+    final hours = milliseconds / (1000 * 3600);
+    return double.parse(hours.toStringAsFixed(3));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,27 +81,26 @@ double millisecondsToHours(int milliseconds) {
                 children: [
                   Column(
                     children: [
-                      Text('You have no ${widget.heading} from the past 2 weeks'),
+                      Text(
+                          'You have no ${widget.heading} from the past 2 weeks'),
                       Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              // Add your function here
-                            },
-                          ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
+                        child: IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            // Add your function here
+                          },
+                        ),
+                      ),
                     ],
                   ),
-                
                 ],
               ),
             ),
           )
-
         else
           Column(
             children: [
@@ -116,26 +111,36 @@ double millisecondsToHours(int milliseconds) {
                   itemCount: widget.gameStats.length,
                   itemBuilder: (context, index) {
                     return FutureBuilder<GameDetails>(
-                      future: GameService().fetchGameDetails(widget.gameStats[index].gameId),
+                      future: GameService()
+                          .fetchGameDetails(widget.gameStats[index].gameId),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: LoadingAnimationWidget.halfTriangleDot(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 36,
+                            ),
+                          );
                         } else if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData) {
                           return const Center(child: Text('No data'));
                         } else {
                           final gameDetails = snapshot.data!;
                           final gameStats = widget.gameStats[index];
-                          final lastPlayedDateTime = _parseTimestampString(gameStats.lastPlayedDate);
-                          final formattedRelativeDate = timeago.format(lastPlayedDateTime);
-                          final hours = millisecondsToHours(gameStats.timePlayedLast);
+                          final lastPlayedDateTime =
+                              _parseTimestampString(gameStats.lastPlayedDate);
+                          final formattedRelativeDate =
+                              timeago.format(lastPlayedDateTime);
+                          final hours =
+                              millisecondsToHours(gameStats.timePlayedLast);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child:InkWell(
+                            child: InkWell(
                               onTap: () {
                                 _navigateToGameDetails(gameDetails.id);
-                                
                               },
                               child: Container(
                                 height: 150,
@@ -151,56 +156,55 @@ double millisecondsToHours(int milliseconds) {
                                       //'assets/images/image_3.png',
                                       gameDetails.backgroundImage, // cache
                                     ),
-                                    
                                     colorFilter: ColorFilter.mode(
-                                        Colors.black.withOpacity(0.2), // Adjust opacity here
-                                        BlendMode.dstATop, // Use dstATop for transparency
-                                      ),
-                                    
+                                      Colors.black.withOpacity(
+                                          0.2), // Adjust opacity here
+                                      BlendMode
+                                          .dstATop, // Use dstATop for transparency
+                                    ),
                                   ),
                                 ),
 
-                                child:Column(
+                                child: Column(
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.fromLTRB(18, 11, 3.2, 5.3),
-                                      child:  Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          18, 11, 3.2, 5.3),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             gameDetails.name,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w700,
-
-                                                color: Color(0xFFFFFFFF),
-                                              ),
-                                              textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Color(0xFFFFFFFF),
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
-                                              ' Mood: ${gameStats.mood} ',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFFFFFFF),
-                                              ),
+                                            ' Mood: ${gameStats.mood} ',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFFFFFFFF),
                                             ),
+                                          ),
                                           Text(
                                             //'Time played(h): $hours',
                                             ' $hours hour(s)',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFFFFFFF),
-                                              ),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFFFFFFFF),
                                             ),
-                                            
-                                            
-                                            Text(
-                                              ' $formattedRelativeDate',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Color(0xFFFFFFFF),
-                                              ),
+                                          ),
+                                          Text(
+                                            ' $formattedRelativeDate',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFFFFFFFF),
                                             ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -208,7 +212,7 @@ double millisecondsToHours(int milliseconds) {
                                 ),
                               ),
                             ),
-                         );
+                          );
                         }
                       },
                     );
@@ -217,10 +221,7 @@ double millisecondsToHours(int milliseconds) {
               ),
             ],
           ),
-          
       ],
     );
   }
 }
-
-

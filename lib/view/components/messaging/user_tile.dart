@@ -6,6 +6,7 @@ import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserTile extends StatefulWidget {
   final String text;
@@ -145,11 +146,9 @@ class _UserTileState extends State<UserTile> {
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w700,
                                   ),
-                                  maxLines:
-                                      1, 
-                                  minFontSize: 12, 
-                                  overflow: TextOverflow
-                                      .ellipsis, 
+                                  maxLines: 1,
+                                  minFontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               Row(
@@ -235,12 +234,15 @@ class _UserTileState extends State<UserTile> {
 
   //this widget builds while the image is still loading
   Widget _buildLoadingWidget() {
-    return const SizedBox(
+    return SizedBox(
       width: 65,
       height: 65,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+        padding: const EdgeInsets.all(8.0),
+        child: LoadingAnimationWidget.halfTriangleDot(
+          color: Theme.of(context).colorScheme.primary,
+          size: 36,
+        ),
       ),
     );
   }

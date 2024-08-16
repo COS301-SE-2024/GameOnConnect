@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_games_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class GamesWidget extends StatefulWidget {
@@ -22,7 +23,7 @@ class _GamesWidgetState extends State<GamesWidget> {
   void _fetchGameData() async {
     setState(() {
       // print('gameData given to function form games page: ${widget.gameData}');
-      _gameData = StatsGamesService().fetchGameImages(widget.gameData); 
+      _gameData = StatsGamesService().fetchGameImages(widget.gameData);
     });
   }
 
@@ -58,9 +59,15 @@ class _GamesWidgetState extends State<GamesWidget> {
         future: _gameData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            );
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading game data: ${snapshot.error}'));
+            return Center(
+                child: Text('Error loading game data: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No game data available'));
           } else {
@@ -91,7 +98,8 @@ class _GamesWidgetState extends State<GamesWidget> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 20),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                10, 10, 10, 20),
                             child: Text(
                               timeAgo,
                               // game['lastPlayed']!,

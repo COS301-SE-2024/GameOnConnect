@@ -13,6 +13,7 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/messaging/user_tile.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class Messaging extends StatefulWidget {
   const Messaging({super.key});
@@ -70,11 +71,14 @@ class _MessagingState extends State<Messaging> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(), //put a circular progress bar in the center
+                LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ), //put a circular progress bar in the center
               ],
             ),
           );
@@ -118,8 +122,11 @@ class _MessagingState extends State<Messaging> {
           builder: (context,
               AsyncSnapshot<List<Map<String, dynamic>>> sortedSnapshot) {
             if (sortedSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
               );
             } else if (sortedSnapshot.hasError) {
               return const Text('Please check your internet connection.');
@@ -165,6 +172,7 @@ class _MessagingState extends State<Messaging> {
       Timestamp timestamp = lastMessageData?['timestamp']; // get the time
       DateTime messageDateTime =
           timestamp.toDate(); // use date and time from the stored time
+      
       String messageTime = "";
       DateTime today = DateTime.now();
       if (messageDateTime.year == today.year &&

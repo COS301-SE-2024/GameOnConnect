@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class TutorialVideo extends StatefulWidget {
@@ -39,6 +40,11 @@ class _TutorialVideoState extends State<TutorialVideo> {
             aspectRatio: _controller.value.aspectRatio,
             child: VideoPlayer(_controller),
           )
-        : const Center(child: CircularProgressIndicator());
+        : Center(
+            child: LoadingAnimationWidget.halfTriangleDot(
+              color: Theme.of(context).colorScheme.primary,
+              size: 36,
+            ),
+          );
   }
 }

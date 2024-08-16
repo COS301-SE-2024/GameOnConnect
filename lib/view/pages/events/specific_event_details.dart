@@ -6,6 +6,7 @@ import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/events/specific_event_info_container.dart';
 import 'package:gameonconnect/view/components/events/specific_events_buttons.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../components/events/specific_event_name_subscribe.dart';
 
@@ -53,7 +54,12 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
         future: EventsService().getEventImage(e.eventID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
+              ),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -91,9 +97,15 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                               image: imageProvider,
                                               fit: BoxFit.cover)),
                                     ),
-                                    placeholder: (context, url) => const Center(
-                                        child:
-                                            CircularProgressIndicator()), // Loading indicator for banner
+                                    placeholder: (context, url) => Center(
+                                      child: LoadingAnimationWidget
+                                          .halfTriangleDot(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        size: 36,
+                                      ),
+                                    ), // Loading indicator for banner
                                     errorWidget: (context, url, error) =>
                                         const Icon(Icons.error),
                                   ),
@@ -202,7 +214,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               SpecificEventInfoContainer(
                                 startInfo: "Starting at",
                                 endInfo: DateFormat('EEE, y/MM/d, kk:mm')
-                                        .format(e.startDate) + ' \n' + timezone,
+                                        .format(e.startDate) +
+                                    ' \n' +
+                                    timezone,
                               ),
                               SpecificEventInfoContainer(
                                 startInfo: "Ending at",
@@ -213,7 +227,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                               SpecificEventInfoContainer(
                                   startInfo: "Visibility",
-                                  endInfo: e.privacy ? "Public" : "Private"),
+                                  endInfo: e.privacy ? "Private": "Public"),
                               const SizedBox(
                                 height: 36,
                               ),

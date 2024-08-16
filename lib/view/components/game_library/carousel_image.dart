@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CarouselNetworkImageWithPlaceholder extends StatelessWidget {
   final String imageUrl;
@@ -32,10 +33,9 @@ class CarouselNetworkImageWithPlaceholder extends StatelessWidget {
           placeholder: (context, url) => Container(
             color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
             child: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).colorScheme.secondary,
-                ),
+              child: LoadingAnimationWidget.halfTriangleDot(
+                color: Theme.of(context).colorScheme.primary,
+                size: 36,
               ),
             ),
           ),
