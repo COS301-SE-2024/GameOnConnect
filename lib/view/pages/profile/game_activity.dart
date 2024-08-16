@@ -46,7 +46,9 @@ class _GameActivityState extends State<GameActivity> {
         ),
       body: specificGameActivity.isEmpty
           ? Center(child: Text('No recorded activity for ${widget.gameName}'))
-          : Column(
+          : SingleChildScrollView(
+            child:
+          Column(
             children: [
               Container(
                 margin: const EdgeInsets.fromLTRB(12, 12, 12, 19),
@@ -67,7 +69,7 @@ class _GameActivityState extends State<GameActivity> {
               padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),//s
                 itemCount: specificGameActivity.length,
                 itemBuilder: (context, index) {
                   return CustomTimelineTile(
@@ -80,8 +82,7 @@ class _GameActivityState extends State<GameActivity> {
             ),
             ],
           ),
-          
-         
+        ),      
     );
   }
 }
