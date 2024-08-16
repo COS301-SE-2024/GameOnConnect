@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -106,7 +107,6 @@ class _GameLibraryState extends State<GameLibrary> {
       _isLoading = true;
     });
 
-
     final response = await http.get(Uri.parse(
         'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
 
@@ -162,9 +162,9 @@ class _GameLibraryState extends State<GameLibrary> {
             body: Column(
               children: [
                 TabBar(tabs: const [
-                    Tab(text: 'GAMES'),
-                    Tab(text: 'CONNECTIONS'),
-                  ]),
+                  Tab(text: 'GAMES'),
+                  Tab(text: 'CONNECTIONS'),
+                ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),
               ],
@@ -189,97 +189,99 @@ class _GameLibraryState extends State<GameLibrary> {
                 TextButton(
                   onPressed: () => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Sort by'),
-                      content:
-                          Column(mainAxisSize: MainAxisSize.min, children: [
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Name'),
-                            value: 'name',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
+                    builder: (BuildContext context) => StatefulBuilder(
+                      builder: (context, setState) => AlertDialog(
+                        title: const Text('Sort by'),
+                        content:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Name'),
+                              value: 'name',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Released'),
+                              value: 'released',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Added'),
+                              value: 'added',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Created'),
+                              value: 'created',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Updated'),
+                              value: 'updated',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Rating'),
+                              value: 'rating',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                          RadioListTile(
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              title: Text('Metacritic'),
+                              value: 'metacritic',
+                              groupValue: _sortValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _sortValue = value;
+                                });
+                              }),
+                        ]),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              Navigator.pop(context, 'Sort');
                               setState(() {
-                                _sortValue = value;
+                                _games.clear();
                               });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Released'),
-                            value: 'released',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Added'),
-                            value: 'added',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Created'),
-                            value: 'created',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Updated'),
-                            value: 'updated',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Rating'),
-                            value: 'rating',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Metacritic'),
-                            value: 'metacritic',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                      ]),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            Navigator.pop(context, 'Sort');
-                            setState(() {
-                              _games.clear();
-                            });
-                            await _loadGames(1);
-                          },
-                          child: const Text('Sort'),
-                        ),
-                      ],
+                              await _loadGames(1);
+                            },
+                            child: const Text('Sort'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   child: Row(
@@ -337,18 +339,16 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   Widget games() {
-    return Column(
-      children: [
+    return Column(children: [
       Padding(
-        padding: const EdgeInsets.all(12),
-        child: SearchField(
-          key: const Key('searchTextField'),
-          controller: _searchController,
-          onSearch: (query) {
-            _onSearchEntered(query);
-          },
-        )
-      ),
+          padding: const EdgeInsets.all(12),
+          child: SearchField(
+            key: const Key('searchTextField'),
+            controller: _searchController,
+            onSearch: (query) {
+              _onSearchEntered(query);
+            },
+          )),
       Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: SizedBox(
@@ -367,7 +367,9 @@ class _GameLibraryState extends State<GameLibrary> {
         ),
       ),
       sortFilter(context),
-      Expanded(child: gameList(),)
+      Expanded(
+        child: gameList(),
+      )
     ]);
   }
 
@@ -378,7 +380,12 @@ class _GameLibraryState extends State<GameLibrary> {
       itemBuilder: (context, index) {
         if (index == _games.length) {
           return _isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: LoadingAnimationWidget.halfTriangleDot(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 36,
+                  ),
+                )
               : SizedBox.shrink();
         }
         final game = _games[index];
@@ -409,7 +416,10 @@ class _GameLibraryState extends State<GameLibrary> {
                         ),
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),
+                          child: LoadingAnimationWidget.halfTriangleDot(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 36,
+                          ),
                         ),
                         fadeInDuration: Duration(milliseconds: 0),
                         fadeOutDuration: Duration(milliseconds: 0),
@@ -431,7 +441,9 @@ class _GameLibraryState extends State<GameLibrary> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(children: game.getPlatformIcons(context, Theme.of(context).colorScheme.primary)),
+                          Row(
+                              children: game.getPlatformIcons(context,
+                                  Theme.of(context).colorScheme.primary)),
                           Text("Released: ${game.released}"),
                           Row(
                             children: [

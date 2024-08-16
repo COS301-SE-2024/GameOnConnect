@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/components/messaging/chat_bubble_component.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String profileName;
@@ -117,7 +118,10 @@ class _ChatPageState extends State<ChatPage> {
       future: _messagingService.findConversationID(senderID, widget.receiverID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),);
         } else if (snapshot.hasError ||
             !snapshot.hasData ||
             snapshot.data == 'Not found') {
@@ -260,12 +264,15 @@ class _ChatPageState extends State<ChatPage> {
 
   //this widget builds while the image is still loading
   Widget _buildLoadingWidget() {
-    return const SizedBox(
+    return  SizedBox(
       width: 44,
       height: 44,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+        padding: const EdgeInsets.all(8.0),
+        child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),
       ),
     );
   }

@@ -15,6 +15,7 @@ import 'package:gameonconnect/view/components/settings/edit_colour_icon_componen
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -140,6 +141,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       });
       getCurrentIndex();
     }
+
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
@@ -373,7 +375,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             },
           ),
         ),
-        body: const Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: LoadingAnimationWidget.halfTriangleDot(
+            color: Theme.of(context).colorScheme.primary,
+            size: 36,
+          ),
+        ),
       );
     } else {
       // Show the main content once data is fetched
@@ -434,6 +441,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                             fit: BoxFit.cover,
                           ),
                   ),
+
                 ),
                 Container(
                   height: 40,
