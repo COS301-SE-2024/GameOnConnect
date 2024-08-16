@@ -571,9 +571,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       ),
     ),
         )
-      
-  ],
-), 
+
+        ],
+      ),
+    
     );
   }
 
