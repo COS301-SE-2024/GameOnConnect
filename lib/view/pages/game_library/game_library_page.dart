@@ -181,149 +181,173 @@ class _GameLibraryState extends State<GameLibrary> {
                 bottom: BorderSide(
                     width: 0.5,
                     color: Theme.of(context).colorScheme.secondary))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => StatefulBuilder(
-                      builder: (context, setState) => AlertDialog(
-                        title: const Text('Sort by'),
-                        content:
-                            Column(mainAxisSize: MainAxisSize.min, children: [
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Name'),
-                              value: 'name',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Released'),
-                              value: 'released',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Added'),
-                              value: 'added',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Created'),
-                              value: 'created',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Updated'),
-                              value: 'updated',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Rating'),
-                              value: 'rating',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                          RadioListTile(
-                              activeColor: Theme.of(context).colorScheme.primary,
-                              title: Text('Metacritic'),
-                              value: 'metacritic',
-                              groupValue: _sortValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _sortValue = value;
-                                });
-                              }),
-                        ]),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => StatefulBuilder(
+                          builder: (context, setState) => AlertDialog(
+                            title: const Text('Sort by'),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Name'),
+                                      value: 'name',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Released'),
+                                      value: 'released',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Added'),
+                                      value: 'added',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Created'),
+                                      value: 'created',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Updated'),
+                                      value: 'updated',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Rating'),
+                                      value: 'rating',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Metacritic'),
+                                      value: 'metacritic',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                ]),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context, 'Sort');
+                                  setState(() {
+                                    _games.clear();
+                                  });
+                                  await _loadGames(1);
+                                },
+                                child: const Text('Sort'),
+                              ),
+                            ],
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              Navigator.pop(context, 'Sort');
-                              setState(() {
-                                _games.clear();
-                              });
-                              await _loadGames(1);
-                            },
-                            child: const Text('Sort'),
-                          ),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Sort",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.sort,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text("Sort",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.sort,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    ],
-                  ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  FilterPage(apiFunction: _runApiRequest)),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text("Filter",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.tune,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              FilterPage(apiFunction: _runApiRequest)),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Text("Filter",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.tune,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+            Divider(
+              thickness: 1,
+              color: Theme.of(context).colorScheme.primaryContainer,
+            ),
+            TextButton.icon(
+              icon: Icon(Icons.clear),
+              iconAlignment: IconAlignment.end,
+              onPressed: () => clearFilters(),
+              label: Text('Clear filters'),
             ),
           ],
         ),
@@ -349,23 +373,6 @@ class _GameLibraryState extends State<GameLibrary> {
               _onSearchEntered(query);
             },
           )),
-      Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: SizedBox(
-          height: 40,
-          width: 200,
-          child: FilledButton(
-              onPressed: () => clearFilters(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Text('Clear filters'),
-                  Icon(Icons.clear),
-                ],
-              )),
-        ),
-      ),
       sortFilter(context),
       Expanded(
         child: gameList(),
