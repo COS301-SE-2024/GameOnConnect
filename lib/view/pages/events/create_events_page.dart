@@ -886,7 +886,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .surface,
+                                            .tertiary,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),

@@ -570,8 +570,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             children: <Widget>[
               Align(
                 alignment: Alignment.centerLeft,
-                child:
-                    Text('Social interests ', style: TextStyle(color: Theme.of(context).colorScheme.secondary,fontSize: 15)),
+                child: Text('Social interests ',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 15)),
               ),
               const SizedBox(width: 20),
               InkWell(
@@ -633,7 +635,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               child: Text(
                 'Save Changes',
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.primaryContainer),
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
               ),
             ),
           ),
