@@ -470,18 +470,40 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 child: InkWell(
               onTap: _pickImage,
               child: Stack(
-  alignment: Alignment.center, // Center the camera icon in the middle of the avatar
+  alignment: Alignment.center, 
   children: [
     _profileImageUrl.isNotEmpty
-        ? CircleAvatar(
-            radius: 50,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+        ? Container(
+            width: 104.0, 
+            height: 104.0, 
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surface,
+                width: 4.0, 
+              ),
+            ),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+            ),
           )
-        : CircleAvatar(
-            radius: 50,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            backgroundImage: FileImage(File(_profileImage)),
+        : Container(
+            width: 104.0, 
+            height: 104.0, 
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surface,
+                width: 4.0, 
+              ),
+            ),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+            ),
           ),
           Container(
               height: 25,

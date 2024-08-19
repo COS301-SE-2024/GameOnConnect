@@ -50,7 +50,7 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
   Widget build(BuildContext context) {
     //_selectedIconIndex= widget.currentIndex;
     return Container(
-      height: 96,
+      height: 102,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(10),
