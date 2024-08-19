@@ -923,9 +923,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     fontSize: 12,
                                   ),
                                 ),
-                                Row(
-                                  children:
-                                      snapshot.data!.getStyledGenres(context),
+                                const Spacer(),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    spacing: 4.0,
+                                    children:
+                                        snapshot.data!.getStyledGenres(context),
+                                  ),
                                 )
                               ],
                             ),

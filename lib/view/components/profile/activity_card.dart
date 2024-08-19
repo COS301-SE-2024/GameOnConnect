@@ -35,10 +35,10 @@ String formatLastPlayedDate(String lastPlayed) {
 
 String formatTimeRange(String lastPlayed, int timePlayed) {
   // Parse the lastPlayed string into a DateTime object
-  DateTime endTime = DateTime.parse(lastPlayed);
+  DateTime startTime = DateTime.parse(lastPlayed);
 
   // Subtract the timePlayed duration from the endTime
-  DateTime startTime = endTime.subtract(Duration(milliseconds: timePlayed));
+  DateTime endTime = startTime.add(Duration(milliseconds: timePlayed));
 
   // Format the start and end times into the desired string format
   DateFormat timeFormat = DateFormat('HH:mm');
