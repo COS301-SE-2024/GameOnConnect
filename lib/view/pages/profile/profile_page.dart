@@ -458,30 +458,6 @@ class _ProfileState extends State<ProfilePage> {
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
                                     ),
-                          const SizedBox(height: 24),
-                          Bio(
-                            bio: profileData.bio,
-                            isOwnProfile: widget.isOwnProfile,
-                          ),
-                          const SizedBox(height: 24),
-                          profileData.myGames.isEmpty &&
-                                  widget.uid != widget.loggedInUser
-                              ? const SizedBox.shrink()
-                              : widget.uid != widget.loggedInUser
-                                  ? MyGameList(
-                                      myGameStats: sumOfMygames,
-                                      heading: 'Games',
-                                      currentlyPlaying:
-                                          profileData.currentlyPlaying,
-                                      gameActivities: profileData.myGames,
-                                    )
-                                  : MyGameList(
-                                      myGameStats: sumOfMygames,
-                                      heading: 'My Games',
-                                      currentlyPlaying:
-                                          profileData.currentlyPlaying,
-                                      gameActivities: profileData.myGames,
-                                    ),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()

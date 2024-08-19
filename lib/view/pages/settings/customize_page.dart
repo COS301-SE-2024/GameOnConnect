@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
@@ -43,6 +44,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   String testBannerurl = '';
   bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
+  int selectedIndex=0;
+
+  bool isCurrentlyDarkMode(BuildContext context) {
+  return MediaQuery.of(context).platformBrightness == Brightness.dark;
+}
 
   Future<void> _fetchGenresFromAPI() async {
     try {
@@ -63,6 +69,34 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       }
     } catch (e) {
       //print("Error fetching genres: $e");
+    }
+  }
+
+  void  getCurrentIndex()
+  {
+    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 255, 117, 1.0))
+    {
+      selectedIndex=0;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(173, 0, 255, 1.0))
+    {
+      selectedIndex=1;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 10, 255, 1.0))
+    {
+      selectedIndex=2;
+      return; 
+    }
+     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(235, 255, 0, 1.0))
+    {
+      selectedIndex=3;
+      return; 
+    }
+    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(255, 0, 199, 1.0)){
+      selectedIndex=4;
+      return; 
     }
   }
 
@@ -95,39 +129,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  Widget _displaySelectedItems(
-      List<String> selectedItems, void Function(String) onDeleted) {
-    return Wrap(
-      spacing: 8.0,
-      children: selectedItems
-          .map((item) => Chip(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                label: Text(
-                  item,
-                  style: const TextStyle(color: Colors.black),
-                ),
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                shape: const StadiumBorder(),
-                side: BorderSide.none,
-                onDeleted: () => onDeleted(item),
-                deleteIcon: const Icon(
-                  Icons.close,
-                  size: 16,
-                  color: Colors.black,
-                ),
-              ))
-          .toList(),
-    );
-  }
-
-  //deletion of a selected item.
-  void _deleteSelectedItem(String item, List<String> selectedList) {
-    if (_isMounted) {
-      setState(() {
-        selectedList.remove(item);
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -135,10 +136,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     _isMounted = true;
     _fetchData().then((_) {
       if (_isMounted) {
-        setState(() {
-          _isDataFetched = true;
-        });
-      }
+      setState(() {
+        _isDataFetched = true;
+      });
+      getCurrentIndex();
+    }
+
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
@@ -152,7 +155,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         currentTheme == darkPinkTheme;
   }
 
-  void _updateTheme(Color color) {
+  void _updateTheme(Color color, int index) {
     setState(() {
       selectedColor = color;
     });
@@ -395,104 +398,142 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         iconkey: const Key('Back_button_key'),
         textkey: const Key('customize_profile_text'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
+      body:
+      Stack(
+  children: [
+      ListView(
+        padding: const EdgeInsets.all(12.0),
         children: [
-          InkWell(
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+            child:  Stack(
+
+            alignment: Alignment.bottomCenter,
+            clipBehavior: Clip.none,
+            children: <Widget>[
+
+              //banner
+              InkWell(
             onTap: _pickBanner,
             child: Stack(
               alignment: Alignment.center, // Change to Alignment.center
               children: [
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   width: double.infinity,
                   height: 150,
-                  child: _profileBannerUrl.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: _profileBannerUrl,
-                          placeholder: (context, url) => Center(
-                            child: LoadingAnimationWidget.halfTriangleDot(
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 36,
-                            ),
-                          ), // Loading indicator for banner
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          File(_profileBanner),
-                          width: 359,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: _profileBannerUrl.isNotEmpty
+                        ? CachedNetworkImage(
+                            imageUrl: _profileBannerUrl,
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator()), // Loading indicator for banner
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(_profileBanner),
+                            width: 359,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+
                 ),
                 Container(
-                  height: 30,
-                  width: 30,
+                  height: 40,
+                  width: 40,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer
+                          .withOpacity(0.7),
+                      shape: BoxShape.circle),
                   child: Icon(
-                    Icons.camera_alt,
-                    size: 15,
-                    color: Theme.of(context).colorScheme.surface,
-                  ),
+                    Icons.camera_alt_outlined,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary,
+                  )
                 ),
               ],
             ),
           ),
-
-          const SizedBox(height: 30),
-          Center(
-            child: InkWell(
+              
+               Positioned(
+                bottom: -50, // Half of the CircleAvatar's radius to align it properly
+                left: 20,
+                //profile picture
+                child: InkWell(
               onTap: _pickImage,
               child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  _profileImageUrl.isNotEmpty
-                      ? CircleAvatar(
-                          radius: 60,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          backgroundImage:
-                              CachedNetworkImageProvider(_profileImageUrl),
-                        )
-                      : CircleAvatar(
-                          radius: 60,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          backgroundImage: FileImage(File(_profileImage)),
-                        ),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.camera_alt,
-                        size: 15, color: Theme.of(context).colorScheme.surface),
-                  ),
-                ],
+  alignment: Alignment.center, 
+  children: [
+    _profileImageUrl.isNotEmpty
+        ? Container(
+            width: 104.0, 
+            height: 104.0, 
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surface,
+                width: 4.0, 
               ),
             ),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+            ),
+          )
+        : Container(
+            width: 104.0, 
+            height: 104.0, 
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surface,
+                width: 4.0, 
+              ),
+            ),
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+            ),
+          ),
+          Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                color: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withOpacity(0.7),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                color: Theme.of(context).colorScheme.primary,
+                size: 17,
+              ),
+            ),
+  ],
+),
+            ),
+              ),
+            ],
           ),
 
-          const SizedBox(height: 30),
-          //genre title
-          Row(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Genre',
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).colorScheme.secondary)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+
+          ),
+          
+          TagContainer(
+            tagType: 'Genre',
+            onPressed: () => _showSelectableDialog(
                   'Select Genre',
                   _genres,
                   (results) {
@@ -501,41 +542,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'genre',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              )
-            ],
           ),
-
-          const SizedBox(height: 8),
-          _displaySelectedItems(_selectedGenres,
-              (item) => _deleteSelectedItem(item, _selectedGenres)),
-
-          const SizedBox(height: 20),
-
-          // age rating title
-          Row(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Age rating ',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 15)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+          TagContainer(
+            tagType: 'Age rating',
+            onPressed: () =>_showSelectableDialog(
                   'Select Age rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
                   (results) {
@@ -544,40 +554,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'age',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              ),
-            ],
           ),
-          const SizedBox(height: 8),
-          _displaySelectedItems(
-              _selectedAge, (item) => _deleteSelectedItem(item, _selectedAge)),
-
-          const SizedBox(height: 20),
-
-          // social interest title
-          Row(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('Social interests ',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 15)),
-              ),
-              const SizedBox(width: 20),
-              InkWell(
-                onTap: () => _showSelectableDialog(
+          TagContainer(
+            tagType: 'Social interests',
+            onPressed: () => _showSelectableDialog(
                   'Select Social interest',
                   _interests,
                   (results) {
@@ -586,27 +566,21 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'interest',
                 ),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                    size: 12,
-                  ),
-                ),
-              )
-            ],
           ),
 
-          const SizedBox(height: 8),
-          _displaySelectedItems(_selectedInterests,
-              (item) => _deleteSelectedItem(item, _selectedInterests)),
+           Padding(
+            padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
+            child: Text(
+            'Theme',
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              color: Theme.of(context).colorScheme.secondary
+            ),
+          ),
 
-          const SizedBox(height: 20),
+          ),
+          
           ColourIconContainer(
             updateTheme: _updateTheme,
             isDarkMode: isDarkMode,
@@ -616,32 +590,44 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               });
             },
             currentColor: selectedColor,
-          ),
-          const SizedBox(height: 40.0),
-          Center(
-            child: ElevatedButton(
-              key: const Key('saveButton'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              onPressed: () {
-                _saveProfileData();
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Save Changes',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-              ),
-            ),
+            currentIndex: selectedIndex,
           ),
         ],
       ),
+      Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        width: double.infinity,
+        height: 35,
+        child: ElevatedButton(
+          key: const Key('saveButton'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Colors.black54,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {
+            _saveProfileData();
+            Navigator.of(context).pop();
+          },
+          child: const Text(
+            'Save Changes',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    ),
+        )
+
+        ],
+      ),
+    
     );
   }
 
