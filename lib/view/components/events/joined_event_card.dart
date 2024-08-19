@@ -5,7 +5,6 @@ import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/events_S/event_service.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
   final Event? e;
