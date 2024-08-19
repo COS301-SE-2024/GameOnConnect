@@ -27,6 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   final MessagingService _messagingService = MessagingService();
   final AuthService _authService = AuthService();
   FocusNode newFocusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -54,13 +55,12 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  final ScrollController _scrollController = ScrollController();
   void scrollDownPage() {
   if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
     );
   }
 }
@@ -126,10 +126,12 @@ class _ChatPageState extends State<ChatPage> {
       future: _messagingService.findConversationID(senderID, widget.receiverID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: LoadingAnimationWidget.halfTriangleDot(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 36,
-                                ),);
+          return Center(
+            child: LoadingAnimationWidget.halfTriangleDot(
+              color: Theme.of(context).colorScheme.primary,
+              size: 36,
+            ),
+          );
         } else if (snapshot.hasError ||
             !snapshot.hasData ||
             snapshot.data == 'Not found') {
@@ -199,21 +201,21 @@ class _ChatPageState extends State<ChatPage> {
                       fontFamily: 'Inter',
                     ),
                     border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: const BorderSide(
-                      color: Colors.transparent, 
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: const BorderSide(
-                        color: Colors.transparent, 
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: const BorderSide(
-                        color: Colors.transparent, 
+                        color: Colors.transparent,
                       ),
                     ),
                   ),
@@ -237,7 +239,7 @@ class _ChatPageState extends State<ChatPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     )
-                  : Container(); 
+                  : Container();
             },
           ),
         ],
@@ -274,15 +276,15 @@ class _ChatPageState extends State<ChatPage> {
 
   //this widget builds while the image is still loading
   Widget _buildLoadingWidget() {
-    return  SizedBox(
+    return SizedBox(
       width: 44,
       height: 44,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: LoadingAnimationWidget.halfTriangleDot(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 36,
-                                ),
+          color: Theme.of(context).colorScheme.primary,
+          size: 36,
+        ),
       ),
     );
   }

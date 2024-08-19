@@ -17,37 +17,46 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime dateTime = time.toDate();
-    return Container(
-      decoration: BoxDecoration(
-        color: isCurrentuser
-            ? Theme.of(context).colorScheme.onPrimary
-            : Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(17),
-      ),
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-      child: Column(
-        children: [
-          Text(
-            message,
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w300,
-              fontFamily: 'Inter',
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double maxWidth = constraints.maxWidth * 0.8;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: maxWidth,
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: isCurrentuser
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(17),
+            ),
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  DateFormat('yyyy/MM/dd \'at\' kk:mm').format(dateTime),
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(
-            DateFormat('yyyy/MM/dd \'at\' kk:mm').format(dateTime),
-            style: TextStyle(
-              fontSize: 10,
-              color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.w300,
-              fontFamily: 'Inter',
-            ),
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
