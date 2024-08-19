@@ -7,8 +7,7 @@ import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
 
 class ColourIconContainer extends StatefulWidget {
-
-  final Function(Color,int) updateTheme;
+  final Function(Color, int) updateTheme;
   final bool isDarkMode;
   final Function(bool) onDarkModeChanged;
   final Color currentColor;
@@ -25,27 +24,23 @@ class ColourIconContainer extends StatefulWidget {
 
   @override
   State<ColourIconContainer> createState() => _ColourIconContainerState();
-  
-  }
-
+}
 
 class _ColourIconContainerState extends State<ColourIconContainer> {
-  
   int _selectedIconIndex = 0;
 
   void _onIconPressed(int index, Color color) {
-    widget.updateTheme(color,index);
+    widget.updateTheme(color, index);
     setState(() {
       _selectedIconIndex = index;
-
     });
-
   }
-@override
+
+  @override
   void initState() {
     super.initState();
-    _selectedIconIndex= widget.currentIndex;
-    }
+    _selectedIconIndex = widget.currentIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,54 +57,55 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-              child:  Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildIconButton(context, darkPrimaryGreen,0),
-                _buildIconButton(context, darkPrimaryPurple,1),
-                _buildIconButton(context, darkPrimaryBlue,2),
-                _buildIconButton(context, darkPrimaryOrange,3),
-                _buildIconButton(context, darkPrimaryPink,4),
-              ],
-            ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildIconButton(context, darkPrimaryGreen, 0),
+                  _buildIconButton(context, darkPrimaryPurple, 1),
+                  _buildIconButton(context, darkPrimaryBlue, 2),
+                  _buildIconButton(context, darkPrimaryOrange, 3),
+                  _buildIconButton(context, darkPrimaryPink, 4),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 5, 0, 5),
               child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    widget.isDarkMode ? 'Light mode:' : 'Dark mode:',
-                    style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.secondary, // dark green in dark mode
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.isDarkMode ? 'Light mode:' : 'Dark mode:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary, // dark green in dark mode
+                      ),
+                    ),
                   ),
-                  ),
-                ),
-                //const Spacer(),
-                Transform.scale(
-  scale: 0.8, // Adjust this value to change the size
-  child:Switch(
-                    value: widget.isDarkMode,
-                    onChanged: (newValue) {
-                      widget.onDarkModeChanged(newValue);
-                      Provider.of<ThemeProvider>(context, listen: false)
-                          .toggleTheme();
-                    },
-                    activeColor: Theme.of(context).colorScheme.surface,
-                    inactiveThumbColor: Theme.of(context).colorScheme.primary,
-                    activeTrackColor: Theme.of(context).colorScheme.primary,
-                    inactiveTrackColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                )
-                
-              ],
-            ),
+                  //const Spacer(),
+                  Transform.scale(
+                    scale: 0.8, // Adjust this value to change the size
+                    child: Switch(
+                      value: widget.isDarkMode,
+                      onChanged: (newValue) {
+                        widget.onDarkModeChanged(newValue);
+                        Provider.of<ThemeProvider>(context, listen: false)
+                            .toggleTheme();
+                      },
+                      activeColor: Theme.of(context).colorScheme.surface,
+                      inactiveThumbColor: Theme.of(context).colorScheme.primary,
+                      activeTrackColor: Theme.of(context).colorScheme.primary,
+                      inactiveTrackColor:
+                          Theme.of(context).colorScheme.secondary,
+                    ),
+                  )
+                ],
               ),
-                                
+            ),
           ],
         ),
       ),
@@ -118,24 +114,21 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
 
   Widget _buildIconButton(BuildContext context, Color color, int index) {
     return GestureDetector(
-          onTap: () => _onIconPressed(index,color),
-          child: Container(
-            height: 30,
-            width: 30,
-            decoration: BoxDecoration(
-              color: _selectedIconIndex == index
-                  ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              CupertinoIcons.game_controller,
-              color: color,
-            ),
-          ),
-        );
-        
+      onTap: () => _onIconPressed(index, color),
+      child: Container(
+        height: 30,
+        width: 30,
+        decoration: BoxDecoration(
+          color: _selectedIconIndex == index
+              ? Theme.of(context).colorScheme.secondary.withOpacity(0.2)
+              : Colors.transparent,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          CupertinoIcons.game_controller,
+          color: color,
+        ),
+      ),
+    );
   }
 }
-
-
