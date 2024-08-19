@@ -65,11 +65,11 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
               child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildIconButton(context, darkPrimaryGreen),
-                _buildIconButton(context, darkPrimaryPurple),
-                _buildIconButton(context, darkPrimaryBlue),
-                _buildIconButton(context, darkPrimaryOrange),
-                _buildIconButton(context, darkPrimaryPink),
+                _buildIconButton(context, darkPrimaryGreen,0),
+                _buildIconButton(context, darkPrimaryPurple,1),
+                _buildIconButton(context, darkPrimaryBlue,2),
+                _buildIconButton(context, darkPrimaryOrange,3),
+                _buildIconButton(context, darkPrimaryPink,4),
               ],
             ),
             ),
