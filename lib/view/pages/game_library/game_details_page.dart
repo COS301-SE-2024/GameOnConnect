@@ -4,6 +4,7 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/view/pages/feed/feed_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
@@ -14,6 +15,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:gameonconnect/view/pages/feed/feed_page.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -227,13 +229,28 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           20,
                                           5,
                                           5), // Adjust top, left, right padding as needed
-                                      child: Icon(
-                                        Icons.play_circle,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: 24,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.play_circle,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          size: 24,
+                                        ),
+                                        onPressed: () {
+                                          // Navigator.push(
+                                            // context,
+                                            // MaterialPageRoute(builder: (context) => const FeedPage()),
+                                          // );
+                                        },
                                       ),
+                                      // child: Icon(
+                                      //   Icons.play_circle,
+                                      //   color: Theme.of(context)
+                                      //       .colorScheme
+                                      //       .primary,
+                                      //   size: 24,
+                                      // ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
