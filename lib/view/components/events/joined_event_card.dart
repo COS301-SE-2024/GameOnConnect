@@ -5,6 +5,7 @@ import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/events_S/event_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UpcomingEventCardWidget extends StatefulWidget {
   final Event? e;
@@ -108,9 +109,13 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                           fit: BoxFit.cover),
                                     ),
                                   ),
-                                  placeholder: (context, url) => const Center(
-                                      child:
-                                          CircularProgressIndicator()), // Loading indicator for banner
+                                  placeholder: (context, url) => Center(
+                                      child: LoadingAnimationWidget.halfTriangleDot(
+                                        color:
+                                            Theme.of(context).colorScheme.primary,
+                                        size: 36,
+                                      ),
+                                    ), // Loading indicator for banner
                                   errorWidget: (context, url, error) =>
                                       const Icon(Icons.error),
                                   fit: BoxFit.cover,
