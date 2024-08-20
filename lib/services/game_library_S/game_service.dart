@@ -7,10 +7,13 @@ import '../../../globals.dart' as global;
 import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
+
 class GameService {
-  static Future<List<Game>> fetchGames(int page, {String? sortValue, String? searchQuery}) async {
+  static Future<List<Game>> fetchGames(int page,
+      {String? sortValue, String? searchQuery}) async {
     String request = '&page_size=20&page=$page';
-    
+
     if (sortValue != null && sortValue.isNotEmpty) {
       request += '&ordering=-$sortValue';
     }
@@ -19,30 +22,62 @@ class GameService {
       request += '&search=$searchQuery';
     }
 
-    final response = await http.get(Uri.parse('https://api.rawg.io/api/games?key=${global.apiKey}$request'));
+    var fileInfo = await GameCacheManager().getFileFromCache(request);
 
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
       return (jsonData['results'] as List)
           .map((gameJson) => Game.fromJson(gameJson))
           .toList();
     } else {
-      throw Exception('Failed to load games');
+      //Load the games from API
+      final response = await http.get(Uri.parse(
+          'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
+
+      if (response.statusCode == 200) {
+        //Cache data
+        await GameCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        return (jsonData['results'] as List)
+            .map((gameJson) => Game.fromJson(gameJson))
+            .toList();
+      } else {
+        throw Exception('Failed to load games');
+      }
     }
   }
 
-  Future<GameDetails> fetchGameDetails( gameId) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://api.rawg.io/api/games/$gameId?key=${global.apiKey}'));
+  Future<GameDetails> fetchGameDetails(gameId) async {
+    String request =
+        'https://api.rawg.io/api/games/$gameId?key=${global.apiKey}';
+
+    var fileInfo = await GameDetailsCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      return GameDetails.fromJson(jsonData);
+    } else {
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        return GameDetails.fromJson(jsonResponse);
+        //Cache data
+        await GameCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        return GameDetails.fromJson(jsonData);
       } else {
-        throw Exception('Failed to load game details');
+        throw Exception('Failed to load games');
       }
-    } on SocketException {
-      throw Exception('No Internet connection');
     }
   }
 
@@ -61,6 +96,4 @@ class GameService {
       throw Exception('No Internet connection');
     }
   }
-
 }
-
