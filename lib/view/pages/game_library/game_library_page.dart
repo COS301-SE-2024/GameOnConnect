@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
@@ -22,13 +23,6 @@ class GameLibrary extends StatefulWidget {
 
 class _GameLibraryState extends State<GameLibrary> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  /*static final customCacheManager = CacheManager(
-    Config(
-      'GamePicturesCache',
-      stalePeriod: Duration(days: 5),
-    ),
-  );*/
-
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -41,15 +35,39 @@ class _GameLibraryState extends State<GameLibrary> {
   @override
   void initState() {
     super.initState();
-    _loadGames(_currentPage);
+    _loadGames();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           _searchQuery.isEmpty) {
-        _loadGames(_currentPage);
+        _loadGames();
       }
     });
+  }
+
+  Future<void> _loadGames() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final games = await GameService.fetchGames(_currentPage,
+          sortValue: _sortValue, searchQuery: _searchQuery);
+
+      setState(() {
+        _games.addAll(games);
+        _currentPage++;
+      });
+    } catch (e) {
+      //Handle error
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -80,26 +98,11 @@ class _GameLibraryState extends State<GameLibrary> {
   void _onSearchEntered(String query) {
     setState(() {
       _searchQuery = query;
-      if (_searchQuery.isNotEmpty) {
-        _games.clear(); // Clear previous search results
-        _searchGames();
-      } else {
-        _games.clear();
-        _searchQuery = '';
-        _currentPage = 1;
-        _loadGames(_currentPage);
-      }
+      _games.clear();
+      _currentPage = 1;
+      _loadGames();
     });
   }
-
-  // void _navigateToGameDetails(Game game) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => GameDetailsPage(gameId: game.id),
-  //     ),
-  //   );
-  // }
 
   Future<void> _runApiRequest(String request) async {
     if (_isLoading) return;
@@ -130,25 +133,13 @@ class _GameLibraryState extends State<GameLibrary> {
     }
   }
 
-  Future<void> _searchGames() async {
-    _runApiRequest('&search=$_searchQuery');
-  }
-
-  Future<void> _loadGames(int page) async {
-    if (_sortValue!.isNotEmpty) {
-      _runApiRequest('&ordering=-$_sortValue&page_size=20&page=$page');
-    } else {
-      _runApiRequest('&page_size=20&page=$page');
-    }
-  }
-
   clearFilters() {
     setState(() {
       _searchQuery = '';
       _sortValue = '';
       _games.clear();
       _currentPage = 1;
-      _loadGames(_currentPage);
+      _loadGames();
     });
   }
 
@@ -288,7 +279,7 @@ class _GameLibraryState extends State<GameLibrary> {
                                   setState(() {
                                     _games.clear();
                                   });
-                                  await _loadGames(1);
+                                  await _loadGames();
                                 },
                                 child: const Text('Sort'),
                               ),
