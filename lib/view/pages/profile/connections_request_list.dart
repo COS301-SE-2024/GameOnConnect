@@ -81,9 +81,11 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                   child: Text('No connection Requests'),
                 );
               } else {
-                return Column(mainAxisSize: MainAxisSize.max, children: [
-                  SizedBox(
-                      height: 300,
+                return 
+                   Container(
+                       decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                       child: ListView.separated(
                         itemCount: list!.length,
                         padding: EdgeInsets.zero,
@@ -106,8 +108,8 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
                         separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox();
                         },
-                      )),
-                ]);
+                      ));
+                
               }
             }
           }),
