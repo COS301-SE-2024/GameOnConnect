@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -401,7 +402,7 @@ class _GameLibraryState extends State<GameLibrary> {
                       height: 120,
                       width: 134,
                       child: CachedNetworkImage(
-                        //cacheManager: customCacheManager,
+                        //cacheManager: GameCacheManager(),
                         imageUrl: game.backgroundImage,
                         imageBuilder: (context, imageProvider) => Container(
                           decoration: BoxDecoration(

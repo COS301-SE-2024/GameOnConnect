@@ -68,7 +68,7 @@ class GameService {
 
       if (response.statusCode == 200) {
         //Cache data
-        await GameCacheManager().putFile(
+        await GameDetailsCacheManager().putFile(
           request,
           response.bodyBytes,
           fileExtension: 'json',
