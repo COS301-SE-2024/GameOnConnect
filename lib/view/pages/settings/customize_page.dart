@@ -74,27 +74,27 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   void  getCurrentIndex()
   {
-    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 255, 117, 1.0))
+    if(Theme.of(context).colorScheme.primary == darkPrimaryGreen || Theme.of(context).colorScheme.primary == lightPrimaryGreen)
     {
       selectedIndex=0;
       return; 
     }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(173, 0, 255, 1.0))
+     if(Theme.of(context).colorScheme.primary == darkPrimaryPurple || Theme.of(context).colorScheme.primary == lightPrimaryPurple)
     {
       selectedIndex=1;
       return; 
     }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 10, 255, 1.0))
+     if(Theme.of(context).colorScheme.primary == darkPrimaryBlue || Theme.of(context).colorScheme.primary == lightPrimaryBlue)
     {
       selectedIndex=2;
       return; 
     }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(235, 255, 0, 1.0))
+     if(Theme.of(context).colorScheme.primary == darkPrimaryOrange || Theme.of(context).colorScheme.primary == lightPrimaryOrange)
     {
       selectedIndex=3;
       return; 
     }
-    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(255, 0, 199, 1.0)){
+    if(Theme.of(context).colorScheme.primary == darkPrimaryPink || Theme.of(context).colorScheme.primary == lightPrimaryPink){
       selectedIndex=4;
       return; 
     }
@@ -151,7 +151,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     isDarkMode = currentTheme == darkGreenTheme ||
         currentTheme == darkPurpleTheme ||
         currentTheme == darkBlueTheme ||
-        currentTheme == darkYellowTheme ||
+        currentTheme == darkOrangeTheme ||
         currentTheme == darkPinkTheme;
   }
 
@@ -161,15 +161,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
+    if (color == darkPrimaryGreen) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
+    } else if (color == darkPrimaryPurple) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
+    } else if (color == darkPrimaryBlue) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
-      themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
-    } else if (color == const Color.fromRGBO(255, 0, 199, 1.0)) {
+    } else if (color == darkPrimaryOrange) {
+      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
+    } else if (color == darkPrimaryPink) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }
   }
@@ -543,7 +543,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   'genre',
                 ),
           ),
-
           TagContainer(
             tagType: 'Age rating',
             onPressed: () =>_showSelectableDialog(
@@ -593,9 +592,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             currentColor: selectedColor,
             currentIndex: selectedIndex,
           ),
-          
-        
-
         ],
       ),
       Padding(

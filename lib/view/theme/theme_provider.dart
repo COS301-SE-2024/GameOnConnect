@@ -51,14 +51,14 @@ class ThemeProvider with ChangeNotifier{
     _saveThemePreference('dark_blue');
   }
 
-  void setLightYellowMode() {
-    themeData = lightYellowTheme;
-    _saveThemePreference('light_yellow');
+  void setLightOrangeMode() {
+    themeData = lightOrangeTheme;
+    _saveThemePreference('light_orange');
   }
 
-  void setDarkYellowMode() {
-    themeData = darkYellowTheme;
-    _saveThemePreference('dark_yellow');
+  void setDarkOrangeMode() {
+    themeData = darkOrangeTheme;
+    _saveThemePreference('dark_orange');
   }
 
   void setLightPinkMode() {
@@ -84,10 +84,10 @@ class ThemeProvider with ChangeNotifier{
       setDarkBlueMode();
     } else if (_themeData == darkBlueTheme) {
       setLightBlueMode();
-    } else if (_themeData == lightYellowTheme) {
-      setDarkYellowMode();
-    } else if (_themeData == darkYellowTheme) {
-      setLightYellowMode();
+    } else if (_themeData == lightOrangeTheme) {
+      setDarkOrangeMode();
+    } else if (_themeData == darkOrangeTheme) {
+      setLightOrangeMode();
     } else if (_themeData == lightPinkTheme) {
       setDarkPinkMode();
     } else if (_themeData == darkPinkTheme) {
@@ -110,8 +110,8 @@ class ThemeProvider with ChangeNotifier{
     if (theme == darkPurpleTheme) return 'dark_purple';
     if (theme == lightBlueTheme) return 'light_blue';
     if (theme == darkBlueTheme) return 'dark_blue';
-    if (theme == lightYellowTheme) return 'light_yellow';
-    if (theme == darkYellowTheme) return 'dark_yellow';
+    if (theme == lightOrangeTheme) return 'light_orange';
+    if (theme == darkOrangeTheme) return 'dark_orange';
     if (theme == lightPinkTheme) return 'light_pink';
     if (theme == darkPinkTheme) return 'dark_pink';
     return 'unknown';

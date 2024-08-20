@@ -63,10 +63,10 @@ void main() async {
           themeProvider.setDarkBlueMode();
         } else if (theme == 'light_blue') {
           themeProvider.setLightBlueMode();
-        } else if (theme == 'dark_yellow') {
-          themeProvider.setDarkYellowMode();
-        } else if (theme == 'light_yellow') {
-          themeProvider.setLightYellowMode();
+        } else if (theme == 'dark_orange') {
+          themeProvider.setDarkOrangeMode();
+        } else if (theme == 'light_orange') {
+          themeProvider.setLightOrangeMode();
         } else if (theme == 'dark_pink') {
           themeProvider.setDarkPinkMode();
         } else if (theme == 'light_pink') {
