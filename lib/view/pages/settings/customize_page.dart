@@ -84,31 +84,29 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   return MediaQuery.of(context).platformBrightness == Brightness.dark;
 }
 
-  Future<void> _fetchGenres() async {
-     final genreList= await CustomizeService().fetchGenresFromAPI(_isMounted);
-
-    if(genreList.isNotEmpty){
-      if (_isMounted) {
-          setState(() {
-            _genres = genreList;
-          });
-        }
-    }
-  }
-
   void  getCurrentIndex()
    {
     selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
   }
 
 
-  Future<void> _fetchTags() async {
+  Future<void> _fetchAllTags() async {
     final tagsList= await CustomizeService().fetchTagsFromAPI(_isMounted);
 
     if(tagsList.isNotEmpty){
       if (_isMounted) {
           setState(() {
             _interests = tagsList;
+          });
+        }
+    }
+
+     final genreList= await CustomizeService().fetchGenresFromAPI(_isMounted);
+
+    if(genreList.isNotEmpty){
+      if (_isMounted) {
+          setState(() {
+            _genres = genreList;
           });
         }
     }
@@ -140,10 +138,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 
   
-
   Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
-    await Future.wait([_fetchGenres(), _fetchTags()]);
+    await Future.wait([_fetchAllTags()]);
   }
 
   Future<void> _pickImage() async {
@@ -159,7 +156,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             _profileImage = (file.bytes!, file.name);
           });
         }
-        //print("picked image and image updated ");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
         );
@@ -169,13 +165,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } else {
-      // Mobile/desktop implementation
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
           _profileImage = image.path;
-          _profileImageUrl = "";
+          _profileImageUrl = '';
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
@@ -217,7 +212,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       if (image != null) {
         setState(() {
           _profileBanner = image.path;
-          _profileBannerUrl = "";
+          _profileBannerUrl = '';
         });
         /*ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
@@ -230,65 +225,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  Future<String> uploadImageToFirebase(File image, String imagetype) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
-    // Create a reference to Firebase Storage
-    if (imagetype == 'Profile_picture') {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-      UploadTask uploadTask = storageReference.putFile(image);
-      await uploadTask.whenComplete(() => null);
-
-      String downloadURL = await storageReference.getDownloadURL();
-      return downloadURL;
-    } else {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('banners/$uid.jpg');
-      UploadTask uploadTask = storageReference.putFile(image);
-      await uploadTask.whenComplete(() => null);
-
-      String downloadURL = await storageReference.getDownloadURL();
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'banner': downloadURL,
-      });
-      /*setState(() {
-        testBannerurl=downloadURL;
-      });*/
-      return downloadURL;
-    }
-  }
-
-  Future<void> saveImageURL(String url, String imageType) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    if (imageType == 'Profile_picture') {
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'profile_picture': url,
-      });
-    } else {
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'banner': url,
-      });
-    }
-  }
-
-/*void _showSnackbar(BuildContext context, String message, Color color) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: color,
-    ),
-  );
-}*/
 
   @override
   Widget build(BuildContext context) {
@@ -430,7 +366,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+              backgroundImage: CachedNetworkImageProvider(_profileImage),
             ),
           ),
           Container(
@@ -641,14 +577,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         if (_profileImage != null) {
           String imageUrl;
           if (kIsWeb) {
-            imageUrl = await uploadImageToFirebase(
+            imageUrl = await CustomizeService().uploadImageToFirebase(
                 File(_profileImage!), 'Profile_picture');
           } else {
-            imageUrl = await uploadImageToFirebase(
+            imageUrl = await CustomizeService().uploadImageToFirebase(
                 File(_profileImage!), 'Profile_picture');
           }
 
-          await saveImageURL(imageUrl, 'Profile_picture');
+          await CustomizeService().saveImageURL(imageUrl, 'Profile_picture');
 
           // Show a confirmation message or navigate
           /*ScaffoldMessenger.of(context).showSnackBar(
@@ -660,12 +596,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           String bannerUrl;
           if (kIsWeb) {
             bannerUrl =
-                await uploadImageToFirebase(File(_profileBanner!), 'banner');
+                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
           } else {
             bannerUrl =
-                await uploadImageToFirebase(File(_profileBanner!), 'banner');
+                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
           }
-          await saveImageURL(bannerUrl, 'banner');
+          await CustomizeService().saveImageURL(bannerUrl, 'banner');
 
           // Show a confirmation message or navigate
           /*ScaffoldMessenger.of(context).showSnackBar(

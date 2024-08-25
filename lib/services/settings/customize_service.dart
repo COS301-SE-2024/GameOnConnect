@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
@@ -160,6 +163,54 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
       themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
     } else if (color == darkPrimaryPink) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
+    }
+  }
+
+   Future<String> uploadImageToFirebase(File image, String imagetype) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // Create a reference to Firebase Storage
+    if (imagetype == 'Profile_picture') {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
+      UploadTask uploadTask = storageReference.putFile(image);
+      await uploadTask.whenComplete(() => null);
+
+      String downloadURL = await storageReference.getDownloadURL();
+      return downloadURL;
+    } else {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('banners/$uid.jpg');
+      UploadTask uploadTask = storageReference.putFile(image);
+      await uploadTask.whenComplete(() => null);
+
+      String downloadURL = await storageReference.getDownloadURL();
+      await FirebaseFirestore.instance
+          .collection("profile_data")
+          .doc(uid)
+          .update({
+        'banner': downloadURL,
+      });
+      return downloadURL;
+    }
+  }
+
+  Future<void> saveImageURL(String url, String imageType) async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    if (imageType == 'Profile_picture') {
+      await FirebaseFirestore.instance
+          .collection("profile_data")
+          .doc(uid)
+          .update({
+        'profile_picture': url,
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection("profile_data")
+          .doc(uid)
+          .update({
+        'banner': url,
+      });
     }
   }
 
