@@ -107,6 +107,9 @@ class _ConnectionsListState extends State<ConnectionsList> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         alignment: Alignment.centerRight,
+                         decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                         child: Text(
                           'Requests',
                           style: TextStyle(
@@ -141,6 +144,9 @@ class _ConnectionsListState extends State<ConnectionsList> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         alignment: Alignment.centerRight,
+                         decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                         child: Text(
                           'Requests',
                           style: TextStyle(
@@ -152,8 +158,11 @@ class _ConnectionsListState extends State<ConnectionsList> {
                         ),
                       ),
                     ),
-                SizedBox(
+                Container(
                       height: MediaQuery.of(context).size.height,
+                       decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                       child:
                        ListView.separated(
                         itemCount: list.length,

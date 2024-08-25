@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
@@ -472,7 +471,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   'genre',
                 ),
           ),
-
           TagContainer(
             tagType: 'Age rating',
             onPressed: () =>_showSelectableDialog(
@@ -522,9 +520,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             currentColor: selectedColor,
             currentIndex: selectedIndex,
           ),
-          
-        
-
         ],
       ),
       Padding(
