@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
@@ -211,6 +212,78 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
           .update({
         'banner': url,
       });
+    }
+  }
+
+void saveProfileData(_profileImage,_profileBanner, List<String> _selectedGenres,
+ List<String> _selectedAge , List<String> _selectedInterests, BuildContext context) async {
+    try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final currentUser = auth.currentUser;
+
+      if (currentUser != null) {
+        final db = FirebaseFirestore.instance;
+        final profileDocRef =
+            db.collection("profile_data").doc(currentUser.uid);
+        if (_profileImage != null) {
+          String imageUrl;
+          if (kIsWeb) {
+            imageUrl = await CustomizeService().uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
+          } else {
+            imageUrl = await CustomizeService().uploadImageToFirebase(
+                File(_profileImage!), 'Profile_picture');
+          }
+
+          await CustomizeService().saveImageURL(imageUrl, 'Profile_picture');
+
+          // Show a confirmation message or navigate
+          /*ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile picture updated successfully.')),
+        );*/
+        }
+
+        if (_profileBanner != null) {
+          String bannerUrl;
+          if (kIsWeb) {
+            bannerUrl =
+                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
+          } else {
+            bannerUrl =
+                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
+          }
+          await CustomizeService().saveImageURL(bannerUrl, 'banner');
+
+          // Show a confirmation message or navigate
+          /*ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Banner updated successfully.')),
+        );*/
+        }
+
+        final data = {
+          "genre_interests_tags": _selectedGenres.isNotEmpty
+              ? _selectedGenres
+              : FieldValue.delete(),
+          "age_rating_tags":
+              _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
+          "social_interests_tags": _selectedInterests.isNotEmpty
+              ? _selectedInterests
+              : FieldValue.delete(),
+        };
+
+        await profileDocRef.set(data, SetOptions(merge: true));
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to update profile.'),
+            backgroundColor: Colors.red),
+      );
+      throw ("Error setting/updating profile data: $e");
     }
   }
 
