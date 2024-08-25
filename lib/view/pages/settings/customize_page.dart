@@ -102,7 +102,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
   }
 
- 
 
   Future<void> _fetchTags() async {
     final tagsList= await CustomizeService().fetchTagsFromAPI(_isMounted);
@@ -134,25 +133,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   }
 
 
-  
-
    void _updateTheme(Color color, int index) {
     setState(() {
       selectedColor = color;
     });
-    ThemeProvider themeProvider =
-        Provider.of<ThemeProvider>(context, listen: false);
-    if (color == darkPrimaryGreen) {
-      themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == darkPrimaryPurple) {
-      themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == darkPrimaryBlue) {
-      themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == darkPrimaryOrange) {
-      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
-    } else if (color == darkPrimaryPink) {
-      themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
-    }
+    CustomizeService().updateTheme(color, Provider.of<ThemeProvider>(context, listen: false), isDarkMode);
   }
 
   

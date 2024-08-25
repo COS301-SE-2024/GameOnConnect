@@ -148,4 +148,19 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     return -1;
   }
 
+  void updateTheme(Color color, ThemeProvider themeProvider, bool isDarkMode) {
+
+    if (color == darkPrimaryGreen) {
+      themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
+    } else if (color == darkPrimaryPurple) {
+      themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
+    } else if (color == darkPrimaryBlue) {
+      themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
+    } else if (color == darkPrimaryOrange) {
+      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
+    } else if (color == darkPrimaryPink) {
+      themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
+    }
+  }
+
 }
