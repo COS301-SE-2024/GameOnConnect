@@ -3,11 +3,8 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
@@ -17,9 +14,6 @@ import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../../../globals.dart' as globals;
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -57,7 +51,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       setState(() {
         _isDataFetched = true;
       });
-      getCurrentIndex();
+      selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
     }
 
     });
@@ -83,11 +77,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   bool isCurrentlyDarkMode(BuildContext context) {
   return MediaQuery.of(context).platformBrightness == Brightness.dark;
 }
-
-  void  getCurrentIndex()
-   {
-    selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
-  }
 
 
   Future<void> _fetchAllTags() async {
@@ -222,6 +211,26 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           const SnackBar(content: Text('Failed to select Image.')),
         );
       }
+    }
+  }
+
+  void _saveChangedProfileData() async
+  {
+     final success= await CustomizeService().saveProfileData(
+            _profileImage,_profileBanner, _selectedGenres,
+            _selectedAge, _selectedInterests
+           );
+    if(success){
+       ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully.')),
+        );
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to update profile.'),
+            backgroundColor: Colors.red),
+      );
     }
   }
 
@@ -475,10 +484,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             ),
           ),
           onPressed: () {
-           CustomizeService().saveProfileData(
-            _profileImage,_profileBanner, _selectedGenres,
-            _selectedAge, _selectedInterests,context
-           );
+           _saveChangedProfileData();
             Navigator.of(context).pop();
           },
           child: const Text(

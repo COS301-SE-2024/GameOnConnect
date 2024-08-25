@@ -41,6 +41,11 @@ class _AllWantToPlayListState extends State<AllWantToPlayList> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackButtonAppBar(

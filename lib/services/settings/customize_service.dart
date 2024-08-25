@@ -215,8 +215,8 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     }
   }
 
-void saveProfileData(_profileImage,_profileBanner, List<String> _selectedGenres,
- List<String> _selectedAge , List<String> _selectedInterests, BuildContext context) async {
+Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGenres,
+ List<String> selectedAge , List<String> selectedInterests) async {
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
@@ -225,14 +225,14 @@ void saveProfileData(_profileImage,_profileBanner, List<String> _selectedGenres,
         final db = FirebaseFirestore.instance;
         final profileDocRef =
             db.collection("profile_data").doc(currentUser.uid);
-        if (_profileImage != null) {
+        if (profileImage != null) {
           String imageUrl;
           if (kIsWeb) {
             imageUrl = await CustomizeService().uploadImageToFirebase(
-                File(_profileImage!), 'Profile_picture');
+                File(profileImage!), 'Profile_picture');
           } else {
             imageUrl = await CustomizeService().uploadImageToFirebase(
-                File(_profileImage!), 'Profile_picture');
+                File(profileImage!), 'Profile_picture');
           }
 
           await CustomizeService().saveImageURL(imageUrl, 'Profile_picture');
@@ -243,14 +243,14 @@ void saveProfileData(_profileImage,_profileBanner, List<String> _selectedGenres,
         );*/
         }
 
-        if (_profileBanner != null) {
+        if (profileBanner != null) {
           String bannerUrl;
           if (kIsWeb) {
             bannerUrl =
-                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
+                await CustomizeService().uploadImageToFirebase(File(profileBanner!), 'banner');
           } else {
             bannerUrl =
-                await CustomizeService().uploadImageToFirebase(File(_profileBanner!), 'banner');
+                await CustomizeService().uploadImageToFirebase(File(profileBanner!), 'banner');
           }
           await CustomizeService().saveImageURL(bannerUrl, 'banner');
 
@@ -261,30 +261,25 @@ void saveProfileData(_profileImage,_profileBanner, List<String> _selectedGenres,
         }
 
         final data = {
-          "genre_interests_tags": _selectedGenres.isNotEmpty
-              ? _selectedGenres
+          "genre_interests_tags": selectedGenres.isNotEmpty
+              ? selectedGenres
               : FieldValue.delete(),
           "age_rating_tags":
-              _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-          "social_interests_tags": _selectedInterests.isNotEmpty
-              ? _selectedInterests
+              selectedAge.isNotEmpty ? selectedAge : FieldValue.delete(),
+          "social_interests_tags": selectedInterests.isNotEmpty
+              ? selectedInterests
               : FieldValue.delete(),
         };
 
         await profileDocRef.set(data, SetOptions(merge: true));
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully.')),
-        );
+       return true;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Failed to update profile.'),
-            backgroundColor: Colors.red),
-      );
-      throw ("Error setting/updating profile data: $e");
+      //print ("Error setting/updating profile data: $e");
+      return false;
     }
+    return false;
   }
 
 }

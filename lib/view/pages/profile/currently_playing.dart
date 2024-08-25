@@ -13,6 +13,11 @@ class CurrentlyPlaying extends StatefulWidget {
 }
 
 class _CurrentlyPlayingState extends State<CurrentlyPlaying> {
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<GameDetails>(
