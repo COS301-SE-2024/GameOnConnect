@@ -66,6 +66,8 @@ dependencies:
   auto_size_text: ^3.0.0
   timelines: ^0.1.0
   timeline_tile: ^2.0.0
+  model_viewer_plus: ^1.8.0
+  chewie: ^1.2.2
 
 
 dev_dependencies:
@@ -107,6 +109,7 @@ flutter:
     - assets/gifs/gaming_animation.gif
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
+    - "assets/models/"
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

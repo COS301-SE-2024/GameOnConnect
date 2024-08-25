@@ -398,6 +398,23 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Messaging(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.model_training,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
           ],
           centerTitle: false,
           elevation: 0,
