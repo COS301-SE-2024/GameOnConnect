@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
+import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
@@ -46,89 +47,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
   int selectedIndex=0;
 
-  bool isCurrentlyDarkMode(BuildContext context) {
-  return MediaQuery.of(context).platformBrightness == Brightness.dark;
-}
-
-  Future<void> _fetchGenresFromAPI() async {
-    try {
-      var url =
-          Uri.parse('https://api.rawg.io/api/genres?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        if (_isMounted) {
-          setState(() {
-            _genres = (decoded['results'] as List)
-                .map((genre) => genre['name'].toString())
-                .toList();
-          });
-        }
-      } else {
-        //print("Error fetching genres: ${response.statusCode}");
-      }
-    } catch (e) {
-      //print("Error fetching genres: $e");
-    }
-  }
-
-  void  getCurrentIndex()
-  {
-    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 255, 117, 1.0))
-    {
-      selectedIndex=0;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(173, 0, 255, 1.0))
-    {
-      selectedIndex=1;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(0, 10, 255, 1.0))
-    {
-      selectedIndex=2;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(235, 255, 0, 1.0))
-    {
-      selectedIndex=3;
-      return; 
-    }
-    if(Theme.of(context).colorScheme.primary == const Color.fromRGBO(255, 0, 199, 1.0)){
-      selectedIndex=4;
-      return; 
-    }
-  }
-
-  @override
-  void dispose() {
-    _isMounted = false;
-    super.dispose();
-  }
-
-  Future<void> _fetchTagsFromAPI() async {
-    try {
-      if (_isMounted) {
-        var url =
-            Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-        var response = await http.get(url);
-        if (response.statusCode == 200) {
-          var decoded = json.decode(response.body);
-
-          setState(() {
-            _interests = (decoded['results'] as List)
-                .map((tag) => tag['name'].toString())
-                .toList();
-          });
-        } else {
-          throw ("Error fetching interest tags: ${response.statusCode}");
-        }
-      }
-    } catch (e) {
-      throw ("Error fetching interest tags: $e");
-    }
-  }
-
+  late CustomizeService customizeService;
 
   @override
   void initState() {
@@ -151,71 +70,96 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     isDarkMode = currentTheme == darkGreenTheme ||
         currentTheme == darkPurpleTheme ||
         currentTheme == darkBlueTheme ||
-        currentTheme == darkYellowTheme ||
+        currentTheme == darkOrangeTheme ||
         currentTheme == darkPinkTheme;
+  
+}
+
+ @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
   }
 
-  void _updateTheme(Color color, int index) {
+  bool isCurrentlyDarkMode(BuildContext context) {
+  return MediaQuery.of(context).platformBrightness == Brightness.dark;
+}
+
+  Future<void> _fetchGenres() async {
+     final genreList= await CustomizeService().fetchGenresFromAPI(_isMounted);
+
+    if(genreList.isNotEmpty){
+      if (_isMounted) {
+          setState(() {
+            _genres = genreList;
+          });
+        }
+    }
+  }
+
+  void  getCurrentIndex()
+   {
+    selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
+  }
+
+ 
+
+  Future<void> _fetchTags() async {
+    final tagsList= await CustomizeService().fetchTagsFromAPI(_isMounted);
+
+    if(tagsList.isNotEmpty){
+      if (_isMounted) {
+          setState(() {
+            _interests = tagsList;
+          });
+        }
+    }
+  }
+
+  Future<void> _fetchUserSelectionsFromDatabase() async {
+
+    final customizeData= await CustomizeService().fetchUserSelectionsFromDatabase();
+
+    if(customizeData.isNotEmpty){
+      if (_isMounted) {
+        setState(() {
+          _selectedGenres = customizeData.elementAt(0);
+          _selectedAge = customizeData.elementAt(1);
+          _selectedInterests = customizeData.elementAt(2);
+          _profileBannerUrl = customizeData.elementAt(3).elementAt(0);
+          _profileImageUrl = customizeData.elementAt(3).elementAt(1);
+        });
+      }
+    }
+  }
+
+
+  
+
+   void _updateTheme(Color color, int index) {
     setState(() {
       selectedColor = color;
     });
     ThemeProvider themeProvider =
         Provider.of<ThemeProvider>(context, listen: false);
-    if (color == const Color.fromRGBO(0, 255, 117, 1.0)) {
+    if (color == darkPrimaryGreen) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == const Color.fromRGBO(173, 0, 255, 1.0)) {
+    } else if (color == darkPrimaryPurple) {
       themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == const Color.fromRGBO(0, 10, 255, 1.0)) {
+    } else if (color == darkPrimaryBlue) {
       themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == const Color.fromRGBO(235, 255, 0, 1.0)) {
-      themeProvider.setTheme(isDarkMode ? darkYellowTheme : lightYellowTheme);
-    } else if (color == const Color.fromRGBO(255, 0, 199, 1.0)) {
+    } else if (color == darkPrimaryOrange) {
+      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
+    } else if (color == darkPrimaryPink) {
       themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
     }
   }
 
-  Future<void> _fetchUserSelectionsFromDatabase() async {
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef =
-            db.collection("profile_data").doc(currentUser.uid);
-
-        final docSnapshot = await profileDocRef.get();
-        if (docSnapshot.exists) {
-          final data = docSnapshot.data();
-          final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
-          final age = List<String>.from(data?["age_rating_tags"] ?? []);
-          final interests =
-              List<String>.from(data?["social_interests_tags"] ?? []);
-
-          StorageService storageService = StorageService();
-          String bannerDownloadUrl =
-              await storageService.getBannerUrl(currentUser.uid);
-          String profileDownloadUrl =
-              await storageService.getProfilePictureUrl(currentUser.uid);
-          if (_isMounted) {
-            setState(() {
-              _selectedGenres = genres;
-              _selectedAge = age;
-              _selectedInterests = interests;
-              _profileBannerUrl = bannerDownloadUrl;
-              _profileImageUrl = profileDownloadUrl;
-            });
-          }
-        }
-      }
-    } catch (e) {
-      throw ("Error fetching user selections: $e");
-    }
-  }
+  
 
   Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
-    await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
+    await Future.wait([_fetchGenres(), _fetchTags()]);
   }
 
   Future<void> _pickImage() async {
