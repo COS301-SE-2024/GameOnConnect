@@ -211,7 +211,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       .secondary,
                                                   fontSize: 16,
                                                   letterSpacing: 0,
-                                                  fontWeight: FontWeight.bold,
                                                 ),
                                                 hintStyle: TextStyle(
                                                   color: Theme.of(context)
@@ -725,7 +724,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .colorScheme
                                                             .surface,
                                                     activeColor: Colors.black,
-
                                                     value: isChanged,
                                                     onChanged: (bool value) {
                                                       setState(() {
@@ -888,7 +886,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .surface,
+                                            .tertiary,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),

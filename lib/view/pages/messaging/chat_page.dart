@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/components/messaging/chat_bubble_component.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String profileName;
@@ -26,6 +27,7 @@ class _ChatPageState extends State<ChatPage> {
   final MessagingService _messagingService = MessagingService();
   final AuthService _authService = AuthService();
   FocusNode newFocusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -38,7 +40,11 @@ class _ChatPageState extends State<ChatPage> {
     });
     Future.delayed(
       const Duration(milliseconds: 500),
-      () => scrollDownPage(),
+      () {
+        if (mounted) {
+      scrollDownPage();
+    }
+      } 
     );
   }
 
@@ -49,18 +55,21 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  final ScrollController _scrollController = ScrollController();
   void scrollDownPage() {
+  if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.fastOutSlowIn,
     );
   }
+}
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
-    if (_textEditingController.text.isNotEmpty) {
+    String messageText = _textEditingController.text.trim();
+
+    if (messageText.isNotEmpty) {
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
           currentUser, widget.receiverID);
@@ -117,7 +126,12 @@ class _ChatPageState extends State<ChatPage> {
       future: _messagingService.findConversationID(senderID, widget.receiverID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: LoadingAnimationWidget.halfTriangleDot(
+              color: Theme.of(context).colorScheme.primary,
+              size: 36,
+            ),
+          );
         } else if (snapshot.hasError ||
             !snapshot.hasData ||
             snapshot.data == 'Not found') {
@@ -187,26 +201,28 @@ class _ChatPageState extends State<ChatPage> {
                       fontFamily: 'Inter',
                     ),
                     border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: const BorderSide(
-                      color: Colors.transparent, 
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: const BorderSide(
-                        color: Colors.transparent, 
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                       borderSide: const BorderSide(
-                        color: Colors.transparent, 
+                        color: Colors.transparent,
                       ),
                     ),
                   ),
                   onFieldSubmitted: (value) {
+                    if (value.trim().isNotEmpty) {
                     sendMessage();
+                  }
                   },
                 );
               },
@@ -215,7 +231,7 @@ class _ChatPageState extends State<ChatPage> {
           ValueListenableBuilder<TextEditingValue>(
             valueListenable: _textEditingController,
             builder: (context, value, child) {
-              return value.text.isNotEmpty
+              return value.text.trim().isNotEmpty
                   ? IconButton(
                       onPressed: sendMessage,
                       icon: Icon(
@@ -223,7 +239,7 @@ class _ChatPageState extends State<ChatPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     )
-                  : Container(); 
+                  : Container();
             },
           ),
         ],
@@ -260,12 +276,15 @@ class _ChatPageState extends State<ChatPage> {
 
   //this widget builds while the image is still loading
   Widget _buildLoadingWidget() {
-    return const SizedBox(
+    return SizedBox(
       width: 44,
       height: 44,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+        padding: const EdgeInsets.all(8.0),
+        child: LoadingAnimationWidget.halfTriangleDot(
+          color: Theme.of(context).colorScheme.primary,
+          size: 36,
+        ),
       ),
     );
   }

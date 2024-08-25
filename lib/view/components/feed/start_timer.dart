@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
+import 'package:gameonconnect/services/feed_S/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/services/stats_S/session_stats_service.dart';
-import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class GameTimer extends StatefulWidget {
   const GameTimer({super.key});
@@ -17,39 +16,17 @@ class GameTimer extends StatefulWidget {
 }
 
 class _GameTimer extends State<GameTimer> {
-  final MyGamesService _currentlyPlaying = MyGamesService();
-  final GameService _gameService = GameService();
   final ProfileService _profileService = ProfileService();
+  final TimerService _timerService = TimerService();
   Future<List<GameDetails>>? _userGames;
-  String? _selectedItem;
-  static final Stopwatch _stopwatch = Stopwatch();
   Timer? _timer;
-  final SessionStatsService _sessionStatsService = SessionStatsService();
   String _mood = "No mood";
-  DateTime _startTime = DateTime.timestamp();
+  String? _selectedGameName;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserGames();
-  }
-
-  Future<void> _fetchUserGames() async {
-    try {
-      List<String> myGameIds = await _currentlyPlaying.getMyGames();
-
-      Future<List<GameDetails>> gameDetailsFutures = Future.wait(
-        myGameIds.map((id) => _gameService.fetchGameDetails(id)),
-      );
-
-      List<GameDetails> gameDetails = await gameDetailsFutures;
-
-      setState(() {
-        _userGames = Future.value(gameDetails);
-      });
-    } catch (e) {
-      rethrow;
-    }
+    _userGames = _timerService.fetchUserGames();
   }
 
   @override
@@ -59,26 +36,15 @@ class _GameTimer extends State<GameTimer> {
   }
 
   void _startStopWatch() {
-    _startTime = DateTime.timestamp();
-    _stopwatch.reset();
-    _stopwatch.start();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timerService.resetTimer();
+    _timerService.startTimer(() {
       setState(() {});
     });
-    _profileService.setCurrentlyPlaying(_selectedItem!);
   }
 
   void _stopStopwatch() {
-    _stopwatch.stop();
-    _timer?.cancel();
+    _timerService.stopTimer();
     _profileService.setCurrentlyPlaying("");
-  }
-
-  String _formatElapsedTime() {
-    final int hours = _stopwatch.elapsed.inHours;
-    final int minutes = (_stopwatch.elapsed.inMinutes % 60);
-    final int seconds = (_stopwatch.elapsed.inSeconds % 60);
-    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -92,7 +58,7 @@ class _GameTimer extends State<GameTimer> {
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           title: Text(
-            _stopwatch.isRunning ? 'Done playing?' : "Start playing",
+            _timerService.isRunning() ? 'Done playing?' : "Start playing",
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -105,7 +71,7 @@ class _GameTimer extends State<GameTimer> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _stopwatch.isRunning
+                  _timerService.isRunning()
                       ? Row(
                           children: [
                             const Icon(
@@ -113,10 +79,15 @@ class _GameTimer extends State<GameTimer> {
                               color: Colors.red,
                             ),
                             const SizedBox(width: 10),
-                            Text(
-                              _formatElapsedTime(),
-                              style: const TextStyle(color: Colors.red),
-                            )
+                            ValueListenableBuilder<String>(
+                              valueListenable: _timerService.elapsedTime,
+                              builder: (context, value, child) {
+                                return Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.red),
+                                );
+                              },
+                            ),
                           ],
                         )
                       : FutureBuilder<List<GameDetails>>(
@@ -125,7 +96,10 @@ class _GameTimer extends State<GameTimer> {
                               AsyncSnapshot<List<GameDetails>> snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                              return LoadingAnimationWidget.halfTriangleDot(
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 36,
+                              );
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (!snapshot.hasData ||
@@ -135,8 +109,8 @@ class _GameTimer extends State<GameTimer> {
                               return DropdownButton<String>(
                                 isDense: true,
                                 underline: const SizedBox(),
-                                value: _selectedItem,
-                                hint: const Text('What are you playing?'),
+                                hint: Text(_selectedGameName ??
+                                    'What are you playing?'),
                                 items: snapshot.data!.map((GameDetails game) {
                                   return DropdownMenuItem<String>(
                                     value: game.id.toString(),
@@ -145,7 +119,11 @@ class _GameTimer extends State<GameTimer> {
                                 }).toList(),
                                 onChanged: (String? newValue) {
                                   setState(() {
-                                    _selectedItem = newValue;
+                                    final selectedGame = snapshot.data!
+                                        .firstWhere((game) =>
+                                            game.id.toString() == newValue);
+                                    _selectedGameName = selectedGame.name;
+                                    _timerService.setGame(newValue);
                                   });
                                 },
                               );
@@ -153,114 +131,124 @@ class _GameTimer extends State<GameTimer> {
                           }),
                   IconButton.filled(
                     style: IconButton.styleFrom(
-                      backgroundColor: _stopwatch.isRunning ? Colors.red : Theme.of(context).colorScheme.primary
-                    ),
-                    icon: _stopwatch.isRunning
-                        ? const Icon(Icons.stop)
-                        : const Icon(Icons.play_arrow),
-                    onPressed: () {
-                      setState(() {
-                        if (_stopwatch.isRunning) {
-                          _stopStopwatch();
-                          //show emoji feedback
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text(
-                                    'How was your experience playing this game?'),
-                                content: SizedBox(
-                                  width: double.maxFinite,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      EmojiFeedback(
-                                        emojiPreset: const [
-                                          EmojiModel(
-                                            src: Assets.classicTerrible,
-                                            label: 'Scared',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.classicBad,
-                                            label: 'Disgusted',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatTerrible,
-                                            label: 'Angry',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatBad,
-                                            label: 'Sad',
-                                            package: 'flutter_emoji_feedback',
-                                          ),
-                                          EmojiModel(
-                                            src: Assets.flatVeryGood,
-                                            label: 'Happy',
-                                            package: 'flutter_emoji_feedback',
-                                          )
-                                        ],
-                                        inactiveElementBlendColor:
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .surface,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            switch (value) {
-                                              case 1:
-                                                _mood = "Scared";
-                                              case 2:
-                                                _mood = "Disgusted";
-                                              case 3:
-                                                _mood = "Angry";
-                                              case 4:
-                                                _mood = "Sad";
-                                              case 5:
-                                                _mood = "Happy";
-                                              default:
-                                                _mood = "No mood";
-                                            }
-                                          });
-                                        },
+                        backgroundColor: _timerService.isRunning()
+                            ? Colors.red
+                            : !_timerService.isGameSelected()
+                                ? Colors.grey
+                                : Theme.of(context).colorScheme.primary),
+                    icon: _timerService.isRunning()
+                        ? const Icon(Icons.stop, color: Colors.white)
+                        : const Icon(Icons.play_arrow, color: Colors.white),
+                    onPressed: !_timerService.isGameSelected()
+                        ? null
+                        : () {
+                            setState(() {
+                              if (_timerService.isRunning()) {
+                                _stopStopwatch();
+                                //show emoji feedback
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    int? selectedRating = 1;
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'How was your experience playing this game?',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold)),
+                                      content: StatefulBuilder(
+                                        builder: (context, StateSetter setDialogState) {
+                                          return SizedBox(
+                                            width: double.maxFinite,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                EmojiFeedback(
+                                                  rating: selectedRating,
+                                                  enableFeedback: true,
+                                                  emojiPreset: const [
+                                                    EmojiModel(
+                                                      src: Assets.classicTerrible,
+                                                      label: 'Scared',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.classicBad,
+                                                      label: 'Disgusted',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatTerrible,
+                                                      label: 'Angry',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatBad,
+                                                      label: 'Sad',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    ),
+                                                    EmojiModel(
+                                                      src: Assets.flatVeryGood,
+                                                      label: 'Happy',
+                                                      package:
+                                                          'flutter_emoji_feedback',
+                                                    )
+                                                  ],
+                                                  inactiveElementBlendColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .surface,
+                                                  onChanged: (value) {
+                                                    setDialogState(() {
+                                                      selectedRating = value;
+                                                      switch (value) {
+                                                        case 1:
+                                                          _mood = "Scared";
+                                                          break;
+                                                        case 2:
+                                                          _mood = "Disgusted";
+                                                          break;
+                                                        case 3:
+                                                          _mood = "Angry";
+                                                          break;
+                                                        case 4:
+                                                          _mood = "Sad";
+                                                          break;
+                                                        case 5:
+                                                          _mood = "Happy";
+                                                          break;
+                                                        default:
+                                                          _mood = "No mood";
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('Okay'),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      //add data to the database
-                                      if (_userGames != null &&
-                                          _selectedItem != null) {
-                                        List<GameDetails> games =
-                                            await _userGames!;
-                                        GameDetails? selectedGame =
-                                            games.firstWhere((game) =>
-                                                game.id.toString() ==
-                                                _selectedItem);
-                                        List genres = selectedGame.genres;
-                                        _sessionStatsService.addSession(
-                                            _stopwatch.elapsedMilliseconds,
-                                            _selectedItem!,
-                                            _mood,
-                                            genres,
-                                            _startTime);
-                                      }
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          _startStopWatch();
-                        }
-                      });
-                    },
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Okay'),
+                                          onPressed: () async {
+                                            Navigator.of(context).pop();
+                                            _timerService.addSession(_mood);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                _startStopWatch();
+                              }
+                            });
+                          },
                   ),
                 ],
               ),
