@@ -19,6 +19,25 @@ class GameCacheManager extends CacheManager {
   );
 }
 
+class GameScreenshotCacheManager extends CacheManager {
+  static const key = "gameScreenshotsCache";
+
+  static late GameScreenshotCacheManager _instance;
+
+  factory GameScreenshotCacheManager() {
+    _instance = GameScreenshotCacheManager._instance;
+    return _instance;
+  }
+
+  GameScreenshotCacheManager._() : super(
+    Config(
+      key,
+      stalePeriod: const Duration(days: 2), 
+      maxNrOfCacheObjects: 100, 
+    ),
+  );
+}
+
 class GameDetailsCacheManager extends CacheManager {
   static const key = "gameDetailsCache";
 
