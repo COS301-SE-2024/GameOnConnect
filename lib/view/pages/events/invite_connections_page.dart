@@ -123,9 +123,10 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                     const Center(child: Text('No results found.'))
                   else
                     SizedBox(
-                        height: 360,
+                        height: MediaQuery.of(context).size.height,
                         child: ListView.separated(
                           itemCount: filteredUsers.length,
+                          scrollDirection: Axis.vertical,
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
                             AppUser? i = filteredUsers[index];
