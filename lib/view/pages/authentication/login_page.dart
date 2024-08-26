@@ -25,23 +25,25 @@ class _LoginState extends State<Login> {
 
   UserCredential? _userG;
 
-  Future signIn() async {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      ).catchError((e){
-          passwordController.clear();
-          emailController.clear();
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    "Email or password incorrect"),
-                backgroundColor: Colors.red.shade300,
-              ));
-       throw(e);
-      });
-
+  Future<void> signIn() async {
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  } catch (e) {
+    passwordController.clear();
+    emailController.clear();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Email or password incorrect"),
+        backgroundColor: Colors.red.shade300,
+      ),
+    );
+    rethrow; 
   }
+}
 
   Future google() async {
     _userG = await AuthService().signInWithGoogle();
@@ -193,14 +195,18 @@ class _LoginState extends State<Login> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                            signIn();
+                            await signIn();
+                            if (!mounted) return;
+                            
                             FirebaseAuth.instance.userChanges().listen((User? user) {
                              if(user != null){
+                              if (!context.mounted) return;
                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                    content: Text("Welcome to GameOnConnect"),
                               backgroundColor: Theme.of(context).colorScheme.primary));
+                              if (!mounted) return;
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -213,6 +219,7 @@ class _LoginState extends State<Login> {
                             );
 
                           if (validUser) {
+                            if (!context.mounted) return;
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -222,10 +229,6 @@ class _LoginState extends State<Login> {
                           } else {
                             passwordController.clear();
                             emailController.clear();
-                            /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Email or password incorrect"),
-                              backgroundColor: Colors.red.shade300,
-                            ));*/
                           }
                         }
                       },
