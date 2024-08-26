@@ -333,7 +333,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                     ))); //go to next page
                       },
                       child: Container(
-                        padding: EdgeInsets.fromLTRB(16, 7, 30,0 ),
+                        padding: const EdgeInsets.fromLTRB(16, 7, 30,0 ),
                         alignment: Alignment.centerRight,
                         child: Text(
                           'Requests',
@@ -347,7 +347,7 @@ class _FriendSearchState extends State<FriendSearch> {
                       ),
                     ),
                   Padding(
-                  padding: EdgeInsets.fromLTRB(12, 1, 12,5 ),
+                  padding: const EdgeInsets.fromLTRB(12, 1, 12,5 ),
                   child:  Divider(
               thickness: 1,
               color: Theme.of(context).colorScheme.primaryContainer,
