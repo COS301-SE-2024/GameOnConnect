@@ -48,6 +48,10 @@ class _EditEventsState extends State<EditEvent> {
   List<String> invites = [];
 
   Future<void> editEvent() async {
+    Event updated = Event(creatorID:  e.creatorID,startDate: _datePicked,endDate: _endDatePicked,gameID:  gameID,
+        name: name,eventID: e.eventID, subscribed: e.subscribed, participants: e.participants,description: description,
+        privacy: isChanged,invited: invites,creatorName: e.creatorName,eventType: selectedOption);
+    widget.edited(updated);
      await EventsService().editEvent(
       imageChanged,
         selectedOption,
@@ -60,10 +64,7 @@ class _EditEventsState extends State<EditEvent> {
         filePath != null ? filePath!.path : imageUrl,
         description,
         e.eventID);
-     Event updated = Event(creatorID:  e.creatorID,startDate: _datePicked,endDate: _endDatePicked,gameID:  gameID,
-     name: name,eventID: e.eventID, subscribed: e.subscribed, participants: e.participants,description: description,
-     privacy: isChanged,invited: invites,creatorName: e.creatorName,eventType: selectedOption);
-     widget.edited(updated);
+
   }
 
   Future pickImage() async {
@@ -494,7 +495,7 @@ class _EditEventsState extends State<EditEvent> {
                                               final datePickedDate =
                                                   await showDatePicker(
                                                 context: context,
-                                                initialDate: DateTime.now(),
+                                                initialDate: _datePicked,
                                                 lastDate: DateTime(2050),
                                                 firstDate: DateTime.now(),
                                                 builder: (context, child) {
@@ -515,7 +516,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
                                                         initialTime:
-                                                            TimeOfDay.now(),
+                                                            TimeOfDay(hour: _datePicked.hour, minute: _datePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -539,8 +540,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     datePickedTime!.hour,
                                                     datePickedTime.minute,
                                                   );
-                                                  if (_datePicked!.isBefore(
-                                                      _endDatePicked!)) {
+                                                  if (_datePicked.isBefore(
+                                                      _endDatePicked)) {
                                                     validEndDate = true;
                                                   }
                                                 });
@@ -570,12 +571,10 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    _datePicked != null
-                                                        ? DateFormat(
+                                                        DateFormat(
                                                                 'd MMMM , hh:mm a')
                                                             .format(
-                                                                _datePicked!)
-                                                        : 'Select a date',
+                                                                _datePicked),
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -613,9 +612,9 @@ class _EditEventsState extends State<EditEvent> {
                                               final datePickedDate2 =
                                                   await showDatePicker(
                                                 context: context,
-                                                initialDate: DateTime.now(),
+                                                initialDate: _endDatePicked,
                                                 lastDate: DateTime(2050),
-                                                firstDate: DateTime.now(),
+                                                firstDate: _datePicked,
                                                 builder: (context, child) {
                                                   return Theme(
                                                     data: ThemeData.from(
@@ -634,7 +633,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
                                                         initialTime:
-                                                            TimeOfDay.now(),
+                                                        TimeOfDay(hour: _endDatePicked.hour, minute: _endDatePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -657,10 +656,11 @@ class _EditEventsState extends State<EditEvent> {
                                                     datePickedTime2!.hour,
                                                     datePickedTime2.minute,
                                                   );
-                                                  if (_datePicked!.isBefore(
-                                                      _endDatePicked!)) {
+                                                  if (_datePicked.isBefore(
+                                                      _endDatePicked)) {
                                                     validEndDate = true;
                                                   } else {
+                                                    _endDatePicked = e.endDate;
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
@@ -698,12 +698,11 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    _endDatePicked != null &&
                                                             validEndDate
                                                         ? DateFormat(
                                                                 'd MMMM , hh:mm a')
                                                             .format(
-                                                                _endDatePicked!)
+                                                                _endDatePicked)
                                                         : 'Select a date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',

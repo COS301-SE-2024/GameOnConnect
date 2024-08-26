@@ -66,7 +66,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             .contains(_searchQuery.toLowerCase()) &&
                         user.uid != _currentUserId) // Exclude current user
                     .toList();
-                return Column(mainAxisSize: MainAxisSize.max, children: [
+                return SingleChildScrollView( child:Column(mainAxisSize: MainAxisSize.max, children: [
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -151,7 +151,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                             return const SizedBox();
                           },
                         )),
-                ]);
+                ]));
               }
             }),
       ),
@@ -174,5 +174,6 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                 ])),
       ),
     );
+
   }
 }

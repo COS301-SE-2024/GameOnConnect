@@ -236,11 +236,9 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                   isCreator: isCreator,
                                   imageUrl: imageUrl,
                               edited: (event){
-                                    print("hello edited");
                                     setState(() {
                                       e =  event;
                                     });
-                                    print(e.gameID);
                               },)
                             ],
                           ),
