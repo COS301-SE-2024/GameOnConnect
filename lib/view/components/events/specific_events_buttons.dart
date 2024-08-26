@@ -8,7 +8,7 @@ class SpecificEventsButtons extends StatefulWidget{
   final Event e;
   final bool isCreator;
   final String imageUrl;
-  final void Function(Event UpdatedEvent) edited;
+  final void Function(Event updatedEvent) edited;
 
   const SpecificEventsButtons({super.key,required this.e, required this.isCreator, required this.imageUrl,required this.edited});
 

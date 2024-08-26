@@ -15,7 +15,7 @@ import '../../components/events/create_event_chips.dart';
 class EditEvent extends StatefulWidget {
   final Event e;
   final String imageUrl;
-  final void Function(Event UpdatedEvent) edited;
+  final void Function(Event updatedEvent) edited;
 
   const EditEvent({super.key, required this.e, required this.imageUrl,required this.edited});
 
