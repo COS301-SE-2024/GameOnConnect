@@ -25,7 +25,7 @@ class GameScreenshotCacheManager extends CacheManager {
   static late GameScreenshotCacheManager _instance;
 
   factory GameScreenshotCacheManager() {
-    _instance = GameScreenshotCacheManager._instance;
+    _instance = GameScreenshotCacheManager._();
     return _instance;
   }
 
