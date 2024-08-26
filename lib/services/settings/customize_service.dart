@@ -23,7 +23,7 @@ class CustomizeService {
   Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     String request = 'https://api.rawg.io/api/genres?key=${globals.apiKey}';
 
-    var fileInfo = await TagCacheManager().getFileFromCache(request);
+    var fileInfo = await GenreTagManager().getFileFromCache(request);
 
     if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
       //Load the games from cache
@@ -42,7 +42,7 @@ class CustomizeService {
 
       if (response.statusCode == 200) {
         //Cache data
-        await TagCacheManager().putFile(
+        await GenreTagManager().putFile(
           request,
           response.bodyBytes,
           fileExtension: 'json',
