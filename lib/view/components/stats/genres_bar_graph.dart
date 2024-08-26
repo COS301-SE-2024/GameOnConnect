@@ -186,8 +186,8 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                             ),
                             primaryXAxis: CategoryAxis(
                               labelRotation: 0,
-                              majorGridLines: MajorGridLines(width: 0),
-                              axisLine: AxisLine(width: 1),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              axisLine: const AxisLine(width: 1),
                               labelIntersectAction:
                                   AxisLabelIntersectAction.trim,
                               labelStyle: const TextStyle(
