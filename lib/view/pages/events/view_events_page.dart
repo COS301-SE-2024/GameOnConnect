@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
@@ -120,11 +121,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                         width: double.infinity,
                                         height: 230,
                                         child: joinedEvents!.isEmpty? const Align(alignment: Alignment(0, 0), child: Text("You currently have no upcoming events")):
-                                         CarouselSlider.builder(
+                                         carousel_slider2.CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
                                           carouselController:
-                                              carousel_slider.CarouselController(),
-                                          options: CarouselOptions(
+                                              carousel_slider.CarouselSliderController(),
+                                          options: carousel_slider2.CarouselOptions(
                                             padEnds: false,
                                             initialPage: 0,
                                             viewportFraction: 0.5,
