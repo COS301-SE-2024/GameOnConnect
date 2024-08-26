@@ -18,3 +18,22 @@ class TagCacheManager extends CacheManager {
     ),
   );
 }
+
+class GenreCacheManager extends CacheManager {
+  static const key = "tagCache";
+
+  static late GenreCacheManager _instance;
+
+  factory GenreCacheManager() {
+    _instance = GenreCacheManager._();
+    return _instance;
+  }
+
+  GenreCacheManager._() : super(
+    Config(
+      key,
+      stalePeriod: const Duration(days: 2), 
+      maxNrOfCacheObjects: 100, 
+    ),
+  );
+}
