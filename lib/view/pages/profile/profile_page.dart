@@ -166,6 +166,11 @@ class _ProfileState extends State<ProfilePage> {
     getTimePlayed();
   }
 
+   @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -435,7 +440,9 @@ class _ProfileState extends State<ProfilePage> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          Bio(
+                          profileData.bio.isEmpty
+                          ? const SizedBox.shrink()
+                          :Bio(
                             bio: profileData.bio,
                             isOwnProfile: widget.isOwnProfile,
                           ),
