@@ -13,6 +13,7 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
+import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
@@ -166,7 +167,7 @@ class _ProfileState extends State<ProfilePage> {
     getTimePlayed();
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
   }
@@ -435,17 +436,56 @@ class _ProfileState extends State<ProfilePage> {
                                       );
                                     },
                                   ),
-                                )
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            8), // Adjust the value to make rounding less
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const ChatPage(
+                                            profileName: '',
+                                            receiverID: '',
+                                            profilePicture:
+                                                '', //just need to pull in the correct data here
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child:  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children:  [
+                                        Icon(Icons.send,
+                                            color: Theme.of(context).colorScheme.tertiary),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Message',
+                                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                           const SizedBox(height: 24),
                           profileData.bio.isEmpty
-                          ? const SizedBox.shrink()
-                          :Bio(
-                            bio: profileData.bio,
-                            isOwnProfile: widget.isOwnProfile,
-                          ),
+                              ? const SizedBox.shrink()
+                              : Bio(
+                                  bio: profileData.bio,
+                                  isOwnProfile: widget.isOwnProfile,
+                                ),
                           const SizedBox(height: 24),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
