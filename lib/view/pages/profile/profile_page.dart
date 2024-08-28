@@ -162,11 +162,13 @@ Future<void> getRelationToLoggedInUser() async {
     }
   }
 
-  void _undoConnectionRequest(String targetUserId) async {
+  void _undoConnectionRequest() async {
     try {
       await UserService()
-          .undoConnectionRequest(widget.loggedInUser, targetUserId);
-      setState(() {});
+          .undoConnectionRequest(widget.loggedInUser, widget.uid);
+      setState(() {
+        isPendingOfParent=false;
+      });
     } catch (e) {
       //'Error canceling friend request'
       DelightToastBar(
@@ -450,8 +452,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         child: ActionButton(
                                           type: 'pending',
                                           onPressed: () =>
-                                              _undoConnectionRequest(
-                                                  widget.uid),
+                                              _undoConnectionRequest(),
                                           icon: Icons.hourglass_bottom 
                                         ),
                                       ),
@@ -567,8 +568,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         child: ActionButton(
                                           type: 'pending',
                                           onPressed: () =>
-                                              _undoConnectionRequest(
-                                                  widget.uid),
+                                              _undoConnectionRequest(),
                                           icon: Icons.hourglass_bottom 
                                         ),
                                       ),
