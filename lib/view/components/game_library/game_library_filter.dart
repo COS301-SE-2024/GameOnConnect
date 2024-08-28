@@ -234,10 +234,7 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
             child: ExpandablePanel(
               header: Text(_filterName),
               collapsed: const SizedBox(width: 0, height: 0),
-              expanded: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
+              expanded: Column(
                 children: _buildCheckboxList(context, _filterValues),
               ),
               theme: const ExpandableThemeData(
