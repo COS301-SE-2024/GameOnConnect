@@ -1,4 +1,5 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
@@ -92,47 +93,45 @@ class _FilterPageState extends State<FilterPage> {
     );
   }
 
-  ListView filterList(BuildContext context, FilterList filterList) {
-    return ListView(
-        padding: EdgeInsets.zero,
-        scrollDirection: Axis.vertical,
-        children: [
-          ExpandableFilter(
-            key: _platformFilterKey,
-            platformExpandableController: _platformExpandableController,
-            filterName: "Platforms",
-            filterValues: filterList.platformFilters.toList(),
-            onFilterChanged: _updateFilterString,
-          ),
-          ExpandableFilter(
-            key: _genreFilterKey,
-            platformExpandableController: _genreExpandableController,
-            filterName: "Genres",
-            filterValues: filterList.genreFilters.toList(),
-            onFilterChanged: _updateFilterString,
-          ),
-          ExpandableFilter(
-            key: _storeFilterKey,
-            platformExpandableController: _storeExpandableController,
-            filterName: "Stores",
-            filterValues: filterList.storeFilters.toList(),
-            onFilterChanged: _updateFilterString,
-          ),
-          ExpandableFilter(
-            key: _tagFilterKey,
-            platformExpandableController: _tagExpandableController,
-            filterName: "Tags",
-            filterValues: filterList.tagFilters.toList(),
-            onFilterChanged: _updateFilterString,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: _applyFilters,
-              child: const Text("Filter"),
-            ),
-          ),
-        ]);
+  Widget filterList(BuildContext context, FilterList filterList) {
+    return SingleChildScrollView(
+        child: Column(children: [
+      ExpandableFilter(
+        key: _platformFilterKey,
+        platformExpandableController: _platformExpandableController,
+        filterName: "Platforms",
+        filterValues: filterList.platformFilters.toList(),
+        onFilterChanged: _updateFilterString,
+      ),
+      ExpandableFilter(
+        key: _genreFilterKey,
+        platformExpandableController: _genreExpandableController,
+        filterName: "Genres",
+        filterValues: filterList.genreFilters.toList(),
+        onFilterChanged: _updateFilterString,
+      ),
+      ExpandableFilter(
+        key: _storeFilterKey,
+        platformExpandableController: _storeExpandableController,
+        filterName: "Stores",
+        filterValues: filterList.storeFilters.toList(),
+        onFilterChanged: _updateFilterString,
+      ),
+      ExpandableFilter(
+        key: _tagFilterKey,
+        platformExpandableController: _tagExpandableController,
+        filterName: "Tags",
+        filterValues: filterList.tagFilters.toList(),
+        onFilterChanged: _updateFilterString,
+      ),
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: ElevatedButton(
+          onPressed: _applyFilters,
+          child: const Text("Filter"),
+        ),
+      ),
+    ]));
   }
 
   void _applyFilters() async {
@@ -146,6 +145,20 @@ class _FilterPageState extends State<FilterPage> {
     await widget.apiFunction(concatenatedFilterString);
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
+  }
+}
+
+class NumberFilter extends StatefulWidget {
+  const NumberFilter({super.key});
+
+  @override
+  State<NumberFilter> createState() => _NumberFilterState();
+}
+
+class _NumberFilterState extends State<NumberFilter> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 
@@ -201,9 +214,15 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.secondary,
-          width: 0.5,
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 0.5,
+          ),
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 0.5,
+          ),
         ),
       ),
       child: Padding(
@@ -222,6 +241,7 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
                 children: _buildCheckboxList(context, _filterValues),
               ),
               theme: const ExpandableThemeData(
+                iconColor: Colors.grey,
                 tapHeaderToExpand: true,
                 tapBodyToExpand: false,
                 tapBodyToCollapse: false,
@@ -255,9 +275,8 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
           onChanged: (newValue) => _onCheckboxChanged(newValue, value.id),
           title: Text(
             value.value,
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),  
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
-          tileColor: Theme.of(context).colorScheme.surface,
           activeColor: Theme.of(context).colorScheme.primary,
           checkColor: Theme.of(context).colorScheme.surface,
           dense: true,
