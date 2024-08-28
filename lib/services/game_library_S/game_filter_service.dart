@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gameonconnect/cache_managers/filtering_cache_manager.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 
@@ -24,13 +24,37 @@ class GameFilterService {
   }
 
   static Future<List<Filter>> _fetchFilters(String url) async {
-    final response = await http.get(Uri.parse(url));
+    var fileInfo = await FilteringCacheManager().getFileFromCache(url);
 
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      return (jsonData['results'] as List).map((filterJson) => Filter.fromJson(filterJson)).toList();
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+
+      
+        return (jsonData['results'] as List)
+            .map((filterJson) => Filter.fromJson(filterJson))
+            .toList();
+      
     } else {
-      throw Exception('Failed to load data from $url');
+      //Load the games from API
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        //Cache data
+        await FilteringCacheManager().putFile(
+          url,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+     
+          return (jsonData['results'] as List)
+              .map((filterJson) => Filter.fromJson(filterJson))
+              .toList();
+       
+      } else {
+        throw Exception('Failed to load tags');
+      }
     }
   }
 }

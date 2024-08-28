@@ -1,7 +1,7 @@
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class FilteringCacheManager extends CacheManager {
-  static const key = "tagCache";
+  static const key = "filterCache";
 
   static late FilteringCacheManager _instance;
 
