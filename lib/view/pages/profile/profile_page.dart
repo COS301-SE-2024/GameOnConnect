@@ -41,6 +41,7 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
+  final UserService _userService = UserService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
   late String roundedTotalTime;
@@ -104,6 +105,7 @@ Future<void> getRelationToLoggedInUser() async {
 
     return gameStatsMap.values.toList();
   }
+
 
   void _sendConnectionRequest(String targetUserId) async {
     try {
@@ -412,7 +414,6 @@ Future<void> getRelationToLoggedInUser() async {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                
                                   if(widget.uid != widget.loggedInUser)...[
                                     ( isPendingOfParent)
                                     ? Expanded(
@@ -427,7 +428,32 @@ Future<void> getRelationToLoggedInUser() async {
                                         ),
                                       ),
                                       )
-                                   
+                                  : ( isConnectionOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'connected',
+                                           onPressed: () =>
+                                              _sendConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.person_remove
+                                        ),
+                                      ),
+                                      )
+                                  : (isRequestToParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'requested',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.hourglass_bottom 
+                                        ),
+                                      ),
+                                      )    
                                     : Expanded( // not connected yet
                                         child: Padding(
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
@@ -442,8 +468,6 @@ Future<void> getRelationToLoggedInUser() async {
                                         
                                       ),
                                   ],
-                                  
-                                  
                                 Expanded(
                                   child: ActionButton(
                                     type: 'stats',
@@ -470,13 +494,46 @@ Future<void> getRelationToLoggedInUser() async {
                             isOwnProfile: widget.isOwnProfile,
                           ),
                           const SizedBox(height: 24),
-                          
+                          /*profileData.myGames.isEmpty &&
+                                  widget.uid != widget.loggedInUser
+                              ? const SizedBox.shrink()
+                              : widget.uid != widget.loggedInUser
+                                  ? MyGameList(
+                                      myGameStats: sumOfMygames,
+                                      heading: 'Games',
+                                      currentlyPlaying:
+                                          profileData.currentlyPlaying,
+                                      gameActivities: profileData.myGames,
+                                    )
+                                  : MyGameList(
+                                      myGameStats: sumOfMygames,
+                                      heading: 'My Games',
+                                      currentlyPlaying:
+                                          profileData.currentlyPlaying,
+                                      gameActivities: profileData.myGames,
+                                    ),
+                          profileData.myGames.isEmpty &&
+                                  widget.uid != widget.loggedInUser
+                              ? const SizedBox.shrink()
+                              : Column(children: [
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(12, 10, 12, 24),
+                                    child: Divider(
+                                      color: Color(0xFF2A2A2A), //Dark grey,
+                                      thickness: 0.5,
+                                    ),
+                                  ),
+                                  WantToPlayList(
+                                      gameIds: profileData.wantToPlay,
+                                      heading: 'Want to play'),
+                                  const SizedBox(height: 24),
+                                ]),*/
                         ] else ...[
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
                             child: Row(
                               children: [
-
                                    ( isPendingOfParent)
                                     ? Expanded(
                                       child: Padding(
@@ -490,7 +547,32 @@ Future<void> getRelationToLoggedInUser() async {
                                         ),
                                       ),
                                       )
-                                  
+                                  : ( isConnectionOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'connected',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.person_remove
+                                        ),
+                                      ),
+                                      )
+                                  : (isRequestToParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'requested',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.hourglass_bottom 
+                                        ),
+                                      ),
+                                      )    
                                     : Expanded( // not connected yet
                                         child: Padding(
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
@@ -504,7 +586,77 @@ Future<void> getRelationToLoggedInUser() async {
                                         ),
                                         
                                       ),
-                                      
+                                      /**
+                                       * isConnection
+                                    ? ElevatedButton.icon(
+                                        onPressed: () => _disconnect(user.uid),
+                                        label: const Text(
+                                          'Disconnect',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStateProperty.all<Color>(
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .tertiary,
+                                          ),
+                                        ),
+                                      )
+                                    : isPending
+                                        ? ElevatedButton.icon(
+                                            onPressed: () =>
+                                                _undoConnectionRequest(
+                                                    user.uid),
+                                            label: Text(
+                                              'Pending',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  WidgetStateProperty
+                                                      .resolveWith<Color>(
+                                                (states) {
+                                                  final isDarkMode =
+                                                      Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark;
+                                                  return isDarkMode
+                                                      ? Colors.grey[800]!
+                                                      : Colors.grey[300]!;
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                        : ElevatedButton.icon(
+                                            onPressed: () =>
+                                                _sendConnectionRequest(
+                                                    user.uid),
+                                            label: const Text(
+                                              'Connect',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  WidgetStateProperty.all<
+                                                      Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                              ),
+                                            ),
+                                          ),
+                                       */
                               ],
                             ),
                           ),
