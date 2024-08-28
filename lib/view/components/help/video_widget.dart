@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class TutorialVideo extends StatefulWidget {
   final String videoPath;
@@ -14,6 +15,7 @@ class TutorialVideo extends StatefulWidget {
 
 class _TutorialVideoState extends State<TutorialVideo> {
   late VideoPlayerController _controller;
+  late ChewieController _chewieController;
 
   @override
   void initState() {
@@ -25,11 +27,19 @@ class _TutorialVideoState extends State<TutorialVideo> {
         _controller.setVolume(0);
         _controller.play();
       });
+
+    _chewieController = ChewieController(
+      videoPlayerController: _controller,
+      aspectRatio: _controller.value.aspectRatio,
+      autoPlay: true,
+      looping: true,
+    );
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _chewieController.dispose();
     super.dispose();
   }
 
@@ -38,7 +48,9 @@ class _TutorialVideoState extends State<TutorialVideo> {
     return _controller.value.isInitialized
         ? AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
+            child: Chewie(
+              controller: _chewieController,
+            ),
           )
         : Center(
             child: LoadingAnimationWidget.halfTriangleDot(

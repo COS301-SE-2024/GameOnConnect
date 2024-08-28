@@ -40,6 +40,11 @@ class _AllMyGamesListState extends State<AllMyGamesList> {
     return double.parse(hours.toStringAsFixed(3));
   }
 
+@override
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

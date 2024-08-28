@@ -159,7 +159,7 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: SfCartesianChart(
-                            legend: const Legend(
+                            legend: Legend(
                               isVisible: false,
                             ),
                             tooltipBehavior: TooltipBehavior(
@@ -167,8 +167,8 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                               header: '',
                               canShowMarker: false,
                               builder: (dynamic data,
-                                  ChartPoint<dynamic> point,
-                                  ChartSeries<dynamic, dynamic> series,
+                                  dynamic point,
+                                  dynamic series,
                                   int pointIndex,
                                   int seriesIndex) {
                                 final genre =
@@ -184,25 +184,25 @@ class _GenresStatsComponentState extends State<GenresStatsComponent> {
                                 );
                               },
                             ),
-                            primaryXAxis: const CategoryAxis(
+                            primaryXAxis: CategoryAxis(
                               labelRotation: 0,
-                              majorGridLines: MajorGridLines(width: 0),
-                              axisLine: AxisLine(width: 1),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              axisLine: const AxisLine(width: 1),
                               labelIntersectAction:
                                   AxisLabelIntersectAction.trim,
-                              labelStyle: TextStyle(
+                              labelStyle: const TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               ),
                               isVisible: true,
                             ),
-                            primaryYAxis: const NumericAxis(
+                            primaryYAxis: NumericAxis(
                               edgeLabelPlacement: EdgeLabelPlacement.shift,
-                              majorGridLines: MajorGridLines(width: 0),
-                              axisLine: AxisLine(width: 1),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              axisLine: const AxisLine(width: 1),
                               labelAlignment: LabelAlignment.end,
-                              labelStyle: TextStyle(
+                              labelStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12,
                               ),

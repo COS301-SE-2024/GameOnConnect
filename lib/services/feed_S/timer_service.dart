@@ -70,10 +70,6 @@ class TimerService {
   }
 
   Future<List<GameDetails>>? fetchUserGames() async {
-    if (_cachedGames != null) {
-      return Future.value(_cachedGames);
-    }
-
     try {
       List<String> myGameIds = await _currentlyPlaying.getMyGames();
 
@@ -82,7 +78,6 @@ class TimerService {
       );
 
       List<GameDetails> gameDetails = await gameDetailsFutures;
-
       _cachedGames = gameDetails;
 
       return gameDetails;

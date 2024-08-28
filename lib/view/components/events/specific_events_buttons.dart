@@ -112,7 +112,7 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                           style: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
-                                .surface,
+                                .tertiary,
                             fontSize: 12,
                             fontWeight:
                             FontWeight.bold,
