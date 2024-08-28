@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
+import 'package:gameonconnect/services/game_library_S/game_filter_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _FilterPageState extends State<FilterPage> {
   @override
   void initState() {
     super.initState();
-    _filterListFuture = FilterList.getInstance();
+    _filterListFuture = GameFilterService.createFilterList();
   }
 
   void _updateFilterString() {
