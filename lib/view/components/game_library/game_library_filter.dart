@@ -152,16 +152,87 @@ class _FilterPageState extends State<FilterPage> {
 }
 
 class NumberFilter extends StatefulWidget {
-  const NumberFilter({super.key});
+  const NumberFilter({
+    super.key,
+    required this.numberExpandableController,
+    required this.filterName,
+    required this.onFilterChanged,
+    required this.minValue,
+    required this.maxValue,
+  });
+
+  final ExpandableController numberExpandableController;
+  final String filterName;
+  final double minValue;
+  final double maxValue;
+  final VoidCallback onFilterChanged;
 
   @override
   State<NumberFilter> createState() => _NumberFilterState();
 }
 
 class _NumberFilterState extends State<NumberFilter> {
+  late String _filterName;
+  late double _minValue;
+  late double _maxValue;
+  late RangeValues valueRange;
+
+  @override
+  void initState() {
+    super.initState();
+    _filterName = widget.filterName;
+    _minValue = widget.minValue;
+    _maxValue = widget.maxValue;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 0.5,
+          ),
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
+          width: double.infinity,
+          child: ExpandableNotifier(
+            controller: widget.numberExpandableController,
+            child: ExpandablePanel(
+              header: Text(_filterName),
+              collapsed: const SizedBox(width: 0, height: 0),
+              expanded: RangeSlider(
+                  values: RangeValues(_minValue, _maxValue),
+                  onChanged: (RangeValues values) {
+                    setState(() {
+                      valueRange = values;
+                    });
+                  },
+                  min: _minValue,
+                  max: _maxValue),
+              theme: const ExpandableThemeData(
+                iconColor: Colors.grey,
+                tapHeaderToExpand: true,
+                tapBodyToExpand: false,
+                tapBodyToCollapse: false,
+                headerAlignment: ExpandablePanelHeaderAlignment.center,
+                hasIcon: true,
+                expandIcon: Icons.chevron_right,
+                collapseIcon: Icons.keyboard_arrow_down,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
