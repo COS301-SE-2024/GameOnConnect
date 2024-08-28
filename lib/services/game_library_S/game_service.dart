@@ -1,12 +1,9 @@
 import 'dart:convert';
+import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
-
 import '../../../globals.dart' as global;
-
 import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 
 class GameService {
   static Future<List<Game>> fetchGames(int page,
