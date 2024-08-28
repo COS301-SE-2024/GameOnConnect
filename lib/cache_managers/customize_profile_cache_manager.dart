@@ -20,7 +20,7 @@ class TagCacheManager extends CacheManager {
 }
 
 class GenreCacheManager extends CacheManager {
-  static const key = "tagCache";
+  static const key = "genreCache";
 
   static late GenreCacheManager _instance;
 
@@ -30,6 +30,44 @@ class GenreCacheManager extends CacheManager {
   }
 
   GenreCacheManager._() : super(
+    Config(
+      key,
+      stalePeriod: const Duration(days: 2), 
+      maxNrOfCacheObjects: 100, 
+    ),
+  );
+}
+
+class StoresCacheManager extends CacheManager {
+  static const key = "storesCache";
+
+  static late StoresCacheManager _instance;
+
+  factory StoresCacheManager() {
+    _instance = StoresCacheManager._();
+    return _instance;
+  }
+
+  StoresCacheManager._() : super(
+    Config(
+      key,
+      stalePeriod: const Duration(days: 2), 
+      maxNrOfCacheObjects: 100, 
+    ),
+  );
+}
+
+class PlatformsCacheManager extends CacheManager {
+  static const key = "platformCache";
+
+  static late PlatformsCacheManager _instance;
+
+  factory PlatformsCacheManager() {
+    _instance = PlatformsCacheManager._();
+    return _instance;
+  }
+
+  PlatformsCacheManager._() : super(
     Config(
       key,
       stalePeriod: const Duration(days: 2), 
