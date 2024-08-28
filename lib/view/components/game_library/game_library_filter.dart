@@ -126,9 +126,12 @@ class _FilterPageState extends State<FilterPage> {
       ),
       Padding(
         padding: const EdgeInsets.all(10),
-        child: ElevatedButton(
-          onPressed: _applyFilters,
-          child: const Text("Filter"),
+        child: SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+            onPressed: _applyFilters,
+            child: const Text("Filter"),
+          ),
         ),
       ),
     ]));
