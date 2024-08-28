@@ -6,10 +6,12 @@ class ActionButton extends StatefulWidget {
     super.key,
     required this.type,
     required this.onPressed,
+    required this.icon,
   });
 
   final String type; // Either 'stats' or 'connect'
   final VoidCallback onPressed;
+  final IconData icon;
 
   @override
   State<ActionButton> createState() => _ActionButtonState();
@@ -23,23 +25,12 @@ class _ActionButtonState extends State<ActionButton> {
 
 
   void _handleTap() {
-    if (widget.type == 'connect' && !isPending) {
-      setState(() {
-        isPending = true;
-      });
-    }
-    else if(widget.type == 'pending '){
-      setState(() {
-        isPending = false;
-      });
-    }
     widget.onPressed();
   }
 
   @override
   Widget build(BuildContext context) {
   final bool isStats = widget.type == 'stats';
-  final bool showPending = isPending || widget.type == 'pending';
   
   return GestureDetector(
     onTap: _handleTap,
@@ -57,17 +48,12 @@ class _ActionButtonState extends State<ActionButton> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              showPending 
-              ? Icons.hourglass_bottom 
-              : (isStats 
-                  ? Icons.bar_chart 
-                  : Icons.person_add
-                ),
+              widget.icon,
               color: isStats ? Theme.of(context).colorScheme.primary : Colors.black ,
             ),
             const SizedBox(width: 8), // Space between icon and text
             Text(
-              showPending ? 'Pending' : (isStats ? 'View Stats' : 'Connect'),
+              (isStats ? 'View Stats' : widget.type) ,
               style:  TextStyle(
                 fontWeight: FontWeight.w700,
                 color: isStats ? Theme.of(context).colorScheme.primary : Colors.black ,
