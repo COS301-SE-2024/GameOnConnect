@@ -7,7 +7,7 @@ import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 class GameFilterService {
   static get http => null;
 
-  static Future<FilterList> _createFilterList() async {
+  static Future<FilterList> createFilterList() async {
     String? apikey = dotenv.env['RAWG_API_KEY'];
 
     final storeFilters = await _fetchFilters('https://api.rawg.io/api/stores?key=$apikey');
