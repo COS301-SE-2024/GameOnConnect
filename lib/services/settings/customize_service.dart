@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/cache_managers/customize_profile_cache_manager.dart';
+import 'package:gameonconnect/cache_managers/filtering_cache_manager.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
@@ -23,7 +23,7 @@ class CustomizeService {
   Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     String request = 'https://api.rawg.io/api/genres?key=${globals.apiKey}';
 
-    var fileInfo = await GenreCacheManager().getFileFromCache(request);
+    var fileInfo = await FilteringCacheManager().getFileFromCache(request);
 
     if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
       //Load the games from cache
@@ -42,7 +42,7 @@ class CustomizeService {
 
       if (response.statusCode == 200) {
         //Cache data
-        await GenreCacheManager().putFile(
+        await FilteringCacheManager().putFile(
           request,
           response.bodyBytes,
           fileExtension: 'json',
@@ -64,7 +64,7 @@ class CustomizeService {
   Future<List<String>> fetchTagsFromAPI(bool isMounted) async {
     String request = 'https://api.rawg.io/api/tags?key=${globals.apiKey}';
 
-    var fileInfo = await TagCacheManager().getFileFromCache(request);
+    var fileInfo = await FilteringCacheManager().getFileFromCache(request);
 
     if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
       //Load the games from cache
@@ -83,7 +83,7 @@ class CustomizeService {
 
       if (response.statusCode == 200) {
         //Cache data
-        await TagCacheManager().putFile(
+        await FilteringCacheManager().putFile(
           request,
           response.bodyBytes,
           fileExtension: 'json',
