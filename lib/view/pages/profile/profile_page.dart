@@ -458,7 +458,8 @@ class _ProfileState extends State<ProfilePage> {
                                           String conversationID =
                                               await _messagingService
                                                   .findConversationID(
-                                                      widget.loggedInUser, widget.uid);
+                                                      widget.loggedInUser,
+                                                      widget.uid);
                                           if (conversationID == 'Not found') {
                                             List<String> newList = [
                                               widget.loggedInUser,
@@ -469,18 +470,21 @@ class _ProfileState extends State<ProfilePage> {
                                                     .createConversation(
                                                         newList);
                                           }
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => ChatPage(
-                                                profileName:
-                                                    profileData.profileName,
-                                                receiverID: widget.uid,
-                                                profilePicture: profileData
-                                                    .profilePicture, //just need to pull in the correct data here
+                                          if (mounted) {
+                                            if (!context.mounted) return;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatPage(
+                                                  profileName:
+                                                      profileData.profileName,
+                                                  receiverID: widget.uid,
+                                                  profilePicture: profileData
+                                                      .profilePicture,
+                                                ),
                                               ),
-                                            ),
-                                          );
+                                            );
+                                          }
                                         },
                                         child: Row(
                                           mainAxisAlignment:
