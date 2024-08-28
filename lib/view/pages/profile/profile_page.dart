@@ -44,17 +44,31 @@ class _ProfileState extends State<ProfilePage> {
   bool isParentsConnection = false;
   late double totalTimePlayed;
   late String roundedTotalTime;
-  bool isParentsPending = false;
+  bool isPendingOfParent = false;
+  bool isConnectionOfParent = false;
+  bool isRequestToParent = false;
 
-  /*Future<void> isConnectionOfParent() async {
+  Future<void> isConnectionOfLoggedInUser() async {
   final connections = await ConnectionService().getConnections('connections');
-  isConnectionParent= connections.contains(widget.uid);
-}*/
+  isConnectionOfParent= connections.contains(widget.uid);
+}
 
-  Future<void> isPendingOfParent() async {
+  Future<void> isPendingOfLoggedInUser() async {
     final connections = await ConnectionService().getConnections('pending');
-    isParentsPending = connections.contains(widget.uid);
+    isPendingOfParent = connections.contains(widget.uid);
   }
+
+   Future<void> isRequestToLoggedInUser() async {
+    final connections = await ConnectionService().getConnections('requests');
+    isRequestToParent = connections.contains(widget.uid);
+  }
+
+  
+Future<void> getRelationToLoggedInUser() async {
+  isConnectionOfLoggedInUser();
+  isPendingOfLoggedInUser();
+  isRequestToLoggedInUser();
+}
 
   Future<void> getTimePlayed() async {
     totalTimePlayed =
@@ -162,7 +176,7 @@ class _ProfileState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    isPendingOfParent();
+    getRelationToLoggedInUser();
     getTimePlayed();
   }
 
@@ -396,32 +410,40 @@ class _ProfileState extends State<ProfilePage> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (profileData.visibility &&
-                                    !isParentsConnection &&
-                                    widget.uid != widget.loggedInUser)
-                                  Expanded(
-                                    child: ActionButton(
-                                      type: 'connect',
-                                      onPressed: () =>
-                                          _sendConnectionRequest(widget.uid),
-                                    ),
-                                  ),
-                                if (profileData.visibility &&
-                                    isParentsPending &&
-                                    widget.uid != widget.loggedInUser)
-                                  Expanded(
-                                    child: ActionButton(
-                                      type: 'pending',
-                                      onPressed: () =>
-                                          _undoConnectionRequest(widget.uid),
-                                    ),
-                                  ),
-                                if (profileData.visibility &&
-                                    (!isParentsConnection ||
-                                        isParentsPending) &&
-                                    widget.uid != widget.loggedInUser)
-                                  const SizedBox(width: 12),
+                                
+                                  if(widget.uid != widget.loggedInUser)...[
+                                    ( isPendingOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'pending',
+                                          onPressed: () =>
+                                              _undoConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.hourglass_bottom 
+                                        ),
+                                      ),
+                                      )
+                                   
+                                    : Expanded( // not connected yet
+                                        child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'connect',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(
+                                                  widget.uid),
+                                          icon: Icons.person_add
+                                        ),
+                                        ),
+                                        
+                                      ),
+                                  ],
+                                  
+                                  
                                 Expanded(
                                   child: ActionButton(
                                     type: 'stats',
@@ -434,6 +456,7 @@ class _ProfileState extends State<ProfilePage> {
                                                     .uid)), //how do i get the correct userID t display here - get it and use it here
                                       );
                                     },
+                                    icon: Icons.bar_chart 
                                   ),
                                 )
                               ],
@@ -447,63 +470,41 @@ class _ProfileState extends State<ProfilePage> {
                             isOwnProfile: widget.isOwnProfile,
                           ),
                           const SizedBox(height: 24),
-                          profileData.myGames.isEmpty &&
-                                  widget.uid != widget.loggedInUser
-                              ? const SizedBox.shrink()
-                              : widget.uid != widget.loggedInUser
-                                  ? MyGameList(
-                                      myGameStats: sumOfMygames,
-                                      heading: 'Games',
-                                      currentlyPlaying:
-                                          profileData.currentlyPlaying,
-                                      gameActivities: profileData.myGames,
-                                    )
-                                  : MyGameList(
-                                      myGameStats: sumOfMygames,
-                                      heading: 'My Games',
-                                      currentlyPlaying:
-                                          profileData.currentlyPlaying,
-                                      gameActivities: profileData.myGames,
-                                    ),
-                          profileData.myGames.isEmpty &&
-                                  widget.uid != widget.loggedInUser
-                              ? const SizedBox.shrink()
-                              : Column(children: [
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(12, 10, 12, 24),
-                                    child: Divider(
-                                      color: Color(0xFF2A2A2A), //Dark grey,
-                                      thickness: 0.5,
-                                    ),
-                                  ),
-                                  WantToPlayList(
-                                      gameIds: profileData.wantToPlay,
-                                      heading: 'Want to play'),
-                                  const SizedBox(height: 24),
-                                ]),
+                          
                         ] else ...[
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
                             child: Row(
                               children: [
-                                (isParentsPending)
+
+                                   ( isPendingOfParent)
                                     ? Expanded(
+                                      child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'pending',
                                           onPressed: () =>
                                               _undoConnectionRequest(
                                                   widget.uid),
+                                          icon: Icons.hourglass_bottom 
                                         ),
+                                      ),
                                       )
-                                    : Expanded(
+                                  
+                                    : Expanded( // not connected yet
+                                        child: Padding(
+                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connect',
                                           onPressed: () =>
                                               _sendConnectionRequest(
                                                   widget.uid),
+                                          icon: Icons.person_add
                                         ),
+                                        ),
+                                        
                                       ),
+                                      
                               ],
                             ),
                           ),
