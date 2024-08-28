@@ -106,6 +106,34 @@ Future<void> getRelationToLoggedInUser() async {
     return gameStatsMap.values.toList();
   }
 
+  void _disconnect() async {
+    try {
+      await _userService.disconnect(widget.loggedInUser, widget.uid);
+      setState(() {
+        isConnectionOfParent=false;
+      });
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error unfollowing user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
 
   void _sendConnectionRequest(String targetUserId) async {
     try {
@@ -434,9 +462,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connected',
-                                           onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
+                                           onPressed: () => _disconnect(),
                                           icon: Icons.person_remove
                                         ),
                                       ),
@@ -553,9 +579,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connected',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
+                                          onPressed: () => _disconnect(),
                                           icon: Icons.person_remove
                                         ),
                                       ),
