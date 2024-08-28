@@ -19,6 +19,7 @@ import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 import 'package:gameonconnect/view/pages/stats/stats_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -42,10 +43,12 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
+  final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
   late String roundedTotalTime;
   bool isParentsPending = false;
+  bool isOwnProfile = false;
 
   /*Future<void> isConnectionOfParent() async {
   final connections = await ConnectionService().getConnections('connections');
@@ -424,6 +427,7 @@ class _ProfileState extends State<ProfilePage> {
                                     widget.uid != widget.loggedInUser)
                                   const SizedBox(width: 12),
                                 Expanded(
+                                  //here is the view stats button
                                   child: ActionButton(
                                     type: 'stats',
                                     onPressed: () {
@@ -438,44 +442,65 @@ class _ProfileState extends State<ProfilePage> {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            8), // Adjust the value to make rounding less
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const ChatPage(
-                                            profileName: '',
-                                            receiverID: '',
-                                            profilePicture:
-                                                '', //just need to pull in the correct data here
+                                widget.isOwnProfile
+                                    ? const SizedBox.shrink()
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                8), // Adjust the value to make rounding less
                                           ),
                                         ),
-                                      );
-                                    },
-                                    child:  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children:  [
-                                        Icon(Icons.send,
-                                            color: Theme.of(context).colorScheme.tertiary),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          'Message',
-                                          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                                        onPressed: () async {
+                                          String conversationID =
+                                              await _messagingService
+                                                  .findConversationID(
+                                                      widget.loggedInUser, widget.uid);
+                                          if (conversationID == 'Not found') {
+                                            List<String> newList = [
+                                              widget.loggedInUser,
+                                              widget.uid
+                                            ];
+                                            conversationID =
+                                                await _messagingService
+                                                    .createConversation(
+                                                        newList);
+                                          }
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChatPage(
+                                                profileName:
+                                                    profileData.profileName,
+                                                receiverID: widget.uid,
+                                                profilePicture: profileData
+                                                    .profilePicture, //just need to pull in the correct data here
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.send,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'Message',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                      ),
                               ],
                             ),
                           ),
