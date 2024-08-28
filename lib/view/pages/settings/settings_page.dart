@@ -137,8 +137,9 @@ class Options extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       FirebaseAuth.instance.signOut().then((value) {
+                        if (!context.mounted) return;
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

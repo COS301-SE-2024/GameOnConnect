@@ -42,6 +42,11 @@ class _WantToPlayListState extends State<WantToPlayList> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(

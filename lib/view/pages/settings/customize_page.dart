@@ -3,12 +3,9 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gameonconnect/services/profile_S/storage_service.dart';
+import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
@@ -17,9 +14,6 @@ import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import '../../../globals.dart' as globals;
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -46,89 +40,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
   int selectedIndex=0;
 
-  bool isCurrentlyDarkMode(BuildContext context) {
-  return MediaQuery.of(context).platformBrightness == Brightness.dark;
-}
-
-  Future<void> _fetchGenresFromAPI() async {
-    try {
-      var url =
-          Uri.parse('https://api.rawg.io/api/genres?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        if (_isMounted) {
-          setState(() {
-            _genres = (decoded['results'] as List)
-                .map((genre) => genre['name'].toString())
-                .toList();
-          });
-        }
-      } else {
-        //print("Error fetching genres: ${response.statusCode}");
-      }
-    } catch (e) {
-      //print("Error fetching genres: $e");
-    }
-  }
-
-  void  getCurrentIndex()
-  {
-    if(Theme.of(context).colorScheme.primary == darkPrimaryGreen || Theme.of(context).colorScheme.primary == lightPrimaryGreen)
-    {
-      selectedIndex=0;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == darkPrimaryPurple || Theme.of(context).colorScheme.primary == lightPrimaryPurple)
-    {
-      selectedIndex=1;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == darkPrimaryBlue || Theme.of(context).colorScheme.primary == lightPrimaryBlue)
-    {
-      selectedIndex=2;
-      return; 
-    }
-     if(Theme.of(context).colorScheme.primary == darkPrimaryOrange || Theme.of(context).colorScheme.primary == lightPrimaryOrange)
-    {
-      selectedIndex=3;
-      return; 
-    }
-    if(Theme.of(context).colorScheme.primary == darkPrimaryPink || Theme.of(context).colorScheme.primary == lightPrimaryPink){
-      selectedIndex=4;
-      return; 
-    }
-  }
-
-  @override
-  void dispose() {
-    _isMounted = false;
-    super.dispose();
-  }
-
-  Future<void> _fetchTagsFromAPI() async {
-    try {
-      if (_isMounted) {
-        var url =
-            Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-        var response = await http.get(url);
-        if (response.statusCode == 200) {
-          var decoded = json.decode(response.body);
-
-          setState(() {
-            _interests = (decoded['results'] as List)
-                .map((tag) => tag['name'].toString())
-                .toList();
-          });
-        } else {
-          throw ("Error fetching interest tags: ${response.statusCode}");
-        }
-      }
-    } catch (e) {
-      throw ("Error fetching interest tags: $e");
-    }
-  }
-
+  late CustomizeService customizeService;
 
   @override
   void initState() {
@@ -139,7 +51,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       setState(() {
         _isDataFetched = true;
       });
-      getCurrentIndex();
+      selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
     }
 
     });
@@ -153,69 +65,71 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         currentTheme == darkBlueTheme ||
         currentTheme == darkOrangeTheme ||
         currentTheme == darkPinkTheme;
+  
+}
+
+ @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
   }
 
-  void _updateTheme(Color color, int index) {
-    setState(() {
-      selectedColor = color;
-    });
-    ThemeProvider themeProvider =
-        Provider.of<ThemeProvider>(context, listen: false);
-    if (color == darkPrimaryGreen) {
-      themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
-    } else if (color == darkPrimaryPurple) {
-      themeProvider.setTheme(isDarkMode ? darkPurpleTheme : lightPurpleTheme);
-    } else if (color == darkPrimaryBlue) {
-      themeProvider.setTheme(isDarkMode ? darkBlueTheme : lightBlueTheme);
-    } else if (color == darkPrimaryOrange) {
-      themeProvider.setTheme(isDarkMode ? darkOrangeTheme : lightOrangeTheme);
-    } else if (color == darkPrimaryPink) {
-      themeProvider.setTheme(isDarkMode ? darkPinkTheme : lightPinkTheme);
+  bool isCurrentlyDarkMode(BuildContext context) {
+  return MediaQuery.of(context).platformBrightness == Brightness.dark;
+}
+
+
+  Future<void> _fetchAllTags() async {
+    final tagsList= await CustomizeService().fetchTagsFromAPI(_isMounted);
+
+    if(tagsList.isNotEmpty){
+      if (_isMounted) {
+          setState(() {
+            _interests = tagsList;
+          });
+        }
+    }
+
+     final genreList= await CustomizeService().fetchGenresFromAPI(_isMounted);
+
+    if(genreList.isNotEmpty){
+      if (_isMounted) {
+          setState(() {
+            _genres = genreList;
+          });
+        }
     }
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
 
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef =
-            db.collection("profile_data").doc(currentUser.uid);
+    final customizeData= await CustomizeService().fetchUserSelectionsFromDatabase();
 
-        final docSnapshot = await profileDocRef.get();
-        if (docSnapshot.exists) {
-          final data = docSnapshot.data();
-          final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
-          final age = List<String>.from(data?["age_rating_tags"] ?? []);
-          final interests =
-              List<String>.from(data?["social_interests_tags"] ?? []);
-
-          StorageService storageService = StorageService();
-          String bannerDownloadUrl =
-              await storageService.getBannerUrl(currentUser.uid);
-          String profileDownloadUrl =
-              await storageService.getProfilePictureUrl(currentUser.uid);
-          if (_isMounted) {
-            setState(() {
-              _selectedGenres = genres;
-              _selectedAge = age;
-              _selectedInterests = interests;
-              _profileBannerUrl = bannerDownloadUrl;
-              _profileImageUrl = profileDownloadUrl;
-            });
-          }
-        }
+    if(customizeData.isNotEmpty){
+      if (_isMounted) {
+        setState(() {
+          _selectedGenres = customizeData.elementAt(0);
+          _selectedAge = customizeData.elementAt(1);
+          _selectedInterests = customizeData.elementAt(2);
+          _profileBannerUrl = customizeData.elementAt(3).elementAt(0);
+          _profileImageUrl = customizeData.elementAt(3).elementAt(1);
+        });
       }
-    } catch (e) {
-      throw ("Error fetching user selections: $e");
     }
   }
 
+
+   void _updateTheme(Color color, int index) {
+    setState(() {
+      selectedColor = color;
+    });
+    CustomizeService().updateTheme(color, Provider.of<ThemeProvider>(context, listen: false), isDarkMode);
+  }
+
+  
   Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
-    await Future.wait([_fetchGenresFromAPI(), _fetchTagsFromAPI()]);
+    await Future.wait([_fetchAllTags()]);
   }
 
   Future<void> _pickImage() async {
@@ -231,7 +145,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             _profileImage = (file.bytes!, file.name);
           });
         }
-        //print("picked image and image updated ");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
         );
@@ -241,13 +154,12 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } else {
-      // Mobile/desktop implementation
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
           _profileImage = image.path;
-          _profileImageUrl = "";
+          _profileImageUrl = '';
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
@@ -289,7 +201,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       if (image != null) {
         setState(() {
           _profileBanner = image.path;
-          _profileBannerUrl = "";
+          _profileBannerUrl = '';
         });
         /*ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
@@ -302,65 +214,26 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  Future<String> uploadImageToFirebase(File image, String imagetype) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
-    // Create a reference to Firebase Storage
-    if (imagetype == 'Profile_picture') {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('profile_pictures/$uid.jpg');
-      UploadTask uploadTask = storageReference.putFile(image);
-      await uploadTask.whenComplete(() => null);
-
-      String downloadURL = await storageReference.getDownloadURL();
-      return downloadURL;
-    } else {
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('banners/$uid.jpg');
-      UploadTask uploadTask = storageReference.putFile(image);
-      await uploadTask.whenComplete(() => null);
-
-      String downloadURL = await storageReference.getDownloadURL();
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'banner': downloadURL,
-      });
-      /*setState(() {
-        testBannerurl=downloadURL;
-      });*/
-      return downloadURL;
+  void _saveChangedProfileData() async
+  {
+     final success= await CustomizeService().saveProfileData(
+            _profileImage,_profileBanner, _selectedGenres,
+            _selectedAge, _selectedInterests
+           );
+    if(success){
+       ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully.')),
+        );
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Failed to update profile.'),
+            backgroundColor: Colors.red),
+      );
     }
   }
 
-  Future<void> saveImageURL(String url, String imageType) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    if (imageType == 'Profile_picture') {
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'profile_picture': url,
-      });
-    } else {
-      await FirebaseFirestore.instance
-          .collection("profile_data")
-          .doc(uid)
-          .update({
-        'banner': url,
-      });
-    }
-  }
-
-/*void _showSnackbar(BuildContext context, String message, Color color) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      backgroundColor: color,
-    ),
-  );
-}*/
 
   @override
   Widget build(BuildContext context) {
@@ -502,7 +375,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             child: CircleAvatar(
               radius: 50,
               backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
+              backgroundImage: CachedNetworkImageProvider(_profileImage),
             ),
           ),
           Container(
@@ -611,7 +484,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             ),
           ),
           onPressed: () {
-            _saveProfileData();
+           _saveChangedProfileData();
             Navigator.of(context).pop();
           },
           child: const Text(
@@ -701,74 +574,5 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  void _saveProfileData() async {
-    try {
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final currentUser = auth.currentUser;
-
-      if (currentUser != null) {
-        final db = FirebaseFirestore.instance;
-        final profileDocRef =
-            db.collection("profile_data").doc(currentUser.uid);
-        if (_profileImage != null) {
-          String imageUrl;
-          if (kIsWeb) {
-            imageUrl = await uploadImageToFirebase(
-                File(_profileImage!), 'Profile_picture');
-          } else {
-            imageUrl = await uploadImageToFirebase(
-                File(_profileImage!), 'Profile_picture');
-          }
-
-          await saveImageURL(imageUrl, 'Profile_picture');
-
-          // Show a confirmation message or navigate
-          /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile picture updated successfully.')),
-        );*/
-        }
-
-        if (_profileBanner != null) {
-          String bannerUrl;
-          if (kIsWeb) {
-            bannerUrl =
-                await uploadImageToFirebase(File(_profileBanner!), 'banner');
-          } else {
-            bannerUrl =
-                await uploadImageToFirebase(File(_profileBanner!), 'banner');
-          }
-          await saveImageURL(bannerUrl, 'banner');
-
-          // Show a confirmation message or navigate
-          /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Banner updated successfully.')),
-        );*/
-        }
-
-        final data = {
-          "genre_interests_tags": _selectedGenres.isNotEmpty
-              ? _selectedGenres
-              : FieldValue.delete(),
-          "age_rating_tags":
-              _selectedAge.isNotEmpty ? _selectedAge : FieldValue.delete(),
-          "social_interests_tags": _selectedInterests.isNotEmpty
-              ? _selectedInterests
-              : FieldValue.delete(),
-        };
-
-        await profileDocRef.set(data, SetOptions(merge: true));
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully.')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Failed to update profile.'),
-            backgroundColor: Colors.red),
-      );
-      throw ("Error setting/updating profile data: $e");
-    }
-  }
+  
 }
