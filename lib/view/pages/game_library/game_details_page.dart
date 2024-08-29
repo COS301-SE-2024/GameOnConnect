@@ -14,6 +14,9 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:expandable_text/expandable_text.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'dart:convert';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -87,6 +90,26 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
   Future shareLink(String link, String message) async {
     await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
+  }
+
+  // String sanitizeDescription(String description) {
+  //   return description.replaceAll('�', '');
+  // }
+
+  String sanitizeDescription(String description) {
+    final unescape = HtmlUnescape();
+    String decodedDescription = unescape.convert(description); 
+
+    decodedDescription = utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
+
+    decodedDescription = decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+
+    return _stripHtmlTags(decodedDescription); 
+  }
+
+  String _stripHtmlTags(String htmlString) {
+    final regex = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: false);
+    return htmlString.replaceAll(regex, '');
   }
 
   // @override
@@ -775,22 +798,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
-                            child: Html(
-                                data: gameDetails.description,
-                                //TODO : character representation is weird
-                                style: {
-                                  "body": Style(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    letterSpacing: 0,
-                                    fontSize: FontSize(16.0),
-                                    // Adjust font size as needed
-                                    fontWeight: FontWeight.normal,
-                                    // Adjust font weight as needed
-                                  ),
-                                }),
+                            child: ExpandableText(
+                              sanitizeDescription(gameDetails.description),
+                              expandText: 'See more',
+                              collapseText: 'See less',
+                              maxLines: 4,
+                              linkColor: Theme.of(context).colorScheme.primary,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ),
+                          
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
