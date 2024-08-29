@@ -270,8 +270,19 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 15,
+                                            height: 10,
                                           ),
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -422,16 +433,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          ChipSelector(
-                                              selectedOption: selectedOption,
-                                              onSelected: (option) {
-                                                (setState(() {
-                                                  selectedOption = option;
-                                                }));
-                                              }),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
+
 
                                           InkWell(
                                             key: const Key('start_date_picker'),
@@ -677,7 +679,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         const EdgeInsets.only(
                                                             left: 15),
                                                     child: Text(
-                                                      'Private',
+                                                      'Public',
                                                       style: TextStyle(
                                                         fontFamily: 'Inter',
                                                         letterSpacing: 0,
