@@ -30,6 +30,7 @@ class _CreateEventsState extends State<CreateEvents> {
   late int gameChosen = -1;
   bool validStartDate = false;
   bool validEndDate = false;
+  String gameName = "";
 
   String? type;
   List<String> invites = [];
@@ -285,11 +286,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 chosenGame:
                                                                     gameChosen,
                                                               )))
-                                                  .then((gameChosen) {
+                                                  .then((gameInfo) {
                                                 setState(() {
-                                                  if (gameChosen != null) {
-                                                    this.gameChosen =
-                                                        gameChosen;
+                                                  if (gameInfo != null) {
+                                                    gameChosen =
+                                                        gameInfo['chosen'];
+                                                    gameName = gameInfo['name'];
                                                   }
                                                 });
                                               });
@@ -318,8 +320,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    'Choose game*',
+                                                  Text(gameName.isEmpty?
+                                                    'Choose game*' : gameName,
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -335,9 +337,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: Theme.of(context)
+                                                    color: gameChosen==-1?Theme.of(context)
                                                         .colorScheme
-                                                        .secondary,
+                                                        .secondary: Theme.of(context).colorScheme.primary,
                                                     size: 24,
                                                   ),
                                                 ],
