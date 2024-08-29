@@ -430,20 +430,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 }));
                                               }),
                                           const SizedBox(
-                                            height: 10,
+                                            height: 20,
                                           ),
-                                          Text(
-                                            'Start*',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              fontSize: 14,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+
                                           InkWell(
                                             key: const Key('start_date_picker'),
                                             splashColor: Colors.transparent,
@@ -531,7 +520,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 'd MMMM , hh:mm a')
                                                             .format(
                                                                 _datePicked!)
-                                                        : 'Select a date',
+                                                        : 'Select a start date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -547,19 +536,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            'End*',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              fontSize: 14,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                          const SizedBox(height: 20),
                                           InkWell(
                                             key: const Key('end_date_picker'),
                                             splashColor: Colors.transparent,
@@ -662,7 +639,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 'd MMMM , hh:mm a')
                                                             .format(
                                                                 _endDatePicked!)
-                                                        : 'Select a date',
+                                                        : 'Select an end date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -785,7 +762,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    'Invite connections*',
+                                                    invites.isEmpty?'Invite connections*':
+                                                    'Invite connections (${invites.length})',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -800,9 +778,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: Theme.of(context)
+                                                    color: invites.isEmpty?Theme.of(context)
                                                         .colorScheme
-                                                        .secondary,
+                                                        .secondary:Theme.of(context).colorScheme.primary,
                                                     size: 24,
                                                   ),
                                                 ],
