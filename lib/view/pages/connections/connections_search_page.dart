@@ -430,9 +430,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                         style: ButtonStyle(
                                           backgroundColor:
                                               WidgetStateProperty.all<Color>(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .primary,
+                                            Colors.red,
                                           ),
                                         ),
                                       )
