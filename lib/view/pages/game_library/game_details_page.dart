@@ -298,14 +298,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         Align(
                                           alignment: const Alignment(0, -1),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(6),
                                             child: Text(
-                                              'RATINGS',
+                                              'Ratings',
                                               style: TextStyle(
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary,
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight
                                                     .w400, // Adjust font weight if needed
                                               ),
@@ -316,12 +316,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           alignment:
                                               const AlignmentDirectional(0, 1),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(6),
                                             child: Text(
                                                 gameDetails.rating.toString(),
                                                 //ratings
                                                 style: const TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.bold,
                                                 )),
                                           ),
@@ -352,14 +352,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           alignment:
                                               const AlignmentDirectional(0, -1),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8),
+                                            padding: const EdgeInsets.all(6),
                                             child: Text(
-                                              'SCORE',
+                                              'Score',
                                               style: TextStyle(
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary,
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
@@ -374,7 +374,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               gameDetails.score.toString(),
                                               //gameDetails.score,
                                               style: const TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
