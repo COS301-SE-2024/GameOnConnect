@@ -101,9 +101,6 @@ class _CreateEventsState extends State<CreateEvents> {
                               Align(
                                 alignment: const AlignmentDirectional(0, -1),
                                 child: Container(
-                                  constraints: const BoxConstraints(
-                                    maxWidth: 770,
-                                  ),
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
@@ -272,6 +269,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
+
+
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
