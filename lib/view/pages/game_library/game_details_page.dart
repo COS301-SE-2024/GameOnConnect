@@ -675,21 +675,23 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               onTap: () => launchUrlString(gameDetails.website),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 12),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.language_outlined,
-                                      color: Theme.of(context).colorScheme.primary,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Text(
-                                      "Game website",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                child: Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        Icons.language_outlined,
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(width: 10),
+                                      const Text(
+                                        "Game website",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
