@@ -38,14 +38,11 @@ class _ChatPageState extends State<ChatPage> {
             const Duration(milliseconds: 500), () => scrollDownPage());
       }
     });
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () {
-        if (mounted) {
-      scrollDownPage();
-    }
-      } 
-    );
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        scrollDownPage();
+      }
+    });
   }
 
   @override
@@ -56,14 +53,15 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void scrollDownPage() {
-  if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_scrollController.hasClients &&
+        _scrollController.position.maxScrollExtent > 0) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
-}
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
@@ -94,17 +92,25 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Row(
-          children: [
-            buildProfilePicture(widget.profilePicture),
-            const SizedBox(width: 8),
-            Text(widget.profileName,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                )),
-          ],
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+          child: Row(
+            children: [
+              buildProfilePicture(widget.profilePicture),
+              const SizedBox(width: 8),
+              Text(widget.profileName,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  )),
+            ],
+          ),
+        ),
+        scrolledUnderElevation: 0,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(5.0), 
+          child: SizedBox(height: 2.0), 
         ),
       ),
       body: Column(
@@ -221,8 +227,8 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   onFieldSubmitted: (value) {
                     if (value.trim().isNotEmpty) {
-                    sendMessage();
-                  }
+                      sendMessage();
+                    }
                   },
                 );
               },
