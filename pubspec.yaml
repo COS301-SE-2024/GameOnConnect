@@ -70,6 +70,7 @@ dependencies:
   chewie: ^1.2.2
   flutter_card_swiper: ^7.0.1
   insta_image_viewer: ^1.0.4
+  youtube_player_flutter: ^9.0.3
 
 
 dev_dependencies:

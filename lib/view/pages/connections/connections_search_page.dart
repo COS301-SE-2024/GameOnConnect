@@ -319,41 +319,41 @@ class _FriendSearchState extends State<FriendSearch> {
                       });
                     },
                   )),
-                  //const SizedBox(height: 30),
-                  GestureDetector(
-                      onTap: () {
-                        // Navigate to the request page when the text is clicked
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ConnectionRequestList(
-                                      isOwnProfile: true,
-                                      uid: _currentUserId,
-                                      loggedInUser: _currentUserId,
-                                    ))); //go to next page
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.fromLTRB(16, 7, 30,0 ),
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          'Requests',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary, // Customize the text color
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+              //const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to the request page when the text is clicked
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ConnectionRequestList(
+                                isOwnProfile: true,
+                                uid: _currentUserId,
+                                loggedInUser: _currentUserId,
+                              ))); //go to next page
+                },
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(16, 7, 30, 0),
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Requests',
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // Customize the text color
+                      fontWeight: FontWeight.bold,
                     ),
-                  Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 1, 12,5 ),
-                  child:  Divider(
-              thickness: 1,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
                   ),
-                 
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
+                child: Divider(
+                  thickness: 1,
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+              ),
+
               if (filteredUsers.isEmpty)
                 const Center(child: Text('No results found.'))
               else
@@ -432,7 +432,7 @@ class _FriendSearchState extends State<FriendSearch> {
                                               WidgetStateProperty.all<Color>(
                                             Theme.of(context)
                                                 .colorScheme
-                                                .tertiary,
+                                                .primary,
                                           ),
                                         ),
                                       )
