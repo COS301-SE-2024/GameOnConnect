@@ -4,6 +4,7 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
@@ -737,33 +738,35 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: screenshots[index].image,
-                                            placeholder: (context, url) => SizedBox(
-                                                width: 110, // Set the width of the images
-                                                height: 85, // Set the height of the images
-                                                child: Center(
-                                                  child: SizedBox(
-                                                    width:
-                                                        30, // Adjust the size of the loader
-                                                    height:
-                                                        30, // Adjust the size of the loader
-                                                    child:
-                                                        LoadingAnimationWidget
-                                                            .halfTriangleDot(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      size: 36,
+                                          child: InstaImageViewer(
+                                            child: CachedNetworkImage(
+                                              imageUrl: screenshots[index].image,
+                                              placeholder: (context, url) => SizedBox(
+                                                  width: 110, // Set the width of the images
+                                                  height: 85, // Set the height of the images
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width:
+                                                          30, // Adjust the size of the loader
+                                                      height:
+                                                          30, // Adjust the size of the loader
+                                                      child:
+                                                          LoadingAnimationWidget
+                                                              .halfTriangleDot(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        size: 36,
+                                                      ),
                                                     ),
+                                                  )
+                                                  // placeholder: (context, url) => const CircularProgressIndicator(),
+                                                  // errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                  // width: 110,
+                                                  // height: 85,
+                                                  // fit: BoxFit.cover,
                                                   ),
-                                                )
-                                                // placeholder: (context, url) => const CircularProgressIndicator(),
-                                                // errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                // width: 110,
-                                                // height: 85,
-                                                // fit: BoxFit.cover,
-                                                ),
+                                            ),
                                           ),
                                         ),
                                       );
