@@ -70,33 +70,36 @@ class __AppearancePagState extends State<AppearancePage> {
         iconkey: const Key('Back_button_key'),
         textkey: const Key('appearance_text'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-                padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
-                child: Text(
-                  'Theme',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.secondary),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+                  padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
+                  child: Text(
+                    'Theme',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
                 ),
+            
+            ColourIconContainer(
+                updateTheme: _updateTheme,
+                isDarkMode: isDarkMode,
+                onDarkModeChanged: (newValue) {
+                  setState(() {
+                    isDarkMode = newValue;
+                  });
+                },
+                currentColor: selectedColor,
+                currentIndex: selectedIndex,
               ),
-          
-          ColourIconContainer(
-              updateTheme: _updateTheme,
-              isDarkMode: isDarkMode,
-              onDarkModeChanged: (newValue) {
-                setState(() {
-                  isDarkMode = newValue;
-                });
-              },
-              currentColor: selectedColor,
-              currentIndex: selectedIndex,
-            ),
-
-      ]),
+        
+        ]),
+      ),
     );
   }
 }
