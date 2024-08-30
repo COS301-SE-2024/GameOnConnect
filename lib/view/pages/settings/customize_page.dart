@@ -8,12 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
-import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
-import 'package:gameonconnect/view/theme/theme_provider.dart';
-import 'package:gameonconnect/view/theme/themes.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:provider/provider.dart';
+
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -37,8 +34,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   dynamic _profileBanner;
   String testBannerurl = '';
   bool _isMounted = false;
-  Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
-  int selectedIndex=0;
+  
 
   late CustomizeService customizeService;
 
@@ -48,64 +44,50 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     _isMounted = true;
     _fetchData().then((_) {
       if (_isMounted) {
-      setState(() {
-        _isDataFetched = true;
-      });
-      selectedIndex=CustomizeService().getCurrentIndex(Theme.of(context).colorScheme.primary);
-    }
-
+        setState(() {
+          _isDataFetched = true;
+        });
+      }
     });
-    ThemeProvider themeProvider =
-        Provider.of<ThemeProvider>(context, listen: false);
-    ThemeData currentTheme = themeProvider.themeData;
+  }
 
-    // Check if the current theme is a dark theme
-    isDarkMode = currentTheme == darkGreenTheme ||
-        currentTheme == darkPurpleTheme ||
-        currentTheme == darkBlueTheme ||
-        currentTheme == darkOrangeTheme ||
-        currentTheme == darkPinkTheme;
-  
-}
-
- @override
+  @override
   void dispose() {
     _isMounted = false;
     super.dispose();
   }
 
   bool isCurrentlyDarkMode(BuildContext context) {
-  return MediaQuery.of(context).platformBrightness == Brightness.dark;
-}
-
+    return MediaQuery.of(context).platformBrightness == Brightness.dark;
+  }
 
   Future<void> _fetchAllTags() async {
-    final tagsList= await CustomizeService().fetchTagsFromAPI(_isMounted);
+    final tagsList = await CustomizeService().fetchTagsFromAPI(_isMounted);
 
-    if(tagsList.isNotEmpty){
+    if (tagsList.isNotEmpty) {
       if (_isMounted) {
-          setState(() {
-            _interests = tagsList;
-          });
-        }
+        setState(() {
+          _interests = tagsList;
+        });
+      }
     }
 
-     final genreList= await CustomizeService().fetchGenresFromAPI(_isMounted);
+    final genreList = await CustomizeService().fetchGenresFromAPI(_isMounted);
 
-    if(genreList.isNotEmpty){
+    if (genreList.isNotEmpty) {
       if (_isMounted) {
-          setState(() {
-            _genres = genreList;
-          });
-        }
+        setState(() {
+          _genres = genreList;
+        });
+      }
     }
   }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
+    final customizeData =
+        await CustomizeService().fetchUserSelectionsFromDatabase();
 
-    final customizeData= await CustomizeService().fetchUserSelectionsFromDatabase();
-
-    if(customizeData.isNotEmpty){
+    if (customizeData.isNotEmpty) {
       if (_isMounted) {
         setState(() {
           _selectedGenres = customizeData.elementAt(0);
@@ -118,15 +100,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-
-   void _updateTheme(Color color, int index) {
-    setState(() {
-      selectedColor = color;
-    });
-    CustomizeService().updateTheme(color, Provider.of<ThemeProvider>(context, listen: false), isDarkMode);
-  }
-
-  
   Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
     await Future.wait([_fetchAllTags()]);
@@ -214,18 +187,14 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     }
   }
 
-  void _saveChangedProfileData() async
-  {
-     final success= await CustomizeService().saveProfileData(
-            _profileImage,_profileBanner, _selectedGenres,
-            _selectedAge, _selectedInterests
-           );
-    if(success){
-       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully.')),
-        );
-    }
-    else{
+  void _saveChangedProfileData() async {
+    final success = await CustomizeService().saveProfileData(_profileImage,
+        _profileBanner, _selectedGenres, _selectedAge, _selectedInterests);
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully.')),
+      );
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to update profile.'),
@@ -233,7 +202,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -271,142 +239,146 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         iconkey: const Key('Back_button_key'),
         textkey: const Key('customize_profile_text'),
       ),
-      body:
-      Stack(
-  children: [
-      ListView(
-        padding: const EdgeInsets.all(12.0),
+      body: Stack(
         children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-            child:  Stack(
-
-            alignment: Alignment.bottomCenter,
-            clipBehavior: Clip.none,
-            children: <Widget>[
-
-              //banner
-              InkWell(
-            onTap: _pickBanner,
-            child: Stack(
-              alignment: Alignment.center, // Change to Alignment.center
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  width: double.infinity,
-                  height: 150,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: _profileBannerUrl.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: _profileBannerUrl,
-                            placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator()), // Loading indicator for banner
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
-                            fit: BoxFit.cover,
-                          )
-                        : Image.file(
-                            File(_profileBanner),
-                            width: 359,
-                            height: 200,
-                            fit: BoxFit.cover,
+          ListView(
+            padding: const EdgeInsets.all(12.0),
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    //banner
+                    InkWell(
+                      onTap: _pickBanner,
+                      child: Stack(
+                        alignment:
+                            Alignment.center, // Change to Alignment.center
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            width: double.infinity,
+                            height: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: _profileBannerUrl.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: _profileBannerUrl,
+                                      placeholder: (context, url) => const Center(
+                                          child:
+                                              CircularProgressIndicator()), // Loading indicator for banner
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.file(
+                                      File(_profileBanner),
+                                      width: 359,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                           ),
-                  ),
+                          Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                      .withOpacity(0.7),
+                                  shape: BoxShape.circle),
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Theme.of(context).colorScheme.primary,
+                              )),
+                        ],
+                      ),
+                    ),
 
+                    Positioned(
+                      bottom:
+                          -50, // Half of the CircleAvatar's radius to align it properly
+                      left: 20,
+                      //profile picture
+                      child: InkWell(
+                        onTap: _pickImage,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            _profileImageUrl.isNotEmpty
+                                ? Container(
+                                    width: 104.0,
+                                    height: 104.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        width: 4.0,
+                                      ),
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              _profileImageUrl),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 104.0,
+                                    height: 104.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        width: 4.0,
+                                      ),
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 50,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              _profileImage),
+                                    ),
+                                  ),
+                            Container(
+                              height: 25,
+                              width: 25,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer
+                                    .withOpacity(0.7),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Theme.of(context).colorScheme.primary,
+                                size: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.7),
-                      shape: BoxShape.circle),
-                  child: Icon(
-                    Icons.camera_alt_outlined,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primary,
-                  )
-                ),
-              ],
-            ),
-          ),
-              
-               Positioned(
-                bottom: -50, // Half of the CircleAvatar's radius to align it properly
-                left: 20,
-                //profile picture
-                child: InkWell(
-              onTap: _pickImage,
-              child: Stack(
-  alignment: Alignment.center, 
-  children: [
-    _profileImageUrl.isNotEmpty
-        ? Container(
-            width: 104.0, 
-            height: 104.0, 
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.surface,
-                width: 4.0, 
               ),
-            ),
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: CachedNetworkImageProvider(_profileImageUrl),
-            ),
-          )
-        : Container(
-            width: 104.0, 
-            height: 104.0, 
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.surface,
-                width: 4.0, 
-              ),
-            ),
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              backgroundImage: CachedNetworkImageProvider(_profileImage),
-            ),
-          ),
-          Container(
-              height: 25,
-              width: 25,
-              decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primaryContainer
-                    .withOpacity(0.7),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.camera_alt_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 17,
-              ),
-            ),
-  ],
-),
-            ),
-              ),
-            ],
-          ),
-
-
-          ),
-          
-          TagContainer(
-            tagType: 'Genre',
-            onPressed: () => _showSelectableDialog(
+              TagContainer(
+                tagType: 'Genre',
+                onPressed: () => _showSelectableDialog(
                   'Select Genre',
                   _genres,
                   (results) {
@@ -415,10 +387,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'genre',
                 ),
-          ),
-          TagContainer(
-            tagType: 'Age rating',
-            onPressed: () =>_showSelectableDialog(
+              ),
+              TagContainer(
+                tagType: 'Age rating',
+                onPressed: () => _showSelectableDialog(
                   'Select Age rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
                   (results) {
@@ -427,10 +399,10 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'age',
                 ),
-          ),
-          TagContainer(
-            tagType: 'Social interests',
-            onPressed: () => _showSelectableDialog(
+              ),
+              TagContainer(
+                tagType: 'Social interests',
+                onPressed: () => _showSelectableDialog(
                   'Select Social interest',
                   _interests,
                   (results) {
@@ -439,68 +411,41 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   },
                   'interest',
                 ),
+              ),
+            ],
           ),
-
-           Padding(
-            padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
-            child: Text(
-            'Theme',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.secondary
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                height: 35,
+                child: ElevatedButton(
+                  key: const Key('saveButton'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.black54,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    _saveChangedProfileData();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Save Changes',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-
-          ),
-          
-          ColourIconContainer(
-            updateTheme: _updateTheme,
-            isDarkMode: isDarkMode,
-            onDarkModeChanged: (newValue) {
-              setState(() {
-                isDarkMode = newValue;
-              });
-            },
-            currentColor: selectedColor,
-            currentIndex: selectedIndex,
-          ),
+          )
         ],
       ),
-      Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Align(
-      alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        width: double.infinity,
-        height: 35,
-        child: ElevatedButton(
-          key: const Key('saveButton'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Colors.black54,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          onPressed: () {
-           _saveChangedProfileData();
-            Navigator.of(context).pop();
-          },
-          child: const Text(
-            'Save Changes',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    ),
-        )
-
-        ],
-      ),
-    
     );
   }
 
@@ -573,6 +518,4 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       onSelected(selectedItems);
     }
   }
-
-  
 }
