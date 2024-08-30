@@ -227,7 +227,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               ),
                               SpecificEventInfoContainer(
                                   startInfo: "Visibility",
-                                  endInfo: e.privacy ? "Private": "Public"),
+                                  endInfo: e.privacy ?  "Public":"Private"),
                               const SizedBox(
                                 height: 36,
                               ),
