@@ -21,17 +21,25 @@ class ActionButton extends StatefulWidget {
 
 class _ActionButtonState extends State<ActionButton> {
 
-  bool isPending = false;
+    bool _isDropdownOpen = false;
+    
 
+  void _toggleDropdown() {
+    setState(() {
+      _isDropdownOpen = !_isDropdownOpen;
+    });
+    
+  }
 
   void _handleTap() {
+    if(widget.type != 'connected')
     widget.onPressed();
   }
 
   @override
   Widget build(BuildContext context) {
   final bool isStats = widget.type == 'stats';
-  
+  final bool isConnected = widget.type == 'connected';
   return GestureDetector(
     onTap: _handleTap,
     child: Container(
@@ -59,6 +67,39 @@ class _ActionButtonState extends State<ActionButton> {
                 color: isStats ? Theme.of(context).colorScheme.primary : Colors.black ,
               ),
             ),
+            if (isConnected) ...[
+                PopupMenuButton<String>(
+                  onSelected: (String result) {
+                    if (result == 'disconnect') {
+                      widget.onPressed();
+                    }
+                    _toggleDropdown();
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'disconnect',
+                      child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.person_remove
+                          ),
+                          const SizedBox(width: 8), // Space between icon and text
+                          Text('Disconnect'),
+                        ],
+                      ),
+                    ),
+                  ],
+                  icon: Icon(
+                    _isDropdownOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  onCanceled: _toggleDropdown,
+                  onOpened: _toggleDropdown,
+                  offset: Offset(0, 40),
+                ),
+              ],
+            
           ],
         ),
       ),
