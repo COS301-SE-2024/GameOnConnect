@@ -13,6 +13,7 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
+import 'package:gameonconnect/view/components/profile/request_container.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
@@ -135,10 +136,73 @@ Future<void> getRelationToLoggedInUser() async {
     }
   }
 
-  void _sendConnectionRequest(String targetUserId) async {
+  void _accept() async {
+    try {
+      await ConnectionService().acceptConnectionRequest(widget.uid);
+      setState(() {
+        isRequestToParent=false;
+        isConnectionOfParent=true;
+      });
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error accepting user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
+  void _reject() async {
+    try {
+      await ConnectionService().rejectConnectionRequest(widget.uid);
+      setState(() {
+        isRequestToParent=false;
+      });
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error rejecting user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        // ignore: use_build_context_synchronously
+        context,
+      );
+    }
+  }
+
+  void _sendConnectionRequest() async {
     try {
       await UserService()
-          .sendConnectionRequest(widget.loggedInUser, targetUserId);
+          .sendConnectionRequest(widget.loggedInUser, widget.uid);
+       setState(() {
+        isRequestToParent=false;
+        isPendingOfParent=true;
+      });   
     } catch (e) {
       //Error sending Connection request.
       DelightToastBar(
@@ -439,6 +503,12 @@ Future<void> getRelationToLoggedInUser() async {
                         if (profileData.visibility ||
                             isParentsConnection ||
                             widget.uid == widget.loggedInUser) ...[
+                          if (isRequestToParent)
+                          RequestContainer(
+                            Requester: profileData.profileName,
+                            accept: () =>_accept(),
+                            reject: () =>_reject()
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                             child: Row(
@@ -463,32 +533,21 @@ Future<void> getRelationToLoggedInUser() async {
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connected',
-                                           onPressed: () => _disconnect(),
+                                           onPressed: () => _disconnect(), // drop down for disconnect 
                                           icon: Icons.person_remove
                                         ),
                                       ),
                                       )
                                   : (isRequestToParent)
-                                    ? Expanded(
-                                      child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'requested',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
-                                          icon: Icons.hourglass_bottom 
-                                        ),
-                                      ),
-                                      )    
+                                     ? const SizedBox.shrink()
+
                                     : Expanded( // not connected yet
                                         child: Padding(
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connect',
                                           onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
+                                              _sendConnectionRequest(),
                                           icon: Icons.person_add
                                         ),
                                         ),
@@ -557,8 +616,14 @@ Future<void> getRelationToLoggedInUser() async {
                                   const SizedBox(height: 24),
                                 ]),*/
                         ] else ...[
+                          if (isRequestToParent)
+                          RequestContainer(
+                            Requester: profileData.profileName,
+                            accept: () =>_accept(),
+                            reject: () =>_reject()
+                          ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
+                            padding: const EdgeInsets.fromLTRB(12, 19, 12, 0),
                             child: Row(
                               children: [
                                    ( isPendingOfParent)
@@ -585,115 +650,34 @@ Future<void> getRelationToLoggedInUser() async {
                                       ),
                                       )
                                   : (isRequestToParent)
-                                    ? Expanded(
-                                      child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'requested',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
-                                          icon: Icons.hourglass_bottom 
-                                        ),
-                                      ),
-                                      )    
+                                    ? const SizedBox.shrink()
+                                    
                                     : Expanded( // not connected yet
                                         child: Padding(
                                         padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'connect',
                                           onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
+                                              _sendConnectionRequest(),
                                           icon: Icons.person_add
                                         ),
                                         ),
                                         
                                       ),
-                                      /**
-                                       * isConnection
-                                    ? ElevatedButton.icon(
-                                        onPressed: () => _disconnect(user.uid),
-                                        label: const Text(
-                                          'Disconnect',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStateProperty.all<Color>(
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .tertiary,
-                                          ),
-                                        ),
-                                      )
-                                    : isPending
-                                        ? ElevatedButton.icon(
-                                            onPressed: () =>
-                                                _undoConnectionRequest(
-                                                    user.uid),
-                                            label: Text(
-                                              'Pending',
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  WidgetStateProperty
-                                                      .resolveWith<Color>(
-                                                (states) {
-                                                  final isDarkMode =
-                                                      Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark;
-                                                  return isDarkMode
-                                                      ? Colors.grey[800]!
-                                                      : Colors.grey[300]!;
-                                                },
-                                              ),
-                                            ),
-                                          )
-                                        : ElevatedButton.icon(
-                                            onPressed: () =>
-                                                _sendConnectionRequest(
-                                                    user.uid),
-                                            label: const Text(
-                                              'Connect',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            style: ButtonStyle(
-                                              backgroundColor:
-                                                  WidgetStateProperty.all<
-                                                      Color>(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                            ),
-                                          ),
-                                       */
+                                      
                               ],
                             ),
                           ),
-                          //Expanded(
-                          //child:
-                          Align(
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 12),
+                            child: Align(
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisSize: MainAxisSize
                                   .min, // This ensures the Column takes up only the necessary space
                               children: [
                                 Container(
-                                  width: 70, // Adjust the size as needed
+                                  width: 70, 
                                   height: 70,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -719,9 +703,6 @@ Future<void> getRelationToLoggedInUser() async {
                                     'This account is Private',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      letterSpacing: 0,
                                       color: Color(0xFFBEBEBE),
                                     ),
                                   ),
@@ -729,8 +710,9 @@ Future<void> getRelationToLoggedInUser() async {
                               ],
                             ),
                           ),
-//)
-                        ],
+                          ),
+                          
+                        ],// else 
                       ],
                     ),
                   );
