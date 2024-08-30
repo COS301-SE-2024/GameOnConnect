@@ -14,11 +14,13 @@ import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
 import 'package:gameonconnect/view/components/profile/request_container.dart';
+import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 import 'package:gameonconnect/view/pages/stats/stats_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -49,6 +51,7 @@ class _ProfileState extends State<ProfilePage> {
   bool isPendingOfParent = false;
   bool isConnectionOfParent = false;
   bool isRequestToParent = false;
+  final MessagingService _messagingService = MessagingService();
 
   Future<void> isConnectionOfLoggedInUser() async {
   final connections = await ConnectionService().getConnections('connections');
@@ -282,7 +285,7 @@ Future<void> getRelationToLoggedInUser() async {
     getTimePlayed();
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
   }
@@ -561,6 +564,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       ),
                                   ],
                                 Expanded(
+                                  //here is the view stats button
                                   child: ActionButton(
                                     type: 'stats',
                                     onPressed: () {
@@ -575,17 +579,81 @@ Future<void> getRelationToLoggedInUser() async {
                                     icon: Icons.bar_chart 
                                   ),
                                 ),
-                               
+
+                                const SizedBox(width: 8),
+                                widget.isOwnProfile
+                                    ? const SizedBox.shrink()
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                8), // Adjust the value to make rounding less
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          String conversationID =
+                                              await _messagingService
+                                                  .findConversationID(
+                                                      widget.loggedInUser,
+                                                      widget.uid);
+                                          if (conversationID == 'Not found') {
+                                            List<String> newList = [
+                                              widget.loggedInUser,
+                                              widget.uid
+                                            ];
+                                            conversationID =
+                                                await _messagingService
+                                                    .createConversation(
+                                                        newList);
+                                          }
+                                          if (mounted) {
+                                            if (!context.mounted) return;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatPage(
+                                                  profileName:
+                                                      profileData.profileName,
+                                                  receiverID: widget.uid,
+                                                  profilePicture: profileData
+                                                      .profilePicture,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.send,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'Message',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
                           const SizedBox(height: 24),
                           profileData.bio.isEmpty
-                          ? const SizedBox.shrink()
-                          :Bio(
-                            bio: profileData.bio,
-                            isOwnProfile: widget.isOwnProfile,
-                          ),
+                              ? const SizedBox.shrink()
+                              : Bio(
+                                  bio: profileData.bio,
+                                  isOwnProfile: widget.isOwnProfile,
+                                ),
                           const SizedBox(height: 24),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
