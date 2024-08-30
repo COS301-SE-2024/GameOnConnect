@@ -234,7 +234,12 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                               SpecificEventsButtons(
                                   e: e,
                                   isCreator: isCreator,
-                                  imageUrl: imageUrl)
+                                  imageUrl: imageUrl,
+                              edited: (event){
+                                    setState(() {
+                                      e =  event;
+                                    });
+                              },)
                             ],
                           ),
                         ),
