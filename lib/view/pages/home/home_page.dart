@@ -6,10 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-import 'package:gameonconnect/view/components/feed/connection_updates.dart';
-import 'package:gameonconnect/view/components/feed/event_invite_list.dart';
-import 'package:gameonconnect/view/components/feed/online_friends_list.dart';
-import 'package:gameonconnect/view/components/feed/start_timer.dart';
+import 'package:gameonconnect/view/components/home/connection_updates.dart';
+import 'package:gameonconnect/view/components/home/event_invite_list.dart';
+import 'package:gameonconnect/view/components/home/online_friends_list.dart';
+import 'package:gameonconnect/view/components/home/start_timer.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/models/mountain_badge_page.dart';
@@ -20,20 +20,20 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 
-class FeedPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final String title;
 
   // ignore: prefer_const_constructors_in_immutables
-  const FeedPage({
+  const HomePage({
     Key? key,
     required this.title,
   }) : super(key: key);
 
   @override
-  State<FeedPage> createState() => _FeedPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
@@ -53,7 +53,7 @@ class _FeedPageState extends State<FeedPage> {
     // Initialize _pages after currentUserId is set
     _pages = <Widget>[
       Center(
-        child: _FeedPageDisplay(),
+        child: _HomePageDisplay(),
       ),
       const GameLibrary(),
       const CreateEvents(),
@@ -301,12 +301,12 @@ class _FeedPageState extends State<FeedPage> {
   }
 }
 
-class _FeedPageDisplay extends StatefulWidget {
+class _HomePageDisplay extends StatefulWidget {
   @override
-  State<_FeedPageDisplay> createState() => _FeedPageDisplayState();
+  State<_HomePageDisplay> createState() => _HomePageDisplayState();
 }
 
-class _FeedPageDisplayState extends State<_FeedPageDisplay> {
+class _HomePageDisplayState extends State<_HomePageDisplay> {
   // final MessagingService messagingService = MessagingService();
   late String currentUserName = "";
   late String currentUserId;
@@ -330,7 +330,7 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
     return await _profileService.getProfileName(currentUserId);
   }
 
-  Widget _feedBody() {
+  Widget _homeBody() {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: ListView(children: [
@@ -374,7 +374,7 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: Text(
-            'Feed',
+            'Home',
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -420,6 +420,6 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
           centerTitle: false,
           elevation: 0,
         ),
-        body: _feedBody());
+        body: _homeBody());
   }
 }

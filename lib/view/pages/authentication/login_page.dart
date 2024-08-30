@@ -2,7 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/feed/welcome_splash.dart';
+import 'package:gameonconnect/view/pages/home/welcome_splash.dart';
 import 'sign_up_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../services/authentication_S/auth_service.dart';
