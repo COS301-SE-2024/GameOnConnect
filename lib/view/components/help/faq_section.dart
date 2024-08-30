@@ -42,12 +42,12 @@ class _FaqSectionState extends State<FaqSection> {
                       title: Text(
                         faqItem.faqHeading,
                         style:
-                            const TextStyle(fontSize: 12, color: Colors.grey),
+                             const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(faqItem.faqDetails),
+                          padding: const EdgeInsets.all(13.0),
+                          child: Text(faqItem.faqDetails,style: const TextStyle(fontSize: 12,color: Colors.grey,)),
                         ),
                         TutorialVideo(videoPath: faqItem.videoPath),
                       ],

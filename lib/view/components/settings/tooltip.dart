@@ -21,7 +21,7 @@ class ToolTip extends StatelessWidget {
       popupDirection: TooltipDirection.up,
       backgroundColor: Colors.grey,
       child: Container(
-          child: const Icon(Icons.info)),
+          child:  Icon(Icons.info,color: Theme.of(context).colorScheme.secondary,)),
     );
   }
 }

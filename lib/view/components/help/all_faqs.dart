@@ -12,7 +12,7 @@ class AllFaqs extends StatelessWidget {
     ),
     FAQ(
       faqHeading: 'How to accept and reject connection requests',
-      faqDetails: 'To accept/reject friend requests, navigate to your profile. Click on the friends tab to see the friend requests.',
+      faqDetails: 'To accept/reject connection requests, navigate to your profile. Click on the Connections tab to see the connection requests.',
       videoPath: 'assets/videos/Connections_2.mp4'
     ),
   ];
@@ -67,7 +67,7 @@ class AllFaqs extends StatelessWidget {
     return Expanded(
       child: ListView(
         children: [
-          FaqSection(friendFaqs, 'Friends', Icons.diversity_1_outlined),
+          FaqSection(friendFaqs, 'Connections', Icons.diversity_1_outlined),
           FaqSection(gameLibraryFaqs, 'Game Library', Icons.library_books_outlined),
           FaqSection(gameInfoFaqs, 'Game Information', Icons.gamepad_outlined),
         ],
