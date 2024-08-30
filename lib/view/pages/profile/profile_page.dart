@@ -143,6 +143,9 @@ Future<void> getRelationToLoggedInUser() async {
         isRequestToParent=false;
         isConnectionOfParent=true;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Accepted')),
+        );
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
@@ -172,6 +175,9 @@ Future<void> getRelationToLoggedInUser() async {
       setState(() {
         isRequestToParent=false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Rejected')),
+        );
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
@@ -534,7 +540,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         child: ActionButton(
                                           type: 'connected',
                                            onPressed: () => _disconnect(), // drop down for disconnect 
-                                          icon: Icons.person_remove
+                                          icon: Icons.person
                                         ),
                                       ),
                                       )
@@ -568,7 +574,8 @@ Future<void> getRelationToLoggedInUser() async {
                                     },
                                     icon: Icons.bar_chart 
                                   ),
-                                )
+                                ),
+                               
                               ],
                             ),
                           ),
@@ -580,7 +587,7 @@ Future<void> getRelationToLoggedInUser() async {
                             isOwnProfile: widget.isOwnProfile,
                           ),
                           const SizedBox(height: 24),
-                          /*profileData.myGames.isEmpty &&
+                          profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
                               : widget.uid != widget.loggedInUser
@@ -614,7 +621,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
                                   const SizedBox(height: 24),
-                                ]),*/
+                                ]),
                         ] else ...[
                           if (isRequestToParent)
                           RequestContainer(
@@ -645,7 +652,7 @@ Future<void> getRelationToLoggedInUser() async {
                                         child: ActionButton(
                                           type: 'connected',
                                           onPressed: () => _disconnect(),
-                                          icon: Icons.person_remove
+                                          icon: Icons.person
                                         ),
                                       ),
                                       )
@@ -699,11 +706,11 @@ Future<void> getRelationToLoggedInUser() async {
                                 Container(
                                   margin:
                                       const EdgeInsets.fromLTRB(0, 0, 0, 82),
-                                  child: const Text(
+                                  child:  Text(
                                     'This account is Private',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Color(0xFFBEBEBE),
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                   ),
                                 ),
