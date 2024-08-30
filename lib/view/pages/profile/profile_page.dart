@@ -380,8 +380,11 @@ class _ProfileState extends State<ProfilePage> {
                                       value:
                                           '${profileData.numberOfconnections}',
                                       title: 'Connections',
-                                      onPressed: () =>
-                                          navigateToConnections(context),
+                                      onPressed: profileData.visibility ||
+                                              isParentsConnection ||
+                                              widget.uid == widget.loggedInUser
+                                          ? () => navigateToConnections(context)
+                                          : null,
                                     ),
                                   ),
                                   Expanded(
@@ -608,7 +611,7 @@ class _ProfileState extends State<ProfilePage> {
                                   margin:
                                       const EdgeInsets.fromLTRB(0, 0, 0, 82),
                                   child: const Text(
-                                    'This account is Private',
+                                    'This account is private',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
