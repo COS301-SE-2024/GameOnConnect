@@ -15,7 +15,7 @@ class ChooseGame extends StatefulWidget {
 
 class _ChooseGame extends State<ChooseGame> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int chosenGame = -1;
+  late int chosenGame ;
   late List<String> gameNames = [];
   late List<String> gameImages = [];
   late List<GameDetails>? games;

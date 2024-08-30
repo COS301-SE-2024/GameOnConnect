@@ -15,8 +15,9 @@ import '../../components/events/create_event_chips.dart';
 class EditEvent extends StatefulWidget {
   final Event e;
   final String imageUrl;
+  final void Function(Event updatedEvent) edited;
 
-  const EditEvent({super.key, required this.e, required this.imageUrl});
+  const EditEvent({super.key, required this.e, required this.imageUrl,required this.edited});
 
   @override
   State<EditEvent> createState() => _EditEventsState();
@@ -25,7 +26,7 @@ class EditEvent extends StatefulWidget {
 class _EditEventsState extends State<EditEvent> {
   late Event e;
   String name = "";
-  late int gameChosen = -1;
+  String description = "";
   bool validStartDate = true;
   bool validEndDate = true;
   bool validName = true;
@@ -33,8 +34,8 @@ class _EditEventsState extends State<EditEvent> {
   late List<String> gameImages = [];
   late List<GameDetails>? games;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  DateTime? _datePicked;
-  DateTime? _endDatePicked;
+  late DateTime _datePicked;
+  late DateTime _endDatePicked;
   XFile? filePath;
   bool isChanged = true;
   final nameController = TextEditingController();
@@ -47,7 +48,11 @@ class _EditEventsState extends State<EditEvent> {
   List<String> invites = [];
 
   Future<void> editEvent() async {
-    await EventsService().editEvent(
+    Event updated = Event(creatorID:  e.creatorID,startDate: _datePicked,endDate: _endDatePicked,gameID:  gameID,
+        name: name,eventID: e.eventID, subscribed: e.subscribed, participants: e.participants,description: description,
+        privacy: isChanged,invited: invites,creatorName: e.creatorName,eventType: selectedOption);
+    widget.edited(updated);
+     await EventsService().editEvent(
       imageChanged,
         selectedOption,
         _datePicked,
@@ -57,8 +62,9 @@ class _EditEventsState extends State<EditEvent> {
         isChanged,
         invites,
         filePath != null ? filePath!.path : imageUrl,
-        descriptionController.text,
+        description,
         e.eventID);
+
   }
 
   Future pickImage() async {
@@ -101,10 +107,11 @@ class _EditEventsState extends State<EditEvent> {
     selectedOption = e.eventType;
     gameID = e.gameID;
     descriptionController.text = e.description;
+    description = e.description;
     isChanged = e.privacy;
-    gameChosen = e.gameID;
     imageUrl = widget.imageUrl;
     invites = e.invited;
+
   }
 
   @override
@@ -325,12 +332,12 @@ class _EditEventsState extends State<EditEvent> {
                                                           builder: (context) =>
                                                               ChooseGame(
                                                                 chosenGame:
-                                                                    gameChosen,
+                                                                    gameID,
                                                               )))
                                                   .then((gameChosen) {
                                                 setState(() {
                                                   if (gameChosen != null) {
-                                                    this.gameChosen =
+                                                    gameID =
                                                         gameChosen;
                                                   }
                                                 });
@@ -387,6 +394,7 @@ class _EditEventsState extends State<EditEvent> {
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
+                                              description = descriptionController.text;
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
                                             },
@@ -453,6 +461,7 @@ class _EditEventsState extends State<EditEvent> {
                                             cursorColor: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
+                                              onFieldSubmitted: (val) => {description = descriptionController.text},
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -486,7 +495,7 @@ class _EditEventsState extends State<EditEvent> {
                                               final datePickedDate =
                                                   await showDatePicker(
                                                 context: context,
-                                                initialDate: DateTime.now(),
+                                                initialDate: _datePicked,
                                                 lastDate: DateTime(2050),
                                                 firstDate: DateTime.now(),
                                                 builder: (context, child) {
@@ -507,7 +516,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
                                                         initialTime:
-                                                            TimeOfDay.now(),
+                                                            TimeOfDay(hour: _datePicked.hour, minute: _datePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -531,8 +540,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     datePickedTime!.hour,
                                                     datePickedTime.minute,
                                                   );
-                                                  if (_datePicked!.isBefore(
-                                                      _endDatePicked!)) {
+                                                  if (_datePicked.isBefore(
+                                                      _endDatePicked)) {
                                                     validEndDate = true;
                                                   }
                                                 });
@@ -562,12 +571,10 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    _datePicked != null
-                                                        ? DateFormat(
+                                                        DateFormat(
                                                                 'd MMMM , hh:mm a')
                                                             .format(
-                                                                _datePicked!)
-                                                        : 'Select a date',
+                                                                _datePicked),
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -605,9 +612,9 @@ class _EditEventsState extends State<EditEvent> {
                                               final datePickedDate2 =
                                                   await showDatePicker(
                                                 context: context,
-                                                initialDate: DateTime.now(),
+                                                initialDate: _endDatePicked,
                                                 lastDate: DateTime(2050),
-                                                firstDate: DateTime.now(),
+                                                firstDate: _datePicked,
                                                 builder: (context, child) {
                                                   return Theme(
                                                     data: ThemeData.from(
@@ -626,7 +633,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
                                                         initialTime:
-                                                            TimeOfDay.now(),
+                                                        TimeOfDay(hour: _endDatePicked.hour, minute: _endDatePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -649,10 +656,11 @@ class _EditEventsState extends State<EditEvent> {
                                                     datePickedTime2!.hour,
                                                     datePickedTime2.minute,
                                                   );
-                                                  if (_datePicked!.isBefore(
-                                                      _endDatePicked!)) {
+                                                  if (_datePicked.isBefore(
+                                                      _endDatePicked)) {
                                                     validEndDate = true;
                                                   } else {
+                                                    _endDatePicked = e.endDate;
                                                     ScaffoldMessenger.of(
                                                             context)
                                                         .showSnackBar(
@@ -690,12 +698,11 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    _endDatePicked != null &&
                                                             validEndDate
                                                         ? DateFormat(
                                                                 'd MMMM , hh:mm a')
                                                             .format(
-                                                                _endDatePicked!)
+                                                                _endDatePicked)
                                                         : 'Select a date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
@@ -859,20 +866,20 @@ class _EditEventsState extends State<EditEvent> {
                                       validName = true;
                                     }
                                     if (validName &&
-                                        !(gameChosen == -1) &&
+                                        !(gameID == -1) &&
                                         validEndDate &&
                                         validStartDate) {
                                       editEvent();
                                       nameController.clear();
                                       descriptionController.clear();
                                       setState(() {
-                                        gameChosen = -1;
+                                        gameID = -1;
                                         invites = [];
                                         validEndDate = false;
                                         validName = false;
                                         validStartDate = false;
-                                        _endDatePicked = null;
-                                        _datePicked = null;
+                                        _endDatePicked = DateTime.now();
+                                        _datePicked = DateTime.now();
                                       });
                                       Navigator.pop(context);
                                     } else {
@@ -882,7 +889,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 content: Text(
                                                     "Please ensure you entered an event name "),
                                                 backgroundColor: Colors.red));
-                                      } else if (gameChosen == -1) {
+                                      } else if (gameID == -1) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                                 content: Text(

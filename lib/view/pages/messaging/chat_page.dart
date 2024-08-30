@@ -193,38 +193,47 @@ class _ChatPageState extends State<ChatPage> {
             child: ValueListenableBuilder<TextEditingValue>(
               valueListenable: _textEditingController,
               builder: (context, value, child) {
-                return TextFormField(
-                  focusNode: newFocusNode,
-                  controller: _textEditingController,
-                  obscureText: false,
-                  maxLines: null,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                    fillColor: Theme.of(context).colorScheme.primaryContainer,
-                    filled: true,
-                    hintText: "Enter your message here",
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Inter',
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(5,0,0,0),
+                  child: TextFormField(
+                    focusNode: newFocusNode,
+                    controller: _textEditingController,
+                    obscureText: false,
+                    maxLines: null,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
+                      filled: true,
+                      hintText: "Enter your message here",
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Inter',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
+                    onFieldSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                      sendMessage();
+                    }
+                    },
                   ),
+
                   onFieldSubmitted: (value) {
                     if (value.trim().isNotEmpty) {
                       sendMessage();
