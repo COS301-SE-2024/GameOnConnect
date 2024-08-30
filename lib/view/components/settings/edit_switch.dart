@@ -30,7 +30,7 @@ class _EditSwitchState extends State<EditSwitch> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 15, 12, 0),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.5),
         decoration: BoxDecoration(

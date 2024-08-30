@@ -421,7 +421,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          const ToolTip( message: "Tournaments are competitive, whereas gaming sessions are more relaxed with people you know "),
+                                          const ToolTip(
+                                              message:
+                                                  "Tournaments are competitive, "
+                                                      "whereas gaming sessions "
+                                                      "are more relaxed with "
+                                                      "people you know "),
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
@@ -679,7 +684,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 15,
+                                          ),
+                                          const ToolTip(message: "Public events are seen by all users and anyone can join it."),
+                                          const SizedBox(
+                                            height:3,
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
@@ -698,7 +707,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15),
+                                                            left: 15,),
                                                     child: Text(
                                                       'Private',
                                                       style: TextStyle(
