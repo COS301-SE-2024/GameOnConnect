@@ -39,7 +39,7 @@ class _ActionButtonState extends State<ActionButton> {
   @override
   Widget build(BuildContext context) {
   final bool isStats = widget.type == 'stats';
-  final bool isConnected = widget.type == 'connected';
+  final bool isConnected = widget.type == 'Connected';
   return GestureDetector(
     onTap: _handleTap,
     child: Container(
