@@ -109,8 +109,8 @@ class _ChatPageState extends State<ChatPage> {
         ),
         scrolledUnderElevation: 0,
         bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(5.0), 
-          child: SizedBox(height: 2.0), 
+          preferredSize: Size.fromHeight(5.0),
+          child: SizedBox(height: 2.0),
         ),
       ),
       body: Column(
@@ -194,7 +194,7 @@ class _ChatPageState extends State<ChatPage> {
               valueListenable: _textEditingController,
               builder: (context, value, child) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(5,0,0,0),
+                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: TextFormField(
                     focusNode: newFocusNode,
                     controller: _textEditingController,
@@ -229,16 +229,10 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     onFieldSubmitted: (value) {
                       if (value.trim().isNotEmpty) {
-                      sendMessage();
-                    }
+                        sendMessage();
+                      }
                     },
                   ),
-
-                  onFieldSubmitted: (value) {
-                    if (value.trim().isNotEmpty) {
-                      sendMessage();
-                    }
-                  },
                 );
               },
             ),
