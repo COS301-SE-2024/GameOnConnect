@@ -43,6 +43,11 @@ class _FriendSearchState extends State<FriendSearch> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     _fetchUsers();
