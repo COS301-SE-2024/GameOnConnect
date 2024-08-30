@@ -195,7 +195,7 @@ class _ProfileState extends State<ProfilePage> {
                     return IconButton(
                       key: const Key('settings_icon_button'),
                       icon: const Icon(Icons.settings),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () {
                         Navigator.pushNamed(context, '/settings');
                       },

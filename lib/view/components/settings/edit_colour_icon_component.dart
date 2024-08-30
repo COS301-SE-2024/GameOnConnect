@@ -76,7 +76,7 @@ class _ColourIconContainerState extends State<ColourIconContainer> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      widget.isDarkMode ? 'Light mode:' : 'Dark mode:',
+                       'Dark mode:',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 12,
