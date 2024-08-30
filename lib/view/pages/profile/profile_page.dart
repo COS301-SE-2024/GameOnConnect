@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -133,7 +135,6 @@ Future<void> getRelationToLoggedInUser() async {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -166,7 +167,6 @@ Future<void> getRelationToLoggedInUser() async {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -198,7 +198,6 @@ Future<void> getRelationToLoggedInUser() async {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -229,7 +228,6 @@ Future<void> getRelationToLoggedInUser() async {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -259,7 +257,6 @@ Future<void> getRelationToLoggedInUser() async {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -277,6 +274,18 @@ Future<void> getRelationToLoggedInUser() async {
       ),
     );
   }
+
+  void navigateToStats(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => StatsPage(
+              userID: widget
+                  .uid)), 
+    );
+  }
+
+  
 
   @override
   void initState() {
@@ -499,10 +508,14 @@ Future<void> getRelationToLoggedInUser() async {
                                           navigateToConnections(context),
                                     ),
                                   ),
-                                  Expanded(
+                                   Expanded(
                                     child: ProfileButton(
-                                        value: '$roundedTotalTime hrs',
-                                        title: 'Time Played'),
+                                      value:
+                                          '$roundedTotalTime hrs',
+                                      title: 'Time Played',
+                                      onPressed: () =>
+                                          navigateToStats(context),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -514,7 +527,7 @@ Future<void> getRelationToLoggedInUser() async {
                             widget.uid == widget.loggedInUser) ...[
                           if (isRequestToParent)
                           RequestContainer(
-                            Requester: profileData.profileName,
+                            requester: profileData.profileName,
                             accept: () =>_accept(),
                             reject: () =>_reject()
                           ),
@@ -527,7 +540,7 @@ Future<void> getRelationToLoggedInUser() async {
                                     ( isPendingOfParent)
                                     ? Expanded(
                                       child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Pending',
                                           onPressed: () =>
@@ -539,7 +552,7 @@ Future<void> getRelationToLoggedInUser() async {
                                   : ( isConnectionOfParent)
                                     ? Expanded(
                                       child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Connected',
                                            onPressed: () => _disconnect(), // drop down for disconnect 
@@ -552,7 +565,7 @@ Future<void> getRelationToLoggedInUser() async {
 
                                     : Expanded( // not connected yet
                                         child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Connect',
                                           onPressed: () =>
@@ -671,7 +684,7 @@ Future<void> getRelationToLoggedInUser() async {
                         ] else ...[
                           if (isRequestToParent)
                           RequestContainer(
-                            Requester: profileData.profileName,
+                            requester: profileData.profileName,
                             accept: () =>_accept(),
                             reject: () =>_reject()
                           ),
@@ -683,7 +696,7 @@ Future<void> getRelationToLoggedInUser() async {
                                    ( isPendingOfParent)
                                     ? Expanded(
                                       child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Pending',
                                           onPressed: () =>
@@ -695,7 +708,7 @@ Future<void> getRelationToLoggedInUser() async {
                                   : ( isConnectionOfParent)
                                     ? Expanded(
                                       child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Connected',
                                           onPressed: () => _disconnect(),
@@ -708,7 +721,7 @@ Future<void> getRelationToLoggedInUser() async {
                                     
                                     : Expanded( // not connected yet
                                         child: Padding(
-                                        padding:  EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
                                           type: 'Connect',
                                           onPressed: () =>
@@ -765,7 +778,7 @@ Future<void> getRelationToLoggedInUser() async {
                           ),
                           
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0, 20, 0, 12),
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 12),
                             child: Align(
                             alignment: Alignment.center,
                             child: Column(

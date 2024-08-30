@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class RequestContainer extends StatefulWidget {
-  final String Requester;
+  final String requester;
   final VoidCallback accept;
   final VoidCallback reject;
 
   const RequestContainer({super.key, 
-    required this.Requester,
+    required this.requester,
     required this.accept, 
     required this.reject,
  });    
@@ -24,14 +24,14 @@ class _RequestContainerState extends State<RequestContainer> {
  Widget build(BuildContext context) {
   isDarkMode=Theme.of(context).brightness == Brightness.dark;
     return Container(
-  padding: EdgeInsets.fromLTRB(12, 19, 12, 12), // Adjust spacing as needed
+  padding: const EdgeInsets.fromLTRB(12, 19, 12, 12), // Adjust spacing as needed
   child: Center(
     child: Column(
       children: [
         Text(
-          '${widget.Requester} wants to connect',
+          '${widget.requester} wants to connect',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w400,
             
           ),
@@ -61,7 +61,7 @@ class _RequestContainerState extends State<RequestContainer> {
                   ),
                 ),
               ),
-              SizedBox(width: 8,),
+              const SizedBox(width: 8,),
               ElevatedButton.icon(
                 onPressed: widget.reject,
                 label:  Text(

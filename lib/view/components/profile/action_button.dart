@@ -33,7 +33,7 @@ class _ActionButtonState extends State<ActionButton> {
 
   void _handleTap() {
     if(widget.type != 'connected')
-    widget.onPressed();
+    {widget.onPressed();}
   }
 
   @override
@@ -84,7 +84,7 @@ class _ActionButtonState extends State<ActionButton> {
                           Icon(
                             Icons.person_remove
                           ),
-                          const SizedBox(width: 8), // Space between icon and text
+                          SizedBox(width: 8), // Space between icon and text
                           Text('Disconnect'),
                         ],
                       ),
@@ -96,7 +96,7 @@ class _ActionButtonState extends State<ActionButton> {
                   ),
                   onCanceled: _toggleDropdown,
                   onOpened: _toggleDropdown,
-                  offset: Offset(0, 40),
+                  offset: const Offset(0, 40),
                 ),
               ],
             
