@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../components/events/create_event_chips.dart';
 import 'choose_my_games_page.dart';
-import 'package:super_tooltip/super_tooltip.dart';
 
 String selectedOption = "Gaming Session";
 
@@ -74,7 +74,6 @@ class _CreateEventsState extends State<CreateEvents> {
 
   @override
   Widget build(BuildContext context) {
-    final tooltipkey =SuperTooltipController();
     return GestureDetector(
         child: Scaffold(
             appBar: AppBar(
@@ -422,16 +421,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          SuperTooltip(
-                                              controller: tooltipkey,
-                                                      content: Text(
-                                                          "Tournaments are competitive, whereas gaming sessions are more relaxed with people you know ",style:
-                                                        TextStyle(color: Colors.black),
-                                                      softWrap: true,),
-                                              verticalOffset: 13,
-                                              popupDirection: TooltipDirection.up,
-                                              backgroundColor: Theme.of(context).colorScheme.secondary,
-                                              child:Container(child: const Icon(Icons.info))),
+                                          const ToolTip( message: "Tournaments are competitive, whereas gaming sessions are more relaxed with people you know "),
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
