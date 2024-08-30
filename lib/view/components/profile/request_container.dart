@@ -18,11 +18,13 @@ class RequestContainer extends StatefulWidget {
 
 
 class _RequestContainerState extends State<RequestContainer> {
+  bool isDarkMode = true;
 
   @override
  Widget build(BuildContext context) {
+  isDarkMode=Theme.of(context).brightness == Brightness.dark;
     return Container(
-  padding: EdgeInsets.fromLTRB(12, 12, 12, 12), // Adjust spacing as needed
+  padding: EdgeInsets.fromLTRB(12, 19, 12, 12), // Adjust spacing as needed
   child: Center(
     child: Column(
       children: [
@@ -31,9 +33,7 @@ class _RequestContainerState extends State<RequestContainer> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.w400,
-            //fontSize: 12,
-            letterSpacing: 0,
-            color: Color(0xFFBEBEBE),
+            
           ),
         ),
         const SizedBox(height: 8),
@@ -42,7 +42,7 @@ class _RequestContainerState extends State<RequestContainer> {
             mainAxisAlignment: MainAxisAlignment.center, 
             children: [
               ElevatedButton.icon(
-                onPressed: () => widget.accept,
+                onPressed: widget.accept,
                 label: const Text(
                   'Accept',
                   style: TextStyle(
@@ -63,11 +63,14 @@ class _RequestContainerState extends State<RequestContainer> {
               ),
               SizedBox(width: 8,),
               ElevatedButton.icon(
-                onPressed: () => widget.reject,
-                label: const Text(
+                onPressed: widget.reject,
+                label:  Text(
                   'Reject',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: isDarkMode
+                      ? Colors.white
+                      : Colors.black,
                   ),
                 ),
                 style: ButtonStyle(
