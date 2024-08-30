@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserTile extends StatefulWidget {
   final String text;
@@ -14,6 +12,7 @@ class UserTile extends StatefulWidget {
   final String profilepictureURL;
   final String lastMessage;
   final String time;
+  final Widget profileImage;
 
   const UserTile({
     super.key,
@@ -22,6 +21,7 @@ class UserTile extends StatefulWidget {
     required this.profilepictureURL,
     required this.lastMessage,
     required this.time,
+    required this.profileImage,
   });
 
   @override
@@ -102,15 +102,17 @@ class _UserTileState extends State<UserTile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 65,
-                        height: 65,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          shape: BoxShape.circle,
-                        ),
-                        child: buildProfilePicture(widget
-                            .profilepictureURL), //build the profile picture widget
-                      ),
+                          width: 65,
+                          height: 65,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: widget.profileImage //build the profile picture widget
+                          ),
+                          ),
                       Expanded(
                         child: Padding(
                           padding:
@@ -202,58 +204,4 @@ class _UserTileState extends State<UserTile> {
     );
   }
 
-  //this widget builds the image as a cached network image
-  Widget buildProfilePicture(String? profilePicUrl) {
-    if (isLoading) {
-      return _buildLoadingWidget();
-    } else if (profilePicUrl != null) {
-      return Padding(
-        padding: const EdgeInsets.all(2),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: CachedNetworkImage(
-            imageUrl: profilePicUrl,
-            width: 65,
-            height: 65,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => _buildLoadingWidget(),
-            errorWidget: (context, url, error) => _buildErrorWidget(),
-            fadeInDuration: const Duration(milliseconds: 200),
-            fadeInCurve: Curves.easeIn,
-            memCacheWidth: 65,
-            memCacheHeight: 65,
-            maxWidthDiskCache: 65,
-            maxHeightDiskCache: 65,
-          ),
-        ),
-      );
-    } else {
-      return _buildErrorWidget();
-    }
-  }
-
-  //this widget builds while the image is still loading
-  Widget _buildLoadingWidget() {
-    return SizedBox(
-      width: 65,
-      height: 65,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: LoadingAnimationWidget.halfTriangleDot(
-          color: Theme.of(context).colorScheme.primary,
-          size: 36,
-        ),
-      ),
-    );
-  }
-
-  //this widget builds if there is an error with the image
-  Widget _buildErrorWidget() {
-    return Container(
-      width: 65,
-      height: 65,
-      color: Colors.grey[300],
-      child: const Icon(Icons.error),
-    );
-  }
 }
