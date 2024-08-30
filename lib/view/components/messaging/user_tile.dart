@@ -46,16 +46,19 @@ class _UserTileState extends State<UserTile> {
           true; //sets the loading state to true to build the loading widget
     });
     _profileService.fetchProfileData().then((data) {
-      setState(() {
-        profileData = data;
-        isLoading =
-            false; //data has been loaded so we cna stop the loading state
-      });
+      if (mounted) {
+        setState(() {
+          profileData = data;
+          isLoading =
+              false; //data has been loaded so we cna stop the loading state
+        });
+      }
     }).catchError((error) {
-      setState(() {
-        isLoading = false;
-      });
-
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
       //added feedback to user if the content was not loaded
       DelightToastBar(
           builder: (context) {
@@ -102,17 +105,18 @@ class _UserTileState extends State<UserTile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                          width: 65,
-                          height: 65,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipRRect(
+                        width: 65,
+                        height: 65,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          shape: BoxShape.circle,
+                        ),
+                        child: ClipRRect(
                             borderRadius: BorderRadius.circular(40),
-                            child: widget.profileImage //build the profile picture widget
-                          ),
-                          ),
+                            child: widget
+                                .profileImage //build the profile picture widget
+                            ),
+                      ),
                       Expanded(
                         child: Padding(
                           padding:
@@ -203,5 +207,4 @@ class _UserTileState extends State<UserTile> {
       ),
     );
   }
-
 }
