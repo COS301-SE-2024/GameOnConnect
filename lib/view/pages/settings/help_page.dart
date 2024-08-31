@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/help/help_card.dart';
 import 'package:gameonconnect/view/pages/settings/getting_started.dart';
 
 import '../../components/appbars/backbutton_appbar_component.dart';
@@ -60,110 +61,25 @@ class _HelpWidgetState extends State<HelpPage> {
                   ],
                 ),
               ),
-              InkWell( child: 
-              Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-                  child: Container(
-                    width: MediaQuery.sizeOf(context).width * 0.969,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.question_mark,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 44,
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 12, 0, 4),
-                            child: Text(
-                              'Frequently Asked Questions',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            'Answers to commonly asked questions about GameOnConnect',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
+               HelpCard(heading: "Frequently Asked Questions",
+                  followHeading: "Answers to commonly asked questions about "
+                      "GameOnConnect",
+              icon: Icon(
+                Icons.question_mark,
+                color: Theme.of(context).colorScheme.primary,
+                size: 44,
+              ),),
+               HelpCard(heading: "Getting Started", followHeading:
+              "Tutorial videos to help you get started  on GameOnConnect",
+              icon: Icon(
+                Icons.play_arrow,
+                color: Theme.of(context).colorScheme.primary,
+                size: 44,
+              ), ),
+
+      ]),
               ),
-              InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder:  (context) => GettingStarted()));
-                },
-                child: 
-              Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 12),
-                  child: Container(
-                    width: MediaQuery.sizeOf(context).width * 0.969,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.play_arrow,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 44,
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                0, 12, 0, 4),
-                            child: Text(
-                              'Getting Started',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            'Tutorial videos to help you get started  on GameOnConnect',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
-              ),
-            ],
           ),
-        ),
-      ),
     );
   }
 }
