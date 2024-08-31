@@ -6,10 +6,11 @@ import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
+import 'package:gameonconnect/view/pages/settings/help_page.dart';
 import 'package:gameonconnect/view/pages/settings/settings_page.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
-import 'view/pages/settings/help_page.dart';
+import 'view/pages/settings/getting_started.dart';
 import 'package:provider/provider.dart';
 import 'view/pages/feed/feed_page.dart';
 import 'view/pages/events/create_events_page.dart';
@@ -117,8 +118,8 @@ class MyApp extends StatelessWidget {
         '/create_events': (context) => CreateEvents(),
         '/events': (context) => ViewEvents(),
         '/login': (context) => Login(),
-        '/help': (context) => Help(),
-        '/getting_started': (context) => GettingStarted(),
+        '/help': (context) => HelpPage(),
+        '/getting_started': (context) => HelpPage(),
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
         '/messages' : (context) => Messaging(),
