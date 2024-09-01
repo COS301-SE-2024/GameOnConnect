@@ -35,8 +35,8 @@ class _FilterPageState extends State<FilterPage> {
       GlobalKey<_ExpandableFilterState>();
   final GlobalKey<_ExpandableFilterState> _tagFilterKey =
       GlobalKey<_ExpandableFilterState>();
-  final GlobalKey<_ExpandableFilterState> _metacriticFilterKey =
-      GlobalKey<_ExpandableFilterState>();
+  final GlobalKey<_NumberFilterState> _metacriticFilterKey =
+      GlobalKey<_NumberFilterState>();
 
   @override
   void initState() {
@@ -153,8 +153,8 @@ class _FilterPageState extends State<FilterPage> {
       _genreFilterKey.currentState?.getFilterString() ?? '',
       _storeFilterKey.currentState?.getFilterString() ?? '',
       _tagFilterKey.currentState?.getFilterString() ?? '',
+      _metacriticFilterKey.currentState?.getFilterString() ?? '',
     ].where((filter) => filter.isNotEmpty).join();
-
     await widget.apiFunction(concatenatedFilterString);
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
@@ -179,12 +179,17 @@ class NumberFilter extends StatefulWidget {
 
 class _NumberFilterState extends State<NumberFilter> {
   late String _filterName;
-  late RangeValues _valueRange = const RangeValues(0, 100);
+  late RangeValues _valueRange;
 
   @override
   void initState() {
     super.initState();
     _filterName = widget.filterName;
+    _valueRange = const RangeValues(0, 100);
+  }
+
+  String getFilterString() {
+    return "&${_filterName.toLowerCase()}=${_valueRange.start.toInt()},${_valueRange.end.toInt()}";
   }
 
   @override
@@ -222,6 +227,7 @@ class _NumberFilterState extends State<NumberFilter> {
                     setState(() {
                       _valueRange = values;
                     });
+                    widget.onFilterChanged();
                   },
                   min: 0,
                   max: 100),
