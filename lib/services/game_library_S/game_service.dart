@@ -48,6 +48,39 @@ class GameService {
     }
   }
 
+  Future<List<Game>> filterGames(String filterString) async {
+    String request = 'https://api.rawg.io/api/games?key=${global.apiKey}$filterString';
+
+    var fileInfo = await GameCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      return (jsonData['results'] as List)
+          .map((gameJson) => Game.fromJson(gameJson))
+          .toList();
+    } else {
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
+      if (response.statusCode == 200) {
+        //Cache data
+        await GameCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        return (jsonData['results'] as List)
+            .map((gameJson) => Game.fromJson(gameJson))
+            .toList();
+      } else {
+        throw Exception('Failed to load games');
+      }
+    }
+
+  }
+
   Future<GameDetails> fetchGameDetails(gameId) async {
     String request =
         'https://api.rawg.io/api/games/$gameId?key=${global.apiKey}';

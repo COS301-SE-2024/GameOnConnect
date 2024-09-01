@@ -3,10 +3,7 @@
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../components/game_library/game_library_filter.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -44,6 +41,30 @@ class _GameLibraryState extends State<GameLibrary> {
         _loadGames();
       }
     });
+  }
+
+  Future<void> _filterGames(String filterString) async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final games = await GameService().filterGames(filterString);
+
+      setState(() {
+        _games.clear();
+        _games.addAll(games);
+        _currentPage++;
+      });
+    } catch (e) {
+      //Handle error
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Future<void> _loadGames() async {
@@ -102,35 +123,6 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
       _loadGames();
     });
-  }
-
-  Future<void> _runApiRequest(String request) async {
-    if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-    });
-
-    final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final games = (jsonData['results'] as List)
-          .map((gameJson) => Game.fromJson(gameJson))
-          .toList();
-
-      setState(() {
-        _games.clear();
-        _games.addAll(games);
-        _currentPage++;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      throw Exception('Failed to load games');
-    }
   }
 
   clearFilters() {
@@ -310,7 +302,7 @@ class _GameLibraryState extends State<GameLibrary> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  FilterPage(apiFunction: _runApiRequest, clearFilters: clearFilters,)),
+                                  FilterPage(filterFunction: _filterGames, clearFiltersFunction: clearFilters)),
                         );
                       },
                       child: Row(
@@ -329,16 +321,6 @@ class _GameLibraryState extends State<GameLibrary> {
                   ],
                 ),
               ],
-            ),
-            Divider(
-              thickness: 1,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.clear),
-              iconAlignment: IconAlignment.end,
-              onPressed: () => clearFilters(),
-              label: Text('Clear filters'),
             ),
           ],
         ),

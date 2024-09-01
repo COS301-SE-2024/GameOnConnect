@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_filter_service.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
-  final Function(String) apiFunction;
-  final Function() clearFilters;
+  final Function(String) filterFunction;
+  final Function() clearFiltersFunction;
   const FilterPage(
-      {super.key, required this.apiFunction, required this.clearFilters});
+      {super.key,
+      required this.filterFunction,
+      required this.clearFiltersFunction});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -46,8 +49,7 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   void _updateFilterString() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -150,9 +152,11 @@ class _FilterPageState extends State<FilterPage> {
               width: 10,
             ),
             Expanded(
-              child: FilledButton(
+              child: TextButton.icon(
+                icon: const Icon(Icons.clear),
+                iconAlignment: IconAlignment.end,
                 onPressed: _clearFilters,
-                child: const Text("Clear Filters"),
+                label: const Text('Clear filters'),
               ),
             ),
           ],
@@ -163,7 +167,7 @@ class _FilterPageState extends State<FilterPage> {
 
   void _clearFilters() {
     setState(() {});
-    widget.clearFilters;
+    widget.clearFiltersFunction();
     Navigator.pop(context);
   }
 
@@ -175,7 +179,7 @@ class _FilterPageState extends State<FilterPage> {
       _tagFilterKey.currentState?.getFilterString() ?? '',
       _metacriticFilterKey.currentState?.getFilterString() ?? '',
     ].where((filter) => filter.isNotEmpty).join();
-    await widget.apiFunction(concatenatedFilterString);
+    await widget.filterFunction(concatenatedFilterString);
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
