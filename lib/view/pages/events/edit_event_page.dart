@@ -739,7 +739,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         const EdgeInsets.only(
                                                             left: 15),
                                                     child: Text(
-                                                      'Private',
+                                                      'Public',
                                                       style: TextStyle(
                                                         fontFamily: 'Inter',
                                                         letterSpacing: 0,

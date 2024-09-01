@@ -6,7 +6,7 @@ class GameCard extends StatefulWidget {
   final String name;
   final int gameID;
   final int chosen;
-  final void Function(int gameID) onSelected;
+  final void Function(int gameID, String name) onSelected;
   final String image;
   const GameCard(
       {super.key,
@@ -53,7 +53,7 @@ class _EventCardWidgetState extends State<GameCard> {
         setState(() {
           selected = !selected;
         });
-        widget.onSelected(gameID);
+        widget.onSelected(gameID,name);
       },
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),

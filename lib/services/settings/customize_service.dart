@@ -28,9 +28,11 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
         if (isMounted) {
-          return (decoded['results'] as List)
+          List<String> genres = (decoded['results'] as List)
                 .map((genre) => genre['name'].toString())
                 .toList();
+                genres.sort(); 
+          return genres;
         }
         else{
           return [];
@@ -54,9 +56,11 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
         var response = await http.get(url);
         if (response.statusCode == 200) {
           var decoded = json.decode(response.body);
-          return (decoded['results'] as List)
+         List<String> tags = (decoded['results'] as List)
                 .map((tag) => tag['name'].toString())
                 .toList();
+                tags.sort(); 
+          return tags;
         } else {
           return [];
         }

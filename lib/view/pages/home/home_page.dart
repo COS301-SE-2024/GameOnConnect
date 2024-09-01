@@ -373,17 +373,20 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Home',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              'Home',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -400,7 +403,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(

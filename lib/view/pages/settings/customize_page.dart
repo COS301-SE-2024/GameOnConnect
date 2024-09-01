@@ -11,7 +11,6 @@ import 'package:gameonconnect/view/components/settings/customize_tag_container.d
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
 
@@ -34,7 +33,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   dynamic _profileBanner;
   String testBannerurl = '';
   bool _isMounted = false;
-  
 
   late CustomizeService customizeService;
 
@@ -412,6 +410,16 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   'interest',
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
+                child: Text(
+                  'Theme',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+              ),
             ],
           ),
           Padding(
@@ -474,24 +482,27 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(title),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: items.map((item) {
-                    return CheckboxListTile(
-                      value: selectedItems.contains(item),
-                      title: Text(item),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (bool? isChecked) {
-                        setState(() {
-                          if (isChecked == true) {
-                            selectedItems.add(item);
-                          } else {
-                            selectedItems.remove(item);
-                          }
-                        });
-                      },
-                    );
-                  }).toList(),
+              content: Scrollbar(
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  child: ListBody(
+                    children: items.map((item) {
+                      return CheckboxListTile(
+                        value: selectedItems.contains(item),
+                        title: Text(item),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (bool? isChecked) {
+                          setState(() {
+                            if (isChecked == true) {
+                              selectedItems.add(item);
+                            } else {
+                              selectedItems.remove(item);
+                            }
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
               actions: <Widget>[
