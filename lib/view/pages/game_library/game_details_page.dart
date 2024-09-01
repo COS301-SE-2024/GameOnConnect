@@ -176,7 +176,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .secondary
+                                              .primary
                                               .withOpacity(0.6),
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
@@ -186,7 +186,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .secondary,
+                                                .tertiary,
                                             size: 20,
                                           ),
                                           onPressed: () {
