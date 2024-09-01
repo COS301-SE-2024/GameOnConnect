@@ -310,7 +310,7 @@ class _GameLibraryState extends State<GameLibrary> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  FilterPage(apiFunction: _runApiRequest)),
+                                  FilterPage(apiFunction: _runApiRequest, clearFilters: clearFilters,)),
                         );
                       },
                       child: Row(

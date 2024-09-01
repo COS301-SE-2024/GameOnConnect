@@ -1,5 +1,4 @@
 import 'package:expandable/expandable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
@@ -8,7 +7,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
   final Function(String) apiFunction;
-  const FilterPage({super.key, required this.apiFunction});
+  final Function() clearFilters;
+  const FilterPage(
+      {super.key, required this.apiFunction, required this.clearFilters});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -45,7 +46,8 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   void _updateFilterString() {
-    setState(() {});
+    setState(() {
+    });
   }
 
   @override
@@ -136,15 +138,33 @@ class _FilterPageState extends State<FilterPage> {
       ),
       Padding(
         padding: const EdgeInsets.all(10),
-        child: SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            onPressed: _applyFilters,
-            child: const Text("Filter"),
-          ),
+        child: Row(
+          children: [
+            Expanded(
+              child: FilledButton(
+                onPressed: _applyFilters,
+                child: const Text("Filter"),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: FilledButton(
+                onPressed: _clearFilters,
+                child: const Text("Clear Filters"),
+              ),
+            ),
+          ],
         ),
       ),
     ]));
+  }
+
+  void _clearFilters() {
+    setState(() {});
+    widget.clearFilters;
+    Navigator.pop(context);
   }
 
   void _applyFilters() async {
