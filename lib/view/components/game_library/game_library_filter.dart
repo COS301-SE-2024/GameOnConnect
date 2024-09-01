@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_filter_service.dart';
-import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
-  final Function(String) filterFunction;
+  final Function(String, List<String>) filterFunction;
   final Function() clearFiltersFunction;
   const FilterPage(
       {super.key,
@@ -172,6 +171,12 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   void _applyFilters() async {
+    List<String> activeFilters =
+        _platformFilterKey.currentState!.getFilterValues() +
+            _genreFilterKey.currentState!.getFilterValues() +
+            _storeFilterKey.currentState!.getFilterValues() +
+            _tagFilterKey.currentState!.getFilterValues();
+    activeFilters.add(_metacriticFilterKey.currentState!.getNumberValue());
     String concatenatedFilterString = [
       _platformFilterKey.currentState?.getFilterString() ?? '',
       _genreFilterKey.currentState?.getFilterString() ?? '',
@@ -179,7 +184,7 @@ class _FilterPageState extends State<FilterPage> {
       _tagFilterKey.currentState?.getFilterString() ?? '',
       _metacriticFilterKey.currentState?.getFilterString() ?? '',
     ].where((filter) => filter.isNotEmpty).join();
-    await widget.filterFunction(concatenatedFilterString);
+    await widget.filterFunction(concatenatedFilterString, activeFilters);
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
@@ -210,6 +215,10 @@ class _NumberFilterState extends State<NumberFilter> {
     super.initState();
     _filterName = widget.filterName;
     _valueRange = const RangeValues(0, 100);
+  }
+
+  String getNumberValue() {
+    return '${_valueRange.start} - ${_valueRange.end}';
   }
 
   String getFilterString() {
@@ -301,6 +310,14 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
     super.initState();
     _filterName = widget.filterName;
     _filterValues = widget.filterValues;
+  }
+
+  List<String> getFilterValues() {
+    return _selectedValues.map((id) {
+      final filter = _filterValues.firstWhere((filter) => filter.id == id,
+          orElse: () => Filter(value: 'Unknown', id: id));
+      return filter.value;
+    }).toList();
   }
 
   String getFilterString() {
