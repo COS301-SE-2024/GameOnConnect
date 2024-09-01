@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
 import 'package:flutter/material.dart' hide CarouselController;
@@ -42,7 +43,6 @@ class _HomePageWidgetState extends State<ViewEvents> {
     subscribedEvents = events.getSubscribedEvents(allEvents);
     myEvents = events.getMyEvents(allEvents);
     joinedEvents = events.getJoinedEvents(allEvents);
-    //creators =  events.getCreator(allEvents!);
   }
 
   @override
@@ -447,6 +447,15 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       } else {
                         return const Text('No data found');
                       }
-                    }))));
+                    })),
+    floatingActionButton: FloatingActionButton(
+      onPressed:(){
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => const CreateEvents()));
+    },
+      backgroundColor: Theme.of(context).colorScheme.primary,
+    child: const Icon(Icons.add,size: 30,color: Colors.black,),
+    )
+    ));
   }
 }
