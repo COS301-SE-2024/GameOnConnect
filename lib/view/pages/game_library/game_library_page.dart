@@ -28,6 +28,7 @@ class _GameLibraryState extends State<GameLibrary> {
   String _searchQuery = '';
   String? _sortValue = '';
   List<String> selectedPlatforms = [];
+  List<String> _activeFilters = [];
 
   @override
   void initState() {
@@ -43,10 +44,12 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
-  Future<void> _filterGames(String filterString) async {
+  Future<void> _filterGames(
+      String filterString, List<String> activeFilters) async {
     if (_isLoading) return;
 
     setState(() {
+      _activeFilters = activeFilters;
       _isLoading = true;
     });
 
@@ -167,6 +170,40 @@ class _GameLibraryState extends State<GameLibrary> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _activeFilters.isNotEmpty
+                ? Row(
+                    children: [
+                      Text(
+                        "Active Filters (${_activeFilters.length}):",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: SizedBox(
+                          height: 25,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _activeFilters.map((filter) {
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(6, 1, 6, 1),
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Text(filter),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -301,8 +338,9 @@ class _GameLibraryState extends State<GameLibrary> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  FilterPage(filterFunction: _filterGames, clearFiltersFunction: clearFilters)),
+                              builder: (context) => FilterPage(
+                                  filterFunction: _filterGames,
+                                  clearFiltersFunction: clearFilters)),
                         );
                       },
                       child: Row(
