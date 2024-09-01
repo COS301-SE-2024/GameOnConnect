@@ -22,6 +22,7 @@ class _FilterPageState extends State<FilterPage> {
   final ExpandableController _genreExpandableController =
       ExpandableController();
   final ExpandableController _tagExpandableController = ExpandableController();
+  final ExpandableController _metacriticExpandableController = ExpandableController();
 
   late Future<FilterList> _filterListFuture;
 
@@ -32,6 +33,8 @@ class _FilterPageState extends State<FilterPage> {
   final GlobalKey<_ExpandableFilterState> _storeFilterKey =
       GlobalKey<_ExpandableFilterState>();
   final GlobalKey<_ExpandableFilterState> _tagFilterKey =
+      GlobalKey<_ExpandableFilterState>();
+  final GlobalKey<_ExpandableFilterState> _metacriticFilterKey =
       GlobalKey<_ExpandableFilterState>();
 
   @override
@@ -122,6 +125,14 @@ class _FilterPageState extends State<FilterPage> {
         platformExpandableController: _tagExpandableController,
         filterName: "Tags",
         filterValues: filterList.tagFilters.toList(),
+        onFilterChanged: _updateFilterString,
+      ),
+      NumberFilter(
+        key: _metacriticFilterKey,
+        numberExpandableController: _metacriticExpandableController,
+        filterName: "Metacritic",
+        minValue: 0,
+        maxValue: 100,
         onFilterChanged: _updateFilterString,
       ),
       Padding(
