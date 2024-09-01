@@ -22,7 +22,8 @@ class _FilterPageState extends State<FilterPage> {
   final ExpandableController _genreExpandableController =
       ExpandableController();
   final ExpandableController _tagExpandableController = ExpandableController();
-  final ExpandableController _metacriticExpandableController = ExpandableController();
+  final ExpandableController _metacriticExpandableController =
+      ExpandableController();
 
   late Future<FilterList> _filterListFuture;
 
@@ -131,8 +132,6 @@ class _FilterPageState extends State<FilterPage> {
         key: _metacriticFilterKey,
         numberExpandableController: _metacriticExpandableController,
         filterName: "Metacritic",
-        minValue: 0,
-        maxValue: 100,
         onFilterChanged: _updateFilterString,
       ),
       Padding(
@@ -168,14 +167,10 @@ class NumberFilter extends StatefulWidget {
     required this.numberExpandableController,
     required this.filterName,
     required this.onFilterChanged,
-    required this.minValue,
-    required this.maxValue,
   });
 
   final ExpandableController numberExpandableController;
   final String filterName;
-  final double minValue;
-  final double maxValue;
   final VoidCallback onFilterChanged;
 
   @override
@@ -184,16 +179,12 @@ class NumberFilter extends StatefulWidget {
 
 class _NumberFilterState extends State<NumberFilter> {
   late String _filterName;
-  late double _minValue;
-  late double _maxValue;
-  late RangeValues valueRange;
+  late RangeValues _valueRange = const RangeValues(0, 100);
 
   @override
   void initState() {
     super.initState();
     _filterName = widget.filterName;
-    _minValue = widget.minValue;
-    _maxValue = widget.maxValue;
   }
 
   @override
@@ -221,14 +212,19 @@ class _NumberFilterState extends State<NumberFilter> {
               header: Text(_filterName),
               collapsed: const SizedBox(width: 0, height: 0),
               expanded: RangeSlider(
-                  values: RangeValues(_minValue, _maxValue),
+                  values: _valueRange,
+                  divisions: 100,
+                  labels: RangeLabels(
+                    _valueRange.start.round().toString(),
+                    _valueRange.end.round().toString(),
+                  ),
                   onChanged: (RangeValues values) {
                     setState(() {
-                      valueRange = values;
+                      _valueRange = values;
                     });
                   },
-                  min: _minValue,
-                  max: _maxValue),
+                  min: 0,
+                  max: 100),
               theme: const ExpandableThemeData(
                 iconColor: Colors.grey,
                 tapHeaderToExpand: true,
