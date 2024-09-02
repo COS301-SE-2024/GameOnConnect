@@ -30,7 +30,6 @@ class _ConnectionsListState extends State<ConnectionsList> {
   void initState() {
     super.initState();
     nrOfRequests();
-    getConnectionsInvite(); 
   }
 
   @override
@@ -38,10 +37,6 @@ class _ConnectionsListState extends State<ConnectionsList> {
     super.dispose();
   }
 
-  Future<void> getConnectionsInvite() async {
-    list = (await EventsService().getConnectionsForInvite())!;
-    setState(() {});
-  }
 
    void navigateToRequests(BuildContext context) {
      Navigator.push(context,
@@ -61,10 +56,6 @@ Future<void> nrOfRequests()async {
     }
   
   
-  void sortlist(List<user.AppUser> connections)
-  {
-     connections.sort((a, b) => a.username.compareTo(b.username));
-  }
 
   void moveYouToTheFront(List<user.AppUser> connections, String yourUid) {  
   for (int i = 0; i < connections.length; i++) {
@@ -105,12 +96,10 @@ Future<void> nrOfRequests()async {
               return Text('Error: ${snapshot.error}, ');
             } else {
               list = snapshot.data!;
-              sortlist(list);
               if(!widget.isOwnProfile)
               {moveYouToTheFront(list, widget.loggedInUser);}
 
               if (list.isEmpty) {
-                // Display "No connections" when the list is empty
                 return ListView( children: [
                   if (widget.isOwnProfile)
                      Padding(

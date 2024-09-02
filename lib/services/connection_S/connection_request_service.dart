@@ -41,6 +41,7 @@ class UserService {
             print("---------------------------- \n");*/
         }
       }
+      users.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return users;
     } catch (e) {
       throw Exception('Error fetching users: $e');
