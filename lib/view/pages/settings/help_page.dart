@@ -37,8 +37,8 @@ class _HelpWidgetState extends State<HelpPage> {
           onBackButtonPressed: () {
             Navigator.pop(context);
           },
-          iconkey: Key('Help_back_button'),
-          textkey: Key('Ehlp_title_key'),
+          iconkey: const Key('Help_back_button'),
+          textkey: const Key('Help_title_key'),
         ),
         body: SafeArea(
           top: true,
@@ -69,14 +69,18 @@ class _HelpWidgetState extends State<HelpPage> {
                 Icons.question_mark,
                 color: Theme.of(context).colorScheme.primary,
                 size: 44,
-              ),),
+
+              ),
+               navigation: '/faq',
+               ),
                HelpCard(heading: "Getting Started", followHeading:
               "Tutorial videos to help you get started  on GameOnConnect",
               icon: Icon(
                 Icons.play_arrow,
                 color: Theme.of(context).colorScheme.primary,
                 size: 44,
-              ), ),
+              ),
+               navigation: '/getting_started',),
 
       ]),
               ),
