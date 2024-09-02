@@ -172,16 +172,10 @@ class _FriendSearchState extends State<FriendSearch> {
                                 username: i.username,
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
-                                page: 'events',
+                                page: 'search',
                                 loggedInUser: i.uid,
                                 isOwnProfile: true,
-                                onSelected: (uid, selected) {
-                                  if (selected) {
-                                    invites.add(uid);
-                                  } else {
-                                    invites.remove(uid);
-                                  }
-                                });
+                                onSelected: (uid, selected) {});
                           },
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox();
