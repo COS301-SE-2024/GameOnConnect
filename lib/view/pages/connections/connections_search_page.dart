@@ -3,7 +3,9 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/card/connection_list_card.dart';
@@ -24,13 +26,12 @@ class _FriendSearchState extends State<FriendSearch> {
   final TextEditingController searchController = TextEditingController();
   String _searchQuery = '';
   String _currentUserId = '';
+  int requestsCount=0;
 
   @override
   void initState() {
     super.initState();
-    //getConnectionsInvite();
-    //_currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    //invites = widget.chosenInvites;
+    nrOfRequests();
     fetchUsers();
     if (FirebaseAuth.instance.currentUser?.uid != null) {
       _currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -66,6 +67,24 @@ class _FriendSearchState extends State<FriendSearch> {
     list = await UserService().fetchAllUsers();
     //list= await EventsService().getConnectionsForInvite();
   }
+
+  void navigateToRequests(BuildContext context) {
+     Navigator.push(context,
+      MaterialPageRoute(
+        builder: (context) => ConnectionRequestList(
+          isOwnProfile: true,
+          uid: _currentUserId,
+          loggedInUser: _currentUserId,
+        )
+      )
+    ); 
+
+  
+}
+  Future<void> nrOfRequests()async {
+    final connections = await ConnectionService().getConnections('requests');
+    requestsCount= connections.length; 
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -118,32 +137,21 @@ class _FriendSearchState extends State<FriendSearch> {
                           });
                         }),
                   ),
-                  GestureDetector(
-                onTap: () {
-                  // Navigate to the request page when the text is clicked
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ConnectionRequestList(
-                                isOwnProfile: true,
-                                uid: _currentUserId,
-                                loggedInUser: _currentUserId,
-                              ))); //go to next page
-                },
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 7, 30, 0),
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Requests',
-                    style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary, // Customize the text color
-                      fontWeight: FontWeight.bold,
-                    ),
+              
+              Padding(
+                padding:const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                      RequestButton(
+                    onPressed: () =>navigateToRequests(context),
+                    count: requestsCount,
                   ),
-                ),
+                ],
               ),
+              ),
+              
+              
               Padding(
                 padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
                 child: Divider(

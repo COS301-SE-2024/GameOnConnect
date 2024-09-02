@@ -7,6 +7,7 @@ import 'package:gameonconnect/services/profile_S/storage_service.dart';
 
 
 class ProfileService {
+  int mygGamesLength=0;
 
 Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
   if(uid== 'CurrentUser')
@@ -45,6 +46,7 @@ Future<Profile?>  fetchProfileData([String? uid = 'CurrentUser']) async {
        final recentActivities = await fetchRecentActivities(recentActivitiesRefs);
 
        final mygames = List<String>.from(data['my_games'] ?? []);
+       mygGamesLength= mygames.length;
        //print("my games ids: $mygames");
        final myGamesList= await getMyGame(mygames, uid);
        //print("my game stats: $myGamesList");
