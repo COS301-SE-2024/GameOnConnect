@@ -41,7 +41,7 @@ class _ActionButtonState extends State<ActionButton> {
   final bool isStats = widget.type == 'stats';
   final bool isConnected = widget.type == 'Connected';
   return GestureDetector(
-    onTap: _handleTap,
+    onTap:isConnected ? null : _handleTap,
     child: Container(
       height: 40,
       decoration: BoxDecoration(
@@ -82,10 +82,16 @@ class _ActionButtonState extends State<ActionButton> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.person_remove
+                            Icons.person_remove,
+                            color: Colors.red,
                           ),
                           SizedBox(width: 8), // Space between icon and text
-                          Text('Disconnect'),
+                          Text(
+                            'Disconnect',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                            ),
                         ],
                       ),
                     ),

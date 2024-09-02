@@ -25,8 +25,9 @@ class _RequestContainerState extends State<RequestContainer> {
   isDarkMode=Theme.of(context).brightness == Brightness.dark;
     return Container(
   padding: const EdgeInsets.fromLTRB(12, 19, 12, 12), // Adjust spacing as needed
-  child: Center(
-    child: Column(
+  //child: Center(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           '${widget.requester} wants to connect',
@@ -36,11 +37,6 @@ class _RequestContainerState extends State<RequestContainer> {
             
           ),
         ),
-        const SizedBox(height: 8),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center, 
-            children: [
               ElevatedButton.icon(
                 onPressed: widget.accept,
                 label: const Text(
@@ -61,7 +57,6 @@ class _RequestContainerState extends State<RequestContainer> {
                   ),
                 ),
               ),
-              const SizedBox(width: 8,),
               ElevatedButton.icon(
                 onPressed: widget.reject,
                 label:  Text(
@@ -84,12 +79,9 @@ class _RequestContainerState extends State<RequestContainer> {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
       ],
     ),
-  ),
+ // ),
 );
 
   }
