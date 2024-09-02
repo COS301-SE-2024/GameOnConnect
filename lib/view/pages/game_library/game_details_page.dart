@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
