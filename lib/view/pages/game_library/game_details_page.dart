@@ -237,11 +237,38 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               .primary,
                                           size: 24,
                                         ),
-                                        onPressed: () {
-                                          // Navigator.push(
-                                            // context,
-                                            // MaterialPageRoute(builder: (context) => const FeedPage()),
-                                          // );
+                                        onPressed: () async {
+                                          if (!isInMyGames) {
+                                            await myGames.addToMyGames(
+                                                gameDetails.id.toString());
+                                            // ignore: use_build_context_synchronously
+                                            DelightToastBar(
+                                                    builder: (context) {
+                                                      return CustomToastCard(
+                                                        title: Text(
+                                                          'Added to My Games!',
+                                                          style: TextStyle(
+                                                            color: Theme.of(context)
+                                                                .colorScheme
+                                                                .primary,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    position:
+                                                        DelightSnackbarPosition.top,
+                                                    autoDismiss: true,
+                                                    snackbarDuration:
+                                                        const Duration(seconds: 3))
+                                                .show(
+                                              // ignore: use_build_context_synchronously
+                                              context,
+                                            );
+                                          }
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const FeedPage(title: 'GameOnConnect',)),
+                                          );
                                         },
                                       ),
                                       // child: Icon(
