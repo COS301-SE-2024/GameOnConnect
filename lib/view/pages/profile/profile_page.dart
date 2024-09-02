@@ -1,3 +1,5 @@
+
+// ignore_for_file: unnecessary_const
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -46,14 +48,15 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
-  final UserService _userService = UserService();
+
+  final ProfileService _profileService=ProfileService();
+  final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
   late String roundedTotalTime;
   bool isPendingOfParent = false;
   bool isConnectionOfParent = false;
   bool isRequestToParent = false;
-  final MessagingService _messagingService = MessagingService();
 
   Future<void> isConnectionOfLoggedInUser() async {
   final connections = await ConnectionService().getConnections('connections');
@@ -114,7 +117,7 @@ Future<void> getRelationToLoggedInUser() async {
 
   void _disconnect() async {
     try {
-      await _userService.disconnect(widget.loggedInUser, widget.uid);
+      await UserService().disconnect(widget.loggedInUser, widget.uid);
       setState(() {
         isConnectionOfParent=false;
       });
@@ -350,7 +353,7 @@ Future<void> getRelationToLoggedInUser() async {
                 connections?.friends.contains(widget.uid) ?? false;
 
             return FutureBuilder<Profile?>(
-              future: ProfileService().fetchProfileData(widget.uid),
+              future: _profileService.fetchProfileData(widget.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -459,6 +462,15 @@ Future<void> getRelationToLoggedInUser() async {
                                             ),
                                           ),
                                         ),
+                                        Text(
+                                          '#${profileData.uniqueNumber.toString()}' ,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            //fontSize: 12,
+                                            letterSpacing: 0,
+                                            color: Color(0xFFFFFFFF),
+                                          ),
+                                        ),
                                         if (profileData.currentlyPlaying != '')
                                           Row(
                                             children: [
@@ -496,7 +508,7 @@ Future<void> getRelationToLoggedInUser() async {
                                 children: [
                                   Expanded(
                                     child: ProfileButton(
-                                        value: '${profileData.myGames.length}',
+                                        value: '${_profileService.mygGamesLength}',
                                         title: 'Games'),
                                   ),
                                   Expanded(
@@ -669,7 +681,7 @@ Future<void> getRelationToLoggedInUser() async {
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
-                              : Column(children: [
+                              :  Column(children: [
                                   const Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(12, 10, 12, 24),
