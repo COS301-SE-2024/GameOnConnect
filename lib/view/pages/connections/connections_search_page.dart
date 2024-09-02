@@ -61,10 +61,6 @@ class FriendSearchState extends State<FriendSearch> {
     }
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   //Future<void> getConnectionsInvite() async {
   Future<void> fetchUsers() async {

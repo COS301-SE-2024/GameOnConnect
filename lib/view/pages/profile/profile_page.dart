@@ -57,7 +57,6 @@ class _ProfileState extends State<ProfilePage> {
   bool isPendingOfParent = false;
   bool isConnectionOfParent = false;
   bool isRequestToParent = false;
-  final MessagingService _messagingService = MessagingService();
 
   Future<void> isConnectionOfLoggedInUser() async {
   final connections = await ConnectionService().getConnections('connections');
@@ -118,7 +117,7 @@ Future<void> getRelationToLoggedInUser() async {
 
   void _disconnect() async {
     try {
-      await _userService.disconnect(widget.loggedInUser, widget.uid);
+      await UserService().disconnect(widget.loggedInUser, widget.uid);
       setState(() {
         isConnectionOfParent=false;
       });
