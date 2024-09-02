@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/feed/feed_page.dart';
+import 'package:gameonconnect/view/pages/home/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => const FeedPage(title: 'GameOnConnect')),
+            builder: (context) => const HomePage(title: 'GameOnConnect')),
       );
     });
   }

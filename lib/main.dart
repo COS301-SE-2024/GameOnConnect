@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
+import 'package:gameonconnect/view/pages/settings/appearance.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
@@ -11,7 +12,7 @@ import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
 import 'view/pages/settings/help_page.dart';
 import 'package:provider/provider.dart';
-import 'view/pages/feed/feed_page.dart';
+import 'view/pages/home/home_page.dart';
 import 'view/pages/events/create_events_page.dart';
 import 'view/pages/events/view_events_page.dart';
 import 'firebase_options.dart';
@@ -98,7 +99,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasData) {
-                  return FeedPage(
+                  return HomePage(
                     title: 'GameOnConnect',
                   );
                 } else {
@@ -106,7 +107,7 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-        '/home': (context) => FeedPage(
+        '/home': (context) => HomePage(
               title: 'GameOnConnect',
             ),
         '/edit-profile': (context) => EditProfilePage(),
@@ -122,6 +123,7 @@ class MyApp extends StatelessWidget {
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
         '/messages' : (context) => Messaging(),
+        '/appearance' : (context) => AppearancePage(),
       },
       initialRoute: '/',
     );

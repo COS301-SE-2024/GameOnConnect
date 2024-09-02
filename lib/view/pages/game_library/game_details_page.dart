@@ -176,7 +176,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .secondary
+                                              .primary
                                               .withOpacity(0.6),
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
@@ -186,7 +186,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .secondary,
+                                                .tertiary,
                                             size: 20,
                                           ),
                                           onPressed: () {
@@ -656,46 +656,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Theme.of(context).colorScheme.surface,
                             ),
                           ),
-                          const Align(
-                            alignment: Alignment(-1, -1),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(12, 12, 12, 6),
-                              child: Text(
-                                'About',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: InkWell(
-                              onTap: () => launchUrlString(gameDetails.website),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                child: Expanded(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.language_outlined,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      const Text(
-                                        "Game website",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                           Align(
                             alignment: const AlignmentDirectional(0, -1),
                             child: Padding(
@@ -780,6 +740,44 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
+                            child: InkWell(
+                              onTap: () => launchUrlString(gameDetails.website),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.language_outlined,
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      "Game website",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment(-1, -1),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+                              child: Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
                             child: Html(
                                 data: gameDetails.description,
                                 //TODO : character representation is weird
