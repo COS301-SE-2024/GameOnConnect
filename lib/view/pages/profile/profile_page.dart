@@ -319,7 +319,7 @@ Future<void> getRelationToLoggedInUser() async {
                     return IconButton(
                       key: const Key('settings_icon_button'),
                       icon: const Icon(Icons.settings),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () {
                         Navigator.pushNamed(context, '/settings');
                       },
@@ -504,8 +504,11 @@ Future<void> getRelationToLoggedInUser() async {
                                       value:
                                           '${profileData.numberOfconnections}',
                                       title: 'Connections',
-                                      onPressed: () =>
-                                          navigateToConnections(context),
+                                      onPressed: profileData.visibility ||
+                                              isParentsConnection ||
+                                              widget.uid == widget.loggedInUser
+                                          ? () => navigateToConnections(context)
+                                          : null,
                                     ),
                                   ),
                                    Expanded(
@@ -808,6 +811,7 @@ Future<void> getRelationToLoggedInUser() async {
                                 Container(
                                   margin:
                                       const EdgeInsets.fromLTRB(0, 0, 0, 82),
+
                                   child:  Text(
                                     'This account is Private',
                                     textAlign: TextAlign.center,

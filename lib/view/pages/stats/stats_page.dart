@@ -143,16 +143,29 @@ class _StatsPageState extends State<StatsPage> {
                       endIndent: 15,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    const Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(12, 20, 12, 10),
                       child: Align(
                         alignment: Alignment.center,
-                        child: Text(
-                          "Click on any pie chart segment to view the games *",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+                        child: RichText(
+                          text: const TextSpan(
+                            text: 'Click on ',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'any',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' pie chart segment to view the games *',
+                              ),
+                            ],
                           ),
                         ),
                       ),

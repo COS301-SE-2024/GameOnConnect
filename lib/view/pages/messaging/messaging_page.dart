@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -8,7 +9,6 @@ import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 //import 'package:gameonconnect/services/profile_S/profile_service.dart';
-//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/messaging/user_tile.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
@@ -172,7 +172,7 @@ class _MessagingState extends State<Messaging> {
       Timestamp timestamp = lastMessageData?['timestamp']; // get the time
       DateTime messageDateTime =
           timestamp.toDate(); // use date and time from the stored time
-      
+
       String messageTime = "";
       DateTime today = DateTime.now();
       if (messageDateTime.year == today.year &&
@@ -210,6 +210,20 @@ class _MessagingState extends State<Messaging> {
               ),
             );
           },
+          profileImage: CachedNetworkImage(
+            imageUrl: profilePictureUrl,
+            width: 65,
+            height: 65,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => _buildLoadingWidget(),
+            errorWidget: (context, url, error) => _buildErrorWidget(),
+            fadeInDuration: const Duration(milliseconds: 200),
+            fadeInCurve: Curves.easeIn,
+            memCacheWidth: 65,
+            memCacheHeight: 65,
+            maxWidthDiskCache: 65,
+            maxHeightDiskCache: 65,
+          ),
         );
       } else {
         return Container();
@@ -218,4 +232,30 @@ class _MessagingState extends State<Messaging> {
       return Container();
     }
   }
+
+  //this widget builds while the image is still loading
+  Widget _buildLoadingWidget() {
+    return SizedBox(
+      width: 65,
+      height: 65,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: LoadingAnimationWidget.halfTriangleDot(
+          color: Theme.of(context).colorScheme.primary,
+          size: 36,
+        ),
+      ),
+    );
+  }
+
+  //this widget builds if there is an error with the image
+  Widget _buildErrorWidget() {
+    return Container(
+      width: 65,
+      height: 65,
+      color: Colors.grey[300],
+      child: const Icon(Icons.error),
+    );
+  }
 }
+
