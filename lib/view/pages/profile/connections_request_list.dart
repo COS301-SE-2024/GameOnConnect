@@ -77,39 +77,44 @@ class _ConnectionRequestListState extends State<ConnectionRequestList> {
               list = snapshot.data;
               if (list!.isEmpty) {
                 // Display "No connections" when the list is empty
-                return const Center(
-                  child: Text('No connection Requests'),
+                return Center(
+                  child: Text(
+                    'No connection requests',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
                 );
               } else {
-                return 
-                   Container(
-                       decoration: BoxDecoration(
+                return Container(
+                    decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
                     ),
-                      child: ListView.separated(
-                        itemCount: list!.length,
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          user.AppUser? i = list![index];
+                    child: ListView.separated(
+                      itemCount: list!.length,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        user.AppUser? i = list![index];
 
-                          return ConnectionCardWidget(
-                              image: i.profilePicture,
-                              username: i.username,
-                              uniqueNum: i.uniqueNum.toString(),
-                              uid: i.uid,
-                              page: 'requests',
-                              loggedInUser: widget.loggedInUser,
-                              isOwnProfile: widget.isOwnProfile,
-                              onAccepted: _handleAcceptance,
-                              onRejected: _handleRejection,
-                              onSelected: (uid, selected) {});
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox();
-                        },
-                      ));
-                
+                        return ConnectionCardWidget(
+                            image: i.profilePicture,
+                            username: i.username,
+                            uniqueNum: i.uniqueNum.toString(),
+                            uid: i.uid,
+                            page: 'requests',
+                            loggedInUser: widget.loggedInUser,
+                            isOwnProfile: widget.isOwnProfile,
+                            onAccepted: _handleAcceptance,
+                            onRejected: _handleRejection,
+                            onSelected: (uid, selected) {});
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox();
+                      },
+                    ));
               }
             }
           }),
