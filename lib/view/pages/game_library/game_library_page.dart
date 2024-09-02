@@ -130,6 +130,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
   clearFilters() {
     setState(() {
+      _activeFilters = [];
       _searchQuery = '';
       _sortValue = '';
       _games.clear();

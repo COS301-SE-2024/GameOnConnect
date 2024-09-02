@@ -218,7 +218,7 @@ class _NumberFilterState extends State<NumberFilter> {
   }
 
   String getNumberValue() {
-    return '${_valueRange.start} - ${_valueRange.end}';
+    return 'Metacritic score: ${_valueRange.start.toInt()} - ${_valueRange.end.toInt()}';
   }
 
   String getFilterString() {
