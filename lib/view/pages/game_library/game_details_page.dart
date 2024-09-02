@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
-import 'package:gameonconnect/view/pages/feed/feed_page.dart';
+import 'package:gameonconnect/view/pages/home/home_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
@@ -268,7 +268,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           Navigator.push(
                                             // ignore: use_build_context_synchronously
                                             context,
-                                            MaterialPageRoute(builder: (context) => const FeedPage(title: 'GameOnConnect',)),
+                                            MaterialPageRoute(builder: (context) => const HomePage(title: 'GameOnConnect',)),
                                           );
                                         },
                                       ),
