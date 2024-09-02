@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
-
 import '../../../globals.dart' as global;
-
 import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 
 class GameService {
   static Future<List<Game>> fetchGames(int page,
@@ -82,18 +78,32 @@ class GameService {
   }
 
   Future<List<Screenshot>> fetchGameScreenshots(int gameId) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://api.rawg.io/api/games/$gameId/screenshots?key=${global.apiKey}'));
+    String request = 'https://api.rawg.io/api/games/$gameId/screenshots?key=${global.apiKey}';
+
+    var fileInfo = await GameScreenshotCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      List<dynamic> screenshotJson = jsonData['results'];
+      return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
+    } else {
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        List<dynamic> screenshotJson = jsonResponse['results'];
+        //Cache data
+        await GameDetailsCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        List<dynamic> screenshotJson = jsonData['results'];
         return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load game screenshots');
       }
-    } on SocketException {
-      throw Exception('No Internet connection');
     }
   }
 }

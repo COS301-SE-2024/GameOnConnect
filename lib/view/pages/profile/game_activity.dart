@@ -31,6 +31,10 @@ class _GameActivityState extends State<GameActivity> {
     return activityList;  
   }
 
+@override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

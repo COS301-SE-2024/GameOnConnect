@@ -41,6 +41,10 @@ class _MyGameListState extends State<MyGameList> {
     return double.parse(hours.toStringAsFixed(3));
   }
 
+@override
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
