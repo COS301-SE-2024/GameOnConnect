@@ -9,7 +9,6 @@ import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/card/connection_list_card.dart';
-import '../../../services/events_S/event_service.dart';
 import '../../../model/connection_M/user_model.dart';
 import '../../components/search/search_field.dart';
 
@@ -17,9 +16,9 @@ class FriendSearch extends StatefulWidget {
   //final List<String> chosenInvites;
   const FriendSearch({super.key,});
   @override
-_FriendSearchState createState() => _FriendSearchState();}
+FriendSearchState createState() => FriendSearchState();}
 
-class _FriendSearchState extends State<FriendSearch> {
+class FriendSearchState extends State<FriendSearch> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<AppUser>? list;
   List<String> invites = [];

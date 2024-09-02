@@ -56,18 +56,18 @@ class _RequestButtonState extends State<RequestButton> {
           right: 0,
           top: 0,
           child: Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(2),
+            decoration: const BoxDecoration(
               color: Colors.red,
               shape: BoxShape.circle,
             ),
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               minWidth: 16,
               minHeight: 16,
             ),
             child: Text(
               '${widget.count}', // Replace with your dynamic number
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
                // fontWeight: FontWeight.bold,

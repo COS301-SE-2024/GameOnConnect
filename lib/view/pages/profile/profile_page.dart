@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -43,7 +45,7 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
-  ProfileService _profileService=ProfileService();
+  final ProfileService _profileService=ProfileService();
   final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
@@ -338,7 +340,7 @@ class _ProfileState extends State<ProfilePage> {
                                         ),
                                         Text(
                                           '#${profileData.uniqueNumber.toString()}' ,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontWeight: FontWeight.w400,
                                             //fontSize: 12,
                                             letterSpacing: 0,
@@ -547,7 +549,7 @@ class _ProfileState extends State<ProfilePage> {
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
-                              : Column(children: [
+                              :  Column(children: [
                                   const Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(12, 10, 12, 24),
@@ -556,10 +558,10 @@ class _ProfileState extends State<ProfilePage> {
                                       thickness: 0.5,
                                     ),
                                   ),
-                                  /*WantToPlayList(
+                                  WantToPlayList(
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
-                                  const SizedBox(height: 24),*/
+                                  const SizedBox(height: 24),
                                 ]),
                         ] else ...[
                           Padding(

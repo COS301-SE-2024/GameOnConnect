@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
+// ignore: undefined_hidden_name
 import 'package:flutter/material.dart' hide CarouselController;
 import '../../../model/events_M/events_model.dart';
 import '../../components/events/event_card.dart';
