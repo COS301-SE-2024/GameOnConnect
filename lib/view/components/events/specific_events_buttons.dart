@@ -8,7 +8,9 @@ class SpecificEventsButtons extends StatefulWidget{
   final Event e;
   final bool isCreator;
   final String imageUrl;
-  const SpecificEventsButtons({super.key,required this.e, required this.isCreator, required this.imageUrl});
+  final void Function(Event updatedEvent) edited;
+
+  const SpecificEventsButtons({super.key,required this.e, required this.isCreator, required this.imageUrl,required this.edited});
 
   @override
   State<SpecificEventsButtons> createState() => _SpecificEventsButtons();
@@ -86,7 +88,12 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                                         EditEvent(
                                             e: e,
                                             imageUrl:
-                                            imageUrl)));
+                                            imageUrl,
+                                        edited:(updated){
+                                              setState(() {
+                                          e = updated;
+                                          widget.edited(e);
+                                        });})));
                           }
                           if (!isJoined) {
                             EventsService()

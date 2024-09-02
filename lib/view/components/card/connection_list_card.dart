@@ -357,7 +357,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     // Wrap cardContent in GestureDetector for navigation
     return GestureDetector(
       onTap: () {
-        if (page == 'connections') {
+        if (page == 'connections' || page=='search') {
           if (username != 'You') {
             Navigator.push(
               context,

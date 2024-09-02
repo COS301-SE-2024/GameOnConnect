@@ -3,6 +3,7 @@ import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
+import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -23,10 +24,12 @@ class ConnectionsList extends StatefulWidget {
 
 class _ConnectionsListState extends State<ConnectionsList> {
   late List<user.AppUser> list;
+  int requestsCount=0;
 
   @override
   void initState() {
     super.initState();
+    nrOfRequests();
     getConnectionsInvite(); 
   }
 
@@ -39,6 +42,24 @@ class _ConnectionsListState extends State<ConnectionsList> {
     list = (await EventsService().getConnectionsForInvite())!;
     setState(() {});
   }
+
+   void navigateToRequests(BuildContext context) {
+     Navigator.push(context,
+      MaterialPageRoute(
+        builder: (context) => ConnectionRequestList(
+          isOwnProfile: true,
+          uid: widget.loggedInUser,
+          loggedInUser: widget.loggedInUser,
+        )
+      )
+    ); 
+  }
+
+Future<void> nrOfRequests()async {
+    final connections = await ConnectionService().getConnections('requests');
+    requestsCount= connections.length; 
+    }
+  
   
   void sortlist(List<user.AppUser> connections)
   {
@@ -92,35 +113,18 @@ class _ConnectionsListState extends State<ConnectionsList> {
                 // Display "No connections" when the list is empty
                 return ListView( children: [
                   if (widget.isOwnProfile)
-                    GestureDetector(
-                      onTap: () {
-                        // Navigate to the request page when the text is clicked
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ConnectionRequestList(
-                                      isOwnProfile: widget.isOwnProfile,
-                                      uid: widget.uid,
-                                      loggedInUser: widget.loggedInUser,
-                                    ))); //go to next page
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        alignment: Alignment.centerRight,
-                         decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                        child: Text(
-                          'Requests',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary, // Customize the text color
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+                     Padding(
+                padding:const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                      RequestButton(
+                    onPressed: () =>navigateToRequests(context),
+                    count: requestsCount
+                  ),
+                ],
+              ),
+              ),
                   const Center(
                     child: Text('No Connections'),
                   )
@@ -129,35 +133,18 @@ class _ConnectionsListState extends State<ConnectionsList> {
                 return ListView( 
                   children: [
                   if (widget.isOwnProfile)
-                    GestureDetector(
-                      onTap: () {
-                        // Navigate to the request page when the text is clicked
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ConnectionRequestList(
-                                      isOwnProfile: widget.isOwnProfile,
-                                      uid: widget.uid,
-                                      loggedInUser: widget.loggedInUser,
-                                    ))); //go to next page
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        alignment: Alignment.centerRight,
-                         decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                        child: Text(
-                          'Requests',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primary, // Customize the text color
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
+                     Padding(
+                padding:const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                      RequestButton(
+                    onPressed: () =>navigateToRequests(context),
+                    count: requestsCount
+                  ),
+                ],
+              ),
+              ),
                 Container(
                       height: MediaQuery.of(context).size.height,
                        decoration: BoxDecoration(

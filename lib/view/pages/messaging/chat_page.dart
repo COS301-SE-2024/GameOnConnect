@@ -38,14 +38,11 @@ class _ChatPageState extends State<ChatPage> {
             const Duration(milliseconds: 500), () => scrollDownPage());
       }
     });
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () {
-        if (mounted) {
-      scrollDownPage();
-    }
-      } 
-    );
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        scrollDownPage();
+      }
+    });
   }
 
   @override
@@ -56,14 +53,15 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void scrollDownPage() {
-  if (_scrollController.hasClients && _scrollController.position.maxScrollExtent > 0) {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_scrollController.hasClients &&
+        _scrollController.position.maxScrollExtent > 0) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
-}
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
@@ -94,17 +92,25 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Row(
-          children: [
-            buildProfilePicture(widget.profilePicture),
-            const SizedBox(width: 8),
-            Text(widget.profileName,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                )),
-          ],
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+          child: Row(
+            children: [
+              buildProfilePicture(widget.profilePicture),
+              const SizedBox(width: 8),
+              Text(widget.profileName,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  )),
+            ],
+          ),
+        ),
+        scrolledUnderElevation: 0,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(5.0),
+          child: SizedBox(height: 2.0),
         ),
       ),
       body: Column(
@@ -187,43 +193,46 @@ class _ChatPageState extends State<ChatPage> {
             child: ValueListenableBuilder<TextEditingValue>(
               valueListenable: _textEditingController,
               builder: (context, value, child) {
-                return TextFormField(
-                  focusNode: newFocusNode,
-                  controller: _textEditingController,
-                  obscureText: false,
-                  maxLines: null,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                    fillColor: Theme.of(context).colorScheme.primaryContainer,
-                    filled: true,
-                    hintText: "Enter your message here",
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Inter',
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: TextFormField(
+                    focusNode: newFocusNode,
+                    controller: _textEditingController,
+                    obscureText: false,
+                    maxLines: null,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
+                      filled: true,
+                      hintText: "Enter your message here",
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Inter',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
+                    onFieldSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        sendMessage();
+                      }
+                    },
                   ),
-                  onFieldSubmitted: (value) {
-                    if (value.trim().isNotEmpty) {
-                    sendMessage();
-                  }
-                  },
                 );
               },
             ),

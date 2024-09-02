@@ -30,14 +30,15 @@ class CustomizeService {
       final jsonData = jsonDecode(await fileInfo.file.readAsString());
 
       if (isMounted) {
-        return (jsonData['results'] as List)
+        List<String> genres = (jsonData['results'] as List)
             .map((genre) => genre['name'].toString())
             .toList();
+        genres.sort();
+        return genres;
       } else {
         return [];
       }
     } else {
-      //Load the games from API
       final response = await http.get(Uri.parse(request));
 
       if (response.statusCode == 200) {
@@ -49,14 +50,16 @@ class CustomizeService {
         );
         final jsonData = jsonDecode(response.body);
         if (isMounted) {
-          return (jsonData['results'] as List)
+          List<String> genres = (jsonData['results'] as List)
               .map((genre) => genre['name'].toString())
               .toList();
+          genres.sort();
+          return genres;
         } else {
           return [];
         }
       } else {
-        throw Exception('Failed to load genres');
+        return [];
       }
     }
   }
@@ -71,9 +74,11 @@ class CustomizeService {
       final jsonData = jsonDecode(await fileInfo.file.readAsString());
 
       if (isMounted) {
-        return (jsonData['results'] as List)
-            .map((genre) => genre['name'].toString())
+        List<String> tags = (jsonData['results'] as List)
+            .map((tag) => tag['name'].toString())
             .toList();
+        tags.sort();
+        return tags;
       } else {
         return [];
       }
@@ -90,9 +95,11 @@ class CustomizeService {
         );
         final jsonData = jsonDecode(response.body);
         if (isMounted) {
-          return (jsonData['results'] as List)
-              .map((genre) => genre['name'].toString())
+          List<String> tags = (jsonData['results'] as List)
+              .map((tag) => tag['name'].toString())
               .toList();
+          tags.sort();
+          return tags;
         } else {
           return [];
         }

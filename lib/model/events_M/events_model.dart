@@ -1,16 +1,16 @@
 class Event {
   final String creatorID;
-  final DateTime startDate;
+  late final DateTime startDate;
   final DateTime endDate;
   final String eventType;
-  final int gameID;
-  final String name;
+  late final int gameID;
+  late final String name;
   final String eventID;
   final List<dynamic> subscribed;
   final List<dynamic> participants;
-  final String description;
+  late final String description;
   final bool privacy;
-  final List<String> invited;
+  late final List<String> invited;
   final String creatorName;
   // can later add  conversation id and teams if needed
 
