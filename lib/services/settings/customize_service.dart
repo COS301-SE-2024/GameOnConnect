@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/cache_managers/customize_profile_cache_manager.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
@@ -12,66 +13,99 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../globals.dart' as globals;
 
-class CustomizeService{
+class CustomizeService {
   //BuildContext get context => null;
 
-
   bool isCurrentlyDarkMode(BuildContext context) {
-  return MediaQuery.of(context).platformBrightness == Brightness.dark;
-}
+    return MediaQuery.of(context).platformBrightness == Brightness.dark;
+  }
 
-Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
-    try {
-      var url =
-          Uri.parse('https://api.rawg.io/api/genres?key=${globals.apiKey}');
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var decoded = json.decode(response.body);
-        if (isMounted) {
-          List<String> genres = (decoded['results'] as List)
-                .map((genre) => genre['name'].toString())
-                .toList();
-                genres.sort(); 
-          return genres;
-        }
-        else{
-          return [];
-        }
+  Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
+    String request = 'https://api.rawg.io/api/genres?key=${globals.apiKey}';
 
+    var fileInfo = await GenreCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+
+      if (isMounted) {
+        List<String> genres = (jsonData['results'] as List)
+            .map((genre) => genre['name'].toString())
+            .toList();
+        genres.sort();
+        return genres;
       } else {
-        //print("Error fetching genres: ${response.statusCode}");
         return [];
       }
-    } catch (e) {
-      //print("Error fetching genres: $e");
+    } else {
+      final response = await http.get(Uri.parse(request));
+
+      if (response.statusCode == 200) {
+        await GenreCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        if (isMounted) {
+          List<String> genres = (jsonData['results'] as List)
+              .map((genre) => genre['name'].toString())
+              .toList();
+          genres.sort();
+          return genres;
+        } else {
+          return [];
+        }
+      } else {
+        return [];
+      }
     }
-    return [];
   }
 
   Future<List<String>> fetchTagsFromAPI(bool isMounted) async {
-    try {
+    String request = 'https://api.rawg.io/api/tags?key=${globals.apiKey}';
+
+    var fileInfo = await TagCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+
       if (isMounted) {
-        var url =
-            Uri.parse('https://api.rawg.io/api/tags?key=${globals.apiKey}');
-        var response = await http.get(url);
-        if (response.statusCode == 200) {
-          var decoded = json.decode(response.body);
-         List<String> tags = (decoded['results'] as List)
-                .map((tag) => tag['name'].toString())
-                .toList();
-                tags.sort(); 
+        List<String> tags = (jsonData['results'] as List)
+            .map((tag) => tag['name'].toString())
+            .toList();
+        tags.sort();
+        return tags;
+      } else {
+        return [];
+      }
+    } else {
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
+      if (response.statusCode == 200) {
+        //Cache data
+        await TagCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        if (isMounted) {
+          List<String> tags = (jsonData['results'] as List)
+              .map((tag) => tag['name'].toString())
+              .toList();
+          tags.sort();
           return tags;
         } else {
           return [];
         }
+      } else {
+        throw Exception('Failed to load tags');
       }
-      else{
-        return [];
-      }
-    } catch (e) {
-      //throw ("Error fetching interest tags: $e");
     }
-    return [];
   }
 
   Future<List<List<String>>> fetchUserSelectionsFromDatabase() async {
@@ -86,7 +120,7 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
 
         final docSnapshot = await profileDocRef.get();
         if (docSnapshot.exists) {
-          List<List<String>> customizeData=[];
+          List<List<String>> customizeData = [];
           final data = docSnapshot.data();
           final genres = List<String>.from(data?["genre_interests_tags"] ?? []);
           final age = List<String>.from(data?["age_rating_tags"] ?? []);
@@ -108,7 +142,6 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
           customizeData.add(interests);
           customizeData.add(pictures);
 
-          
           /*if (_isMounted) {
             setState(() {
               _selectedGenres = genres;
@@ -119,11 +152,10 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
             });
           }*/
           return customizeData;
-        }
-        else{
+        } else {
           return [];
         }
-      }else{
+      } else {
         return [];
       }
     } catch (e) {
@@ -132,32 +164,26 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     return [];
   }
 
-  int getCurrentIndex(Color color)
-   {
-    if(color== darkPrimaryGreen || color== lightPrimaryGreen)
-    {
+  int getCurrentIndex(Color color) {
+    if (color == darkPrimaryGreen || color == lightPrimaryGreen) {
       return 0;
     }
-     if(color== darkPrimaryPurple || color== lightPrimaryPurple)
-    {
+    if (color == darkPrimaryPurple || color == lightPrimaryPurple) {
       return 1;
     }
-     if(color== darkPrimaryBlue || color== lightPrimaryBlue)
-    {
-      return 2; 
+    if (color == darkPrimaryBlue || color == lightPrimaryBlue) {
+      return 2;
     }
-     if(color== darkPrimaryOrange || color== lightPrimaryOrange)
-    {
-      return 3; 
+    if (color == darkPrimaryOrange || color == lightPrimaryOrange) {
+      return 3;
     }
-    if(color== darkPrimaryPink || color== lightPrimaryPink){
+    if (color == darkPrimaryPink || color == lightPrimaryPink) {
       return 4;
     }
     return -1;
   }
 
   void updateTheme(Color color, ThemeProvider themeProvider, bool isDarkMode) {
-
     if (color == darkPrimaryGreen) {
       themeProvider.setTheme(isDarkMode ? darkGreenTheme : lightGreenTheme);
     } else if (color == darkPrimaryPurple) {
@@ -171,7 +197,7 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     }
   }
 
-   Future<String> uploadImageToFirebase(File image, String imagetype) async {
+  Future<String> uploadImageToFirebase(File image, String imagetype) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
 
     // Create a reference to Firebase Storage
@@ -219,8 +245,12 @@ Future<List<String>> fetchGenresFromAPI(bool isMounted) async {
     }
   }
 
-Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGenres,
- List<String> selectedAge , List<String> selectedInterests) async {
+  Future<bool> saveProfileData(
+      profileImage,
+      profileBanner,
+      List<String> selectedGenres,
+      List<String> selectedAge,
+      List<String> selectedInterests) async {
     try {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final currentUser = auth.currentUser;
@@ -232,11 +262,11 @@ Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGe
         if (profileImage != null) {
           String imageUrl;
           if (kIsWeb) {
-            imageUrl = await CustomizeService().uploadImageToFirebase(
-                File(profileImage!), 'Profile_picture');
+            imageUrl = await CustomizeService()
+                .uploadImageToFirebase(File(profileImage!), 'Profile_picture');
           } else {
-            imageUrl = await CustomizeService().uploadImageToFirebase(
-                File(profileImage!), 'Profile_picture');
+            imageUrl = await CustomizeService()
+                .uploadImageToFirebase(File(profileImage!), 'Profile_picture');
           }
 
           await CustomizeService().saveImageURL(imageUrl, 'Profile_picture');
@@ -250,11 +280,11 @@ Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGe
         if (profileBanner != null) {
           String bannerUrl;
           if (kIsWeb) {
-            bannerUrl =
-                await CustomizeService().uploadImageToFirebase(File(profileBanner!), 'banner');
+            bannerUrl = await CustomizeService()
+                .uploadImageToFirebase(File(profileBanner!), 'banner');
           } else {
-            bannerUrl =
-                await CustomizeService().uploadImageToFirebase(File(profileBanner!), 'banner');
+            bannerUrl = await CustomizeService()
+                .uploadImageToFirebase(File(profileBanner!), 'banner');
           }
           await CustomizeService().saveImageURL(bannerUrl, 'banner');
 
@@ -265,9 +295,8 @@ Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGe
         }
 
         final data = {
-          "genre_interests_tags": selectedGenres.isNotEmpty
-              ? selectedGenres
-              : FieldValue.delete(),
+          "genre_interests_tags":
+              selectedGenres.isNotEmpty ? selectedGenres : FieldValue.delete(),
           "age_rating_tags":
               selectedAge.isNotEmpty ? selectedAge : FieldValue.delete(),
           "social_interests_tags": selectedInterests.isNotEmpty
@@ -277,7 +306,7 @@ Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGe
 
         await profileDocRef.set(data, SetOptions(merge: true));
 
-       return true;
+        return true;
       }
     } catch (e) {
       //print ("Error setting/updating profile data: $e");
@@ -285,5 +314,4 @@ Future<bool> saveProfileData(profileImage,profileBanner, List<String> selectedGe
     }
     return false;
   }
-
 }
