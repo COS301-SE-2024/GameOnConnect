@@ -373,17 +373,20 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
-          title: Text(
-            'Feed',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              'Feed',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -400,7 +403,7 @@ class _FeedPageDisplayState extends State<_FeedPageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(

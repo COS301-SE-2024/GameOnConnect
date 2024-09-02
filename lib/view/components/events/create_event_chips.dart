@@ -55,7 +55,6 @@ class _ChipSelectorState extends State<ChipSelector> {
           label: Center(
             child: Container(
               height: 25,
-              width: 140,
               alignment: Alignment.center,
               child: Row(children: [
                 option.icon,
@@ -68,7 +67,7 @@ class _ChipSelectorState extends State<ChipSelector> {
                     option.label,
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 15,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: selectedOption == option.label
                           ? Colors.black

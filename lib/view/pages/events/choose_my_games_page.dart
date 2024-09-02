@@ -15,12 +15,13 @@ class ChooseGame extends StatefulWidget {
 
 class _ChooseGame extends State<ChooseGame> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int chosenGame = -1;
+  late int chosenGame ;
   late List<String> gameNames = [];
   late List<String> gameImages = [];
   late List<GameDetails>? games;
   late int gameID;
   bool _isMounted = false;
+  String gameName = "";
 
   @override
   void initState() {
@@ -102,10 +103,11 @@ class _ChooseGame extends State<ChooseGame> {
                             gameID: getGameID(i),
                             chosen: chosenGame,
                             image: gameImages[index],
-                            onSelected: (gameName) {
+                            onSelected: (gameID,name) {
                               if (_isMounted) {
                                 setState(() {
-                                  chosenGame = gameName;
+                                  chosenGame = gameID;
+                                  gameName = name;
                                 });
                               }
                             },
@@ -123,7 +125,7 @@ class _ChooseGame extends State<ChooseGame> {
                         child: MaterialButton(
                             key: const Key('save_game_button'),
                             onPressed: () {
-                              Navigator.pop(context, chosenGame);
+                              Navigator.pop(context, ({"chosen":chosenGame,"name":gameName}));
                             },
                             height: 35,
                             color: Theme.of(context).colorScheme.primary,
