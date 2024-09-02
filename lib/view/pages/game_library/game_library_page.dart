@@ -54,7 +54,6 @@ class _GameLibraryState extends State<GameLibrary> {
       _filterString = filterString;
       _games.clear();
       _currentPage = 1;
-      _isLoading = true;
     });
 
     await _loadGames();
@@ -121,6 +120,7 @@ class _GameLibraryState extends State<GameLibrary> {
   clearFilters() {
     setState(() {
       _activeFilters = [];
+      _filterString = '';
       _searchQuery = '';
       _sortValue = '';
       _games.clear();
