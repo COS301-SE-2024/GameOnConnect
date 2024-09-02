@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/help/help_card.dart';
-import 'package:gameonconnect/view/pages/settings/getting_started.dart';
-
 import '../../components/appbars/backbutton_appbar_component.dart';
 
 class HelpPage extends StatefulWidget {
