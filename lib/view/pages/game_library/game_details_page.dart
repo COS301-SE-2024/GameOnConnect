@@ -16,7 +16,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:gameonconnect/view/pages/feed/feed_page.dart';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -267,6 +266,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             );
                                           }
                                           Navigator.push(
+                                            // ignore: use_build_context_synchronously
                                             context,
                                             MaterialPageRoute(builder: (context) => const FeedPage(title: 'GameOnConnect',)),
                                           );
