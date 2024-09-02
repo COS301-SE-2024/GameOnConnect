@@ -335,6 +335,15 @@ class _ProfileState extends State<ProfilePage> {
                                             ),
                                           ),
                                         ),
+                                        Text(
+                                          '#${profileData.uniqueNumber.toString()}' ,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            //fontSize: 12,
+                                            letterSpacing: 0,
+                                            color: Color(0xFFFFFFFF),
+                                          ),
+                                        ),
                                         if (profileData.currentlyPlaying != '')
                                           Row(
                                             children: [
@@ -516,7 +525,7 @@ class _ProfileState extends State<ProfilePage> {
                                   isOwnProfile: widget.isOwnProfile,
                                 ),
                           const SizedBox(height: 24),
-                          profileData.myGames.isEmpty &&
+                          /*profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
                               : widget.uid != widget.loggedInUser
@@ -550,7 +559,7 @@ class _ProfileState extends State<ProfilePage> {
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
                                   const SizedBox(height: 24),
-                                ]),
+                                ]),*/
                         ] else ...[
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
