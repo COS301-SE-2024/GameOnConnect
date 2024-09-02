@@ -43,6 +43,7 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
+  ProfileService _profileService=ProfileService();
   final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
@@ -226,7 +227,7 @@ class _ProfileState extends State<ProfilePage> {
                 connections?.friends.contains(widget.uid) ?? false;
 
             return FutureBuilder<Profile?>(
-              future: ProfileService().fetchProfileData(widget.uid),
+              future: _profileService.fetchProfileData(widget.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -381,7 +382,7 @@ class _ProfileState extends State<ProfilePage> {
                                 children: [
                                   Expanded(
                                     child: ProfileButton(
-                                        value: '${profileData.myGames.length}',
+                                        value: '${_profileService.mygGamesLength}',
                                         title: 'Games'),
                                   ),
                                   Expanded(
@@ -525,7 +526,7 @@ class _ProfileState extends State<ProfilePage> {
                                   isOwnProfile: widget.isOwnProfile,
                                 ),
                           const SizedBox(height: 24),
-                          /*profileData.myGames.isEmpty &&
+                          profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
                               : widget.uid != widget.loggedInUser
@@ -555,11 +556,11 @@ class _ProfileState extends State<ProfilePage> {
                                       thickness: 0.5,
                                     ),
                                   ),
-                                  WantToPlayList(
+                                  /*WantToPlayList(
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
-                                  const SizedBox(height: 24),
-                                ]),*/
+                                  const SizedBox(height: 24),*/
+                                ]),
                         ] else ...[
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
