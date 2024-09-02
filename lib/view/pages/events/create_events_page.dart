@@ -31,6 +31,7 @@ class _CreateEventsState extends State<CreateEvents> {
   late int gameChosen = -1;
   bool validStartDate = false;
   bool validEndDate = false;
+  String gameName = "";
 
   String? type;
   List<String> invites = [];
@@ -101,9 +102,6 @@ class _CreateEventsState extends State<CreateEvents> {
                               Align(
                                 alignment: const AlignmentDirectional(0, -1),
                                 child: Container(
-                                  constraints: const BoxConstraints(
-                                    maxWidth: 770,
-                                  ),
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
@@ -269,8 +267,21 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 15,
+                                            height: 10,
                                           ),
+
+
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -285,11 +296,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 chosenGame:
                                                                     gameChosen,
                                                               )))
-                                                  .then((gameChosen) {
+                                                  .then((gameInfo) {
                                                 setState(() {
-                                                  if (gameChosen != null) {
-                                                    this.gameChosen =
-                                                        gameChosen;
+                                                  if (gameInfo != null) {
+                                                    gameChosen =
+                                                        gameInfo['chosen'];
+                                                    gameName = gameInfo['name'];
                                                   }
                                                 });
                                               });
@@ -318,8 +330,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    'Choose game*',
+                                                  Text(gameName.isEmpty?
+                                                    'Choose game*' : gameName,
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -335,9 +347,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: Theme.of(context)
+                                                    color: gameChosen==-1?Theme.of(context)
                                                         .colorScheme
-                                                        .secondary,
+                                                        .secondary: Theme.of(context).colorScheme.primary,
                                                     size: 24,
                                                   ),
                                                 ],
@@ -421,6 +433,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
+
                                           const ToolTip(
                                               message:
                                                   "Tournaments are competitive, "
@@ -536,7 +549,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 'd MMMM , hh:mm a')
                                                             .format(
                                                                 _datePicked!)
-                                                        : 'Select a date',
+                                                        : 'Select a start date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -552,19 +565,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            'End*',
-                                            style: TextStyle(
-                                              fontFamily: 'Inter',
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              fontSize: 14,
-                                              letterSpacing: 0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                          const SizedBox(height: 20),
                                           InkWell(
                                             key: const Key('end_date_picker'),
                                             splashColor: Colors.transparent,
@@ -667,7 +668,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                                 'd MMMM , hh:mm a')
                                                             .format(
                                                                 _endDatePicked!)
-                                                        : 'Select a date',
+                                                        : 'Select an end date',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -709,7 +710,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         const EdgeInsets.only(
                                                             left: 15,),
                                                     child: Text(
-                                                      'Private',
+                                                      'Public',
                                                       style: TextStyle(
                                                         fontFamily: 'Inter',
                                                         letterSpacing: 0,
@@ -794,7 +795,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    'Invite connections*',
+                                                    invites.isEmpty?'Invite connections*':
+                                                    'Invite connections (${invites.length})',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -809,9 +811,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: Theme.of(context)
+                                                    color: invites.isEmpty?Theme.of(context)
                                                         .colorScheme
-                                                        .secondary,
+                                                        .secondary:Theme.of(context).colorScheme.primary,
                                                     size: 24,
                                                   ),
                                                 ],

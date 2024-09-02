@@ -24,6 +24,7 @@ class _HelpWidgetState extends State<HelpPage> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

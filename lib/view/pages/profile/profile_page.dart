@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
@@ -13,11 +15,14 @@ import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
+import 'package:gameonconnect/view/components/profile/request_container.dart';
+import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
 import 'package:gameonconnect/view/pages/profile/want_to_play.dart';
 import 'package:gameonconnect/view/pages/stats/stats_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -41,20 +46,36 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
+  final UserService _userService = UserService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
   late String roundedTotalTime;
-  bool isParentsPending = false;
+  bool isPendingOfParent = false;
+  bool isConnectionOfParent = false;
+  bool isRequestToParent = false;
+  final MessagingService _messagingService = MessagingService();
 
-  /*Future<void> isConnectionOfParent() async {
+  Future<void> isConnectionOfLoggedInUser() async {
   final connections = await ConnectionService().getConnections('connections');
-  isConnectionParent= connections.contains(widget.uid);
-}*/
+  isConnectionOfParent= connections.contains(widget.uid);
+}
 
-  Future<void> isPendingOfParent() async {
+  Future<void> isPendingOfLoggedInUser() async {
     final connections = await ConnectionService().getConnections('pending');
-    isParentsPending = connections.contains(widget.uid);
+    isPendingOfParent = connections.contains(widget.uid);
   }
+
+   Future<void> isRequestToLoggedInUser() async {
+    final connections = await ConnectionService().getConnections('requests');
+    isRequestToParent = connections.contains(widget.uid);
+  }
+
+  
+Future<void> getRelationToLoggedInUser() async {
+  isConnectionOfLoggedInUser();
+  isPendingOfLoggedInUser();
+  isRequestToLoggedInUser();
+}
 
   Future<void> getTimePlayed() async {
     totalTimePlayed =
@@ -91,10 +112,105 @@ class _ProfileState extends State<ProfilePage> {
     return gameStatsMap.values.toList();
   }
 
-  void _sendConnectionRequest(String targetUserId) async {
+  void _disconnect() async {
+    try {
+      await _userService.disconnect(widget.loggedInUser, widget.uid);
+      setState(() {
+        isConnectionOfParent=false;
+      });
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error unfollowing user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        context,
+      );
+    }
+  }
+
+  void _accept() async {
+    try {
+      await ConnectionService().acceptConnectionRequest(widget.uid);
+      setState(() {
+        isRequestToParent=false;
+        isConnectionOfParent=true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Accepted')),
+        );
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error accepting user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        context,
+      );
+    }
+  }
+
+  void _reject() async {
+    try {
+      await ConnectionService().rejectConnectionRequest(widget.uid);
+      setState(() {
+        isRequestToParent=false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Rejected')),
+        );
+    } catch (e) {
+      //'Error unfollowing user'
+      DelightToastBar(
+              builder: (context) {
+                return CustomToastCard(
+                  title: Text(
+                    'Error rejecting user. Please ensure that you have an active internet connection.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              snackbarDuration: const Duration(seconds: 3))
+          .show(
+        context,
+      );
+    }
+  }
+
+  void _sendConnectionRequest() async {
     try {
       await UserService()
-          .sendConnectionRequest(widget.loggedInUser, targetUserId);
+          .sendConnectionRequest(widget.loggedInUser, widget.uid);
+       setState(() {
+        isRequestToParent=false;
+        isPendingOfParent=true;
+      });   
     } catch (e) {
       //Error sending Connection request.
       DelightToastBar(
@@ -112,17 +228,18 @@ class _ProfileState extends State<ProfilePage> {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
   }
 
-  void _undoConnectionRequest(String targetUserId) async {
+  void _undoConnectionRequest() async {
     try {
       await UserService()
-          .undoConnectionRequest(widget.loggedInUser, targetUserId);
-      setState(() {});
+          .undoConnectionRequest(widget.loggedInUser, widget.uid);
+      setState(() {
+        isPendingOfParent=false;
+      });
     } catch (e) {
       //'Error canceling friend request'
       DelightToastBar(
@@ -140,7 +257,6 @@ class _ProfileState extends State<ProfilePage> {
               autoDismiss: true,
               snackbarDuration: const Duration(seconds: 3))
           .show(
-        // ignore: use_build_context_synchronously
         context,
       );
     }
@@ -159,14 +275,26 @@ class _ProfileState extends State<ProfilePage> {
     );
   }
 
+  void navigateToStats(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => StatsPage(
+              userID: widget
+                  .uid)), 
+    );
+  }
+
+  
+
   @override
   void initState() {
     super.initState();
-    isPendingOfParent();
+    getRelationToLoggedInUser();
     getTimePlayed();
   }
 
-   @override
+  @override
   void dispose() {
     super.dispose();
   }
@@ -191,7 +319,7 @@ class _ProfileState extends State<ProfilePage> {
                     return IconButton(
                       key: const Key('settings_icon_button'),
                       icon: const Icon(Icons.settings),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                       onPressed: () {
                         Navigator.pushNamed(context, '/settings');
                       },
@@ -376,14 +504,21 @@ class _ProfileState extends State<ProfilePage> {
                                       value:
                                           '${profileData.numberOfconnections}',
                                       title: 'Connections',
-                                      onPressed: () =>
-                                          navigateToConnections(context),
+                                      onPressed: profileData.visibility ||
+                                              isParentsConnection ||
+                                              widget.uid == widget.loggedInUser
+                                          ? () => navigateToConnections(context)
+                                          : null,
                                     ),
                                   ),
-                                  Expanded(
+                                   Expanded(
                                     child: ProfileButton(
-                                        value: '$roundedTotalTime hrs',
-                                        title: 'Time Played'),
+                                      value:
+                                          '$roundedTotalTime hrs',
+                                      title: 'Time Played',
+                                      onPressed: () =>
+                                          navigateToStats(context),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -393,36 +528,59 @@ class _ProfileState extends State<ProfilePage> {
                         if (profileData.visibility ||
                             isParentsConnection ||
                             widget.uid == widget.loggedInUser) ...[
+                          if (isRequestToParent)
+                          RequestContainer(
+                            requester: profileData.profileName,
+                            accept: () =>_accept(),
+                            reject: () =>_reject()
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (profileData.visibility &&
-                                    !isParentsConnection &&
-                                    widget.uid != widget.loggedInUser)
-                                  Expanded(
-                                    child: ActionButton(
-                                      type: 'connect',
-                                      onPressed: () =>
-                                          _sendConnectionRequest(widget.uid),
-                                    ),
-                                  ),
-                                if (profileData.visibility &&
-                                    isParentsPending &&
-                                    widget.uid != widget.loggedInUser)
-                                  Expanded(
-                                    child: ActionButton(
-                                      type: 'pending',
-                                      onPressed: () =>
-                                          _undoConnectionRequest(widget.uid),
-                                    ),
-                                  ),
-                                if (profileData.visibility &&
-                                    (!isParentsConnection ||
-                                        isParentsPending) &&
-                                    widget.uid != widget.loggedInUser)
-                                  const SizedBox(width: 12),
-                                Expanded(
+                                  if(widget.uid != widget.loggedInUser)...[
+                                    ( isPendingOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'Pending',
+                                          onPressed: () =>
+                                              _undoConnectionRequest(),
+                                          icon: Icons.hourglass_bottom 
+                                        ),
+                                      ),
+                                      )
+                                  : ( isConnectionOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'Connected',
+                                           onPressed: () => _disconnect(), // drop down for disconnect 
+                                          icon: Icons.person
+                                        ),
+                                      ),
+                                      )
+                                  : (isRequestToParent)
+                                     ? const SizedBox.shrink()
+
+                                    : Expanded( // not connected yet
+                                        child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'Connect',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(),
+                                          icon: Icons.person_add
+                                        ),
+                                        ),
+                                        
+                                      ),
+                                  ],
+                                /*Expanded(
+                                  //here is the view stats button
                                   child: ActionButton(
                                     type: 'stats',
                                     onPressed: () {
@@ -434,18 +592,61 @@ class _ProfileState extends State<ProfilePage> {
                                                     .uid)), //how do i get the correct userID t display here - get it and use it here
                                       );
                                     },
+                                    icon: Icons.bar_chart 
                                   ),
-                                )
+                                ),*/
+
+                                if(widget.uid!=widget.loggedInUser)...[
+                                  Expanded(
+                                    child:ActionButton(
+                                  type: 'Message',
+                                  onPressed: () async {
+                                          String conversationID =
+                                              await _messagingService
+                                                  .findConversationID(
+                                                      widget.loggedInUser,
+                                                      widget.uid);
+                                          if (conversationID == 'Not found') {
+                                            List<String> newList = [
+                                              widget.loggedInUser,
+                                              widget.uid
+                                            ];
+                                            conversationID =
+                                                await _messagingService
+                                                    .createConversation(
+                                                        newList);
+                                          }
+                                          if (mounted) {
+                                            if (!context.mounted) return;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatPage(
+                                                  profileName:
+                                                      profileData.profileName,
+                                                  receiverID: widget.uid,
+                                                  profilePicture: profileData
+                                                      .profilePicture,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                  icon: Icons.send)
+                                  ),
+                                  
+                                ],
+                                  
                               ],
                             ),
                           ),
                           const SizedBox(height: 24),
                           profileData.bio.isEmpty
-                          ? const SizedBox.shrink()
-                          :Bio(
-                            bio: profileData.bio,
-                            isOwnProfile: widget.isOwnProfile,
-                          ),
+                              ? const SizedBox.shrink()
+                              : Bio(
+                                  bio: profileData.bio,
+                                  isOwnProfile: widget.isOwnProfile,
+                                ),
                           const SizedBox(height: 24),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
@@ -480,43 +681,115 @@ class _ProfileState extends State<ProfilePage> {
                                   WantToPlayList(
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
-                                  const SizedBox(height: 24),
-                                ]),
+                                  const SizedBox(height: 24)
+                                ]
+                                ),
                         ] else ...[
+                          if (isRequestToParent)
+                          RequestContainer(
+                            requester: profileData.profileName,
+                            accept: () =>_accept(),
+                            reject: () =>_reject()
+                          ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 19, 12, 50),
+                            padding: const EdgeInsets.fromLTRB(12, 19, 12, 0),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                (isParentsPending)
+                                   ( isPendingOfParent)
                                     ? Expanded(
+                                      child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
                                         child: ActionButton(
-                                          type: 'pending',
+                                          type: 'Pending',
                                           onPressed: () =>
-                                              _undoConnectionRequest(
-                                                  widget.uid),
-                                        ),
-                                      )
-                                    : Expanded(
-                                        child: ActionButton(
-                                          type: 'connect',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(
-                                                  widget.uid),
+                                              _undoConnectionRequest(),
+                                          icon: Icons.hourglass_bottom 
                                         ),
                                       ),
+                                      )
+                                  : ( isConnectionOfParent)
+                                    ? Expanded(
+                                      child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'Connected',
+                                          onPressed: () => _disconnect(),
+                                          icon: Icons.person
+                                        ),
+                                      ),
+                                      )
+                                  : (isRequestToParent)
+                                    ? const SizedBox.shrink()
+                                    
+                                    : Expanded( // not connected yet
+                                        child: Padding(
+                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                                        child: ActionButton(
+                                          type: 'Connect',
+                                          onPressed: () =>
+                                              _sendConnectionRequest(),
+                                          icon: Icons.person_add
+                                        ),
+                                        ),
+                                        
+                                      ),
+                              
+                              if(widget.uid!=widget.loggedInUser)...[
+                                  Expanded(
+                                    child:ActionButton(
+                                  type: 'Message',
+                                  onPressed: () async {
+                                          String conversationID =
+                                              await _messagingService
+                                                  .findConversationID(
+                                                      widget.loggedInUser,
+                                                      widget.uid);
+                                          if (conversationID == 'Not found') {
+                                            List<String> newList = [
+                                              widget.loggedInUser,
+                                              widget.uid
+                                            ];
+                                            conversationID =
+                                                await _messagingService
+                                                    .createConversation(
+                                                        newList);
+                                          }
+                                          if (mounted) {
+                                            if (!context.mounted) return;
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatPage(
+                                                  profileName:
+                                                      profileData.profileName,
+                                                  receiverID: widget.uid,
+                                                  profilePicture: profileData
+                                                      .profilePicture,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                  icon: Icons.send)
+                                  ),
+                                  
+                                ],
+                                      
                               ],
                             ),
                           ),
-                          //Expanded(
-                          //child:
-                          Align(
+                          
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 12),
+                            child: Align(
                             alignment: Alignment.center,
                             child: Column(
                               mainAxisSize: MainAxisSize
                                   .min, // This ensures the Column takes up only the necessary space
                               children: [
                                 Container(
-                                  width: 70, // Adjust the size as needed
+                                  width: 70, 
                                   height: 70,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -538,22 +811,21 @@ class _ProfileState extends State<ProfilePage> {
                                 Container(
                                   margin:
                                       const EdgeInsets.fromLTRB(0, 0, 0, 82),
-                                  child: const Text(
+
+                                  child:  Text(
                                     'This account is Private',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12,
-                                      letterSpacing: 0,
-                                      color: Color(0xFFBEBEBE),
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-//)
-                        ],
+                          ),
+                          
+                        ],// else 
                       ],
                     ),
                   );

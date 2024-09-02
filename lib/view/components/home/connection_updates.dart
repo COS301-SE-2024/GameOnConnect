@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/view/components/feed/connection_update.dart';
+import 'package:gameonconnect/view/components/home/connection_update.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/connection_M/user_model.dart';
 

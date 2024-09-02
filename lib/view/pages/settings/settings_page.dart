@@ -24,29 +24,27 @@ class Options extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-              child: Column(
-                children: [
-                  ListTile(
-                    key: const Key('Edit_Profile'),
-                    leading: Icon(
-                      Icons.edit_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 24,
-                    ),
-                    title: Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/edit-profile');
-                    },
+              child: Column(children: [
+                ListTile(
+                  key: const Key('Edit_Profile'),
+                  leading: Icon(
+                    Icons.edit_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 24,
                   ),
-                ]
-              ),
+                  title: Text(
+                    'Edit Profile',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/edit-profile');
+                  },
+                ),
+              ]),
             ),
             Divider(
               color: Theme.of(context).colorScheme.primaryContainer,
@@ -107,6 +105,38 @@ class Options extends StatelessWidget {
                     ),
                     onTap: () {
                       Navigator.pushNamed(context, '/help');
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              thickness: 1,
+              indent: 12,
+              endIndent: 12,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Column(
+                children: [
+                  ListTile(
+                    key: const Key('Appearance'),
+                    leading: Icon(
+                      Icons.brush_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 24,
+                    ),
+                    title: Text(
+                      'Appearance',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/appearance');
                     },
                   ),
                 ],

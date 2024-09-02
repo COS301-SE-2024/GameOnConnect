@@ -30,12 +30,6 @@ class EventCard extends State<EventCardWidget> {
     super.dispose();
   }
 
-  void getEvent() async {
-    Event? updated = await EventsService().getEvent(e.eventID);
-    setState(() {
-      e = updated!;
-    });
-  }
 
   Future<void> getImage(Event e) async {
     imageUrl = await EventsService().getEventImage(e.eventID);
