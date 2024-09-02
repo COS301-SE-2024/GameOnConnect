@@ -29,6 +29,7 @@ class _GameLibraryState extends State<GameLibrary> {
   String? _sortValue = '';
   List<String> selectedPlatforms = [];
   List<String> _activeFilters = [];
+  String _filterString = '';
 
   @override
   void initState() {
@@ -50,24 +51,13 @@ class _GameLibraryState extends State<GameLibrary> {
 
     setState(() {
       _activeFilters = activeFilters;
+      _filterString = filterString;
+      _games.clear();
+      _currentPage = 1;
       _isLoading = true;
     });
 
-    try {
-      final games = await GameService().filterGames(filterString);
-
-      setState(() {
-        _games.clear();
-        _games.addAll(games);
-        _currentPage++;
-      });
-    } catch (e) {
-      //Handle error
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+    await _loadGames();
   }
 
   Future<void> _loadGames() async {
@@ -79,7 +69,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
     try {
       final games = await GameService.fetchGames(_currentPage,
-          sortValue: _sortValue, searchQuery: _searchQuery);
+          sortValue: _sortValue, searchQuery: _searchQuery, filterString: _filterString);
 
       setState(() {
         _games.addAll(games);
