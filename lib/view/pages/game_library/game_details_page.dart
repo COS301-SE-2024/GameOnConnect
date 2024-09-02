@@ -798,7 +798,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                           Padding(
+                          Padding(
                             padding: const EdgeInsets.all(12),
 
                             child: ExpandableText(
@@ -814,7 +814,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
-                          
+                          ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             child: Row(
