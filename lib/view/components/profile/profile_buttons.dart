@@ -29,6 +29,7 @@ class _ProfileButtonState extends State<ProfileButton> {
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primaryContainer,
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(10),

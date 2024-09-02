@@ -1,3 +1,5 @@
+// ignore_for_file: undefined_hidden_name
+
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';

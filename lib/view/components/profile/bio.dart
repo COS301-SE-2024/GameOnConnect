@@ -40,7 +40,7 @@ class _BioState extends State<Bio> {
               textAlign: TextAlign.left,
             )
             : const Text(
-              'bio',
+              'Bio',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 20,

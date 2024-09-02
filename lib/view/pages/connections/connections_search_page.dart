@@ -28,6 +28,11 @@ class FriendSearchState extends State<FriendSearch> {
   int requestsCount=0;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     nrOfRequests();
