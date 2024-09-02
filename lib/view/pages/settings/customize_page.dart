@@ -410,16 +410,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                   'interest',
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
-                child: Text(
-                  'Theme',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ),
             ],
           ),
           Padding(
