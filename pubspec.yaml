@@ -73,6 +73,7 @@ dependencies:
   html_unescape: ^2.0.0
   insta_image_viewer: ^1.0.4
   youtube_player_flutter: ^9.0.3
+  flame: ^1.7.0
 
 
 dev_dependencies:
@@ -115,6 +116,7 @@ flutter:
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
     - "assets/models/"
+    - assets/images/player-sprite.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
