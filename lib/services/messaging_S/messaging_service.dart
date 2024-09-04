@@ -125,7 +125,6 @@ class MessagingService {
         if (!conversationSnapshot.exists) {
           throw Exception("Conversation was not found");
         }
-        print(conversationSnapshot.data());
         //map the data so that the participant messages can be extracted
         Map<String, dynamic> conversationData =
             conversationSnapshot.data() as Map<String, dynamic>;
@@ -136,9 +135,7 @@ class MessagingService {
 
         //ensure the participant messages are not empty
         if (participantMessages.isEmpty) {
-          // Yield an empty message if no messages are found
-          print("this was yielded");
-          yield await _firestore.collection('messages').doc().get();
+          yield await _firestore.collection('messages').doc().get(); //yield empty message
           continue;
         }
 
@@ -189,7 +186,6 @@ class MessagingService {
         usersWithConversations.add(user);
       }
     }
-    print(usersWithConversations);
     yield usersWithConversations; //yield the results
   }
 
