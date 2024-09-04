@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame/input.dart';
 import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,16 @@ class SpaceShooterGame extends FlameGame with PanDetector {
 
     player = Player();
     add(player);
+
+    add(
+      SpawnComponent(
+        factory: (index) {
+          return Enemy();
+        },
+        period: 1,
+        area: Rectangle.fromLTWH(0, 0, size.x, -Enemy.enemySize),
+      ),
+    );
   }
 
   @override
@@ -131,6 +142,45 @@ class Bullet extends SpriteAnimationComponent
     position.y += dt * -500;
 
     if (position.y < -height) {
+      removeFromParent();
+    }
+  }
+}
+
+class Enemy extends SpriteAnimationComponent
+    with HasGameReference<SpaceShooterGame> {
+
+  Enemy({
+    super.position,
+  }) : super(
+          size: Vector2.all(enemySize),
+          anchor: Anchor.center,
+        );
+
+
+  static const enemySize = 50.0;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await game.loadSpriteAnimation(
+      'enemy.png',
+      SpriteAnimationData.sequenced(
+        amount: 4,
+        stepTime: .2,
+        textureSize: Vector2.all(16),
+      ),
+    );
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    position.y += dt * 250;
+
+    if (position.y > game.size.y) {
       removeFromParent();
     }
   }
