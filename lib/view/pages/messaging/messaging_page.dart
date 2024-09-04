@@ -129,6 +129,7 @@ class _MessagingState extends State<Messaging> {
                 ),
               );
             } else if (sortedSnapshot.hasError) {
+              print("1st Error in snapshot: ${sortedSnapshot.error}");
               return const Text('Please check your internet connection.');
             } else if (sortedSnapshot.hasData) {
               List<Map<String, dynamic>> sortedUserDataList =
@@ -153,6 +154,7 @@ class _MessagingState extends State<Messaging> {
               );
             } else {
               //if an error occurs, return text to check the internet connection
+              print("Error in snapshot: ${sortedSnapshot.error}");
               return const Text('Please check your internet connection.');
             }
           },
