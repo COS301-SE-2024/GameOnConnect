@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';

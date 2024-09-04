@@ -55,8 +55,8 @@ class _GameActivityState extends State<GameActivity> {
                   text: 'No recorded activity for ',
                   children: <TextSpan>[
                     TextSpan(
-                      text: '${widget.gameName}',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      text: widget.gameName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),

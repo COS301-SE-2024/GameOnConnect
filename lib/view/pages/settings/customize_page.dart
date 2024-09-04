@@ -59,7 +59,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     return MediaQuery.of(context).platformBrightness == Brightness.dark;
   }
 
-  /*Future<void> _fetchAllTags() async {
+  Future<void> _fetchAllTags() async {
     final tagsList = await CustomizeService().fetchTagsFromAPI(_isMounted);
 
     if (tagsList.isNotEmpty) {
@@ -79,7 +79,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         });
       }
     }
-  }*/
+  }
 
   Future<void> _fetchUserSelectionsFromDatabase() async {
     final customizeData =
@@ -100,7 +100,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Future<void> _fetchData() async {
     await _fetchUserSelectionsFromDatabase();
-    //await Future.wait([_fetchAllTags()]);
+    await Future.wait([_fetchAllTags()]);
   }
 
   Future<void> _pickImage() async {
