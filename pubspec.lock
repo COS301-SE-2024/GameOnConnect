@@ -117,10 +117,10 @@ packages:
     dependency: "direct main"
     description:
       name: chewie
-      sha256: "2243e41e79e865d426d9dd9c1a9624aa33c4ad11de2d0cd680f826e2cd30e879"
+      sha256: "8210c6e8702ddae9b3337aad0d539a9ff128cc4a5baaadc0174edbd0f99b0125"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.3"
+    version: "1.8.4"
   cli_util:
     dependency: transitive
     description:
@@ -662,10 +662,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: "5a47ebec9af97daf0822e800e4f101c3340b5ebc3f6898cf860c1a71b53cf077"
+      sha256: "0608de03fc541ece4f91ba3e01a68b17cce7a6cf42bd59e40bbe5c55cc3a49d8"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.28"
+    version: "6.1.30"
   google_sign_in_ios:
     dependency: transitive
     description:
