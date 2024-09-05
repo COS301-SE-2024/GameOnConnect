@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -11,8 +10,11 @@ class GameyCon extends FlameGame {
   Color backgroundColor() => const Color.fromARGB(255, 97, 11, 155);
 
   @override
-  final world = Level();
+  final world = Level(
+    levelName: 'Level-1',
+  );
 
+  @override
   late final CameraComponent camera;
 
   GameyCon() {
@@ -25,6 +27,7 @@ class GameyCon extends FlameGame {
 
   @override
   FutureOr<void> onLoad() async {
+    await images.loadAllImages(); //load all images into the cache
     addAll([camera, world]); //add the camera and the world to the game
     await world.onLoad(); //load the world first
     return super.onLoad();

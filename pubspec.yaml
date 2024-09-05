@@ -119,6 +119,7 @@ flutter:
     - "assets/models/"
     - assets/images/Terrain/
     - assets/tiles/
+    - assets/images/Main Characters/Ninja Frog/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
