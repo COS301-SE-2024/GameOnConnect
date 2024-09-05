@@ -109,26 +109,19 @@ class _FaqWidgetState extends State<FaqWidget> {
                   ),
                   const Faq_boxWidget(
                     question:"What is the difference between rating and score?" ,
-                    answer: "",
+                    answer: "Honestly I do not know either :)",
                   ),
                   const Faq_boxWidget(
                     question:"What is the difference between metacritic and rating?" ,
-                    answer: "",
+                    answer: "I  cannot say until I know what rating is"
+                        " and whether we are removing it or not",
                   ),
                   const Faq_boxWidget(
                     question:"What is the difference between My Games and Want to play list?" ,
-                    answer: "",
-                  ),
-                  const Faq_boxWidget(
-                    question:"What is the difference between rating and score?" ,
-                    answer: "",
-                  ), const Faq_boxWidget(
-                    question:"How does the ESRB rating work?" ,
-                    answer: "",
-                  ),
-                  const Faq_boxWidget(
-                    question:"What is the difference between rating and score?" ,
-                    answer: "",
+                    answer: "Your My Games list is a list where you can add all the games you currently"
+                        " have or are currently playing. Your Want to play list "
+                        "is a list where you can add all the games you still "
+                        "want to play or are interested in",
                   ),
 
 
