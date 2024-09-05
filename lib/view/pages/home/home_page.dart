@@ -12,8 +12,6 @@ import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/games/flappy_bird.dart';
-import 'package:gameonconnect/view/pages/games/flappy_bird_game.dart';
-import 'package:gameonconnect/view/pages/games/game_screen.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/models/mountain_badge_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';

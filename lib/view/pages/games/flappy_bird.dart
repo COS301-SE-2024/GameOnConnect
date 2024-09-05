@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 class FlappyBird extends StatefulWidget {
@@ -9,59 +10,94 @@ class FlappyBird extends StatefulWidget {
 }
 
 class _FlappyBirdState extends State<FlappyBird> {
-  static double yAxis = 0;
-  double startPosition = yAxis;
+  static double birdYAxis = 0;
+  double initialPosition = birdYAxis;
   double height = 0;
   double time = 0;
-  bool started = false;
-  double velocity = 3.5; // jump strength
-  double gravity = -4.9; // gravity
+  double gravity = -4.9;
+  double velocity = 3.5;
+  bool gameStarted = false;
+  
+  // Pipe properties
+  static double pipeXOne = 1.5; // Starting position of the first pipe
+  static double pipeXTwo = pipeXOne + 1.5; // Starting position of the second pipe
+  double pipeWidth = 0.2; // Width of the pipes
+  double pipeGap = 0.4; // Gap between the pipes
+  
+  // Randomize pipe heights
+  Random random = Random();
+  double pipeHeightOne = 0.6; // Initial height of the first pipe
+  double pipeHeightTwo = 0.4; // Initial height of the second pipe
 
-  void start() {
-    started = true;
+  void startGame() {
+    gameStarted = true;
     Timer.periodic(Duration(milliseconds: 50), (timer) {
+      time += 0.05;
       height = gravity * time * time + velocity * time;
-
       setState(() {
-        yAxis = startPosition - height;
+        birdYAxis = initialPosition - height;
+        pipeXOne -= 0.05;
+        pipeXTwo -= 0.05;
+
+        // Check if pipes are out of the screen, reset them
+        if (pipeXOne < -1.5) {
+          pipeXOne += 3;
+          pipeHeightOne = random.nextDouble();
+        }
+
+        if (pipeXTwo < -1.5) {
+          pipeXTwo += 3;
+          pipeHeightTwo = random.nextDouble();
+        }
       });
 
-      if (isDead()) {
+      if (birdYAxis > 1 || birdYAxis < -1 || checkCollision()) {
         timer.cancel();
-        started = false;
-        dialog();
+        gameStarted = false;
+        showGameOverDialog();
       }
-
-      time += 0.05; // Increment time
     });
   }
 
-  bool isDead() {
-    // Bird is dead if it goes above or below the screen
-    if (yAxis < -1 || yAxis > 1) {
-      return true;
+  bool checkCollision() {
+    // Check if bird collides with pipes
+    if (pipeXOne < 0.25 && pipeXOne > -0.25) {
+      if (birdYAxis < -1 + pipeHeightOne || birdYAxis > 1 - (pipeHeightOne + pipeGap)) {
+        return true;
+      }
     }
+
+    if (pipeXTwo < 0.25 && pipeXTwo > -0.25) {
+      if (birdYAxis < -1 + pipeHeightTwo || birdYAxis > 1 - (pipeHeightTwo + pipeGap)) {
+        return true;
+      }
+    }
+
     return false;
+  }
+
+  void resetGame() {
+    Navigator.pop(context);
+    setState(() {
+      birdYAxis = 0;
+      gameStarted = false;
+      time = 0;
+      initialPosition = birdYAxis;
+      pipeXOne = 1.5;
+      pipeXTwo = pipeXOne + 1.5;
+      pipeHeightOne = 0.6;
+      pipeHeightTwo = 0.4;
+    });
   }
 
   void jump() {
     setState(() {
       time = 0;
-      startPosition = yAxis;
+      initialPosition = birdYAxis;
     });
   }
 
-  void reset() {
-    Navigator.pop(context);
-    setState(() {
-      yAxis = 0;
-      started = false;
-      time = 0;
-      startPosition = yAxis;
-    });
-  }
-
-  void dialog() {
+  void showGameOverDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -70,11 +106,12 @@ class _FlappyBirdState extends State<FlappyBird> {
           title: Center(
             child: Text(
               'GAME OVER',
+              style: TextStyle(color: Colors.white),
             ),
           ),
           actions: [
             GestureDetector(
-              onTap: reset,
+              onTap: resetGame,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: Container(
@@ -87,7 +124,7 @@ class _FlappyBirdState extends State<FlappyBird> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         );
       },
@@ -97,35 +134,63 @@ class _FlappyBirdState extends State<FlappyBird> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: started ? jump : start,
+      onTap: gameStarted ? jump : startGame,
       child: Scaffold(
         body: Column(
           children: [
             Expanded(
               flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage('https://github.com/HeyFlutter-Public/flappy_bird_game/blob/main/assets/images/background.png?raw=true'),
-                fit: BoxFit.cover,
-              ),
-            ),
-                //color: Colors.blue,
-                child: AnimatedContainer(
-                  alignment: Alignment(0, yAxis),
-                  duration: Duration(milliseconds: 0),
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    color: Colors.yellow,
-                     /*decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/your_image.png'), // or NetworkImage('https://toppng.com/public/uploads/preview/flappy-bird-sprite-11549936843rfq2kg39db.png')
-                fit: BoxFit.cover,
-              ),
-            ),*/
+              child: Stack(
+                children: [
+                  AnimatedContainer(
+                    alignment: Alignment(0, birdYAxis),
+                    duration: Duration(milliseconds: 0),
+                    color: Colors.blue,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      color: Colors.yellow,
+                    ),
                   ),
-                ),
+                  // First Pipe
+                  AnimatedContainer(
+                    alignment: Alignment(pipeXOne, 1.1),
+                    duration: Duration(milliseconds: 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * pipeWidth,
+                      height: MediaQuery.of(context).size.height * pipeHeightOne,
+                      color: Colors.green,
+                    ),
+                  ),
+                  AnimatedContainer(
+                    alignment: Alignment(pipeXOne, -1.1),
+                    duration: Duration(milliseconds: 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * pipeWidth,
+                      height: MediaQuery.of(context).size.height * (1 - pipeHeightOne - pipeGap),
+                      color: Colors.green,
+                    ),
+                  ),
+                  // Second Pipe
+                  AnimatedContainer(
+                    alignment: Alignment(pipeXTwo, 1.1),
+                    duration: Duration(milliseconds: 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * pipeWidth,
+                      height: MediaQuery.of(context).size.height * pipeHeightTwo,
+                      color: Colors.green,
+                    ),
+                  ),
+                  AnimatedContainer(
+                    alignment: Alignment(pipeXTwo, -1.1),
+                    duration: Duration(milliseconds: 0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * pipeWidth,
+                      height: MediaQuery.of(context).size.height * (1 - pipeHeightTwo - pipeGap),
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
