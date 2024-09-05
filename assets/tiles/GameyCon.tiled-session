@@ -12,6 +12,9 @@
             "scaleInDock": 1
         },
         "Level-1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
             "scale": 1.3240625,
             "selectedLayer": 0,
             "viewCenter": {
