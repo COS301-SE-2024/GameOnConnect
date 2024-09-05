@@ -2,15 +2,18 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:gameonconnect/GameyCon/actors/player.dart';
 import 'package:gameonconnect/GameyCon/levels/levels.dart';
 
-class GameyCon extends FlameGame {
+class GameyCon extends FlameGame with HasKeyboardHandlerComponents{
   @override
   Color backgroundColor() => const Color.fromARGB(255, 97, 11, 155);
 
   @override
   final world = Level(
+    player: Player(character: 'Ninja Frog'),
     levelName: 'Level-1',
   );
 

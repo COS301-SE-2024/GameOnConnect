@@ -428,8 +428,9 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             Padding(
               padding: const EdgeInsets.only(right: 20.0,top: 16.0),
               child: IconButton(
-                onPressed: () {
-                  Flame.device.fullScreen();
+                onPressed: () async {
+                  await Flame.device.fullScreen();
+                  if (!context.mounted) return;
                   Navigator.push(
                     context,
                     MaterialPageRoute(
