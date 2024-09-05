@@ -1,0 +1,29 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "last.imagePath": "C:/Users/piery/OneDrive/Documents/GitHub/GameOnConnect/assets/images/Terrain",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 23,
+    "openFiles": [
+    ],
+    "project": "GameyCon.tiled-project",
+    "recentFiles": [
+        "level-1.tmx",
+        "GameyCon.tsx",
+        "level-2.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

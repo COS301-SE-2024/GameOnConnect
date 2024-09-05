@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/home/connection_updates.dart';
@@ -41,6 +45,7 @@ class _HomePageState extends State<HomePage> {
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
+ 
 
   @override
   void initState() {
@@ -311,6 +316,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   late String currentUserName = "";
   late String currentUserId;
   final ProfileService _profileService = ProfileService();
+   GameyCon game = GameyCon();
 
   @override
   initState() {
@@ -415,6 +421,25 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 },
                 icon: Icon(
                   Icons.model_training,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              child: IconButton(
+                onPressed: () {
+                  Flame.device.fullScreen();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      //builder: (context) => GameWidget(game: game,),
+                      builder: (context) => GameWidget(game: kDebugMode ? GameyCon() : game,),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.games_outlined,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
