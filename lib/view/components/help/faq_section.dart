@@ -49,7 +49,7 @@ class _FaqSectionState extends State<FaqSection> {
                           padding: const EdgeInsets.all(13.0),
                           child: Text(faqItem.faqDetails,style: const TextStyle(fontSize: 12,color: Colors.grey,)),
                         ),
-                        TutorialVideo(videoPath: faqItem.videoPath),
+                        faqItem.videoPath.isNotEmpty? TutorialVideo(videoPath: faqItem.videoPath): const SizedBox(height: 5,),
                       ],
                     ),
                   );
