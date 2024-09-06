@@ -121,6 +121,7 @@ flutter:
     - assets/tiles/
     - assets/images/Main Characters/Ninja Frog/
     - assets/images/HUD/
+    - assets/images/Background/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
