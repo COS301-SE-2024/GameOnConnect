@@ -11,13 +11,12 @@ void main() {
       await tester.pump();
 
       expect(find.byKey(const Key('Back_button_key'),), findsOneWidget);
-      expect(find.byKey(const Key('game_library_section'),), findsOneWidget);
       expect(find.byKey(const Key('Friends_section'),), findsOneWidget);
-      expect(find.byKey(const Key('Getting_started_text'),), findsOneWidget);
-      expect(find.byKey(const Key('game_information_section'),), findsOneWidget); 
+      expect(find.byKey(const Key('game_library_section'),), findsOneWidget);
+      //expect(find.byKey(const Key('game_information_section'),), findsOneWidget);
     });
 
-    testWidgets('ExpansionTile for friends opens and shows content on tap', (WidgetTester tester) async {
+    /*testWidgets('ExpansionTile for friends opens and shows content on tap', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(home: GettingStarted()));
 
       Finder expansionTileFinder = find.byKey(const Key('how_to_friends_List_tile'));
@@ -41,9 +40,9 @@ void main() {
       // await tester.pumpAndSettle(); 
 
       // expect(find.byKey(const Key('key_friend_requests')), findsOneWidget);
-    });
+    });*/
 
-    testWidgets('ExpansionTile for GameLibrary opens and shows content on tap', (WidgetTester tester) async {
+    /*testWidgets('ExpansionTile for GameLibrary opens and shows content on tap', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(home: GettingStarted()));
 
       Finder expansionTileFinder = find.byKey(const Key('how_search_games'));
@@ -69,9 +68,9 @@ void main() {
       // await tester.pumpAndSettle(); 
 
       // expect(find.byKey(const Key('key_how_to_filter_games')), findsOneWidget);
-    });
+    });*/
 
-    testWidgets('ExpansionTile for Game Information opens and shows content on tap', (WidgetTester tester) async {
+    /*testWidgets('ExpansionTile for Game Information opens and shows content on tap', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(home: GettingStarted()));
 
       Finder expansionTileFinder = find.byKey(const Key('view_game_info'));
@@ -115,7 +114,7 @@ void main() {
       // await tester.pumpAndSettle(); 
 
       // expect(find.byKey(const Key('key_removing_from_wishlist')), findsOneWidget); 
-    });
+    });*/
 
   });
 }

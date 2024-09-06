@@ -67,9 +67,9 @@ class AllFaqs extends StatelessWidget {
     return Expanded(
       child: ListView(
         children: [
-          FaqSection(friendFaqs, 'Connections', Icons.diversity_1_outlined),
-          FaqSection(gameLibraryFaqs, 'Game Library', Icons.library_books_outlined),
-          FaqSection(gameInfoFaqs, 'Game Information', Icons.gamepad_outlined),
+          FaqSection(friendFaqs, 'Connections', Icons.diversity_1_outlined, const Key('Friends_section')),
+          FaqSection(gameLibraryFaqs, 'Game Library', Icons.library_books_outlined, const Key('game_library_section')),
+          FaqSection(gameInfoFaqs, 'Game Information', Icons.gamepad_outlined, const Key('game_information_section')),
         ],
       ),
     );

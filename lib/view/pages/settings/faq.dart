@@ -115,12 +115,12 @@ class _FaqWidgetState extends State<FaqWidget> {
 
                   Column(
                       children: [
-                        FaqSection(accounts,"Account and connections",Icons.people_alt_rounded),
+                        FaqSection(accounts,"Account and connections",Icons.people_alt_rounded, const Key('account_and_connections')),
                       ],
                     ),
                   Column(
                         children: [
-                          FaqSection(events,"Games and events",Icons.event),
+                          FaqSection(events,"Games and events",Icons.event, const Key('games_and_events')),
 
                         ],
                       )

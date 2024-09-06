@@ -6,7 +6,8 @@ class FaqSection extends StatefulWidget {
   late final List<FAQ> faq;
   late final String title;
   late final IconData icon;
-  FaqSection(this.faq, this.title, this.icon, {super.key}) {
+  final Key? subKey;
+  FaqSection(this.faq, this.title, this.icon,this.subKey, {super.key}) {
     super.key;
   }
 
@@ -24,6 +25,7 @@ class _FaqSectionState extends State<FaqSection> {
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
+          key: widget.subKey,
           children: [
             Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 10),
