@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/components/help/help_card.dart';
 import '../../components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
+
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -43,23 +45,19 @@ class _HelpWidgetState extends State<HelpPage> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-               const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        'Welcome to GameOnConnect\'s Help Center!\n'
-                            'If you have any further questions, please feel '
-                            'free to send us an email.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey),
-                      ),
+
+                          Padding(
+                            padding: EdgeInsets.all(25),
+                            child:Expanded( child:  Text(
+                              "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                     ),
-                  ],
-                ),
-              ),
                HelpCard(heading: "Frequently Asked Questions",
                   followHeading: "Answers to commonly asked questions about "
                       "GameOnConnect",
@@ -82,7 +80,9 @@ class _HelpWidgetState extends State<HelpPage> {
 
       ]),
               ),
-          ),
+          bottomNavigationBar: const ContactUsBar(),
+
+      ),
     );
   }
 }

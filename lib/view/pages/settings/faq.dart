@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/help_M/faq_model.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
-import 'package:gameonconnect/view/components/help/faq_boxes.dart';
-
 import '../../components/help/faq_section.dart';
+import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
+
 
 class FaqWidget extends StatefulWidget {
   const FaqWidget({super.key});
@@ -107,41 +107,29 @@ class _FaqWidgetState extends State<FaqWidget> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         body: SafeArea(
           top: true,
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
+
+                  Column(
                       children: [
                         FaqSection(accounts,"Account and connections",Icons.people_alt_rounded),
                       ],
                     ),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
+                  Column(
                         children: [
                           FaqSection(events,"Games and events",Icons.event),
-                          // Account & connections
+
                         ],
-                      ))
+                      )
                 ],
               ),
             ),
           ),
-        ),
+          bottomNavigationBar: const ContactUsBar()
+
       ),
     );
   }
