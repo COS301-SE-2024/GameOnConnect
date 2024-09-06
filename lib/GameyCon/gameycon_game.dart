@@ -1,54 +1,56 @@
 import 'dart:async';
-import 'package:flame/camera.dart';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
-import 'package:gameonconnect/GameyCon/actors/player.dart';
-import 'package:gameonconnect/GameyCon/levels/levels.dart';
+import 'package:flame/input.dart';
+import 'package:flutter/painting.dart';
+import 'package:gameonconnect/GameyCon/components/player.dart';
+import 'package:gameonconnect/GameyCon/components/levels.dart';
 
-class GameyCon extends FlameGame with HasKeyboardHandlerComponents {
+class GameyCon extends FlameGame
+    with
+        HasKeyboardHandlerComponents,
+        DragCallbacks,
+        HasCollisionDetection,
+        TapCallbacks {
   @override
   Color backgroundColor() => const Color.fromARGB(255, 97, 11, 155);
-
-  late final CameraComponent cam;
+  late CameraComponent cam;
+  Player player = Player(character: 'Ninja Frog');
   late JoystickComponent joystick;
-  late Player player = Player(character: 'Ninja Frog');
-  bool isJoystickOn = true;
+  bool showControls = true;
+  bool playSounds = true;
+  double soundVolume = 1.0;
+  List<String> levelNames = ['Level-1', 'Level-2'];
+  int currentLevelIndex = 0;
 
   @override
   FutureOr<void> onLoad() async {
+    // Load all images into cache
     await images.loadAllImages();
 
-    world = Level(
-      player: player,
-      levelName: 'Level-1',
-    );
+    _loadLevel();
 
-    cam = CameraComponent(
-      world: world,
-      viewport: FixedResolutionViewport(resolution: Vector2(365, 640)),
-    );
-    cam.viewfinder.anchor = Anchor.topLeft;
-
-    addAll([cam, world]);
-    if (isJoystickOn) {
-      addJoyStick();
+    if (showControls) {
+      addJoystick();
+      //add(JumpButton());
     }
-    
+
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    if (isJoystickOn) {
+    if (showControls) {
       updateJoystick();
     }
     super.update(dt);
   }
 
-  void addJoyStick() {
+  void addJoystick() {
     joystick = JoystickComponent(
+      priority: 10,
       knob: SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Knob.png'),
@@ -70,16 +72,47 @@ class GameyCon extends FlameGame with HasKeyboardHandlerComponents {
       case JoystickDirection.left:
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
-        player.playerDirection = PlayerDirection.left;
+        player.horizontalMovement = -1;
         break;
       case JoystickDirection.right:
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
-        player.playerDirection = PlayerDirection.right;
+        player.horizontalMovement = 1;
         break;
       default:
-      player.playerDirection = PlayerDirection.none;
+        player.horizontalMovement = 0;
         break;
     }
+  }
+
+  void loadNextLevel() {
+    removeWhere((component) => component is Level);
+
+    if (currentLevelIndex < levelNames.length - 1) {
+      currentLevelIndex++;
+      _loadLevel();
+    } else {
+      // no more levels
+      currentLevelIndex = 0;
+      _loadLevel();
+    }
+  }
+
+  void _loadLevel() {
+    Future.delayed(const Duration(seconds: 1), () {
+      Level world = Level(
+        player: player,
+        levelName: levelNames[currentLevelIndex],
+      );
+
+      cam = CameraComponent.withFixedResolution(
+        world: world,
+        width: 367,
+        height: 640,
+      );
+      cam.viewfinder.anchor = Anchor.topLeft;
+
+      addAll([cam, world]);
+    });
   }
 }
