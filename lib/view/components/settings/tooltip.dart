@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 
@@ -7,6 +6,7 @@ class ToolTip extends StatelessWidget {
 
   const ToolTip({super.key, required this.message});
 
+  @override
   Widget build(BuildContext context) {
     final tooltipkey = SuperTooltipController();
 
@@ -20,8 +20,7 @@ class ToolTip extends StatelessWidget {
       verticalOffset: 13,
       popupDirection: TooltipDirection.up,
       backgroundColor: Colors.grey,
-      child: Container(
-          child:  Icon(Icons.info,color: Theme.of(context).colorScheme.secondary,)),
+      child: Icon(Icons.info,color: Theme.of(context).colorScheme.secondary,),
     );
   }
 }

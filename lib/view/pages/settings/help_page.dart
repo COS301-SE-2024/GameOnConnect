@@ -46,7 +46,7 @@ class _HelpWidgetState extends State<HelpPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
 
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.all(25),
                             child:Expanded( child:  Text(
                               "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
