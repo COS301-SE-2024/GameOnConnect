@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:gameonconnect/view/pages/home/home_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
@@ -15,6 +15,9 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:expandable_text/expandable_text.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'dart:convert';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -88,6 +91,26 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
 
   Future shareLink(String link, String message) async {
     await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
+  }
+
+  // String sanitizeDescription(String description) {
+  //   return description.replaceAll('�', '');
+  // }
+
+  String sanitizeDescription(String description) {
+    final unescape = HtmlUnescape();
+    String decodedDescription = unescape.convert(description); 
+
+    decodedDescription = utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
+
+    decodedDescription = decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+
+    return _stripHtmlTags(decodedDescription); 
+  }
+
+  String _stripHtmlTags(String htmlString) {
+    final regex = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: false);
+    return htmlString.replaceAll(regex, '');
   }
 
   // @override
@@ -228,13 +251,56 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           20,
                                           5,
                                           5), // Adjust top, left, right padding as needed
-                                      child: Icon(
-                                        Icons.play_circle,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: 24,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.play_circle,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          size: 24,
+                                        ),
+                                        onPressed: () async {
+                                          if (!isInMyGames) {
+                                            await myGames.addToMyGames(
+                                                gameDetails.id.toString());
+                                            // ignore: use_build_context_synchronously
+                                            DelightToastBar(
+                                                    builder: (context) {
+                                                      return CustomToastCard(
+                                                        title: Text(
+                                                          'Added to My Games!',
+                                                          style: TextStyle(
+                                                            color: Theme.of(context)
+                                                                .colorScheme
+                                                                .primary,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    position:
+                                                        DelightSnackbarPosition.top,
+                                                    autoDismiss: true,
+                                                    snackbarDuration:
+                                                        const Duration(seconds: 3))
+                                                .show(
+                                              // ignore: use_build_context_synchronously
+                                              context,
+                                            );
+                                          }
+                                          Navigator.push(
+                                            // ignore: use_build_context_synchronously
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const HomePage(title: 'GameOnConnect',)),
+                                          );
+                                        },
                                       ),
+                                      // child: Icon(
+                                      //   Icons.play_circle,
+                                      //   color: Theme.of(context)
+                                      //       .colorScheme
+                                      //       .primary,
+                                      //   size: 24,
+                                      // ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -777,22 +843,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 6, 12, 0),
-                            child: Html(
-                                data: gameDetails.description,
-                                //TODO : character representation is weird
-                                style: {
-                                  "body": Style(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    letterSpacing: 0,
-                                    fontSize: FontSize(16.0),
-                                    // Adjust font size as needed
-                                    fontWeight: FontWeight.normal,
-                                    // Adjust font weight as needed
-                                  ),
-                                }),
+                            padding: const EdgeInsets.all(12),
+
+                            child: ExpandableText(
+                              sanitizeDescription(gameDetails.description),
+                              expandText: 'See more',
+                              collapseText: 'See less',
+                              maxLines: 4,
+                              linkColor: Theme.of(context).colorScheme.primary,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
