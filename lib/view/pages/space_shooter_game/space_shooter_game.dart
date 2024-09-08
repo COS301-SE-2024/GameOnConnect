@@ -95,6 +95,7 @@ class Player extends SpriteAnimationComponent
                 -height / 2,
               ),
         );
+        
       },
       autoStart: false,
     );
@@ -129,7 +130,7 @@ class Bullet extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'bullet.png',
+      'player.png',
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: .2,
@@ -172,7 +173,7 @@ class Enemy extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'enemy.png',
+      'player.png',
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: .2,
@@ -224,7 +225,7 @@ class Explosion extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'explosion.png',
+      'player.png',
       SpriteAnimationData.sequenced(
         amount: 6,
         stepTime: .1,
