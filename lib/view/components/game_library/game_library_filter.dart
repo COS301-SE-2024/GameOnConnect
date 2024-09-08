@@ -144,7 +144,9 @@ class _FilterPageState extends State<FilterPage> {
             Expanded(
               child: FilledButton(
                 onPressed: _applyFilters,
-                child: const Text("Filter"),
+                child: Text("Filter",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary)),
               ),
             ),
             const SizedBox(
@@ -360,7 +362,19 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
           child: ExpandableNotifier(
             controller: widget.platformExpandableController,
             child: ExpandablePanel(
-              header: Text(_filterName),
+              header: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(_filterName),
+                  Text(
+                    '(${_selectedValues.length} selected)',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
               collapsed: const SizedBox(width: 0, height: 0),
               expanded: Column(
                 children: _buildCheckboxList(context, _filterValues),
