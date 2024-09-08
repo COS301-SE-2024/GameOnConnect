@@ -366,13 +366,13 @@ class _ExpandableFilterState extends State<ExpandableFilter> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(_filterName),
-                  Text(
+                  _selectedValues.isNotEmpty ? Text(
                     '(${_selectedValues.length} selected)',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ) : const SizedBox(),
                 ],
               ),
               collapsed: const SizedBox(width: 0, height: 0),
