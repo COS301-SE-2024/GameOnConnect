@@ -21,6 +21,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/space_shooter_game.dart';
+import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -428,7 +429,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GameWidget(game: SpaceShooterGame())
+                      builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
                     ),
                   );
                 },
