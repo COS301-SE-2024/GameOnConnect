@@ -5,6 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
+import 'package:gameonconnect/GameyCon/components/jump_button.dart';
 import 'package:gameonconnect/GameyCon/components/player.dart';
 import 'package:gameonconnect/GameyCon/components/levels.dart';
 
@@ -34,7 +35,7 @@ class GameyCon extends FlameGame
 
     if (showControls) {
       addJoystick();
-      //add(JumpButton());
+      add(JumpButton());
     }
 
     return super.onLoad();
