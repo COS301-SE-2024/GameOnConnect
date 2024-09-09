@@ -50,19 +50,24 @@ class GameyCon extends FlameGame
   }
 
   void addJoystick() {
+    //  final knobPaint = BasicPalette.blue.withAlpha(200).paint();
+    //  final backgroundPaint = BasicPalette.blue.withAlpha(100).paint();
+
     joystick = JoystickComponent(
-      priority: 10,
-      knob: SpriteComponent(
+      priority: 2,
+      knob: 
+          SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Knob.png'),
         ),
       ),
-      background: SpriteComponent(
+      background: 
+          SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Joystick.png'),
         ),
       ),
-      margin: const EdgeInsets.only(left: 32, bottom: 32),
+      margin: const EdgeInsets.only(left: 48, bottom: 48),
     );
 
     add(joystick);

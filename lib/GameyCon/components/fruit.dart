@@ -23,7 +23,7 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
     height: 12,
   );
 
-  bool collected = false;
+  
 
   @override
   FutureOr<void> onLoad() {
@@ -50,8 +50,6 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
   }
 
    void collidedWithPlayer() async {
-    if (!collected) {
-      collected = true;
       animation = SpriteAnimation.fromFrameData(
         game.images.fromCache('Items/Fruits/Collected.png'),
         SpriteAnimationData.sequenced(
@@ -62,8 +60,8 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
         ),
       );
 
-      await animationTicker?.completed;
-      removeFromParent();
-    }
+    await animationTicker?.completed;
+    removeFromParent();
+    
   }
 }

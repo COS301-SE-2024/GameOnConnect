@@ -31,25 +31,18 @@ class Level extends World with HasGameRef<GameyCon> {
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
 
-    const tileSize = 64;
-
-    final numTilesY = (game.size.y / tileSize).floor();
-    final numTilesX = (game.size.x / tileSize).floor();
+    
 
     if (backgroundLayer != null) {
       final backgroundColor =
           backgroundLayer.properties.getValue('BackgroundColor');
-
-      for (double y = 0; y < game.size.y / numTilesY; y++) {
-        for (double x = 0; x < numTilesX; x++) {
           final backgroundTile = BackgroundTile(
             color: backgroundColor ?? 'Gray',
-            position: Vector2(x * tileSize, y * tileSize - tileSize),
+            position: Vector2(0, 0),
           );
-
           add(backgroundTile);
-        }
-      }
+
+      
     }
   }
 
@@ -61,6 +54,7 @@ class Level extends World with HasGameRef<GameyCon> {
         switch (spawnPoint.class_) {
           case 'Player':
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.scale.x = 1;
             add(player);
             break;
           case 'Fruit':
