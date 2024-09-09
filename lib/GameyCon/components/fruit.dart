@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 
-class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, CollisionCallbacks {
+class Fruit extends SpriteAnimationComponent
+    with HasGameRef<GameyCon>, CollisionCallbacks {
   final String fruit;
   Fruit({
     this.fruit = 'Apple',
-    position,
-    size,
-  }) : super(
-          position: position,
-          size: size,
-        );
+    super.position,
+    super.size,
+  });
 
   final double stepTime = 0.05;
   final hitbox = CustomHitbox(
@@ -22,15 +21,14 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
     width: 12,
     height: 12,
   );
-
-  
+  bool collected = false;
 
   @override
   FutureOr<void> onLoad() {
     //debugMode = true;
     priority = -1;
 
-     add(
+    add(
       RectangleHitbox(
         position: Vector2(hitbox.x, hitbox.y),
         size: Vector2(hitbox.width, hitbox.height),
@@ -49,7 +47,12 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
     return super.onLoad();
   }
 
-   void collidedWithPlayer() async {
+  void collidedWithPlayer() async {
+    if (!collected) {
+      collected = true;
+      if (game.playSounds) {
+        FlameAudio.play('collect_fruit.wav', volume: game.soundVolume);
+      }
       animation = SpriteAnimation.fromFrameData(
         game.images.fromCache('Items/Fruits/Collected.png'),
         SpriteAnimationData.sequenced(
@@ -60,8 +63,8 @@ class Fruit extends SpriteAnimationComponent with HasGameRef<GameyCon>, Collisio
         ),
       );
 
-    await animationTicker?.completed;
-    removeFromParent();
-    
+      await animationTicker?.completed;
+      removeFromParent();
+    }
   }
 }

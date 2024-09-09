@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
 import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
@@ -25,9 +26,9 @@ class Player extends SpriteAnimationGroupComponent
     with HasGameRef<GameyCon>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
-    position,
+    super.position,
     this.character = 'Ninja Frog',
-  }) : super(position: position);
+  });
 
   final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
@@ -107,8 +108,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-     if (!reachedCheckpoint) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (!reachedCheckpoint) {
       if (other is Fruit) {
         other.collidedWithPlayer();
       }
@@ -209,6 +211,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    if (game.playSounds) {
+      FlameAudio.play('jump.wav', volume: game.soundVolume);
+    }
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -269,6 +274,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    if (game.playSounds) {
+      FlameAudio.play('hit.wav', volume: game.soundVolume);
+    }
     const canMoveDuration = Duration(milliseconds: 400);
     gotHit = true;
     current = PlayerState.hit;
@@ -287,13 +295,15 @@ class Player extends SpriteAnimationGroupComponent
     position = startingPosition;
     _updatePlayerState();
     Future.delayed(canMoveDuration, () {
-          gotHit = false;
-        });
-
+      gotHit = false;
+    });
   }
 
-  void _reachedCheckpoint() {
+  void _reachedCheckpoint() async {
     reachedCheckpoint = true;
+    if (game.playSounds) {
+      FlameAudio.play('disappear.wav', volume: game.soundVolume);
+    }
     if (scale.x > 0) {
       position = position - Vector2.all(32);
     } else if (scale.x < 0) {
@@ -301,16 +311,15 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     current = PlayerState.disappearing;
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
-    const reachedCheckpointDuration = Duration(milliseconds: 350);
-    Future.delayed(reachedCheckpointDuration, () {
-      reachedCheckpoint = false;
-      position = Vector2.all(-640);
+    reachedCheckpoint = false;
+    position = Vector2.all(-640);
 
-      const waitToChangeDuration = Duration(seconds: 3);
-      Future.delayed(waitToChangeDuration, () {
-        game.loadNextLevel();
-      });
+    const waitToChangeDuration = Duration(seconds: 3);
+    Future.delayed(waitToChangeDuration, () {
+      game.loadNextLevel();
     });
   }
 }

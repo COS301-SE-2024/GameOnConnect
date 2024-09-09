@@ -8,12 +8,9 @@ import 'package:gameonconnect/GameyCon/components/player.dart';
 class Checkpoint extends SpriteAnimationComponent
     with HasGameRef<GameyCon>, CollisionCallbacks {
   Checkpoint({
-    position,
-    size,
-  }) : super(
-          position: position,
-          size: size,
-        );
+    super.position,
+    super.size,
+  });
 
   @override
   FutureOr<void> onLoad() {

@@ -9,10 +9,8 @@ class BackgroundTile extends ParallaxComponent  {
   final String color;
   BackgroundTile({
     this.color = 'Gray',
-    position,
-  }) : super(
-          position: position,
-        );
+    super.position,
+  });
 
   final double scrollSpeed = 40;
 

@@ -75,6 +75,7 @@ dependencies:
   youtube_player_flutter: ^9.0.3
   flame: ^1.19.0
   flame_tiled: ^1.20.3
+  flame_audio: ^2.10.3
 
 
 dev_dependencies:
@@ -126,6 +127,7 @@ flutter:
     - assets/images/Items/Fruits/
     - assets/images/Items/Checkpoints/Checkpoint/
     - assets/images/Traps/Saw/
+    - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
