@@ -116,7 +116,7 @@ flutter:
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
     - "assets/models/"
-    - assets/images/player-sprite.png
+    # - assets/images/player-sprite.png
     - assets/images/stars_0.png
     - assets/images/stars_1.png
     - assets/images/stars_2.png
@@ -124,6 +124,11 @@ flutter:
     - assets/images/enemy.png
     - assets/images/explosion.png
     - assets/images/player.png
+    - assets/images/Frigate.png
+    - assets/images/Battlecruiser.png
+    - assets/images/Scout.png
+    - assets/images/Scout_Destruction.png
+    # - assets/images/Bullet.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
