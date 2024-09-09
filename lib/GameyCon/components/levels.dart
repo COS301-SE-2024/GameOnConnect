@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gameonconnect/GameyCon/components/background_tile.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
+import 'package:gameonconnect/GameyCon/components/fruit.dart';
 import 'package:gameonconnect/GameyCon/components/player.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 
@@ -60,6 +61,13 @@ class Level extends World with HasGameRef<GameyCon> {
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
+          case 'Fruit': 
+          final fruit = Fruit(
+            fruit: spawnPoint.name,
+            position: Vector2(spawnPoint.x, spawnPoint.y),
+            size: Vector2(spawnPoint.width, spawnPoint.height),
+          );
+          add(fruit);
           default:
         }
       }
