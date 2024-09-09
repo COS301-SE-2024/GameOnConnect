@@ -331,39 +331,40 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   }
 
   Widget _homeBody() {
-    return Padding(
-      padding: const EdgeInsets.all(15),
+    return   Expanded(child: Padding(
+      padding:  EdgeInsets.all(MediaQuery.of(context).size.width*0.042),
       child: ListView(children: [
         Text("Ready to game,",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.089, fontWeight: FontWeight.bold)),
         Text("$currentUserName?",
             style: TextStyle(
-                fontSize: 32,
+                fontSize: MediaQuery.of(context).size.width*0.089,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary)),
-        SizedBox(height: 15),
+        SizedBox(height: MediaQuery.of(context).size.height*0.01),
         GameTimer(),
-        SizedBox(height: 15),
+        SizedBox(height: MediaQuery.of(context).size.height*0.01),
         Divider(
           thickness: 1,
           color: Theme.of(context).colorScheme.primaryContainer,
         ),
-        SizedBox(height: 19),
+        SizedBox(height: MediaQuery.of(context).size.height*0.015),
         Text("Friends currently online",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.height*0.03)),
+        SizedBox(height: MediaQuery.of(context).size.height*0.01),
         CurrentlyOnlineBar(),
         SizedBox(height: 30),
         Text("Connection updates",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.height*0.03)),
         SizedBox(height: 15),
         ConnectionUpdates(),
         SizedBox(height: 30),
         Text("Event invites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.height*0.03)),
         SizedBox(height: 15),
         EventInvitesList()
       ]),
+    ),
     );
   }
 

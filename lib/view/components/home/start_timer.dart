@@ -50,7 +50,7 @@ class _GameTimer extends State<GameTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.028),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(15)),
@@ -59,26 +59,29 @@ class _GameTimer extends State<GameTimer> {
         child: ExpansionTile(
           title: Text(
             _timerService.isRunning() ? 'Done playing?' : "Start playing",
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.height * 0.03,
               fontWeight: FontWeight.bold,
             ),
           ),
           leading: const Icon(Icons.videogame_asset),
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.028),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _timerService.isRunning()
                       ? Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.radio_button_checked,
                               color: Colors.red,
+                              size: MediaQuery.of(context).size.width * 0.067,
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.01),
                             ValueListenableBuilder<String>(
                               valueListenable: _timerService.elapsedTime,
                               builder: (context, value, child) {
@@ -109,12 +112,23 @@ class _GameTimer extends State<GameTimer> {
                               return DropdownButton<String>(
                                 isDense: true,
                                 underline: const SizedBox(),
-                                hint: Text(_selectedGameName ??
-                                    'What are you playing?'),
+                                hint: Text(
+                                  _selectedGameName ?? 'What are you playing?',
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.05),
+                                ),
                                 items: snapshot.data!.map((GameDetails game) {
                                   return DropdownMenuItem<String>(
                                     value: game.id.toString(),
-                                    child: Text(game.name),
+                                    child: Text(game.name,
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                        )),
                                   );
                                 }).toList(),
                                 onChanged: (String? newValue) {
@@ -137,8 +151,14 @@ class _GameTimer extends State<GameTimer> {
                                 ? Colors.grey
                                 : Theme.of(context).colorScheme.primary),
                     icon: _timerService.isRunning()
-                        ? const Icon(Icons.stop, color: Colors.white)
-                        : const Icon(Icons.play_arrow, color: Colors.white),
+                        ? Icon(
+                            Icons.stop,
+                            color: Colors.white,
+                            size: MediaQuery.of(context).size.width * 0.067,
+                          )
+                        : Icon(Icons.play_arrow,
+                            color: Colors.white,
+                            size: MediaQuery.of(context).size.width * 0.067),
                     onPressed: !_timerService.isGameSelected()
                         ? null
                         : () {
@@ -151,87 +171,90 @@ class _GameTimer extends State<GameTimer> {
                                   builder: (BuildContext context) {
                                     int? selectedRating = 1;
                                     return AlertDialog(
-                                      title: const Text(
+                                      title: Text(
                                           'How was your experience playing this game?',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.03,
                                               fontWeight: FontWeight.bold)),
-                                      content: StatefulBuilder(
-                                        builder: (context, StateSetter setDialogState) {
-                                          return SizedBox(
-                                            width: double.maxFinite,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                EmojiFeedback(
-                                                  rating: selectedRating,
-                                                  enableFeedback: true,
-                                                  emojiPreset: const [
-                                                    EmojiModel(
-                                                      src: Assets.classicTerrible,
-                                                      label: 'Scared',
-                                                      package:
-                                                          'flutter_emoji_feedback',
-                                                    ),
-                                                    EmojiModel(
-                                                      src: Assets.classicBad,
-                                                      label: 'Disgusted',
-                                                      package:
-                                                          'flutter_emoji_feedback',
-                                                    ),
-                                                    EmojiModel(
-                                                      src: Assets.flatTerrible,
-                                                      label: 'Angry',
-                                                      package:
-                                                          'flutter_emoji_feedback',
-                                                    ),
-                                                    EmojiModel(
-                                                      src: Assets.flatBad,
-                                                      label: 'Sad',
-                                                      package:
-                                                          'flutter_emoji_feedback',
-                                                    ),
-                                                    EmojiModel(
-                                                      src: Assets.flatVeryGood,
-                                                      label: 'Happy',
-                                                      package:
-                                                          'flutter_emoji_feedback',
-                                                    )
-                                                  ],
-                                                  inactiveElementBlendColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .surface,
-                                                  onChanged: (value) {
-                                                    setDialogState(() {
-                                                      selectedRating = value;
-                                                      switch (value) {
-                                                        case 1:
-                                                          _mood = "Scared";
-                                                          break;
-                                                        case 2:
-                                                          _mood = "Disgusted";
-                                                          break;
-                                                        case 3:
-                                                          _mood = "Angry";
-                                                          break;
-                                                        case 4:
-                                                          _mood = "Sad";
-                                                          break;
-                                                        case 5:
-                                                          _mood = "Happy";
-                                                          break;
-                                                        default:
-                                                          _mood = "No mood";
-                                                      }
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }
-                                      ),
+                                      content: StatefulBuilder(builder:
+                                          (context,
+                                              StateSetter setDialogState) {
+                                        return SizedBox(
+                                          width: double.maxFinite,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              EmojiFeedback(
+                                                rating: selectedRating,
+                                                enableFeedback: true,
+                                                emojiPreset: const [
+                                                  EmojiModel(
+                                                    src: Assets.classicTerrible,
+                                                    label: 'Scared',
+                                                    package:
+                                                        'flutter_emoji_feedback',
+                                                  ),
+                                                  EmojiModel(
+                                                    src: Assets.classicBad,
+                                                    label: 'Disgusted',
+                                                    package:
+                                                        'flutter_emoji_feedback',
+                                                  ),
+                                                  EmojiModel(
+                                                    src: Assets.flatTerrible,
+                                                    label: 'Angry',
+                                                    package:
+                                                        'flutter_emoji_feedback',
+                                                  ),
+                                                  EmojiModel(
+                                                    src: Assets.flatBad,
+                                                    label: 'Sad',
+                                                    package:
+                                                        'flutter_emoji_feedback',
+                                                  ),
+                                                  EmojiModel(
+                                                    src: Assets.flatVeryGood,
+                                                    label: 'Happy',
+                                                    package:
+                                                        'flutter_emoji_feedback',
+                                                  )
+                                                ],
+                                                inactiveElementBlendColor:
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .surface,
+                                                onChanged: (value) {
+                                                  setDialogState(() {
+                                                    selectedRating = value;
+                                                    switch (value) {
+                                                      case 1:
+                                                        _mood = "Scared";
+                                                        break;
+                                                      case 2:
+                                                        _mood = "Disgusted";
+                                                        break;
+                                                      case 3:
+                                                        _mood = "Angry";
+                                                        break;
+                                                      case 4:
+                                                        _mood = "Sad";
+                                                        break;
+                                                      case 5:
+                                                        _mood = "Happy";
+                                                        break;
+                                                      default:
+                                                        _mood = "No mood";
+                                                    }
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
                                       actions: <Widget>[
                                         TextButton(
                                           child: const Text('Okay'),
