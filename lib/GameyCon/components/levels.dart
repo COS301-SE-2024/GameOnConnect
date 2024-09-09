@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gameonconnect/GameyCon/components/background_tile.dart';
+import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
 import 'package:gameonconnect/GameyCon/components/fruit.dart';
 import 'package:gameonconnect/GameyCon/components/player.dart';
@@ -71,10 +72,10 @@ class Level extends World with HasGameRef<GameyCon> {
             add(fruit);
             break;
           case 'Saw':
-          final isVertical = spawnPoint.properties.getValue('isVertical');
-          final offNeg = spawnPoint.properties.getValue('offNeg');
-          final offPos = spawnPoint.properties.getValue('offPos');
-          
+            final isVertical = spawnPoint.properties.getValue('isVertical');
+            final offNeg = spawnPoint.properties.getValue('offNeg');
+            final offPos = spawnPoint.properties.getValue('offPos');
+
             final saw = Saw(
               isVertical: isVertical,
               offNeg: offNeg,
@@ -83,6 +84,13 @@ class Level extends World with HasGameRef<GameyCon> {
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
             add(saw);
+            break;
+          case 'Checkpoint':
+            final checkpoint = Checkpoint(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(checkpoint);
             break;
           default:
         }
