@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
+import 'package:gameonconnect/GameyCon/components/chicken.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
 import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
 import 'package:gameonconnect/GameyCon/components/fruit.dart';
@@ -119,6 +120,9 @@ class Player extends SpriteAnimationGroupComponent
       }
       if (other is Checkpoint) {
         _reachedCheckpoint();
+      }
+      if (other is Chicken) {
+        other.collidedWithPlayer();
       }
     }
     super.onCollisionStart(intersectionPoints, other);
@@ -321,5 +325,9 @@ class Player extends SpriteAnimationGroupComponent
     Future.delayed(waitToChangeDuration, () {
       game.loadNextLevel();
     });
+  }
+
+  void collidedwithEnemy() {
+    _respawn();
   }
 }

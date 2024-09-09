@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gameonconnect/GameyCon/components/background_tile.dart';
 import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
+import 'package:gameonconnect/GameyCon/components/chicken.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
 import 'package:gameonconnect/GameyCon/components/fruit.dart';
 import 'package:gameonconnect/GameyCon/components/player.dart';
@@ -31,18 +32,14 @@ class Level extends World with HasGameRef<GameyCon> {
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
 
-    
-
     if (backgroundLayer != null) {
       final backgroundColor =
           backgroundLayer.properties.getValue('BackgroundColor');
-          final backgroundTile = BackgroundTile(
-            color: backgroundColor ?? 'Gray',
-            position: Vector2(0, 0),
-          );
-          add(backgroundTile);
-
-      
+      final backgroundTile = BackgroundTile(
+        color: backgroundColor ?? 'Gray',
+        position: Vector2(0, 0),
+      );
+      add(backgroundTile);
     }
   }
 
@@ -85,6 +82,17 @@ class Level extends World with HasGameRef<GameyCon> {
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
             add(checkpoint);
+            break;
+          case 'Chicken':
+            final offNeg = spawnPoint.properties.getValue('offNeg');
+            final offPos = spawnPoint.properties.getValue('offPos');
+            final chicken = Chicken(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+              offNeg: offNeg,
+              offPos: offPos,
+            );
+            add(chicken);
             break;
           default:
         }
