@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +128,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       fit: BoxFit.cover,
                                                     )),
                                                 ClipRRect(
-                                                  
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   child: filePath != null
@@ -360,7 +360,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 20,
                                           ),
                                           TextFormField(
-                                            key: const Key('descriptionTextField'),
+                                            key: const Key(
+                                                'descriptionTextField'),
                                             onTapOutside: (event) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
@@ -433,7 +434,34 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 10,
                                           ),
 
-
+                                          const ToolTip(
+                                              message:
+                                                  "Tournaments are competitive, "
+                                                      "whereas gaming sessions "
+                                                      "are more relaxed with "
+                                                      "people you know "),
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            'Start*',
+                                            style: TextStyle(
+                                              fontFamily: 'Inter',
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              fontSize: 14,
+                                              letterSpacing: 0,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                           InkWell(
                                             key: const Key('start_date_picker'),
                                             splashColor: Colors.transparent,
@@ -657,7 +685,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 20,
+                                            height: 15,
+                                          ),
+                                          const ToolTip(message: "Public events are seen by all users and anyone can join it."),
+                                          const SizedBox(
+                                            height:3,
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
@@ -676,7 +708,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15),
+                                                            left: 15,),
                                                     child: Text(
                                                       'Public',
                                                       style: TextStyle(

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class GameService {
   static Future<List<Game>> fetchGames(int page,
-      {String? sortValue, String? searchQuery}) async {
+      {String? sortValue, String? searchQuery, String? filterString}) async {
     String request = '&page_size=20&page=$page';
 
     if (sortValue != null && sortValue.isNotEmpty) {
@@ -16,6 +16,10 @@ class GameService {
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
       request += '&search=$searchQuery';
+    }
+
+    if (filterString != null && filterString.isNotEmpty) {
+      request += filterString;
     }
 
     var fileInfo = await GameCacheManager().getFileFromCache(request);

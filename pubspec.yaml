@@ -73,6 +73,8 @@ dependencies:
   insta_image_viewer: ^1.0.4
   youtube_player_flutter: ^9.0.3
   share_plus: ^10.0.0
+  super_tooltip: ^2.0.8
+
 
 
 dev_dependencies:
