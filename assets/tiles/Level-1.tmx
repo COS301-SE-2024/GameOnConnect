@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="23" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="34">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="23" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="37">
  <tileset firstgid="1" source="GameyCon.tsx"/>
  <layer id="1" name="Background" width="23" height="40">
   <properties>
@@ -49,12 +49,26 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="2" name="Player" type="Player" x="126.882" y="558.13" width="31.7206" height="31.7206"/>
+  <object id="2" name="Player" type="Player" x="160.113" y="577.011" width="31.7206" height="31.7206"/>
   <object id="26" name="Apple" type="Fruit" x="64.1964" y="193.344" width="31.7206" height="30.2101"/>
   <object id="27" name="Kiwi" type="Fruit" x="111.022" y="302.856" width="33.2311" height="33.9863"/>
   <object id="28" name="Cherries" type="Fruit" x="175.974" y="223.554" width="32.4758" height="33.2311"/>
   <object id="30" name="Orange" type="Fruit" x="64.1964" y="383.668" width="31.7206" height="32.4758"/>
   <object id="32" name="Apple" type="Fruit" x="208.449" y="576.257" width="31.7206" height="30.2101"/>
+  <object id="34" type="Saw" x="16.6155" y="591.362" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="false"/>
+    <property name="offNeg" type="float" value="0"/>
+    <property name="offPos" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="36" type="Saw" x="303.611" y="266.981" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="true"/>
+    <property name="offNeg" type="float" value="6"/>
+    <property name="offPos" type="float" value="4"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="3" x="-0.755251" y="6.04201" width="6.79726" height="635.166"/>

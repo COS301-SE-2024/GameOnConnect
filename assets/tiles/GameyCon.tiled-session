@@ -42,6 +42,7 @@
         "Level-2.tmx"
     ],
     "project": "GameyCon.tiled-project",
+    "property.type": "float",
     "recentFiles": [
         "Level-1.tmx",
         "Level-2.tmx",
