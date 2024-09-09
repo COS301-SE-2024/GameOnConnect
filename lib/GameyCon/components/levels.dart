@@ -21,6 +21,9 @@ class Level extends World with HasGameRef<GameyCon> {
   @override
   FutureOr<void> onLoad() async {
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16.0));
+
+    //level.position = Vector2(0, -50);
+
     add(level);
 
     _scrollingBackground();

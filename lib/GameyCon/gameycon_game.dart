@@ -67,7 +67,7 @@ class GameyCon extends FlameGame
           images.fromCache('HUD/Joystick.png'),
         ),
       ),
-      margin: const EdgeInsets.only(left: 48, bottom: 48),
+      margin: const EdgeInsets.only(left: 48, bottom: 5),
     );
 
     add(joystick);

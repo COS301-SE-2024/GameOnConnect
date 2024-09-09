@@ -16,7 +16,7 @@ class JumpButton extends SpriteComponent
     sprite = Sprite(game.images.fromCache('HUD/JumpButton.png'));
     position = Vector2(
       game.size.x - margin - buttonSize,
-      game.size.y - margin - buttonSize,
+      game.size.y - margin - buttonSize + 30,
     );
     priority = 10;
     return super.onLoad();
