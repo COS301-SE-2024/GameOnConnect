@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gameonconnect/GameyCon/components/collision_block.dart';
-import 'package:gameonconnect/GameyCon/components/player_hitbox.dart';
+import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
+import 'package:gameonconnect/GameyCon/components/fruit.dart';
 import 'package:gameonconnect/GameyCon/components/tools.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<GameyCon>, KeyboardHandler {
+    with HasGameRef<GameyCon>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
     position,
@@ -38,7 +39,7 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = false;
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
-  PlayerHitbox hitbox = PlayerHitbox(
+  CustomHitbox hitbox = CustomHitbox(
     x: 10,
     y: 4,
     width: 14,
@@ -81,6 +82,14 @@ class Player extends SpriteAnimationGroupComponent
 
     hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fruit) {
+      other.collidedWithPlayer();
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
