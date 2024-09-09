@@ -63,7 +63,7 @@ class Player extends SpriteAnimationComponent
     with HasGameReference<SpaceShooterGame> {
   Player()
       : super(
-          size: Vector2(100, 150),
+          size: Vector2(120, 130),     //size: Vector2(120, 130), frigate
           anchor: Anchor.center,
         );
 
@@ -73,12 +73,21 @@ class Player extends SpriteAnimationComponent
   Future<void> onLoad() async {
     await super.onLoad();
 
+    // animation = await game.loadSpriteAnimation(
+    //   'Battlecruiser.png',
+    //   SpriteAnimationData.sequenced(
+    //     amount: 30,
+    //     stepTime: .2,
+    //     textureSize: Vector2(128, 128),
+    //   ),
+    // );
+
     animation = await game.loadSpriteAnimation(
-      'player.png',
+      'Frigate.png',
       SpriteAnimationData.sequenced(
-        amount: 4,
+        amount: 6,
         stepTime: .2,
-        textureSize: Vector2(32, 48),
+        textureSize: Vector2(64, 64),
       ),
     );
 
@@ -130,11 +139,11 @@ class Bullet extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'player.png',
+      'bullet.png',
       SpriteAnimationData.sequenced(
         amount: 4,
         stepTime: .2,
-        textureSize: Vector2(8, 16),
+        textureSize: Vector2(8, 8),
       ),
     );
 
@@ -166,18 +175,18 @@ class Enemy extends SpriteAnimationComponent
           anchor: Anchor.center,
         );
 
-  static const enemySize = 50.0;
+  static const enemySize = 100.0;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'player.png',
+      'Scout.png',
       SpriteAnimationData.sequenced(
-        amount: 4,
+        amount: 6,
         stepTime: .2,
-        textureSize: Vector2.all(16),
+        textureSize: Vector2.all(64),
       ),
     );
 
@@ -215,7 +224,7 @@ class Explosion extends SpriteAnimationComponent
   Explosion({
     super.position,
   }) : super(
-          size: Vector2.all(150),
+          size: Vector2.all(100),
           anchor: Anchor.center,
           removeOnFinish: true,
         );
@@ -225,11 +234,11 @@ class Explosion extends SpriteAnimationComponent
     await super.onLoad();
 
     animation = await game.loadSpriteAnimation(
-      'player.png',
+      'Scout_Destruction.png',
       SpriteAnimationData.sequenced(
-        amount: 6,
+        amount: 10,
         stepTime: .1,
-        textureSize: Vector2.all(32),
+        textureSize: Vector2.all(64),
         loop: false,
       ),
     );
