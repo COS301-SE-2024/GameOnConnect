@@ -177,8 +177,9 @@ class _MyGameListState extends State<MyGameList> {
                     return Padding(
                       //padding: EdgeInsets.all(8.0),
                       padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                      child: gameStat.timePlayedLast > 0
-                          ? InkWell(
+                      child: //gameStat.timePlayedLast > 0
+                          //? 
+                          InkWell(
                               onTap: () {
                                 // Your click event action here
                                 Navigator.push(
@@ -199,13 +200,13 @@ class _MyGameListState extends State<MyGameList> {
                                 playing: false,
                               ),
                             )
-                          : ProfileGamesCard(
+                          /*: ProfileGamesCard(
                               image: gameDetails.backgroundImage,
                               name: gameDetails.name,
                               lastPlayedDate: formattedRelativeDate,
                               timePlayed: hours,
                               playing: false,
-                            ),
+                            ),*/
                     );
                   }
                 },
