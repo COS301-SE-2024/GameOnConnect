@@ -178,7 +178,6 @@ class ConnectionService {
   Future<List<user.AppUser>?> getProfileConnections(String type, String UserId) async {
     try {
 
-      //print('for the profile page pls get the  $type for user: $UserId');
       List<user.AppUser> list = [];
 
         List<String>? connections =
@@ -188,6 +187,7 @@ class ConnectionService {
               await ConnectionService().fetchFriendProfileData(i));
           list.add(u);
       }
+      list.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return list;
     } catch (e) {
       throw ('Error: $e');

@@ -1284,6 +1284,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  super_tooltip:
+    dependency: "direct main"
+    description:
+      name: super_tooltip
+      sha256: ef1c009a719fccbe35730010b3c252dc81a0f2133e55a37f13446b76a813e3e2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.8"
   sync_http:
     dependency: transitive
     description:
@@ -1340,6 +1348,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.2"
+
   timeago:
     dependency: "direct main"
     description:
