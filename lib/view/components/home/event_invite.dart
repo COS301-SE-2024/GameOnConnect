@@ -40,7 +40,7 @@ class _EventInvitationState extends State<EventInvitation> {
     if (_isWidgetVisible) {
       return Padding(
           padding: const EdgeInsets.only(top: 5, bottom: 5),
-          child: Expanded(
+
               child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -67,8 +67,8 @@ class _EventInvitationState extends State<EventInvitation> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('${widget.inviterName} invited you to join',
-                                style:
-                                    const TextStyle(fontWeight: FontWeight.bold)),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
                             Text(widget.event.name,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -90,7 +90,8 @@ class _EventInvitationState extends State<EventInvitation> {
                             children: [
                               const Text('Description',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 12)),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12)),
                               Text(widget.event.description,
                                   style: const TextStyle(fontSize: 12))
                             ],
@@ -101,13 +102,15 @@ class _EventInvitationState extends State<EventInvitation> {
                             children: [
                               const Text('Date and time',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 12)),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12)),
                               Text(widget.event.startDate.toIso8601String(),
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          Theme.of(context).colorScheme.primary))
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary))
                             ],
                           ),
                           const SizedBox(height: 15),
@@ -155,8 +158,9 @@ class _EventInvitationState extends State<EventInvitation> {
                                       height: 30,
                                       width: 100,
                                       decoration: BoxDecoration(
-                                        color:
-                                            Theme.of(context).colorScheme.primary,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         borderRadius: BorderRadius.circular(7),
                                       ),
                                       child: Text('Decline',
@@ -171,7 +175,8 @@ class _EventInvitationState extends State<EventInvitation> {
                                   onTap: () {
                                     _eventsService
                                         .declineEventInvitation(widget.event);
-                                    _eventsService.subscribeToEvent(widget.event);
+                                    _eventsService
+                                        .subscribeToEvent(widget.event);
                                     setState(() {
                                       _isWidgetVisible = false;
                                     });
@@ -199,7 +204,7 @@ class _EventInvitationState extends State<EventInvitation> {
                     ),
                   ]),
             ),
-          )));
+          ));
     } else {
       return const SizedBox(height: 0);
     }
