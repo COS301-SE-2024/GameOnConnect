@@ -96,7 +96,10 @@ class _EventInvitationState extends State<EventInvitation> {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Column(
+                          Align(
+                            alignment: const Alignment(-1, 0),
+                            child:Column(
+
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text('Date and time',
@@ -110,9 +113,13 @@ class _EventInvitationState extends State<EventInvitation> {
                                           Theme.of(context).colorScheme.primary))
                             ],
                           ),
+                          ),
                           const SizedBox(height: 15),
-                          Row(
+                          FittedBox(child:Align( 
+                              alignment: Alignment(0, 0),
+                              child:Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               InkWell(
                                 //accept
@@ -133,7 +140,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                           Theme.of(context).colorScheme.primary,
                                       borderRadius: BorderRadius.circular(7),
                                     ),
-                                    child: Text('Accept',
+                                    child: Text('Yes',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
@@ -159,7 +166,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                             Theme.of(context).colorScheme.primary,
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child: Text('Decline',
+                                      child: Text('No',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
@@ -187,16 +194,18 @@ class _EventInvitationState extends State<EventInvitation> {
                                                 .primary),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child: const Text('Stay notified',
+                                      child: const Text('Maybe',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 12,
                                           )))),
                             ],
                           )
+                          ),
+                          ),
                         ],
                       ),
-                    ),
+                      ),
                   ]),
             ),
           )));
