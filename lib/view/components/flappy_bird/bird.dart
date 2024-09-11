@@ -62,10 +62,22 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
   PositionComponent other,
  ){
     super.onCollisionStart(intersectionArea, other);
-
+    gameIsOver();
  }
 
- 
+ void gameIsOver(){
+  game.collision=true;
+  gameRef.overlays.add('gameOver');
+  gameRef.pauseEngine();
+ }
+
+ void resetBirdPosition(){
+  position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
+ }
+
+ void resetTotalScore(){
+  totalScore=0;
+ }
 
 }
 
