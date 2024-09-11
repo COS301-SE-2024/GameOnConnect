@@ -23,9 +23,10 @@ class GamePage extends StatelessWidget {
         'gameOver': (BuildContext context, SpaceShooterGame game) {
           return Center(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
                   child: Text(
                     'Game Over',
                     style: TextStyle(
@@ -33,17 +34,14 @@ class GamePage extends StatelessWidget {
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,
-                      // decorationColor: Theme.of(context).colorScheme.secondary,
-                      // decorationThickness: 2.0,
                     ),
                   ),
                 ),
-                // const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context); // Navigate back to the home page
                   },
-                  child: Text('Go to Home'),
+                  child: const Text('Go to Home'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -53,12 +51,82 @@ class GamePage extends StatelessWidget {
                   },
                   child: const Text('Restart Game'),
                 ),
+                const SizedBox(height: 20),
+                // const ScoreOverlay(isGameOver: true),
               ],
             )
           );
         },
+        'scoreOverlay': (BuildContext context, SpaceShooterGame game) {
+          // Show score during the game
+          return const Positioned(
+            top: 20, // Initial position at the top when the game is not over
+            left: 20,
+            child: ScoreOverlay(isGameOver: false),
+          );
+        },
       },
-      initialActiveOverlays: const ['quitButton'], // Display the quit button when the game starts
+      initialActiveOverlays: const ['quitButton', 'scoreOverlay'], // Display the quit button when the game starts
+    );
+  }
+}
+
+class ScoreOverlay extends StatelessWidget {
+  final bool isGameOver;
+
+  const ScoreOverlay({super.key, required this.isGameOver});
+
+  @override
+  Widget build(BuildContext context) {
+    final game = context.findAncestorWidgetOfExactType<GameWidget<SpaceShooterGame>>()?.game;
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return StreamBuilder<int>(
+      stream: Stream.periodic(const Duration(milliseconds: 100))
+          .asyncMap((_) => game?.score ?? 0),
+      builder: (context, snapshot) {
+        if (isGameOver) {
+          return Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border.all(color: primaryColor, width: 3), // Border color
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Score: ${snapshot.data ?? 0}',
+                style: TextStyle(
+                  color: primaryColor,  // Text color
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
+          );
+        } else {
+          return Positioned(
+            top: 20,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border.all(color: primaryColor, width: 3), // Border color
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Score: ${snapshot.data ?? 0}',
+                style: TextStyle(
+                  color: primaryColor,  // Text color
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

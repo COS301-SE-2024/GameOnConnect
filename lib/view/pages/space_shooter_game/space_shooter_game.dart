@@ -11,37 +11,15 @@ class SpaceShooterGame extends FlameGame
     with PanDetector, HasCollisionDetection {
   late Player player;
   bool isGameOver = false;
+  int score = 0;
 
   @override
   Future<void> onLoad() async {
     await initializeGame();
 
-    // final parallax = await loadParallaxComponent(
-    //   [
-    //     ParallaxImageData('stars_2.png'),
-    //     ParallaxImageData('stars_1.png'),
-    //     ParallaxImageData('stars_0.png'),
-    //   ],
-    //   baseVelocity: Vector2(0, -5),
-    //   repeat: ImageRepeat.repeat,
-    //   velocityMultiplierDelta: Vector2(0, 5),
-    // );
-    // add(parallax);
-
-    // player = Player();
-    // add(player);
-
-    // add(
-    //   SpawnComponent(
-    //     factory: (index) {
-    //       return Enemy();
-    //     },
-    //     period: 1,
-    //     area: Rectangle.fromLTWH(0, 0, size.x, -Enemy.enemySize),
-    //   ),
-    // );
-
     overlays.add('quitButton');
+
+    overlays.add('scoreOverlay');
   }
 
   Future<void> initializeGame() async {
@@ -90,16 +68,27 @@ class SpaceShooterGame extends FlameGame
   }
 
   void triggerGameOver() {
-    isGameOver = true; // Set the game as over
-    overlays.add('gameOver'); // Show the game over overlay
+    isGameOver = true; 
+    overlays.remove('scoreOverlay');
+    overlays.remove('quitButton');
+    overlays.add('gameOver'); 
   }
 
   void reset() {
-    // Clear all current components (e.g., enemies, bullets)
     removeAll(children);
-
-    // Reinitialize the game
+    score = 0;
+    isGameOver = false;
     initializeGame();
+    overlays.remove('gameOver'); 
+    overlays.add('scoreOverlay'); 
+    overlays.add('quitButton');
+  }
+
+  void incrementScore() {
+    score++;
+    overlays
+      ..remove('scoreOverlay')
+      ..add('scoreOverlay');
   }
 }
 
@@ -289,6 +278,7 @@ class Enemy extends SpriteAnimationComponent
     if (other is Bullet) {
       removeFromParent();
       other.removeFromParent();
+      game.incrementScore();
       game.add(EnemyExplosion(position: position));
     }
   }
