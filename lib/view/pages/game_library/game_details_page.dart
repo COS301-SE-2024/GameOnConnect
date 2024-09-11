@@ -10,7 +10,7 @@ import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
 import 'package:gameonconnect/services/game_library_S/want_to_play_service.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
-import 'package:flutter_share/flutter_share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
@@ -90,7 +90,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
   }
 
   Future shareLink(String link, String message) async {
-    await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
+    await Share.share( link);
   }
 
   // String sanitizeDescription(String description) {
