@@ -22,7 +22,6 @@ class GameActivity extends StatefulWidget {
 
 class _GameActivityState extends State<GameActivity> {
   List<GameStats> getSpecificGameActivity() {
-    //print('nr of games: ${widget.gameStatsList.length} ');
     List<GameStats> activityList = widget.gameStatsList
         .where(
             (game) => game.gameId == widget.gameId && game.timePlayedLast > 0)
@@ -50,7 +49,19 @@ class _GameActivityState extends State<GameActivity> {
         textkey: const Key('activity_text'),
       ),
       body: specificGameActivity.isEmpty
-          ? Center(child: Text('No recorded activity for ${widget.gameName}'))
+          ? Center(
+              child: Text.rich(
+                TextSpan(
+                  text: 'No recorded activity for ',
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: widget.gameName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            )
           : SingleChildScrollView(
               child: Column(
                 children: [

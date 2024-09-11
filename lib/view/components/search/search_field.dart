@@ -24,8 +24,20 @@ class _SearchFieldState extends State<SearchField> {
               contentPadding: const EdgeInsets.only(left: 20, right: 20),
               labelText: 'Search',
               prefixIcon: const Icon(Icons.search),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(100)),
+              fillColor: Theme.of(context).colorScheme.primaryContainer,
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(100),
+                borderSide: const BorderSide(
+                    color: Colors.transparent), 
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius:
+                    BorderRadius.circular(100),
+                borderSide: const BorderSide(
+                    color: Colors.transparent),
+              ),
             ),
             onSubmitted: (value) {
               widget.onSearch(value);

@@ -30,7 +30,7 @@ class _EventInvitesListState extends State<EventInvitesList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Container(
       child: _invitedEvents.isEmpty ? const Text('No new event invites') : 
       ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 300),
