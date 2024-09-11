@@ -13,7 +13,7 @@ class ConnectionUpdateCard extends StatefulWidget {
 class _ConnectionUpdateCardState extends State<ConnectionUpdateCard> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: Container(
+    return Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -28,6 +28,6 @@ class _ConnectionUpdateCardState extends State<ConnectionUpdateCard> {
                 : Expanded(child:Text("${widget.user} disconnected", style: const TextStyle(fontWeight: FontWeight.bold))),
             const Icon(Icons.close_sharp)
           ],
-        )));
+        ));
   }
 }

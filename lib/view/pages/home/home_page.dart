@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -363,21 +362,21 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           SizedBox(height:15),
-          //CurrentlyOnlineBar(),
+          CurrentlyOnlineBar(),
           SizedBox(height: 30),
           Text("Connection updates",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize:20)),
           SizedBox(height: 15),
-          //ConnectionUpdates(),
+          ConnectionUpdates(),
           SizedBox(height: 30),
           Text("Event invites",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           SizedBox(height:15),
-          //EventInvitesList()
+          EventInvitesList()
         ]),
     );
   }
