@@ -337,8 +337,8 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   }
 
   Widget _homeBody() {
-    return Expanded(
-      child: Padding(
+    return
+      Padding(
         padding: EdgeInsets.all(15),
         child: ListView(children: [
           const Text("Ready to game,",
@@ -363,23 +363,22 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           SizedBox(height:15),
-          CurrentlyOnlineBar(),
+          //CurrentlyOnlineBar(),
           SizedBox(height: 30),
           Text("Connection updates",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize:20)),
           SizedBox(height: 15),
-          ConnectionUpdates(),
+          //ConnectionUpdates(),
           SizedBox(height: 30),
           Text("Event invites",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           SizedBox(height:15),
-          EventInvitesList()
+          //EventInvitesList()
         ]),
-      ),
     );
   }
 

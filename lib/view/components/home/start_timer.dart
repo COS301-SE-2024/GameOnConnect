@@ -68,12 +68,13 @@ class _GameTimer extends State<GameTimer> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10),
-              child: FittedBox(
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     _timerService.isRunning()
-                        ? Row(
+                        ? FittedBox( child: Row(
                             children: [
                               const Icon(
                                 Icons.radio_button_checked,
@@ -92,6 +93,7 @@ class _GameTimer extends State<GameTimer> {
                               ),
                             ],
                           )
+                    )
                         : FutureBuilder<List<GameDetails>>(
                             future: _userGames,
                             builder: (BuildContext context,
@@ -108,7 +110,7 @@ class _GameTimer extends State<GameTimer> {
                                   snapshot.data!.isEmpty) {
                                 return const Text('No data found');
                               } else {
-                                return DropdownButton<String>(
+                                return FittedBox( child:DropdownButton<String>(
                                   isDense: true,
                                   underline: const SizedBox(),
                                   hint: Text(
@@ -132,10 +134,11 @@ class _GameTimer extends State<GameTimer> {
                                       _timerService.setGame(newValue);
                                     });
                                   },
+                                )
                                 );
                               }
                             }),
-                    IconButton.filled(
+                    FittedBox( child: IconButton.filled(
                       style: IconButton.styleFrom(
                           backgroundColor: _timerService.isRunning()
                               ? Colors.red
@@ -262,13 +265,13 @@ class _GameTimer extends State<GameTimer> {
                               });
                             },
                     ),
+                    ),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
+    ],
       ),
+    )
     );
   }
 }
