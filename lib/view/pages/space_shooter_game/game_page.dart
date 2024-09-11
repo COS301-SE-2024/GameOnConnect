@@ -85,47 +85,24 @@ class ScoreOverlay extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 100))
           .asyncMap((_) => game?.score ?? 0),
       builder: (context, snapshot) {
-        if (isGameOver) {
-          return Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              decoration: BoxDecoration(
-                border: Border.all(color: primaryColor, width: 3), // Border color
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                'Score: ${snapshot.data ?? 0}',
-                style: TextStyle(
-                  color: primaryColor,  // Text color
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                ),
+        return Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            decoration: BoxDecoration(
+              border: Border.all(color: primaryColor, width: 3), // Border color
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              'Score: ${snapshot.data ?? 0}',
+              style: TextStyle(
+                color: primaryColor,  // Text color
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.none,
               ),
             ),
-          );
-        } else {
-          return Positioned(
-            top: 20,
-            left: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              decoration: BoxDecoration(
-                border: Border.all(color: primaryColor, width: 3), // Border color
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                'Score: ${snapshot.data ?? 0}',
-                style: TextStyle(
-                  color: primaryColor,  // Text color
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-            ),
-          );
-        }
+          ),
+        );
       },
     );
   }
