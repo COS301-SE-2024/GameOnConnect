@@ -69,10 +69,12 @@ class _GameTimer extends State<GameTimer> {
             Padding(
               padding: const EdgeInsets.all(10),
 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
+                child:Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 8.0,
+                    runSpacing: 4.0,
+                  runAlignment: WrapAlignment.spaceBetween,
+                    children: [
                     _timerService.isRunning()
                         ? FittedBox( child: Row(
                             children: [
@@ -94,7 +96,7 @@ class _GameTimer extends State<GameTimer> {
                             ],
                           )
                     )
-                        : FutureBuilder<List<GameDetails>>(
+                        :FutureBuilder<List<GameDetails>>(
                             future: _userGames,
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<GameDetails>> snapshot) {
@@ -138,7 +140,7 @@ class _GameTimer extends State<GameTimer> {
                                 );
                               }
                             }),
-                    FittedBox( child: IconButton.filled(
+                    IconButton.filled(
                       style: IconButton.styleFrom(
                           backgroundColor: _timerService.isRunning()
                               ? Colors.red
@@ -265,12 +267,12 @@ class _GameTimer extends State<GameTimer> {
                               });
                             },
                     ),
-                    ),
                   ],
                 ),
+            ),
+],
               ),
-    ],
-      ),
+
     )
     );
   }
