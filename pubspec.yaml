@@ -132,6 +132,7 @@ flutter:
     - assets/images/Traps/Saw/
     - assets/audio/
     - assets/images/Enemies/Chicken/
+    - assets/badges_images/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
