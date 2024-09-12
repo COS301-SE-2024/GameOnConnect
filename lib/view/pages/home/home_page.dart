@@ -17,7 +17,6 @@ import 'package:gameonconnect/view/components/home/start_timer.dart';
 import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
-import 'package:gameonconnect/view/pages/models/mountain_badge_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';

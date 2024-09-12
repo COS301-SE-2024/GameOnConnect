@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
-class MountainBadgePage extends StatefulWidget {
-  const MountainBadgePage({super.key});
+class SpecificBadgePage extends StatefulWidget {
+  const SpecificBadgePage({super.key});
 
   @override
-  State<MountainBadgePage> createState() => _MountainBadgePageState();
+  State<SpecificBadgePage> createState() => _SpecificBadgePageState();
 }
 
-class _MountainBadgePageState extends State<MountainBadgePage> {
+class _SpecificBadgePageState extends State<SpecificBadgePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
