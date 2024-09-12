@@ -15,7 +15,8 @@ class GameyCon extends FlameGame
         HasCollisionDetection,
         TapCallbacks {
   @override
-  Color backgroundColor() => const Color.fromARGB(255, 97, 11, 155);
+  //const Color.fromARGB(255, 97, 11, 155)
+  Color backgroundColor() => const Color.fromRGBO(0, 185, 86, 1);
   late CameraComponent cam;
   Player player = Player(character: 'Ninja Frog');
   late JoystickComponent joystick;
