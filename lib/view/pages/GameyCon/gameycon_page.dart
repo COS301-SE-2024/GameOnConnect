@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/GameyCon/components/score.dart'; 
 
 class GameyConPage extends StatefulWidget {
   const GameyConPage({super.key});
@@ -21,6 +22,7 @@ class _GameyConPageState extends State<GameyConPage> {
   @override
   void dispose() {
     game.onRemove();
+    ScoreManager().resetScore(); 
     super.dispose();
   }
 
@@ -39,19 +41,39 @@ class _GameyConPageState extends State<GameyConPage> {
                     left: 20,
                     child: ElevatedButton.icon(
                       onPressed: () {
+                        ScoreManager().resetScore(); 
                         Navigator.of(context).pop();
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: Text(
                         'Leave',
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
                   );
                 },
+                'ScoreOverlay': (context, game) {
+                  return Positioned(
+                    top: 18,
+                    right: 20,
+                    child: ValueListenableBuilder<int>(
+                      valueListenable: ScoreManager().scoreNotifier,
+                      builder: (context, score, child) {
+                        return Text(
+                          'Score: $score',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 22,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
               },
-              initialActiveOverlays: const ['LeaveButton'],
+              initialActiveOverlays: const ['LeaveButton', 'ScoreOverlay'],
             ),
           ),
         ],
