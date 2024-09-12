@@ -26,8 +26,10 @@ class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
       Background(),
       Floor(),
       bird = Bird(),
+      score = displayScore(),
     ]);
 
+    
     timeInverval.onTick = () => add(PipeCombination());
 
   }
@@ -45,7 +47,21 @@ class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
     bird.flyUp();
   }
 
-  
+  TextComponent displayScore(){
+    return TextComponent(
+      text:'Score : 0',
+      position: Vector2(size.x/2, size.y/2* 0.1),
+      anchor: Anchor.center,
+       textRenderer: TextPaint(
+          style: const TextStyle(
+              fontSize: 40, 
+              fontFamily: 'ThaleahFat', 
+              //fontWeight: FontWeight.bold),
+              color: Colors.white,
+        ),
+        )
+    );
+  }
 }
 
  

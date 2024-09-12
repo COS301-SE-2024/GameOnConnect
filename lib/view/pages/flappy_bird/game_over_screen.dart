@@ -19,23 +19,58 @@ class GameOverScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 60,
                   color: Colors.white,
-                  fontFamily: 'Game',
+                  fontFamily: 'ThaleahFat',
                 ),
               ),
-              const SizedBox(height: 20),
-              Image.asset('assets/images/gameover.png'),
+              const SizedBox(height: 17),
+              //Image.asset('assets/images/gameover.png'),
+              Stack(
+                children: <Widget>[
+                  // Border text
+                  Text(
+                    'Game Over',
+                    style: TextStyle(
+                      fontSize: 60,
+                      fontFamily: 'ThaleahFat',
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 6
+                        ..color = Colors.white,
+                    ),
+                  ),
+                  // Solid text
+                  Text(
+                    'Game Over',
+                    style: TextStyle(
+                      fontSize: 60,
+                      color: Colors.orange,
+                      fontFamily: 'ThaleahFat',
+                    ),
+                  ),
+                ],
+              ),
+ 
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: restart,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: const Text(
-                  'Restart',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white
-                    ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-              ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  child: const Text(
+                    'Restart',
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  ),
+                
+              )
             ],
           ),
         ),

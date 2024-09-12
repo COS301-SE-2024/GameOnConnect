@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
@@ -54,6 +55,7 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
         onComplete: () => current =MovingBird.down,
         ));
     current = MovingBird.up;
+    //add flying sound
   }
 
   @override
@@ -66,6 +68,7 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
  }
 
  void gameIsOver(){
+  FlameAudio.play('collision.wav');
   game.collision=true;
   gameRef.overlays.add('gameOver');
   gameRef.pauseEngine();

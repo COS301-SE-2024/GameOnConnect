@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/view/components/flappy_bird/pipe.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
@@ -39,6 +40,7 @@ class PipeCombination extends PositionComponent with HasGameRef<FlappyBird> {
     if (position.x < -10) {
       removeFromParent();
       gameRef.bird.totalScore += 1; // Increment score when the bird passes a pipe
+      FlameAudio.play('point.wav');
     }
 
     if (gameRef.collision) {
