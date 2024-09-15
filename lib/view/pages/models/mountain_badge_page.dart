@@ -17,7 +17,7 @@ class _MountainBadgePageState extends State<MountainBadgePage> {
       ),
       body: const Center(
         child: ModelViewer(
-          src: 'assets/models/mountain_badge.glb', 
+          src: 'assets/models/newbie_badge.glb', 
           alt: 'A 3D model of a mountain badge',
           autoRotate: true,
           cameraControls: true,

@@ -10,7 +10,7 @@ class ContactUsBar extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Clipboard.setData(
-            const ClipboardData(text: "gameonconnect.help@gmail.com"),
+            const ClipboardData(text: "support@gameonconnect.com"),
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
@@ -113,7 +114,7 @@ class _EditProfilePage extends State<EditProfilePage> {
           } else {
             databaseAccess(snapshot.data);
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -153,6 +154,12 @@ class _EditProfilePage extends State<EditProfilePage> {
                             currentDate: _birthday!,
                             label: 'Birthday',
                             onChanged: (value) => {_birthday = value},
+                          ),
+                          const Align(alignment: Alignment(-1,0),child:ToolTip(message: "When your profile is set "
+                              "to Private, only your connections can "
+                              "view your profile."),),
+                          const SizedBox(
+                            height:3,
                           ),
                           EditSwitch(
                             label: 'Private',

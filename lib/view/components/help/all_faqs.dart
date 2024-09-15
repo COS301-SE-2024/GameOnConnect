@@ -6,13 +6,13 @@ class AllFaqs extends StatelessWidget {
   AllFaqs({super.key});
   final List<FAQ> friendFaqs = [
     FAQ(
-      faqHeading: 'How to search for friends and add them',
-      faqDetails: 'Navigate to the search tab. Select the Friends tab. You can now search for friends using their username. To add a friend, send them a connection request and wait for their response.',
+      faqHeading: 'How to search for users and send them a connection request',
+      faqDetails: 'Navigate to the search tab. Select the Connections tab. You can now search for users using their username. To add a user, send them a connection request and wait for their response.',
       videoPath: 'assets/videos/Connections_1.mp4'
     ),
     FAQ(
-      faqHeading: 'Accepting/rejecting friend requests',
-      faqDetails: 'To accept/reject friend requests, navigate to your profile. Click on the friends tab to see the friend requests.',
+      faqHeading: 'How to accept and reject connection requests',
+      faqDetails: 'To accept/reject connection requests, navigate to your profile. Click on the Connections tab to see the connection requests.',
       videoPath: 'assets/videos/Connections_2.mp4'
     ),
   ];
@@ -67,9 +67,9 @@ class AllFaqs extends StatelessWidget {
     return Expanded(
       child: ListView(
         children: [
-          FaqSection(friendFaqs, 'Friends', Icons.diversity_1_outlined),
-          FaqSection(gameLibraryFaqs, 'Game Library', Icons.library_books_outlined),
-          FaqSection(gameInfoFaqs, 'Game Information', Icons.gamepad_outlined),
+          FaqSection(friendFaqs, 'Connections', Icons.diversity_1_outlined, const Key('Friends_section')),
+          FaqSection(gameLibraryFaqs, 'Game Library', Icons.library_books_outlined, const Key('game_library_section')),
+          FaqSection(gameInfoFaqs, 'Game Information', Icons.gamepad_outlined, const Key('game_information_section')),
         ],
       ),
     );
