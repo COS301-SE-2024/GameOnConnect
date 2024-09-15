@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'package:gameonconnect/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 import 'package:gameonconnect/GameyCon/components/score.dart'; 
 
@@ -38,22 +39,10 @@ class _GameyConPageState extends State<GameyConPage> {
               game: game,
               overlayBuilderMap: {
                 'LeaveButton': (context, game) {
-                  return Positioned(
+                  return const Positioned(
                     top: 10,
                     left: 20,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        ScoreManager().resetScore(); 
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                      label: Text(
-                        'Leave',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ),
+                    child: LeaveButton(),
                   );
                 },
                 'ScoreOverlay': (context, game) {

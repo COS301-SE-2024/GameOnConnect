@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:gameonconnect/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/view/pages/GameyCon/gameycon_page.dart';
 
 class LoadingGameyConPage extends StatefulWidget {
@@ -42,55 +43,71 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 100, 
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: 1, 
-                  crossAxisSpacing: 10, 
-                  mainAxisSpacing: 10, 
-                ),
-                itemCount: characterSprites.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => selectCharacter(index),
-                    child: Container(
-                      margin: const EdgeInsets.all(4.0), 
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: selectedCharacterIndex == index
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.transparent,
-                          width: 2,
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 100,
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: characterSprites.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => selectCharacter(index),
+                        child: Container(
+                          margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: selectedCharacterIndex == index
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
+                          ),
+                          child: SpriteAnimationWidget(
+                            character: characterSprites[index],
+                          ),
                         ),
-                      ),
-                      child: SpriteAnimationWidget(
-                        character: characterSprites[index],
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: ElevatedButton(
+                    onPressed: startGame,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 20),
+                      textStyle: const TextStyle(fontSize: 20),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 1,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: ElevatedButton(
-                onPressed: startGame,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  textStyle: const TextStyle(fontSize: 20),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                    child: const Text('Start Game'),
+                  ),
                 ),
-                child: const Text('Start Game'),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+          const Positioned(
+            top: 10,
+            left: 20,
+            child: LeaveButton(),
+          ),
+        ],
       ),
     );
   }
