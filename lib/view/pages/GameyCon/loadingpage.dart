@@ -124,6 +124,10 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
                     child: const Text('Start Game'),
                   ),
                 ),
+                const SizedBox(
+                  height: 225,
+                ),
+                const Text('Credits: Spellthorn (Youtube)'),
               ],
             ),
           ),
