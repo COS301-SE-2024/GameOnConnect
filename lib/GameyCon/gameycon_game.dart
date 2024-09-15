@@ -26,6 +26,10 @@ class GameyCon extends FlameGame
   List<String> levelNames = ['Level-1', 'Level-2'];
   int currentLevelIndex = 0;
 
+  GameyCon({required String selectedCharacter}) {
+    player = Player(character: selectedCharacter);
+  }
+
   @override
   FutureOr<void> onLoad() async {
     // Load all images into cache

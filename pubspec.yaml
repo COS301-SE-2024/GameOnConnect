@@ -124,6 +124,9 @@ flutter:
     - assets/images/Terrain/
     - assets/tiles/
     - assets/images/Main Characters/Ninja Frog/
+    - assets/images/Main Characters/Mask Dude/
+    - assets/images/Main Characters/Pink Man/
+    - assets/images/Main Characters/Virtual Guy/
     - assets/images/Main Characters/
     - assets/images/HUD/
     - assets/images/Background/

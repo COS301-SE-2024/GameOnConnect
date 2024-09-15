@@ -4,7 +4,9 @@ import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 import 'package:gameonconnect/GameyCon/components/score.dart'; 
 
 class GameyConPage extends StatefulWidget {
-  const GameyConPage({super.key});
+  final String selectedCharacter;
+
+  const GameyConPage({required this.selectedCharacter, super.key});
 
   @override
   State<GameyConPage> createState() => _GameyConPageState();
@@ -16,7 +18,7 @@ class _GameyConPageState extends State<GameyConPage> {
   @override
   void initState() {
     super.initState();
-    game = GameyCon();
+    game = GameyCon(selectedCharacter: widget.selectedCharacter);
   }
 
   @override
