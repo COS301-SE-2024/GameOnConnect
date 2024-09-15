@@ -11,12 +11,14 @@ import 'package:gameonconnect/view/components/flappy_bird/background.dart';
 import 'package:gameonconnect/view/components/flappy_bird/bird.dart';
 import 'package:gameonconnect/view/components/flappy_bird/floor.dart';
 import 'package:gameonconnect/view/components/flappy_bird/pipe_combination.dart';
+import 'package:gameonconnect/view/components/flappy_bird/seed.dart';
 
 class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
 
 
   late Bird bird;
-  Timer timeInverval= Timer(1.5 , repeat:true);
+  Timer pipetimeInverval= Timer(1.5 , repeat:true);
+  Timer seedTimer = Timer(3.0, repeat: true); // Timer to spawn seeds
   bool collision=false;
   late TextComponent score;
 
@@ -30,14 +32,15 @@ class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
     ]);
 
     
-    timeInverval.onTick = () => add(PipeCombination());
-
+    pipetimeInverval.onTick = () => add(PipeCombination());
+    seedTimer.onTick = () => add(Seed()); // Add seeds periodically
   }
 
    @override
   void update(double d) {
     super.update(d);
-    timeInverval.update(d);
+    pipetimeInverval.update(d);
+    seedTimer.update(d); // Update the seed timer
     score.text = 'Score : ${bird.totalScore}';
   }
 
