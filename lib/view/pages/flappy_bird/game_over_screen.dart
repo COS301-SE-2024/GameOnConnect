@@ -3,7 +3,7 @@ import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
 class GameOverScreen extends StatelessWidget {
 
-  const GameOverScreen({Key? key, required this.game}) : super(key: key);
+  const GameOverScreen({super.key, required this.game});
     final FlappyBird game;
   static const String id ='gameOver';
 
@@ -39,7 +39,7 @@ class GameOverScreen extends StatelessWidget {
                     ),
                   ),
                   // Solid text
-                  Text(
+                  const Text(
                     'Game Over',
                     style: TextStyle(
                       fontSize: 60,
@@ -59,9 +59,9 @@ class GameOverScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                  child: const Text(
+                child: const Padding(
+                  padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
+                  child: Text(
                     'Restart',
                     style: TextStyle(
                       fontSize: 25,

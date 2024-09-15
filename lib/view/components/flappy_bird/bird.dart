@@ -18,29 +18,27 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
       final birdUpFlap = await gameRef.loadSprite('bird_upflap.png');
       final birdDownFlap = await gameRef.loadSprite('bird_downflap.png');
 
-      // Set sprites map
       sprites = {
         MovingBird.middle: birdMidFlap,
         MovingBird.up: birdUpFlap,
         MovingBird.down: birdDownFlap,
       };
 
-      // Position the bird
       position = Vector2(50, gameRef.size.y / 2 - size.y / 2);
 
-      // Set the initial bird state
+
       current = MovingBird.middle;
        add(RectangleHitbox()); // add box around it 
 
     } catch (e) {
-      print('Error loading sprites: $e');
+      //print('Error loading sprites: $e');
     }
   }
 
   @override
-  void update(double d) {
-    super.update(d);
-    position.y += velocity * d;
+  void update(double dt) {
+    super.update(dt);
+    position.y += velocity * dt;
 
   }
 
@@ -60,10 +58,10 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
 
   @override
  void onCollisionStart(
-  Set<Vector2> intersectionArea,
+  Set<Vector2> intersectionPoints,
   PositionComponent other,
  ){
-    super.onCollisionStart(intersectionArea, other);
+    super.onCollisionStart(intersectionPoints, other);
     gameIsOver();
  }
 

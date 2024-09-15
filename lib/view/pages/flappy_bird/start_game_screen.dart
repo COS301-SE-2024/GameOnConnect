@@ -4,9 +4,9 @@ import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 class StartScreen extends StatelessWidget {
   
   const StartScreen({
-    Key? key,
+    super.key,
     required this.game,
-  }) : super(key: key);
+  });
 
   final FlappyBird game;
   static const String id = 'start';

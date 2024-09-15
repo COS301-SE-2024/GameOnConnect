@@ -21,21 +21,21 @@ class PipeCombination extends PositionComponent with HasGameRef<FlappyBird> {
     final centerYaxis = pathHeight + _random.nextDouble() * (skyHeight - pathHeight);
 
     // Add top pipe
-    add(Pipe(pipePosition: whichPipe.top, height: centerYaxis - pathHeight / 2));
+    add(Pipe(pipePosition: WhichPipe.top, height: centerYaxis - pathHeight / 2));
 
     // Calculate the bottom pipe height
     final bottomPipeHeight = skyHeight - (centerYaxis + pathHeight / 2);
 
     // Ensure the bottom pipe does not overlap the ground
     if (bottomPipeHeight > 0 && bottomPipeHeight < skyHeight - floorHeight) {
-      add(Pipe(pipePosition: whichPipe.bottom, height: bottomPipeHeight));
+      add(Pipe(pipePosition: WhichPipe.bottom, height: bottomPipeHeight));
     }
   }
 
   @override
-  void update(double d) {
-    super.update(d);
-    position.x -= speed * d;
+  void update(double dt) {
+    super.update(dt);
+    position.x -= speed * dt;
 
     if (position.x < -10) {
       removeFromParent();

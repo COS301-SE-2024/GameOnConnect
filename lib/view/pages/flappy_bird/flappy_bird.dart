@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flame/events.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
 import 'package:flame/game.dart';
 import 'package:gameonconnect/view/components/flappy_bird/background.dart';
 import 'package:gameonconnect/view/components/flappy_bird/bird.dart';
@@ -37,10 +33,10 @@ class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
   }
 
    @override
-  void update(double d) {
-    super.update(d);
-    pipetimeInverval.update(d);
-    seedTimer.update(d); // Update the seed timer
+  void update(double dt) {
+    super.update(dt);
+    pipetimeInverval.update(dt);
+    seedTimer.update(dt); // Update the seed timer
     score.text = 'Score : ${bird.totalScore}';
   }
 

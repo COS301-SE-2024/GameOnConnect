@@ -5,6 +5,8 @@ import 'package:gameonconnect/view/pages/flappy_bird/game_over_screen.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/start_game_screen.dart';
 
 class GameScreen extends StatelessWidget {
+  const GameScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final game = FlappyBird();
