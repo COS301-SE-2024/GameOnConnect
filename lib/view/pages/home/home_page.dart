@@ -23,6 +23,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
+import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -421,6 +422,23 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 },
                 icon: Icon(
                   Icons.model_training,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.sports_score,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
