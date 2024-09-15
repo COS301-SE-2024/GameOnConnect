@@ -181,7 +181,7 @@ class FriendSearchState extends State<FriendSearch> {
                                 uniqueNum: i.uniqueNum.toString(),
                                 uid: i.uid,
                                 page: 'search',
-                                loggedInUser: i.uid,
+                                loggedInUser: _currentUserId,
                                 isOwnProfile: true,
                                 onSelected: (uid, selected) {});
                           },

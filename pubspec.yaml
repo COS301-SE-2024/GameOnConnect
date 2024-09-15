@@ -45,7 +45,6 @@ dependencies:
   sign_in_with_apple: ^6.1.0
   flutter_html: 3.0.0-beta.2
   flutter_cache_manager: ^3.4.1
-  flutter_share: 2.0.0
   expandable: ^5.0.1
   url_launcher: ^6.0.20
   delightful_toast: ^1.1.0
@@ -73,7 +72,13 @@ dependencies:
   html_unescape: ^2.0.0
   insta_image_viewer: ^1.0.4
   youtube_player_flutter: ^9.0.3
-  flame: ^1.7.0
+  flame: ^1.19.0
+  flame_tiled: ^1.20.3
+  flame_audio: ^2.10.3
+  share_plus: ^10.0.0
+  super_tooltip: ^2.0.8
+
+
 
 
 dev_dependencies:
@@ -116,6 +121,17 @@ flutter:
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
     - "assets/models/"
+    - assets/images/Terrain/
+    - assets/tiles/
+    - assets/images/Main Characters/Ninja Frog/
+    - assets/images/Main Characters/
+    - assets/images/HUD/
+    - assets/images/Background/
+    - assets/images/Items/Fruits/
+    - assets/images/Items/Checkpoints/Checkpoint/
+    - assets/images/Traps/Saw/
+    - assets/audio/
+    - assets/images/Enemies/Chicken/
     # - assets/images/player-sprite.png
     - assets/images/stars_0.png
     - assets/images/stars_1.png

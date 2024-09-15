@@ -116,7 +116,7 @@ class MessagingService {
       }
       String conversationID = await findConversationID(
           userID, otherUserID); //now get the conversationID
-          //get snapshots
+      //get snapshots
       await for (var conversationSnapshot in _firestore
           .collection('message_log')
           .doc(conversationID)
@@ -125,16 +125,18 @@ class MessagingService {
         if (!conversationSnapshot.exists) {
           throw Exception("Conversation was not found");
         }
-
         //map the data so that the participant messages can be extracted
         Map<String, dynamic> conversationData =
             conversationSnapshot.data() as Map<String, dynamic>;
+
+        
         List<dynamic> participantMessages =
             conversationData['participant_messages']; //store messages in a list
 
         //ensure the participant messages are not empty
         if (participantMessages.isEmpty) {
-          throw Exception("No messages in conversation found");
+          yield await _firestore.collection('messages').doc().get(); //yield empty message
+          continue;
         }
 
         //take the last messageID available

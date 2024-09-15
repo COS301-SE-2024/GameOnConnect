@@ -141,19 +141,37 @@ class _ChatPageState extends State<ChatPage> {
         } else if (snapshot.hasError ||
             !snapshot.hasData ||
             snapshot.data == 'Not found') {
-          return const Center(child: Text("No conversation found"));
+          return Center(
+              child: Text("No conversation found",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  )));
         } else {
           String conversationID = snapshot.data!;
           return StreamBuilder<QuerySnapshot>(
             stream: _messagingService.getSnapshotMessages(conversationID),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return const Text("Error loading messages");
+                return Text("Error loading messages",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text('Loading messages...');
+                return Text('Loading messages...',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ));
               }
               var documents = snapshot.data!.docs;
+              if (documents.isEmpty) {
+              return Center(
+                child: Text("No messages found",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+              );
+            }
               return ListView.builder(
                 controller: _scrollController,
                 itemCount: documents.length,

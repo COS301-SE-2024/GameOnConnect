@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/view/components/card/connection_list_card.dart';
 import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
@@ -30,7 +29,6 @@ class _ConnectionsListState extends State<ConnectionsList> {
   void initState() {
     super.initState();
     nrOfRequests();
-    getConnectionsInvite(); 
   }
 
   @override
@@ -38,10 +36,6 @@ class _ConnectionsListState extends State<ConnectionsList> {
     super.dispose();
   }
 
-  Future<void> getConnectionsInvite() async {
-    list = (await EventsService().getConnectionsForInvite())!;
-    setState(() {});
-  }
 
    void navigateToRequests(BuildContext context) {
      Navigator.push(context,
@@ -61,10 +55,6 @@ Future<void> nrOfRequests()async {
     }
   
   
-  void sortlist(List<user.AppUser> connections)
-  {
-     connections.sort((a, b) => a.username.compareTo(b.username));
-  }
 
   void moveYouToTheFront(List<user.AppUser> connections, String yourUid) {  
   for (int i = 0; i < connections.length; i++) {
@@ -105,12 +95,10 @@ Future<void> nrOfRequests()async {
               return Text('Error: ${snapshot.error}, ');
             } else {
               list = snapshot.data!;
-              sortlist(list);
               if(!widget.isOwnProfile)
               {moveYouToTheFront(list, widget.loggedInUser);}
 
               if (list.isEmpty) {
-                // Display "No connections" when the list is empty
                 return ListView( children: [
                   if (widget.isOwnProfile)
                      Padding(

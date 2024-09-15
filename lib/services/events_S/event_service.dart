@@ -171,6 +171,8 @@ class EventsService {
           list.add(u);
         }
       }
+
+      list.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return list;
     } catch (e) {
       throw ('Error: $e');

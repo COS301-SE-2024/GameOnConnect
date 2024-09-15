@@ -3,10 +3,7 @@
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../../globals.dart' as global;
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../components/game_library/game_library_filter.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -31,6 +28,8 @@ class _GameLibraryState extends State<GameLibrary> {
   String _searchQuery = '';
   String? _sortValue = '';
   List<String> selectedPlatforms = [];
+  List<String> _activeFilters = [];
+  String _filterString = '';
 
   @override
   void initState() {
@@ -46,6 +45,20 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
+  Future<void> _filterGames(
+      String filterString, List<String> activeFilters) async {
+    if (_isLoading) return;
+
+    setState(() {
+      _activeFilters = activeFilters;
+      _filterString = filterString;
+      _games.clear();
+      _currentPage = 1;
+    });
+
+    await _loadGames();
+  }
+
   Future<void> _loadGames() async {
     if (_isLoading) return;
 
@@ -55,7 +68,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
     try {
       final games = await GameService.fetchGames(_currentPage,
-          sortValue: _sortValue, searchQuery: _searchQuery);
+          sortValue: _sortValue, searchQuery: _searchQuery, filterString: _filterString);
 
       setState(() {
         _games.addAll(games);
@@ -104,37 +117,10 @@ class _GameLibraryState extends State<GameLibrary> {
     });
   }
 
-  Future<void> _runApiRequest(String request) async {
-    if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-    });
-
-    final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final games = (jsonData['results'] as List)
-          .map((gameJson) => Game.fromJson(gameJson))
-          .toList();
-
-      setState(() {
-        _games.clear();
-        _games.addAll(games);
-        _currentPage++;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      throw Exception('Failed to load games');
-    }
-  }
-
   clearFilters() {
     setState(() {
+      _activeFilters = [];
+      _filterString = '';
       _searchQuery = '';
       _sortValue = '';
       _games.clear();
@@ -175,6 +161,40 @@ class _GameLibraryState extends State<GameLibrary> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _activeFilters.isNotEmpty
+                ? Row(
+                    children: [
+                      Text(
+                        "Active Filters (${_activeFilters.length}):",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: SizedBox(
+                          height: 25,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _activeFilters.map((filter) {
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(6, 1, 6, 1),
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Text(filter),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -309,8 +329,9 @@ class _GameLibraryState extends State<GameLibrary> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  FilterPage(apiFunction: _runApiRequest)),
+                              builder: (context) => FilterPage(
+                                  filterFunction: _filterGames,
+                                  clearFiltersFunction: clearFilters)),
                         );
                       },
                       child: Row(
@@ -329,16 +350,6 @@ class _GameLibraryState extends State<GameLibrary> {
                   ],
                 ),
               ],
-            ),
-            Divider(
-              thickness: 1,
-              color: Theme.of(context).colorScheme.primaryContainer,
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.clear),
-              iconAlignment: IconAlignment.end,
-              onPressed: () => clearFilters(),
-              label: Text('Clear filters'),
             ),
           ],
         ),

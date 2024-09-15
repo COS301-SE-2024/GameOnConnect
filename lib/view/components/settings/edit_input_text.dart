@@ -23,19 +23,16 @@ class _EditInputText extends State<EditInputText> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+      padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-            child: Text(widget.label,
+          Text(widget.label,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.secondary,
                 fontSize: 12,
               )
             ),
-          ),
           const SizedBox(height: 5),
           TextFormField(
             key: widget.inputKey,

@@ -387,9 +387,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 ),
               ),
               TagContainer(
-                tagType: 'Age rating',
+                tagType: 'ESRB rating',
                 onPressed: () => _showSelectableDialog(
-                  'Select Age rating',
+                  'Select ESRB rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
                   (results) {
                     _selectedAge = results;

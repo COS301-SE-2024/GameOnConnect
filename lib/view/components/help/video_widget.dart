@@ -30,7 +30,6 @@ class _TutorialVideoState extends State<TutorialVideo> {
 
     _chewieController = ChewieController(
       videoPlayerController: _controller,
-      aspectRatio: _controller.value.aspectRatio,
       autoPlay: true,
       looping: true,
     );
@@ -50,8 +49,8 @@ class _TutorialVideoState extends State<TutorialVideo> {
             aspectRatio: _controller.value.aspectRatio,
             child: Chewie(
               controller: _chewieController,
-            ),
-          )
+            )
+         )
         : Center(
             child: LoadingAnimationWidget.halfTriangleDot(
               color: Theme.of(context).colorScheme.primary,
