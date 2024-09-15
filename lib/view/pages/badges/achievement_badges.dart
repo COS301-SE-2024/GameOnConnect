@@ -23,17 +23,17 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
     'Social Butterfly'
   ];
 
-  List<String> badgeImages = [
-    'loyalty_badge.png',
-    'gamer_badge.png',
-    'night_owl_badge.png',
-    'newbie_badge.png',
-    'explorer_badge.png',
-    'event_planner_badge.png',
-    'customizer_badge.png',
-    'collector_badge.png',
-    'achiever_badge.png',
-    'social_butterfly_badge.png'
+  List<String> badgeFiles = [
+    'loyalty_badge',
+    'gamer_badge',
+    'night_owl_badge',
+    'newbie_badge',
+    'explorer_badge',
+    'event_planner_badge',
+    'customizer_badge',
+    'collector_badge',
+    'achiever_badge',
+    'social_butterfly_badge'
   ];
 
   @override
@@ -56,7 +56,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
               onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SpecificBadgePage()),
+                    MaterialPageRoute(builder: (context) => SpecificBadgePage(badgeName: badges[index] ,badgeFileName: badgeFiles[index])),
                   );
               },
               child: Container(
@@ -69,7 +69,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                     children: [
                       Expanded(
                           child: Image.asset(
-                              'assets/badges_images/${badgeImages[index]}',
+                              'assets/badges_images/${badgeFiles[index]}.png',
                               height: 85,
                               width: 85,
                               fit: BoxFit.contain)),

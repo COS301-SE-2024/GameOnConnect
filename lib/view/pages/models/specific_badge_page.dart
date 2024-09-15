@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class SpecificBadgePage extends StatefulWidget {
-  const SpecificBadgePage({super.key});
+  final String badgeFileName;
+  final String badgeName;
+  const SpecificBadgePage({super.key, required this.badgeFileName, required this.badgeName});
 
   @override
   State<SpecificBadgePage> createState() => _SpecificBadgePageState();
@@ -13,15 +15,22 @@ class _SpecificBadgePageState extends State<SpecificBadgePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mountain Badge'),
+        title: const Text('Badges'),
       ),
-      body: const Center(
-        child: ModelViewer(
-          src: 'assets/models/newbie_badge.glb', 
-          alt: 'A 3D model of a mountain badge',
-          autoRotate: true,
-          cameraControls: true,
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ModelViewer(
+              disablePan: true,
+              disableZoom: true,
+              src: 'assets/models/${widget.badgeFileName}.glb', 
+              alt: 'A 3D model of a badge',
+              autoRotate: true,
+              cameraControls: true,
+            ),
+          ),
+          Text(widget.badgeName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24))
+        ],
       ),
     );
   }
