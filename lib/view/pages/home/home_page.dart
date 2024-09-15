@@ -432,7 +432,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   );
                 },
                 icon: Icon(
-                  Icons.gamepad,
+                  Icons.sports_score,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),

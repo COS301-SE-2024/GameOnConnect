@@ -3,6 +3,8 @@ import 'package:flame/game.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/space_shooter_game.dart';
 
 class GamePage extends StatelessWidget {
+  const GamePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GameWidget<SpaceShooterGame>(
