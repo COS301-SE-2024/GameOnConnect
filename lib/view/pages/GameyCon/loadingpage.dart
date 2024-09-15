@@ -47,8 +47,33 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const SizedBox(height: 100),
+                Image.asset(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? 'assets/icons/GameOnConnect_Logo_Transparent_White.png'
+                      : 'assets/icons/GameOnConnect_Logo_Transparent.png',
+                  width: 100,
+                  height: 100,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  "Welcome to GameyCon!",
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Select a character',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
                 SizedBox(
                   height: 100,
                   child: GridView.builder(
@@ -56,8 +81,8 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                       childAspectRatio: 1,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5,
                     ),
                     itemCount: characterSprites.length,
                     itemBuilder: (context, index) {
