@@ -12,6 +12,9 @@ class SpaceShooterGame extends FlameGame
   late Player player;
   bool isGameOver = false;
   int score = 0;
+  double timeElapsed = 0;
+  double difficultyLevel = 1;
+  bool enemiesShoot = false;
 
   @override
   Future<void> onLoad() async {
@@ -90,6 +93,35 @@ class SpaceShooterGame extends FlameGame
       ..remove('scoreOverlay')
       ..add('scoreOverlay');
   }
+
+  @override
+void update(double dt) {
+  super.update(dt);
+
+  // Track time elapsed
+  if (!isGameOver) {
+    timeElapsed += dt;
+
+    // Increase difficulty after every 30 seconds
+    if (timeElapsed > 30 * difficultyLevel) {
+      difficultyLevel++;
+      increaseDifficulty();
+    }
+
+    // After 1 minute, enemies will start shooting
+    if (timeElapsed > 60 && !enemiesShoot) {
+      enemiesShoot = true;
+    }
+  }
+}
+
+void increaseDifficulty() {
+  // Increase the speed of enemies
+  children.whereType<Enemy>().forEach((enemy) {
+    enemy.increaseSpeed(difficultyLevel);
+  });
+}
+
 }
 
 class Player extends SpriteAnimationComponent
@@ -235,6 +267,9 @@ class Enemy extends SpriteAnimationComponent
           anchor: Anchor.center,
         );
 
+  double speed = 250;
+  double shootTimer = 0;
+
   static const enemySize = 100.0;
 
   @override
@@ -266,6 +301,23 @@ class Enemy extends SpriteAnimationComponent
     if (position.y > game.size.y) {
       removeFromParent();
     }
+
+    // Enemy shooting logic
+    if (game.enemiesShoot) {
+      shootTimer += dt;
+      if (shootTimer > 2) {
+        shoot();
+        shootTimer = 0;
+      }
+    }
+  }
+
+  void increaseSpeed(double difficultyLevel) {
+    speed = 250 * difficultyLevel;
+  }
+
+  void shoot() {
+    game.add(EnemyBullet(position: position + Vector2(0, height / 2)));
   }
 
   @override
@@ -283,6 +335,61 @@ class Enemy extends SpriteAnimationComponent
     }
   }
 }
+
+class EnemyBullet extends SpriteAnimationComponent
+    with HasGameReference<SpaceShooterGame>, CollisionCallbacks {
+  EnemyBullet({
+    super.position,
+  }) : super(
+        size: Vector2(15, 30),
+        anchor: Anchor.center,
+      );
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await game.loadSpriteAnimation(
+      'bullet.png',
+      SpriteAnimationData.sequenced(
+        amount: 2,
+        stepTime: .2,
+        textureSize: Vector2(8, 8),
+      ),
+    );
+
+    add(RectangleHitbox.relative(
+      Vector2(0.5, 0.5),
+      parentSize: size,
+      collisionType: CollisionType.passive,
+    ));
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    position.y += dt * 300; // Move bullet down
+
+    if (position.y > game.size.y) {
+      removeFromParent();
+    }
+  }
+
+  @override
+  void onCollisionStart(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollisionStart(intersectionPoints, other);
+
+    if (other is Player) {
+      other.removeFromParent();
+      game.triggerGameOver(); // End game when player is hit by an enemy bullet
+    }
+  }
+}
+
 
 class EnemyExplosion extends SpriteAnimationComponent
     with HasGameReference<SpaceShooterGame> {
