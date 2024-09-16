@@ -14,6 +14,7 @@ import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
+import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/models/mountain_badge_page.dart';
@@ -416,7 +417,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MountainBadgePage(),
+                      builder: (context) => const MountainBadgePage()
                     ),
                   );
                 },
@@ -427,7 +428,9 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
+
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -439,6 +442,23 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 },
                 icon: Icon(
                   Icons.sports_score,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GameScreen()
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.flutter_dash,
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
@@ -458,7 +478,9 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   );
                 },
                 icon: Icon(
+
                   Icons.games_outlined,
+
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
