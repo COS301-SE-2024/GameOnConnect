@@ -15,7 +15,8 @@ class GameyCon extends FlameGame
         HasCollisionDetection,
         TapCallbacks {
   @override
-  Color backgroundColor() => const Color.fromARGB(255, 97, 11, 155);
+  //const Color.fromARGB(255, 97, 11, 155)
+  Color backgroundColor() => const Color.fromRGBO(42, 42, 42, 1.0);
   late CameraComponent cam;
   Player player = Player(character: 'Ninja Frog');
   late JoystickComponent joystick;
@@ -24,6 +25,10 @@ class GameyCon extends FlameGame
   double soundVolume = 1.0;
   List<String> levelNames = ['Level-1', 'Level-2'];
   int currentLevelIndex = 0;
+
+  GameyCon({required String selectedCharacter}) {
+    player = Player(character: selectedCharacter);
+  }
 
   @override
   FutureOr<void> onLoad() async {
