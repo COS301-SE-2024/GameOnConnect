@@ -142,6 +142,7 @@ flutter:
     - assets/images/Traps/Saw/
     - assets/audio/
     - assets/images/Enemies/Chicken/
+    - assets/badges_images/
     # - assets/images/player-sprite.png
     - assets/images/stars_0.png
     - assets/images/stars_1.png

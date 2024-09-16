@@ -11,11 +11,11 @@ import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
+import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
 import 'package:gameonconnect/view/pages/GameyCon/loadingpage.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
-import 'package:gameonconnect/view/pages/models/mountain_badge_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -414,7 +414,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const MountainBadgePage()
+                      builder: (context) => const AchievementBadgesPage(),
                     ),
                   );
                 },
