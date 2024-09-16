@@ -6,7 +6,6 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/GameyCon/components/player.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 
-
 enum State { idle, run, hit }
 
 class Chicken extends SpriteAnimationGroupComponent
@@ -90,7 +89,9 @@ class Chicken extends SpriteAnimationGroupComponent
   }
 
   void _calculateRange() {
-    rangeNeg = position.x - offNeg * tileSize; //multiply by tileSize to get the actual position of the chicken in the game
+    rangeNeg = position.x -
+        offNeg *
+            tileSize; //multiply by tileSize to get the actual position of the chicken in the game
     rangePos = position.x + offPos * tileSize;
   }
 
@@ -100,7 +101,8 @@ class Chicken extends SpriteAnimationGroupComponent
     double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
     double chickenOffset = (scale.x > 0) ? 0 : -width;
 
-    if (playerInRange()) { //player is in range of the chicken, meaning the chicken should start moving
+    if (playerInRange()) {
+      //player is in range of the chicken, meaning the chicken should start moving
       targetDirection =
           (player.x + playerOffset < position.x + chickenOffset) ? -1 : 1;
       velocity.x = targetDirection * runSpeed;

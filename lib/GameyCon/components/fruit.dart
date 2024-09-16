@@ -3,13 +3,17 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
+import 'package:gameonconnect/GameyCon/components/score.dart';
 import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 
 class Fruit extends SpriteAnimationComponent
     with HasGameRef<GameyCon>, CollisionCallbacks {
   final String fruit;
+  final int value; 
+
   Fruit({
     this.fruit = 'Apple',
+    required this.value,
     super.position,
     super.size,
   });
@@ -62,6 +66,8 @@ class Fruit extends SpriteAnimationComponent
           loop: false,
         ),
       );
+
+      ScoreManager().increaseScore(value); //we increase the score by the value of the fruit
 
       await animationTicker?.completed;
       removeFromParent();

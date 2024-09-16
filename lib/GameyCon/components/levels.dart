@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gameonconnect/GameyCon/components/background_tile.dart';
@@ -58,8 +57,10 @@ class Level extends World with HasGameRef<GameyCon> {
             add(player);
             break;
           case 'Fruit':
+            int fruitValue = getFruitValue(spawnPoint.name);
             final fruit = Fruit(
               fruit: spawnPoint.name,
+              value: fruitValue,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
@@ -130,5 +131,28 @@ class Level extends World with HasGameRef<GameyCon> {
     }
 
     player.collisionBlocks = collisionBlocks;
+  }
+
+  int getFruitValue(String fruit) {
+    switch (fruit) {
+      case 'Apple':
+        return 5;
+      case 'Orange':
+        return 3;
+      case 'Bananas':
+        return 7;
+      case 'Cherries':
+        return 2;
+      case 'Kiwi':
+        return 8;
+      case 'Pineapple':
+        return 10;
+      case 'Melon':
+        return 3;
+      case 'Strawberry':
+        return 4;
+      default:
+        return 1;
+    }
   }
 }
