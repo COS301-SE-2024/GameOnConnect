@@ -72,11 +72,13 @@ dependencies:
   html_unescape: ^2.0.0
   insta_image_viewer: ^1.0.4
   youtube_player_flutter: ^9.0.3
+
   flame: ^1.19.0
   flame_tiled: ^1.20.3
   flame_audio: ^2.10.3
   share_plus: ^10.0.0
   super_tooltip: ^2.0.8
+
 
 
 
@@ -120,7 +122,12 @@ flutter:
     - assets/gifs/gaming_animation.gif
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
+    - "assets/images/"
+    - assets/images/bird_midflap.png
+    - assets/images/bird_upflap.png
+    - assets/images/bird_downflap.png
     - "assets/models/"
+    - "assets/audio/"
     - assets/images/Terrain/
     - assets/tiles/
     - assets/images/Main Characters/Ninja Frog/
@@ -135,6 +142,21 @@ flutter:
     - assets/images/Traps/Saw/
     - assets/audio/
     - assets/images/Enemies/Chicken/
+    # - assets/images/player-sprite.png
+    - assets/images/stars_0.png
+    - assets/images/stars_1.png
+    - assets/images/stars_2.png
+    - assets/images/bullet.png
+    - assets/images/enemy.png
+    - assets/images/explosion.png
+    - assets/images/player.png
+    - assets/images/Frigate.png
+    - assets/images/Battlecruiser.png
+    - assets/images/Scout.png
+    - assets/images/Scout_Destruction.png
+    - assets/images/Frigate_Destruction.png
+    # - assets/images/Bullet.png
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -144,6 +166,9 @@ flutter:
   - family: Inter
     fonts:
       - asset: assets/fonts/Inter-VariableFont_slnt,wght.ttf
+  - family: ThaleahFat    
+    fonts:
+      - asset: assets/fonts/ThaleahFat.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
