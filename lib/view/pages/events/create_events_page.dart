@@ -292,6 +292,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 10.pixelScale(context),
                                           ),
                                           const ToolTip(
+
                                               message:
                                                   "Tournaments are competitive, "
                                                   "whereas gaming sessions "
@@ -391,8 +392,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 20,
+                                          SizedBox(
+                                            height: 20.pixelScale(context),
                                           ),
                                           TextFormField(
                                             key: const Key(
@@ -413,6 +414,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
+                                                fontSize:
+                                                    16.pixelScale(context),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -755,37 +758,48 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     child: Text(
                                                       'Public',
                                                       style: TextStyle(
-                                                        letterSpacing: 0,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                        fontSize: 16.pixelScale(context)
-                                                      ),
+                                                          letterSpacing: 0,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                          fontSize: 16
+                                                              .pixelScale(
+                                                                  context)),
                                                     ),
                                                   ),
                                                   const Spacer(),
-                                                  Switch.adaptive(
-
-                                                    key: const Key('switch'),
-                                                    activeTrackColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
-                                                    inactiveTrackColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    inactiveThumbColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .surface,
-                                                    activeColor: Colors.black,
-                                                    value: isChanged,
-                                                    onChanged: (bool value) {
-                                                      setState(() {
-                                                        isChanged = value;
-                                                      });
-                                                    },
+                                                  SizedBox(
+                                                    width:
+                                                        43.pixelScale(context),
+                                                    child: FittedBox(
+                                                      fit: BoxFit.fill,
+                                                      child: Switch.adaptive(
+                                                        key:
+                                                            const Key('switch'),
+                                                        activeTrackColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .primary,
+                                                        inactiveTrackColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .secondary,
+                                                        inactiveThumbColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .surface,
+                                                        activeColor:
+                                                            Colors.black,
+                                                        value: isChanged,
+                                                        onChanged:
+                                                            (bool value) {
+                                                          setState(() {
+                                                            isChanged = value;
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
                                                   ),
                                                   SizedBox(
                                                       width: 20
@@ -848,7 +862,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         ? 'Invite connections*'
                                                         : 'Invite connections (${invites.length})',
                                                     style: TextStyle(
-                                                      fontFamily: 'Inter',
+                                                      fontSize: 16
+                                                          .pixelScale(context),
                                                       letterSpacing: 0,
                                                       color: Theme.of(context)
                                                           .colorScheme

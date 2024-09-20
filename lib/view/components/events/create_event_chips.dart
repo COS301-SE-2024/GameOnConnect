@@ -49,7 +49,7 @@ class _ChipSelectorState extends State<ChipSelector> {
           )),
     ];
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: options.map((option) {
         return ChoiceChip(
           showCheckmark: false,
@@ -101,6 +101,7 @@ class _ChipSelectorState extends State<ChipSelector> {
           elevation: 0,
         );
       }).toList(),
-    );
+    )
+    ;
   }
 }
