@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import '../../../model/events_M/chip_model.dart';
 
 class ChipSelector extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ChipSelectorState extends State<ChipSelector> {
             color: selectedOption == 'Gaming Session'
                 ? Colors.black
                 : Theme.of(context).colorScheme.secondary,
-            size: 18,
+            size: 18.pixelScale(context),
           )),
       ChipData(
           'Tournament',
@@ -44,7 +45,7 @@ class _ChipSelectorState extends State<ChipSelector> {
             color: selectedOption == "Tournament"
                 ? Colors.black
                 : Theme.of(context).colorScheme.secondary,
-            size: 18,
+            size: 18.pixelScale(context),
           )),
     ];
     return Row(
@@ -54,12 +55,12 @@ class _ChipSelectorState extends State<ChipSelector> {
           showCheckmark: false,
           label: Center(
             child: Container(
-              height: 25,
+              height: 25.pixelScale(context),
               alignment: Alignment.center,
               child: Row(children: [
                 option.icon,
-                const SizedBox(
-                  width: 5,
+                 SizedBox(
+                  width: 5.pixelScale(context),
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -67,7 +68,7 @@ class _ChipSelectorState extends State<ChipSelector> {
                     option.label,
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 16,
+                      fontSize: 16.pixelScale(context),
                       fontWeight: FontWeight.bold,
                       color: selectedOption == option.label
                           ? Colors.black

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../components/events/create_event_chips.dart';
 import 'choose_my_games_page.dart';
+import '../../../services/events_S/dynamic_scaling.dart';
 
 String selectedOption = "Gaming Session";
 
@@ -78,9 +79,11 @@ class _CreateEventsState extends State<CreateEvents> {
     return GestureDetector(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text(
+              title: Text(
                 'Create Event',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 32.pixelScale(context),
+                    fontWeight: FontWeight.bold),
               ),
             ),
             key: scaffoldKey,
@@ -104,9 +107,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                 child: Container(
                                   decoration: const BoxDecoration(),
                                   child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            16, 12, 16, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.pixelScale(context),
+                                        12.pixelScale(context),
+                                        16.pixelScale(context),
+                                        0.pixelScale(context)),
                                     child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
@@ -133,20 +138,28 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   child: filePath != null
                                                       ? Image.file(
                                                           File(filePath!.path),
-                                                          width: 359,
-                                                          height: 200,
+                                                          width: 359.pixelScale(
+                                                              context),
+                                                          height: 200
+                                                              .pixelScale(
+                                                                  context),
                                                           fit: BoxFit.cover,
                                                         )
                                                       : Image.asset(
                                                           'assets/default_images/default_image.jpg',
-                                                          width: 359,
-                                                          height: 200,
+                                                          width: 359.pixelScale(
+                                                              context),
+                                                          height: 200
+                                                              .pixelScale(
+                                                                  context),
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
                                                 Container(
-                                                    height: 40,
-                                                    width: 40,
+                                                    height:
+                                                        40.pixelScale(context),
+                                                    width:
+                                                        40.pixelScale(context),
                                                     decoration: BoxDecoration(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -162,11 +175,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                          SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
                                           SizedBox(
-                                            height: 70,
+                                            height: 70.pixelScale(context),
                                             child: TextFormField(
                                               key: const Key('nameTextField'),
                                               onFieldSubmitted: (val) {
@@ -207,7 +220,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
-                                                  fontSize: 16,
+                                                  fontSize:
+                                                      16.pixelScale(context),
                                                   letterSpacing: 0,
                                                 ),
                                                 hintStyle: TextStyle(
@@ -248,9 +262,16 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     .colorScheme
                                                     .primaryContainer,
                                                 contentPadding:
-                                                    const EdgeInsetsDirectional
+                                                    EdgeInsetsDirectional
                                                         .fromSTEB(
-                                                        16, 20, 16, 20),
+                                                            16.pixelScale(
+                                                                context),
+                                                            20.pixelScale(
+                                                                context),
+                                                            16.pixelScale(
+                                                                context),
+                                                            20.pixelScale(
+                                                                context)),
                                               ),
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
@@ -259,18 +280,23 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     .secondary,
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize:
+                                                    16.pixelScale(context),
                                               ),
                                               cursorColor: Theme.of(context)
                                                   .colorScheme
                                                   .primary,
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                          SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
-
-
+                                          const ToolTip(
+                                              message:
+                                                  "Tournaments are competitive, "
+                                                  "whereas gaming sessions "
+                                                  "are more relaxed with "
+                                                  "people you know "),
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
@@ -278,10 +304,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   selectedOption = option;
                                                 }));
                                               }),
-                                          const SizedBox(
-                                            height: 20,
+                                          SizedBox(
+                                            height: 20.pixelScale(context),
                                           ),
-
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -289,14 +314,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ChooseGame(
-                                                                chosenGame:
-                                                                    gameChosen,
-                                                              )))
-                                                  .then((gameInfo) {
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChooseGame(
+                                                            chosenGame:
+                                                                gameChosen,
+                                                          ))).then((gameInfo) {
                                                 setState(() {
                                                   if (gameInfo != null) {
                                                     gameChosen =
@@ -308,10 +332,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                             },
                                             child: Container(
                                               key: const Key('gameSelector'),
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 0, 16, 0),
-                                              height: 50,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.pixelScale(context),
+                                                      0,
+                                                      16.pixelScale(context),
+                                                      0),
+                                              height: 50.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -330,15 +357,18 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(gameName.isEmpty?
-                                                    'Choose game*' : gameName,
+                                                  Text(
+                                                    gameName.isEmpty
+                                                        ? 'Choose game*'
+                                                        : gameName,
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 16,
+                                                      fontSize: 16
+                                                          .pixelScale(context),
                                                     ),
                                                   ),
                                                   Icon(
@@ -347,10 +377,15 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: gameChosen==-1?Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary: Theme.of(context).colorScheme.primary,
-                                                    size: 24,
+                                                    color: gameChosen == -1
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    size:
+                                                        24.pixelScale(context),
                                                   ),
                                                 ],
                                               ),
@@ -387,7 +422,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 14,
+                                                fontSize:
+                                                    14.pixelScale(context),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -412,15 +448,23 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   .colorScheme
                                                   .primaryContainer,
                                               contentPadding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 16, 16, 16),
+                                                  EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          16.pixelScale(
+                                                              context),
+                                                          16.pixelScale(
+                                                              context),
+                                                          16.pixelScale(
+                                                              context),
+                                                          16.pixelScale(
+                                                              context)),
                                             ),
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .secondary,
-                                              fontSize: 16,
+                                              fontSize: 16.pixelScale(context),
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -430,25 +474,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                                 .colorScheme
                                                 .primary,
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                          SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
-
-                                          const ToolTip(
-                                              message:
-                                                  "Tournaments are competitive, "
-                                                      "whereas gaming sessions "
-                                                      "are more relaxed with "
-                                                      "people you know "),
-                                          ChipSelector(
-                                              selectedOption: selectedOption,
-                                              onSelected: (option) {
-                                                (setState(() {
-                                                  selectedOption = option;
-                                                }));
-                                              }),
-                                          const SizedBox(
-                                            height: 10,
+                                          SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
                                           Text(
                                             'Start*',
@@ -457,7 +487,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .secondary,
-                                              fontSize: 14,
+                                              fontSize: 14.pixelScale(context),
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -522,7 +552,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             },
                                             child: Container(
                                               width: double.infinity,
-                                              height: 48,
+                                              height: 48.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -539,10 +569,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     const AlignmentDirectional(
                                                         -1, 0),
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(
-                                                          12, 0, 0, 0),
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          12.pixelScale(
+                                                              context),
+                                                          0,
+                                                          0,
+                                                          0),
                                                   child: Text(
                                                     _datePicked != null
                                                         ? DateFormat(
@@ -555,7 +588,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 14,
+                                                      fontSize: 14
+                                                          .pixelScale(context),
                                                       letterSpacing: 0,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -565,7 +599,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                              height: 20.pixelScale(context)),
                                           InkWell(
                                             key: const Key('end_date_picker'),
                                             splashColor: Colors.transparent,
@@ -639,7 +674,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                             },
                                             child: Container(
                                               width: double.infinity,
-                                              height: 48,
+                                              height: 48.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -657,10 +692,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     const AlignmentDirectional(
                                                         -1, 0),
                                                 child: Padding(
-                                                  padding:
-                                                      const EdgeInsetsDirectional
-                                                          .fromSTEB(
-                                                          12, 0, 0, 0),
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          12.pixelScale(
+                                                              context),
+                                                          0,
+                                                          0,
+                                                          0),
                                                   child: Text(
                                                     _endDatePicked != null &&
                                                             validEndDate
@@ -674,7 +712,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 14,
+                                                      fontSize: 14
+                                                          .pixelScale(context),
                                                       letterSpacing: 0,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -684,14 +723,17 @@ class _CreateEventsState extends State<CreateEvents> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 15,
+                                          SizedBox(
+                                            height: 15.pixelScale(context),
                                           ),
-                                          const ToolTip(message: "Public events are seen by all users and anyone can join it."),
-                                          const SizedBox(
-                                            height:3,
+                                          const ToolTip(
+                                              message:
+                                                  "Public events are seen by all users and anyone can join it."),
+                                          SizedBox(
+                                            height: 3.pixelScale(context),
                                           ),
                                           Container(
+                                            height: 48.pixelScale(context),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
@@ -706,22 +748,24 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15,),
+                                                    padding: EdgeInsets.only(
+                                                      left: 15
+                                                          .pixelScale(context),
+                                                    ),
                                                     child: Text(
                                                       'Public',
                                                       style: TextStyle(
-                                                        fontFamily: 'Inter',
                                                         letterSpacing: 0,
                                                         color: Theme.of(context)
                                                             .colorScheme
                                                             .secondary,
+                                                        fontSize: 16.pixelScale(context)
                                                       ),
                                                     ),
                                                   ),
                                                   const Spacer(),
                                                   Switch.adaptive(
+
                                                     key: const Key('switch'),
                                                     activeTrackColor:
                                                         Theme.of(context)
@@ -743,11 +787,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                       });
                                                     },
                                                   ),
-                                                  const SizedBox(width: 20),
+                                                  SizedBox(
+                                                      width: 20
+                                                          .pixelScale(context)),
                                                 ]),
                                           ),
-                                          const SizedBox(
-                                            height: 20,
+                                          SizedBox(
+                                            height: 20.pixelScale(context),
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -772,10 +818,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                               });
                                             },
                                             child: Container(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 0, 16, 0),
-                                              height: 50,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.pixelScale(context),
+                                                      0,
+                                                      16.pixelScale(context),
+                                                      0),
+                                              height: 50.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -795,8 +844,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    invites.isEmpty?'Invite connections*':
-                                                    'Invite connections (${invites.length})',
+                                                    invites.isEmpty
+                                                        ? 'Invite connections*'
+                                                        : 'Invite connections (${invites.length})',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -811,26 +861,35 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: invites.isEmpty?Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary:Theme.of(context).colorScheme.primary,
-                                                    size: 24,
+                                                    color: invites.isEmpty
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    size:
+                                                        24.pixelScale(context),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 40),
+                                          SizedBox(
+                                              height: 40.pixelScale(context)),
                                         ]),
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 12, 16, 12),
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    16.pixelScale(context),
+                                    12.pixelScale(context),
+                                    16.pixelScale(context),
+                                    12.pixelScale(context)),
                                 child: MaterialButton(
                                   key: const Key('create_event_button'),
-                                  height: 50,
+                                  height: 50.pixelScale(context),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
                                   minWidth: double.infinity,
