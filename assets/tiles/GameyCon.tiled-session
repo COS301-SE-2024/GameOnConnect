@@ -1,0 +1,76 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Level-2.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "GameyCon.tsx": {
+            "scaleInDock": 1
+        },
+        "Level-1.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.3240625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.90370545197072,
+                "y": 320.2265754071277
+            }
+        },
+        "Level-2.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.3240625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 259.42884116119893,
+                "y": 320.2265754071277
+            }
+        },
+        "Level-3.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.3240625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 184.2813311305169,
+                "y": 319.8489497285816
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/piery/OneDrive/Documents/GitHub/GameOnConnect/assets/images/Terrain",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 23,
+    "openFiles": [
+        "Level-1.tmx",
+        "Level-2.tmx",
+        "Level-3.tmx"
+    ],
+    "project": "GameyCon.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "Level-1.tmx",
+        "Level-3.tmx",
+        "Level-2.tmx",
+        "level-1.tmx",
+        "GameyCon.tsx",
+        "level-2.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
