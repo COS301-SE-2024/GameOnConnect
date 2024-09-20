@@ -93,7 +93,7 @@ void unlockCollectorBadge(bool add) async {
 
           if (count== 10) {
             await _firestore.collection("badges").doc(currentUser.uid).update({
-              //if the count is >= 10 then update the document with the unlocked status
+              //if the count is == 10 then update the document with the unlocked status
               "collector_badge": {//CHANGE
                 "count": count,
                 "date_unlocked": DateTime.now(),
@@ -146,6 +146,52 @@ void unlockCollectorBadge(bool add) async {
       }
     } catch (e) {
       throw Exception("Failed to unlock achiever badge: $e"); //CHANGE
+    }
+  }
+
+  void unlockCustomizerBadge() async {
+    try {
+      final currentUser = _auth.currentUser; 
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); 
+
+        if (data != null) {
+          int count = 
+              data["customizer_badge"]["count"]; //get the count from the document
+
+        if(count<3)
+        {
+          count ++;
+        }
+
+          
+          if (count== 3) {
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              //if the count is ==3 then update the document with the unlocked status
+              "customizer_badge": {
+                "count": count,
+                "date_unlocked": DateTime.now(),
+                "unlocked": true,
+              }
+            });
+          } else if (count<3) {
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              //update the count and latest date in the document
+              "customizer_badge": { 
+                "count": count,
+                "date_unlocked": null,
+                "unlocked": false,
+              }
+            });
+          }
+        }
+      }
+    } catch (e) {
+      throw Exception("Failed to unlock customizer badge: $e"); //CHANGE
     }
   }
 

@@ -70,11 +70,11 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
   FlameAudio.play('collision.wav');
   game.collision=true;
 
-  if(totalScore== 15)
+  if(totalScore>= 15)
   {
     BadgeService().unlockAchieverBadge();
   }
-  
+
   gameRef.overlays.add('gameOver');
   gameRef.pauseEngine();
  }
