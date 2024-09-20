@@ -69,4 +69,52 @@ class BadgeService {
       throw Exception("Failed to unlock loyalty badge: $e");
     }
   }
+
+void unlockCollectorBadge(bool add) async {
+    try {
+      final currentUser = _auth.currentUser; 
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); 
+
+        if (data != null) {
+          int count = 
+              data["collector_badge"]["count"]; //get the count from the document//CHANGE
+
+          if(add){
+            count++;
+          }
+          else{
+            count--;
+          }
+
+          if (count== 10) {
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              //if the count is >= 10 then update the document with the unlocked status
+              "collector_badge": {//CHANGE
+                "count": count,
+                "date_unlocked": DateTime.now(),
+                "unlocked": true,
+              }
+            });
+          } else if (count<10) {
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              //update the count and latest date in the document
+              "collector_badge": { //CHANGE
+                "count": count,
+                "date_unlocked": null,
+                "unlocked": false,
+              }
+            });
+          }
+        }
+      }
+    } catch (e) {
+      throw Exception("Failed to unlock collector badge: $e"); //CHANGE
+    }
+  }
+
 }
