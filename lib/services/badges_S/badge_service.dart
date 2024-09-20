@@ -117,4 +117,36 @@ void unlockCollectorBadge(bool add) async {
     }
   }
 
+  void unlockAchieverBadge() async {
+    try {
+      final currentUser = _auth.currentUser; 
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); 
+
+        if (data != null) {
+          
+          bool unlocked = 
+              data["achiever_badge"]["unlocked"]; 
+
+          if(unlocked==false){
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              "achiever_badge": {
+                "date_unlocked": DateTime.now(),
+                "unlocked": true,
+              }
+            });
+          }
+          else{
+          }
+        }
+      }
+    } catch (e) {
+      throw Exception("Failed to unlock achiever badge: $e"); //CHANGE
+    }
+  }
+
 }
