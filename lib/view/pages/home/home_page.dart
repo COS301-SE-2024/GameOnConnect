@@ -15,6 +15,7 @@ import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
 import 'package:gameonconnect/view/pages/GameyCon/loadingpage.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/home/invite_updates.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
@@ -367,87 +368,95 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
         Text("Updates and invites",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         SizedBox(height: 15),
-        Container(
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.black,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          height: 130,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Align text to the left
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.black
-                            : Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                      children: [
-                        TextSpan(text: "You have "),
-                        TextSpan(
-                          text:
-                              "15", // The number you want to color differently
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary
-                          ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InviteUpdates()),
+            );
+          },
+          child: Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            height: 130,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, 
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
-                        TextSpan(text: " event invites"),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 5,),
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.black
-                            : Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
-                      children: [
-                        TextSpan(text: "and "),
-                        TextSpan(
-                          text: "5",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary
+                        children: [
+                          TextSpan(text: "You have "),
+                          TextSpan(
+                            text:
+                                "15", 
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary
+                            ),
                           ),
-                        ),
-                        TextSpan(text: " new friend requests"),
-                      ],
+                          TextSpan(text: " event invites"),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/home_icon.svg',
-                    height: 75,
-                    fit: BoxFit.contain,
-                  ),
-                  SizedBox(width: 10),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.black
-                        : Colors.white,
-                    size: 20,
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 5,),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black
+                              : Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                        children: [
+                          TextSpan(text: "and "),
+                          TextSpan(
+                            text: "5",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary
+                            ),
+                          ),
+                          TextSpan(text: " new friend requests"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/home_icon.svg',
+                      height: 75,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(width: 10),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black
+                          : Colors.white,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(height: 15),
