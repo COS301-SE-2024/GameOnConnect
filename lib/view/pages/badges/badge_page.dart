@@ -21,6 +21,7 @@ class _BadgePageState extends State<BadgePage> {
       body: Column(children: [
         Expanded(
             child: ModelViewer(
+          shadowIntensity: 200,
           disablePan: true,
           disableZoom: true,
           src: 'assets/models/${widget.badgeFileName}.glb',
