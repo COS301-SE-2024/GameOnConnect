@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 
 class BadgeService {
   BadgeService._privateConstructor();
@@ -25,6 +26,13 @@ class BadgeService {
             doc.data(); //get the corresponding document from firestore
 
         if (data != null) {
+          bool unlocked = data["loyalty_badge"]["unlocked"] ??
+              false; //check if the badge is already unlocked
+
+          if (unlocked) {
+            return; //if it is already unlocked then return
+          }
+
           DateTime latestDate =
               (data["loyalty_badge"]["latest_date"] as Timestamp).toDate();
 
@@ -693,5 +701,40 @@ class BadgeService {
     }
   }
 
-  void unlockGamerBadge() async {}
+  void unlockGamerBadge() async {
+    StatsTotalTimeService timeService = StatsTotalTimeService();
+    try {
+      DateTime currentDate = DateTime.now(); //get the current date
+      final currentUser = _auth.currentUser; //get the current user
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); //get the corresponding document from firestore
+
+        if (data != null) {
+          bool unlocked = data["gamer_badge"]["unlocked"] ??
+              false; //check if the badge is already unlocked
+
+          if (unlocked) {
+            return; //if it is already unlocked then return
+          }
+
+          double time =await timeService.getTotalTimePlayedAll(currentUser.uid);
+          
+          if (time >= 20.0) {
+            await _firestore.collection("badges").doc(currentUser.uid).update({
+              "gamer_badge": {
+                "date_unlocked": currentDate,
+                "unlocked": true,
+              }
+            });
+          }
+        }
+      }
+    } catch (e) {
+      throw Exception("Failed to unlock gamer badge: $e");
+    }
+  }
 }

@@ -2,6 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class StatsTotalTimeService {
+  StatsTotalTimeService._privateConstructor();
+
+  static final StatsTotalTimeService _instance = StatsTotalTimeService._privateConstructor();
+
+  factory StatsTotalTimeService() {
+    return _instance;
+  }
+
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
