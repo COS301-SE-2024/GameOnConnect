@@ -16,7 +16,14 @@ class _BadgePageState extends State<BadgePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Badges'),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary
+        ),
+        title: Text('My Badges',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.primary)),
       ),
       body: Column(children: [
         Expanded(
