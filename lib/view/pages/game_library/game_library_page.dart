@@ -453,27 +453,7 @@ class _GameLibraryState extends State<GameLibrary> {
                           Row(
                               children: game.getPlatformIcons(context,
                                   Theme.of(context).colorScheme.primary)),
-                          Text("Released: ${game.released}"),
-                          Row(
-                            children: [
-                              Text("Genres:"),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: game.getStyledGenres(context),
-                                ),
-                              )
-                            ],
-                          ),
-                          Text("Reviews: ${game.reviewsCount}")
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
+                          Container(
                           padding: EdgeInsets.only(
                               left: 5, top: 3, right: 5, bottom: 3),
                           decoration: BoxDecoration(
@@ -481,18 +461,33 @@ class _GameLibraryState extends State<GameLibrary> {
                             border: Border.all(
                                 color: Theme.of(context).colorScheme.primary),
                           ),
-                          child: Text("${game.score}",
+                          child: Text("Metacritic: ${game.score}",
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontSize: 12)),
                         ),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).colorScheme.secondary),
-                        SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    )
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(text: "Released: "),
+                                TextSpan(
+                                  text: game.released,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.secondary),
                   ],
                 ),
               ),
