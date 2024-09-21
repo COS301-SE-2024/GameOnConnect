@@ -15,18 +15,22 @@ import '../../components/search/search_field.dart';
 
 class FriendSearch extends StatefulWidget {
   //final List<String> chosenInvites;
-  const FriendSearch({super.key,});
+  const FriendSearch({
+    super.key,
+  });
   @override
-FriendSearchState createState() => FriendSearchState();}
+  FriendSearchState createState() => FriendSearchState();
+}
 
 class FriendSearchState extends State<FriendSearch> {
+  final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<AppUser>? list;
   List<String> invites = [];
   final TextEditingController searchController = TextEditingController();
   String _searchQuery = '';
   String _currentUserId = '';
-  int requestsCount=0;
+  int requestsCount = 0;
 
   @override
   void dispose() {
@@ -60,8 +64,8 @@ class FriendSearchState extends State<FriendSearch> {
         context,
       );
     }
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
-
 
   //Future<void> getConnectionsInvite() async {
   Future<void> fetchUsers() async {
@@ -70,21 +74,21 @@ class FriendSearchState extends State<FriendSearch> {
   }
 
   void navigateToRequests(BuildContext context) {
-     Navigator.push(context,
-      MaterialPageRoute(
-        builder: (context) => ConnectionRequestList(
-          isOwnProfile: true,
-          uid: _currentUserId,
-          loggedInUser: _currentUserId,
-        )
-      )
-    );  
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConnectionRequestList(
+                  isOwnProfile: true,
+                  uid: _currentUserId,
+                  loggedInUser: _currentUserId,
+                )));
     BadgeService().unlockViewRequestsComponent();
   }
-  Future<void> nrOfRequests()async {
+
+  Future<void> nrOfRequests() async {
     final connections = await ConnectionService().getConnections('requests');
-    requestsCount= connections.length; 
-    }
+    requestsCount = connections.length;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,14 +118,12 @@ class FriendSearchState extends State<FriendSearch> {
                             .contains(_searchQuery.toLowerCase()) &&
                         user.uid != _currentUserId) // Exclude current user
                     .toList();
-                return SingleChildScrollView( 
-                  child:Column(
-                    mainAxisSize: MainAxisSize.max, 
-                    children: [
+                return SingleChildScrollView(
+                    child: Column(mainAxisSize: MainAxisSize.max, children: [
                   Padding(
-                    padding:const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                        //const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
-                        
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    //const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
+
                     child: SearchField(
                         controller: searchController,
                         onSearch: (query) {
@@ -138,35 +140,32 @@ class FriendSearchState extends State<FriendSearch> {
                           BadgeService().unlockSearchConnectionComponent();
                         }),
                   ),
-              
-              Padding(
-                padding:const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                      RequestButton(
-                    onPressed: () =>navigateToRequests(context),
-                    count: requestsCount,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        RequestButton(
+                          onPressed: () => navigateToRequests(context),
+                          count: requestsCount,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              ),
-              
-              
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
-                child: Divider(
-                  thickness: 1,
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                ),
-              ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                  ),
                   if (filteredUsers.isEmpty)
                     const Center(child: Text('No results found.'))
                   else
                     Container(
-                      decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
                         height: MediaQuery.of(context).size.height,
                         child: ListView.separated(
                           itemCount: filteredUsers.length,
@@ -194,8 +193,6 @@ class FriendSearchState extends State<FriendSearch> {
               }
             }),
       ),
-      
     );
-
   }
 }

@@ -2,9 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class BadgeService {
+  BadgeService._privateConstructor();
+
+  static final BadgeService _instance = BadgeService._privateConstructor();
+
+  factory BadgeService() {
+    return _instance;
+  }
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  
 
   void unlockLoyaltyBadge() async {
     try {
@@ -30,11 +37,14 @@ class BadgeService {
               latestDate.month == currentDate.month &&
               latestDate.year == currentDate.year;
 
-          if (isSameDay) { //if it is the same day, then don't run again
+          if (isSameDay) {
+            //if it is the same day, then don't run again
             return;
           }
 
-          bool isYesterday = latestDate.day == currentDate.day - 1 && latestDate.month == currentDate.month && latestDate.year == currentDate.year;
+          bool isYesterday = latestDate.day == currentDate.day - 1 &&
+              latestDate.month == currentDate.month &&
+              latestDate.year == currentDate.year;
 
           if (isYesterday) {
             //if the latest date was yesterday then increment the count
@@ -71,51 +81,56 @@ class BadgeService {
     }
   }
 
-void unlockCollectorBadge(bool add) async {
+  void unlockCollectorBadge(bool add) async {
     try {
-      final currentUser = _auth.currentUser; 
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          int count = 
-              data["collector_badge"]["count"]; //get the count from the document//CHANGE
-          bool unlocked = 
-              data["collector_badge"]["unlocked"];
+          int count = data["collector_badge"]
+              ["count"]; //get the count from the document//CHANGE
+          bool unlocked = data["collector_badge"]["unlocked"];
 
-          if(unlocked==false) { // only update if its false
-            if(add){
-            count++;
-            }
-            else{
+          if (unlocked == false) {
+            // only update if its false
+            if (add) {
+              count++;
+            } else {
               count--;
             }
 
-            if (count== 10) {
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            if (count == 10) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 //if the count is == 10 then update the document with the unlocked status
-                "collector_badge": {//CHANGE
+                "collector_badge": {
+                  //CHANGE
                   "count": count,
                   "date_unlocked": DateTime.now(),
                   "unlocked": true,
                 }
               });
-            } else if (count<10) {
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (count < 10) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 //update the count and latest date in the document
-                "collector_badge": { //CHANGE
+                "collector_badge": {
+                  //CHANGE
                   "count": count,
                   "date_unlocked": null,
                   "unlocked": false,
                 }
               });
             }
-          }   
-          
+          }
         }
       }
     } catch (e) {
@@ -125,20 +140,17 @@ void unlockCollectorBadge(bool add) async {
 
   void unlockAchieverBadge() async {
     try {
-      final currentUser = _auth.currentUser; 
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          
-          bool unlocked = 
-              data["achiever_badge"]["unlocked"]; 
+          bool unlocked = data["achiever_badge"]["unlocked"];
 
-          if(unlocked==false){
+          if (unlocked == false) {
             await _firestore.collection("badges").doc(currentUser.uid).update({
               "achiever_badge": {
                 "date_unlocked": DateTime.now(),
@@ -155,82 +167,85 @@ void unlockCollectorBadge(bool add) async {
 
   void unlockCustomizerBadge() async {
     try {
-      final currentUser = _auth.currentUser; 
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          int count = 
-              data["customizer_badge"]["count"]; //get the count from the document
+          int count = data["customizer_badge"]
+              ["count"]; //get the count from the document
 
-        bool unlocked = 
-              data["customizer_badge"]["unlocked"];
+          bool unlocked = data["customizer_badge"]["unlocked"];
 
-        if(unlocked==false){ //Only update if its not unlocked yet
-          if(count<3)
-          {
-            count ++;
+          if (unlocked == false) {
+            //Only update if its not unlocked yet
+            if (count < 3) {
+              count++;
+            }
+
+            if (count == 3) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
+                //if the count is ==3 then update the document with the unlocked status
+                "customizer_badge": {
+                  "count": count,
+                  "date_unlocked": DateTime.now(),
+                  "unlocked": true,
+                }
+              });
+            } else if (count < 3) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
+                //update the count and latest date in the document
+                "customizer_badge": {
+                  "count": count,
+                  "date_unlocked": null,
+                  "unlocked": false,
+                }
+              });
+            }
           }
-
-          if (count== 3) {
-            await _firestore.collection("badges").doc(currentUser.uid).update({
-              //if the count is ==3 then update the document with the unlocked status
-              "customizer_badge": {
-                "count": count,
-                "date_unlocked": DateTime.now(),
-                "unlocked": true,
-              }
-            });
-          } else if (count<3) {
-            await _firestore.collection("badges").doc(currentUser.uid).update({
-              //update the count and latest date in the document
-              "customizer_badge": { 
-                "count": count,
-                "date_unlocked": null,
-                "unlocked": false,
-              }
-            });
-          }
-        }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock customizer badge: $e"); 
+      Exception("Failed to unlock customizer badge: $e");
     }
   }
 
-  void unlockSocialButterflyBadge(bool disconnect, String otherUserId)async {
+  void unlockSocialButterflyBadge(bool disconnect, String otherUserId) async {
     try {
-      final currentUser = _auth.currentUser; 
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> currentUserDoc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? currentUserData =
-            currentUserDoc.data(); 
+        Map<String, dynamic>? currentUserData = currentUserDoc.data();
 
         if (currentUserData != null) {
-          int currentUserCount = 
-              currentUserData["social_butterfly_badge"]["count"]; 
-          bool unlocked =
-              currentUserData["social_butterfly_badge"]["unlocked"];
+          int currentUserCount =
+              currentUserData["social_butterfly_badge"]["count"];
+          bool unlocked = currentUserData["social_butterfly_badge"]["unlocked"];
 
           if (!unlocked) // update only if its not already unlocked
           {
-            if(!disconnect){
-            currentUserCount++;
-            }
-            else{
+            if (!disconnect) {
+              currentUserCount++;
+            } else {
               currentUserCount--;
             }
 
-            if (currentUserCount== 15) {
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            if (currentUserCount == 15) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 //if the count is == 15 then update the document with the unlocked status
                 "social_butterfly_badge": {
                   "count": currentUserCount,
@@ -238,8 +253,11 @@ void unlockCollectorBadge(bool add) async {
                   "unlocked": true,
                 }
               });
-            } else if (currentUserCount<15) {
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (currentUserCount < 15) {
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 //update the count and latest date in the document
                 "social_butterfly_badge": {
                   "count": currentUserCount,
@@ -249,29 +267,25 @@ void unlockCollectorBadge(bool add) async {
               });
             }
           }
-          
         }
 
         DocumentSnapshot<Map<String, dynamic>> otherUserDoc =
             await _firestore.collection("badges").doc(otherUserId).get();
-        Map<String, dynamic>? otherUserData =
-            otherUserDoc.data(); 
+        Map<String, dynamic>? otherUserData = otherUserDoc.data();
 
         if (otherUserData != null) {
-          int otherUserCount = 
-              otherUserData["social_butterfly_badge"]["count"]; 
-          bool unlocked =
-              otherUserData["social_butterfly_badge"]["unlocked"];
+          int otherUserCount = otherUserData["social_butterfly_badge"]["count"];
+          bool unlocked = otherUserData["social_butterfly_badge"]["unlocked"];
 
-          if (!unlocked){ // update only if its not already unlocked
-            if(!disconnect){
-            otherUserCount++;
-            }
-            else{
+          if (!unlocked) {
+            // update only if its not already unlocked
+            if (!disconnect) {
+              otherUserCount++;
+            } else {
               otherUserCount--;
             }
 
-            if (otherUserCount== 15) {
+            if (otherUserCount == 15) {
               await _firestore.collection("badges").doc(otherUserId).update({
                 //if the count is == 15 then update the document with the unlocked status
                 "social_butterfly_badge": {
@@ -280,10 +294,10 @@ void unlockCollectorBadge(bool add) async {
                   "unlocked": true,
                 }
               });
-            } else if (otherUserCount<15) {
+            } else if (otherUserCount < 15) {
               await _firestore.collection("badges").doc(otherUserId).update({
                 //update the count and latest date in the document
-                "social_butterfly_badge": { 
+                "social_butterfly_badge": {
                   "count": otherUserCount,
                   "date_unlocked": null,
                   "unlocked": false,
@@ -291,299 +305,358 @@ void unlockCollectorBadge(bool add) async {
               });
             }
           }
-          
         }
       }
     } catch (e) {
-      Exception("Failed to unlock social butterfly badge: $e"); 
+      Exception("Failed to unlock social butterfly badge: $e");
     }
   }
 
-  void unlockSearchGameComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockSearchGameComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool searchGame = 
-                data["explorer_badge"]["search_game"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool searchGame = data["explorer_badge"]["search_game"];
 
-          if(unlocked==false && searchGame==false){ //Only update if its not unlocked yet
+          if (unlocked == false && searchGame == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.search_game":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.search_game": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.search_game":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.search_game": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock search game component: $e"); 
+      Exception("Failed to unlock search game component: $e");
     }
   }
 
-  void unlockSearchConnectionComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockSearchConnectionComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool searchConnection = 
-                data["explorer_badge"]["search_connection"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool searchConnection = data["explorer_badge"]["search_connection"];
 
-          if(unlocked==false && searchConnection==false){ //Only update if its not unlocked yet
+          if (unlocked == false && searchConnection == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.search_connection":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.search_connection": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.search_connection":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.search_connection": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock search connection Component $e"); 
+      Exception("Failed to unlock search connection Component $e");
     }
   }
 
-  void unlockAddWantToPlayComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockAddWantToPlayComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool wantToPlay = 
-                data["explorer_badge"]["want_to_play"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool wantToPlay = data["explorer_badge"]["want_to_play"];
 
-          if(unlocked==false && wantToPlay==false){ //Only update if its not unlocked yet
+          if (unlocked == false && wantToPlay == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.want_to_play":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.want_to_play": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.want_to_play":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.want_to_play": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock add want to play Component $e"); 
+      Exception("Failed to unlock add want to play Component $e");
     }
   }
 
-  void unlockViewActivityComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockViewActivityComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool viewActivity = 
-                data["explorer_badge"]["view_activity"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool viewActivity = data["explorer_badge"]["view_activity"];
 
-          if(unlocked==false && viewActivity==false){ //Only update if its not unlocked yet
+          if (unlocked == false && viewActivity == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.view_activity":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.view_activity": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.view_activity":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.view_activity": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock view activity Component $e"); 
+      Exception("Failed to unlock view activity Component $e");
     }
   }
 
-  void unlockViewStatsComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockViewStatsComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool viewStats = 
-                data["explorer_badge"]["view_stats"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool viewStats = data["explorer_badge"]["view_stats"];
 
-          if(unlocked==false && viewStats==false){ //Only update if its not unlocked yet
+          if (unlocked == false && viewStats == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.view_stats":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.view_stats": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.view_stats":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.view_stats": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock view stats Component $e"); 
+      Exception("Failed to unlock view stats Component $e");
     }
   }
 
-  void unlockViewRequestsComponent() async{
-     try {
-      final currentUser = _auth.currentUser; 
+  void unlockViewRequestsComponent() async {
+    try {
+      final currentUser = _auth.currentUser;
 
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data =
-            doc.data(); 
+        Map<String, dynamic>? data = doc.data();
 
         if (data != null) {
-          bool unlocked = 
-                data["explorer_badge"]["unlocked"];
-          bool viewRequests = 
-                data["explorer_badge"]["view_requests"];
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool viewRequests = data["explorer_badge"]["view_requests"];
 
-          if(unlocked==false && viewRequests==false){ //Only update if its not unlocked yet
+          if (unlocked == false && viewRequests == false) {
+            //Only update if its not unlocked yet
 
-            int unlockedComponents = 
+            int unlockedComponents =
                 data["explorer_badge"]["unlocked_components"];
-                
-            unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 12) { //unlocked every component
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
-                "explorer_badge.view_requests":true,
-                "explorer_badge.unlocked":true,
+                "explorer_badge.view_requests": true,
+                "explorer_badge.unlocked": true,
               });
-            } 
-            else if (unlockedComponents<12) { //still have more components to unlock
-              await _firestore.collection("badges").doc(currentUser.uid).update({
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
-                "explorer_badge.view_requests":true,
-                "explorer_badge.unlocked":false,
+                "explorer_badge.view_requests": true,
+                "explorer_badge.unlocked": false,
               });
             }
           }
-        
         }
       }
     } catch (e) {
-      Exception("Failed to unlock view requests Component $e"); 
+      Exception("Failed to unlock view requests Component $e");
     }
   }
+
+  void unlockNightOwlBadge(DateTime time) async {
+    bool isPastNightOwlTime = time.hour > 22 ||
+        (time.hour == 22 && time.minute >= 15 && time.second >= 0);
+
+    if (isPastNightOwlTime) {
+      final currentUser = _auth.currentUser;
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data = doc.data();
+
+        if (data != null) {
+          bool unlocked = data["nightowl_badge"]["unlocked"] ?? false;
+
+          if (unlocked) {
+            return;
+          }
+
+          await _firestore.collection("badges").doc(currentUser.uid).update({
+            "nightowl_badge": {
+              "date_unlocked": time,
+              "unlocked": true,
+            }
+          });
+        }
+      }
+    } else {
+      return;
+    }
+  }
+
+  void unlockEventPlannerBadge() async {}
+
+  void unlockGamerBadge() async {}
 }

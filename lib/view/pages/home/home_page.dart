@@ -317,12 +317,14 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   late String currentUserName = "";
   late String currentUserId;
   final ProfileService _profileService = ProfileService();
+  final BadgeService _badgeService = BadgeService();
 
   @override
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername();
+    fetchUsername(); 
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   Future<void> fetchUsername() async {

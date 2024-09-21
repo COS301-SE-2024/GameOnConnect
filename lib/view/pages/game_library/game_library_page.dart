@@ -31,11 +31,12 @@ class _GameLibraryState extends State<GameLibrary> {
   List<String> selectedPlatforms = [];
   List<String> _activeFilters = [];
   String _filterString = '';
+  final BadgeService _badgeService = BadgeService();
 
   @override
   void initState() {
     super.initState();
-    //_loadGames();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
