@@ -1,3 +1,5 @@
+
+// ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
@@ -265,13 +267,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                 .addToMyGames(
                                                     gameDetails.id.toString())
                                                 .then((onValue) =>
-                                                    // ignore: use_build_context_synchronously
                                                     CustomSnackbar().show(
                                                         context,
                                                         'Added to My Games'));
                                           }
                                           Navigator.push(
-                                            // ignore: use_build_context_synchronously
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
@@ -459,7 +459,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           .removeFromWishlist(
                                               gameDetails.id.toString())
                                           .then((onValue) =>
-                                              // ignore: use_build_context_synchronously
                                               CustomSnackbar().show(context,
                                                   'Removed from Want to Play'));
                                     } else {
@@ -468,7 +467,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                               gameDetails.id.toString())
                                           .then(
                                             (onValue) =>
-                                                // ignore: use_build_context_synchronously
                                                 CustomSnackbar().show(context,
                                                     'Added to Want to Play'),
                                           );
@@ -524,13 +522,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     if (isInMyGames) {
                                       await myGames.removeFromMyGames(
                                           gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
                                       CustomSnackbar().show(
                                           context, 'Removed from My Games');
                                     } else {
                                       await myGames.addToMyGames(
                                           gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
                                       CustomSnackbar()
                                           .show(context, 'Added to My Games');
                                     }

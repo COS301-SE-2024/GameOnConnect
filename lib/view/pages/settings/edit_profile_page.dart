@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
+ import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
@@ -52,13 +54,9 @@ class _EditProfilePage extends State<EditProfilePage> {
         if (_formKey.currentState?.validate() == true) {
           _formKey.currentState?.save();
           editProfile();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Updated profile successfully'),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-            ),
+         CustomSnackbar().show(context,'Updated profile successfully'
           );
-          // ignore: use_build_context_synchronously
+
           Navigator.of(context).pop();
         }
       } else {
@@ -83,7 +81,6 @@ class _EditProfilePage extends State<EditProfilePage> {
       await EditProfileService().editProfile(
           _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error updating profile'),

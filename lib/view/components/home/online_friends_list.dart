@@ -35,7 +35,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
         _friends = onlineUsers;
         _isLoading = false;
       });
-    }else return;
+    }else {return;}
   }
 
   @override
