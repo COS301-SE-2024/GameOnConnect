@@ -322,7 +322,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -330,7 +330,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
@@ -370,7 +370,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -378,7 +378,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
@@ -418,7 +418,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -426,7 +426,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
@@ -466,7 +466,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -474,7 +474,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
@@ -514,7 +514,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -522,7 +522,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,
@@ -562,7 +562,7 @@ void unlockCollectorBadge(bool add) async {
                 
             unlockedComponents ++; // new component unlocked
 
-            if (unlockedComponents== 13) { //unlocked every component
+            if (unlockedComponents== 12) { //unlocked every component
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": DateTime.now(),
@@ -570,7 +570,7 @@ void unlockCollectorBadge(bool add) async {
                 "explorer_badge.unlocked":true,
               });
             } 
-            else if (unlockedComponents<13) { //still have more components to unlock
+            else if (unlockedComponents<12) { //still have more components to unlock
               await _firestore.collection("badges").doc(currentUser.uid).update({
                 "explorer_badge.unlocked_components": unlockedComponents,
                 "explorer_badge.date_unlocked": null,

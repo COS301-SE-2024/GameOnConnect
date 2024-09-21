@@ -139,7 +139,7 @@ class AuthService {
             "changed_theme": false,
             "created_chat": false,
             "date_unlocked": null,
-            "edit_profile": false,
+            //"edit_profile": false, 
             "join_event": false,
             "play_spaceshooter": false,
             "search_connection": false,
