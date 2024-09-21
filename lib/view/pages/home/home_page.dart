@@ -384,24 +384,48 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 crossAxisAlignment:
                     CrossAxisAlignment.start, // Align text to the left
                 children: [
-                  Text(
-                    "You have 15 event invites",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                      children: [
+                        TextSpan(text: "You have "),
+                        TextSpan(
+                          text:
+                              "15", // The number you want to color differently
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary
+                          ),
+                        ),
+                        TextSpan(text: " event invites"),
+                      ],
                     ),
                   ),
-                  Text(
-                    "and 5 new friend requests",
-                    style: TextStyle(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                  SizedBox(height: 5,),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black
+                            : Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                      children: [
+                        TextSpan(text: "and "),
+                        TextSpan(
+                          text: "5",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary
+                          ),
+                        ),
+                        TextSpan(text: " new friend requests"),
+                      ],
                     ),
                   ),
                 ],
@@ -413,15 +437,13 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                     height: 75,
                     fit: BoxFit.contain,
                   ),
-                  SizedBox(
-                      width: 10), // Add some space between the icon and arrow
+                  SizedBox(width: 10),
                   Icon(
-                    Icons
-                        .arrow_forward_ios, // Arrow indicating it can be opened
+                    Icons.arrow_forward_ios,
                     color: Theme.of(context).brightness == Brightness.dark
                         ? Colors.black
                         : Colors.white,
-                    size: 20, // Adjust size as needed
+                    size: 20,
                   ),
                 ],
               ),
