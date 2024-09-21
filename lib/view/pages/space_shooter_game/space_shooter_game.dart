@@ -258,6 +258,49 @@ class Bullet extends SpriteAnimationComponent
   }
 }
 
+class EnemyBullet extends SpriteAnimationComponent
+    with HasGameReference<SpaceShooterGame> {
+  EnemyBullet({
+    super.position,
+  }) : super(
+          size: Vector2(10, 20),
+          anchor: Anchor.center,
+        );
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    animation = await game.loadSpriteAnimation(
+      'bullet.png',
+      SpriteAnimationData.sequenced(
+        amount: 2,
+        stepTime: .2,
+        textureSize: Vector2(8, 8),
+      ),
+    );
+
+    add(RectangleHitbox.relative(
+      Vector2(0.5, 0.5), 
+      parentSize: size,
+      collisionType: CollisionType.passive,
+    ));
+
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    position.y += dt * 500;
+
+    if (position.y > height) {
+      removeFromParent();
+    }
+  }
+}
+
+
 class Enemy extends SpriteAnimationComponent
     with HasGameReference<SpaceShooterGame>, CollisionCallbacks {
   Enemy({
@@ -266,6 +309,8 @@ class Enemy extends SpriteAnimationComponent
           size: Vector2.all(enemySize),
           anchor: Anchor.center,
         );
+
+  late final SpawnComponent _enemyBulletSpawner;
 
   double speed = 250;
   double shootTimer = 0;
@@ -285,11 +330,39 @@ class Enemy extends SpriteAnimationComponent
       ),
     );
 
+    _enemyBulletSpawner = SpawnComponent(
+      period: .2,
+      selfPositioning: true,
+      factory: (index) {
+        return Bullet(
+          position: position +
+              Vector2(
+                0,
+                -height / 2,
+              ),
+        );
+        
+      },
+      autoStart: false,
+    );
+
+    game.add(_enemyBulletSpawner);
+
     add(RectangleHitbox.relative(
       Vector2(0.5, 0.5), 
       parentSize: size,
     ));
 
+    startShooting();
+
+  }
+
+  void startShooting() {
+    _enemyBulletSpawner.timer.start();
+  }
+
+  void stopShooting() {
+    _enemyBulletSpawner.timer.stop();
   }
 
   @override
@@ -299,6 +372,7 @@ class Enemy extends SpriteAnimationComponent
     position.y += dt * 250;
 
     if (position.y > game.size.y) {
+      stopShooting();
       removeFromParent();
     }
 
@@ -328,6 +402,7 @@ class Enemy extends SpriteAnimationComponent
     super.onCollisionStart(intersectionPoints, other);
 
     if (other is Bullet) {
+      stopShooting();
       removeFromParent();
       other.removeFromParent();
       game.incrementScore();
@@ -336,59 +411,59 @@ class Enemy extends SpriteAnimationComponent
   }
 }
 
-class EnemyBullet extends SpriteAnimationComponent
-    with HasGameReference<SpaceShooterGame>, CollisionCallbacks {
-  EnemyBullet({
-    super.position,
-  }) : super(
-        size: Vector2(15, 30),
-        anchor: Anchor.center,
-      );
+// class EnemyBullet extends SpriteAnimationComponent
+//     with HasGameReference<SpaceShooterGame>, CollisionCallbacks {
+//   EnemyBullet({
+//     super.position,
+//   }) : super(
+//         size: Vector2(15, 30),
+//         anchor: Anchor.center,
+//       );
 
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
+//   @override
+//   Future<void> onLoad() async {
+//     await super.onLoad();
 
-    animation = await game.loadSpriteAnimation(
-      'bullet.png',
-      SpriteAnimationData.sequenced(
-        amount: 2,
-        stepTime: .2,
-        textureSize: Vector2(8, 8),
-      ),
-    );
+//     animation = await game.loadSpriteAnimation(
+//       'bullet.png',
+//       SpriteAnimationData.sequenced(
+//         amount: 2,
+//         stepTime: .2,
+//         textureSize: Vector2(8, 8),
+//       ),
+//     );
 
-    add(RectangleHitbox.relative(
-      Vector2(0.5, 0.5),
-      parentSize: size,
-      collisionType: CollisionType.passive,
-    ));
-  }
+//     add(RectangleHitbox.relative(
+//       Vector2(0.5, 0.5),
+//       parentSize: size,
+//       collisionType: CollisionType.passive,
+//     ));
+//   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
+//   @override
+//   void update(double dt) {
+//     super.update(dt);
 
-    position.y += dt * 300; // Move bullet down
+//     position.y += dt * 300; // Move bullet down
 
-    if (position.y > game.size.y) {
-      removeFromParent();
-    }
-  }
+//     if (position.y > game.size.y) {
+//       removeFromParent();
+//     }
+//   }
 
-  @override
-  void onCollisionStart(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other,
-  ) {
-    super.onCollisionStart(intersectionPoints, other);
+//   @override
+//   void onCollisionStart(
+//     Set<Vector2> intersectionPoints,
+//     PositionComponent other,
+//   ) {
+//     super.onCollisionStart(intersectionPoints, other);
 
-    if (other is Player) {
-      other.removeFromParent();
-      game.triggerGameOver(); // End game when player is hit by an enemy bullet
-    }
-  }
-}
+//     if (other is Player) {
+//       other.removeFromParent();
+//       game.triggerGameOver(); // End game when player is hit by an enemy bullet
+//     }
+//   }
+// }
 
 
 class EnemyExplosion extends SpriteAnimationComponent
