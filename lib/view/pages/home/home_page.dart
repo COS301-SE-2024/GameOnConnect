@@ -97,8 +97,8 @@ class _HomePageState extends State<HomePage> {
   void _showNoInternetToast() {
     DelightToastBar(
       builder: (context) {
-        return CustomToastCard(
-          title: Text(
+        return SnackBar(
+          content: Text(
             'No internet connection', // Changed message here
             style: TextStyle(
               color: Theme.of(context).colorScheme.primary,

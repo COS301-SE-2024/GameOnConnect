@@ -87,8 +87,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error disconnecting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -117,8 +117,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error accepting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -147,8 +147,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error rejecting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,

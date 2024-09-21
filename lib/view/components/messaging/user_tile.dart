@@ -3,7 +3,6 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class UserTile extends StatefulWidget {
@@ -62,8 +61,8 @@ class _UserTileState extends State<UserTile> {
       //added feedback to user if the content was not loaded
       DelightToastBar(
           builder: (context) {
-            return CustomToastCard(
-              title: Text(
+            return SnackBar(
+              content: Text(
                 'Please check your internet connection.',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.primary,

@@ -266,8 +266,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             // ignore: use_build_context_synchronously
                                             DelightToastBar(
                                                     builder: (context) {
-                                                      return CustomToastCard(
-                                                        title: Text(
+                                                      return SnackBar(
+                                                        content: Text(
                                                           'Added to My Games!',
                                                           style: TextStyle(
                                                             color: Theme.of(context)
@@ -473,8 +473,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       // ignore: use_build_context_synchronously
                                       DelightToastBar(
                                         builder: (context) {
-                                          return CustomToastCard(
-                                            title: Text(
+                                          return SnackBar(
+                                            content: Text(
                                               'Removed from Want to Play!',
                                               style: TextStyle(
                                                 color: Theme.of(context)
@@ -498,8 +498,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       // ignore: use_build_context_synchronously
                                       DelightToastBar(
                                               builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
+                                                return SnackBar(
+                                                  content: Text(
                                                     'Added to Want to Play!',
                                                     style: TextStyle(
                                                       color: Theme.of(context)
@@ -588,8 +588,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       // ignore: use_build_context_synchronously
                                       DelightToastBar(
                                               builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
+                                                return SnackBar(
+                                                  content: Text(
                                                     'Removed from My Games!',
                                                     style: TextStyle(
                                                       color: Theme.of(context)
@@ -614,8 +614,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       // ignore: use_build_context_synchronously
                                       DelightToastBar(
                                               builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
+                                                return SnackBar(
+                                                  content: Text(
                                                     'Added to My Games!',
                                                     style: TextStyle(
                                                       color: Theme.of(context)

@@ -52,8 +52,8 @@ class _MessagingState extends State<Messaging> {
         if (snapshot.hasError) {
           DelightToastBar(
                   builder: (context) {
-                    return CustomToastCard(
-                      title: Text(
+                    return SnackBar(
+                      content: Text(
                         'Check your internet connection',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,

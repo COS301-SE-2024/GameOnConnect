@@ -125,8 +125,8 @@ Future<void> getRelationToLoggedInUser() async {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error unfollowing user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -157,8 +157,8 @@ Future<void> getRelationToLoggedInUser() async {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error accepting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -188,8 +188,8 @@ Future<void> getRelationToLoggedInUser() async {
       //'Error unfollowing user'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error rejecting user. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -218,8 +218,8 @@ Future<void> getRelationToLoggedInUser() async {
       //Error sending Connection request.
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'Error sending friend request. Please ensure that you have an active internet connection.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
@@ -247,8 +247,8 @@ Future<void> getRelationToLoggedInUser() async {
       //'Error canceling friend request'
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'An error occurred. Please retry',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,

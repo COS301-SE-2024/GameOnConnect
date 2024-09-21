@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 /// Create our own ToastCard Widget
 class CustomToastCard extends StatelessWidget {
@@ -51,4 +51,4 @@ class CustomToastCard extends StatelessWidget {
       ),
     );
   }
-}
+}*/

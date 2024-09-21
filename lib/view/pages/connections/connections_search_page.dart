@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -42,8 +41,8 @@ class FriendSearchState extends State<FriendSearch> {
     } else {
       DelightToastBar(
               builder: (context) {
-                return CustomToastCard(
-                  title: Text(
+                return SnackBar(
+                  content: Text(
                     'An error occurred. Try to login again.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
