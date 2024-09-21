@@ -40,7 +40,14 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Badges'),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary
+        ),
+        title: Text('My Badges',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.primary)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -54,10 +61,13 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BadgePage(badgeName: badges[index] ,badgeFileName: badgeFiles[index])),
-                  );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BadgePage(
+                          badgeName: badges[index],
+                          badgeFileName: badgeFiles[index])),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
