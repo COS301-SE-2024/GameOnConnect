@@ -737,4 +737,63 @@ class BadgeService {
       throw Exception("Failed to unlock gamer badge: $e");
     }
   }
+
+  //to unlock join_event you need to pass "join_event" as the component
+  //to unlock view_help you need to pass "view_help" as the component
+  //to unlock share_game you need to pass "share_game" as the component
+  //to unlock created_chat you need to pass "created_chat" as the component
+  //to unlock play_spaceshooter you need to pass "play_spaceshooter" as the component
+  //to unlock changed_theme you need to pass "changed_theme" as the component
+  void unlockExplorerComponent(String component) async {
+    try {
+      final currentUser = _auth.currentUser;
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data = doc.data();
+
+        if (data != null) {
+          bool unlocked = data["explorer_badge"]["unlocked"];
+          bool neededComponent = data["explorer_badge"][component];
+
+          if (unlocked == false && neededComponent == false) {
+            //Only update if its not unlocked yet
+
+            int unlockedComponents =
+                data["explorer_badge"]["unlocked_components"];
+
+            unlockedComponents++; // new component unlocked
+
+            if (unlockedComponents == 12) {
+              //unlocked every component
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
+                "explorer_badge.unlocked_components": unlockedComponents,
+                "explorer_badge.date_unlocked": DateTime.now(),
+                "explorer_badge.$component": true,
+                "explorer_badge.unlocked": true,
+              });
+            } else if (unlockedComponents < 12) {
+              //still have more components to unlock
+              await _firestore
+                  .collection("badges")
+                  .doc(currentUser.uid)
+                  .update({
+                "explorer_badge.unlocked_components": unlockedComponents,
+                "explorer_badge.date_unlocked": null,
+                "explorer_badge.$component": true,
+                "explorer_badge.unlocked": false,
+              });
+            }
+          }
+        }
+      }
+    } catch (e) {
+      Exception("Failed to unlock $component component: $e");
+    }
+  }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/events_S/event_service.dart';
 import '../../pages/events/edit_event_page.dart';
@@ -17,6 +18,7 @@ class SpecificEventsButtons extends StatefulWidget{
 }
 
 class _SpecificEventsButtons extends State<SpecificEventsButtons>{
+  final BadgeService _badgeService = BadgeService();
   late Event e;
   late bool isCreator;
   late bool isJoined;
@@ -101,6 +103,7 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                             getUpdatedEvent(
                                 e.eventID);
                             isJoined = true;
+                            _badgeService.unlockExplorerComponent("join_event");
                           }
                         },
                         child: Text(

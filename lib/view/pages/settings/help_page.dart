@@ -20,6 +20,7 @@ class _HelpWidgetState extends State<HelpPage> {
   void initState() {
     super.initState();
     _badgeService.unlockNightOwlBadge(DateTime.now());
+    _badgeService.unlockExplorerComponent("view_help");
   }
 
   @override

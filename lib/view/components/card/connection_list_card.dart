@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
@@ -46,6 +47,7 @@ class ConnectionCardWidget extends StatefulWidget {
 }
 
 class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
+  final BadgeService _badgeService = BadgeService();
   final MessagingService _messagingService = MessagingService();
   late List<String>? invited;
   late String image;
@@ -189,6 +191,7 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
           ),
         );
       }
+      _badgeService.unlockExplorerComponent("created_chat");
     }
   }
 

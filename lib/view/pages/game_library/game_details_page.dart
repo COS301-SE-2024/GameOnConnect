@@ -3,6 +3,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:gameonconnect/view/pages/home/home_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -28,6 +29,7 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
+  final BadgeService _badgeService = BadgeService();
   late Future<GameDetails> _gameDetails;
   late Future<List<Screenshot>> _gameScreenshots;
 
@@ -93,9 +95,6 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     await Share.share( link);
   }
 
-  // String sanitizeDescription(String description) {
-  //   return description.replaceAll('�', '');
-  // }
 
   String sanitizeDescription(String description) {
     final unescape = HtmlUnescape();
@@ -314,6 +313,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             .colorScheme
                                             .primary,
                                         onPressed: () {
+                                          _badgeService.unlockExplorerComponent("share_game");
                                           final String link =
                                               gameDetails.website;
                                           const String message =
