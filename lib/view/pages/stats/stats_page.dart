@@ -3,6 +3,7 @@ import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 
 import 'package:gameonconnect/view/components/stats/total_time_boxes.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart.dart';
@@ -97,29 +98,13 @@ class _StatsPageState extends State<StatsPage> {
         child: Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
-          'Gaming Stats',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: false,
-        elevation: 2,
+      appBar: BackButtonAppBar(
+        onBackButtonPressed: () {
+          Navigator.of(context).pop();
+        },
+        title: 'Gaming Stats',
+        iconkey: const Key('Gamaing_stats_icon'),
+        textkey: const Key('Gaming_stats_text'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
