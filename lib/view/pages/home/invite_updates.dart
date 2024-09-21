@@ -14,10 +14,13 @@ class _InviteUpdatesState extends State<InviteUpdates> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invite updates'),
+        title: Text('Invite updates', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         children: const [
           Text("Connection updates",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),

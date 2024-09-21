@@ -7,8 +7,6 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
-import 'package:gameonconnect/view/components/home/connection_updates.dart';
-import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
 import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
