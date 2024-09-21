@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
-  BadgeService badgeService = BadgeService();
+  final BadgeService _badgeService = BadgeService();
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
@@ -68,7 +68,8 @@ class _HomePageState extends State<HomePage> {
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
 
-    badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   String getCurrentUserId() {
@@ -317,14 +318,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   late String currentUserName = "";
   late String currentUserId;
   final ProfileService _profileService = ProfileService();
-  final BadgeService _badgeService = BadgeService();
 
   @override
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
     fetchUsername(); 
-    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   Future<void> fetchUsername() async {

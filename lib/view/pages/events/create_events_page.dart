@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +19,7 @@ class CreateEvents extends StatefulWidget {
 }
 
 class _CreateEventsState extends State<CreateEvents> {
+  final BadgeService _badgeService = BadgeService();
   String name = "";
   bool validName = false;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -64,6 +65,7 @@ class _CreateEventsState extends State<CreateEvents> {
   @override
   void initState() {
     super.initState();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   @override
@@ -846,6 +848,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                         validEndDate &&
                                         validStartDate) {
                                       create();
+                                      _badgeService.unlockEventPlannerBadge(); //added unlocking the event_planner badge
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: const Text(

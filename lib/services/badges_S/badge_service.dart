@@ -626,7 +626,9 @@ class BadgeService {
 
   void unlockNightOwlBadge(DateTime time) async {
     bool isPastNightOwlTime = time.hour > 22 ||
-        (time.hour == 22 && time.minute >= 15 && time.second >= 0);
+        (time.hour == 22 &&
+            time.minute >= 15 &&
+            time.second >= 0); //check if the time is past 10:15 PM
 
     if (isPastNightOwlTime) {
       final currentUser = _auth.currentUser;
@@ -634,16 +636,19 @@ class BadgeService {
       if (currentUser != null) {
         DocumentSnapshot<Map<String, dynamic>> doc =
             await _firestore.collection("badges").doc(currentUser.uid).get();
-        Map<String, dynamic>? data = doc.data();
+        Map<String, dynamic>? data =
+            doc.data(); //get the corresponding document from firestore
 
         if (data != null) {
-          bool unlocked = data["nightowl_badge"]["unlocked"] ?? false;
+          bool unlocked = data["nightowl_badge"]["unlocked"] ??
+              false; //check if the badge is already unlocked
 
           if (unlocked) {
-            return;
+            return; //if it is already unlocked then return
           }
 
           await _firestore.collection("badges").doc(currentUser.uid).update({
+            //update the document with the unlocked status
             "nightowl_badge": {
               "date_unlocked": time,
               "unlocked": true,
@@ -652,11 +657,41 @@ class BadgeService {
         }
       }
     } else {
-      return;
+      return; //return if the time is not past 10:15 PM
     }
   }
 
-  void unlockEventPlannerBadge() async {}
+  void unlockEventPlannerBadge() async {
+    try {
+      DateTime currentDate = DateTime.now(); //get the current date
+      final currentUser = _auth.currentUser; //get the current user
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); //get the corresponding document from firestore
+
+        if (data != null) {
+          bool unlocked = data["event_planner_badge"]["unlocked"] ??
+              false; //check if the badge is already unlocked
+
+          if (unlocked) {
+            return; //if it is already unlocked then return
+          }
+
+          await _firestore.collection("badges").doc(currentUser.uid).update({
+            "event_planner_badge": {
+              "date_unlocked": currentDate,
+              "unlocked": true,
+            }
+          });
+        }
+      }
+    } catch (e) {
+      throw Exception("Failed to unlock event planner badge: $e");
+    }
+  }
 
   void unlockGamerBadge() async {}
 }
