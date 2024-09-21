@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/model/connection_M/friend_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
@@ -286,6 +287,10 @@ Future<void> getRelationToLoggedInUser() async {
               userID: widget
                   .uid)), 
     );
+    if(widget.isOwnProfile)
+    {
+      BadgeService().unlockViewStatsComponent();
+    }
   }
 
   
@@ -670,6 +675,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
+                                      isOwnProfile: widget.isOwnProfile,
                                     )
                                   : MyGameList(
                                       myGameStats: sumOfMygames,
@@ -677,6 +683,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
+                                      isOwnProfile: widget.isOwnProfile
                                     ),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
@@ -692,7 +699,9 @@ Future<void> getRelationToLoggedInUser() async {
                                   ),
                                   WantToPlayList(
                                       gameIds: profileData.wantToPlay,
-                                      heading: 'Want to play'),
+                                      heading: 'Want to play',
+                                       isOwnProfile: widget.isOwnProfile
+                                      ),
                                   const SizedBox(height: 24)
                                 ]
                                 ),

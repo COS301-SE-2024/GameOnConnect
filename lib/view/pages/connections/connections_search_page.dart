@@ -2,6 +2,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
@@ -77,10 +78,9 @@ class FriendSearchState extends State<FriendSearch> {
           loggedInUser: _currentUserId,
         )
       )
-    ); 
-
-  
-}
+    );  
+    BadgeService().unlockViewRequestsComponent();
+  }
   Future<void> nrOfRequests()async {
     final connections = await ConnectionService().getConnections('requests');
     requestsCount= connections.length; 
@@ -135,6 +135,7 @@ class FriendSearchState extends State<FriendSearch> {
                                     user.uid != _currentUserId)
                                 .toList();
                           });
+                          BadgeService().unlockSearchConnectionComponent();
                         }),
                   ),
               

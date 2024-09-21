@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
@@ -34,13 +35,13 @@ class _GameLibraryState extends State<GameLibrary> {
   @override
   void initState() {
     super.initState();
-    _loadGames();
+    //_loadGames();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           _searchQuery.isEmpty) {
-        _loadGames();
+        //_loadGames();
       }
     });
   }
@@ -56,7 +57,7 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
     });
 
-    await _loadGames();
+    //await _loadGames();
   }
 
   Future<void> _loadGames() async {
@@ -115,6 +116,7 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
       _loadGames();
     });
+    BadgeService().unlockSearchGameComponent();
   }
 
   clearFilters() {
