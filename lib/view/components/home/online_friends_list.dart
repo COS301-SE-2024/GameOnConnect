@@ -54,7 +54,7 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
               ? Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
