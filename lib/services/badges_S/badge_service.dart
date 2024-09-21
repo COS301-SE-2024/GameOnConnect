@@ -443,4 +443,52 @@ void unlockCollectorBadge(bool add) async {
     }
   }
 
+  void unlockViewActivityComponent() async{
+     try {
+      final currentUser = _auth.currentUser; 
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> doc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? data =
+            doc.data(); 
+
+        if (data != null) {
+          bool unlocked = 
+                data["explorer_badge"]["unlocked"];
+          bool viewActivity = 
+                data["explorer_badge"]["view_activity"];
+
+          if(unlocked==false && viewActivity==false){ //Only update if its not unlocked yet
+
+            int unlockedComponents = 
+                data["explorer_badge"]["unlocked_components"];
+                
+            unlockedComponents ++; // new component unlocked
+
+            if (unlockedComponents== 13) { //unlocked every component
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                "explorer_badge.unlocked_components": unlockedComponents,
+                "explorer_badge.date_unlocked": DateTime.now(),
+                "explorer_badge.view_activity":true,
+                "explorer_badge.unlocked":true,
+              });
+            } 
+            else if (unlockedComponents<13) { //still have more components to unlock
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                "explorer_badge.unlocked_components": unlockedComponents,
+                "explorer_badge.date_unlocked": null,
+                "explorer_badge.view_activity":true,
+                "explorer_badge.unlocked":false,
+              });
+            }
+          }
+        
+        }
+      }
+    } catch (e) {
+      Exception("Failed to unlock view activity Component $e"); 
+    }
+  }
+
 }

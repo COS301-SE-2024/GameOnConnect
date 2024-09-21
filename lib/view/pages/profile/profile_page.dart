@@ -670,6 +670,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
+                                      isOwnProfile: widget.isOwnProfile,
                                     )
                                   : MyGameList(
                                       myGameStats: sumOfMygames,
@@ -677,6 +678,7 @@ Future<void> getRelationToLoggedInUser() async {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
+                                      isOwnProfile: widget.isOwnProfile
                                     ),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
@@ -692,7 +694,9 @@ Future<void> getRelationToLoggedInUser() async {
                                   ),
                                   WantToPlayList(
                                       gameIds: profileData.wantToPlay,
-                                      heading: 'Want to play'),
+                                      heading: 'Want to play',
+                                       isOwnProfile: widget.isOwnProfile
+                                      ),
                                   const SizedBox(height: 24)
                                 ]
                                 ),
