@@ -191,7 +191,102 @@ void unlockCollectorBadge(bool add) async {
         }
       }
     } catch (e) {
-      throw Exception("Failed to unlock customizer badge: $e"); //CHANGE
+      Exception("Failed to unlock customizer badge: $e"); 
+    }
+  }
+
+  void unlockSocialButterflyBadge(bool disconnect, String otherUserId)async {
+    try {
+      final currentUser = _auth.currentUser; 
+
+      if (currentUser != null) {
+        DocumentSnapshot<Map<String, dynamic>> currentUserDoc =
+            await _firestore.collection("badges").doc(currentUser.uid).get();
+        Map<String, dynamic>? currentUserData =
+            currentUserDoc.data(); 
+
+        if (currentUserData != null) {
+          int currentUserCount = 
+              currentUserData["social_butterfly_badge"]["count"]; 
+          bool unlocked =
+              currentUserData["social_butterfly_badge"]["unlocked"];
+
+          if (!unlocked) // update only if its not already unlocked
+          {
+            if(!disconnect){
+            currentUserCount++;
+            }
+            else{
+              currentUserCount--;
+            }
+
+            if (currentUserCount== 15) {
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                //if the count is == 15 then update the document with the unlocked status
+                "social_butterfly_badge": {
+                  "count": currentUserCount,
+                  "date_unlocked": DateTime.now(),
+                  "unlocked": true,
+                }
+              });
+            } else if (currentUserCount<15) {
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                //update the count and latest date in the document
+                "social_butterfly_badge": {
+                  "count": currentUserCount,
+                  "date_unlocked": null,
+                  "unlocked": false,
+                }
+              });
+            }
+          }
+          
+        }
+
+        DocumentSnapshot<Map<String, dynamic>> otherUserDoc =
+            await _firestore.collection("badges").doc(otherUserId).get();
+        Map<String, dynamic>? otherUserData =
+            otherUserDoc.data(); 
+
+        if (otherUserData != null) {
+          int otherUserCount = 
+              otherUserData["social_butterfly_badge"]["count"]; 
+          bool unlocked =
+              otherUserData["social_butterfly_badge"]["unlocked"];
+
+          if (!unlocked){ // update only if its not already unlocked
+            if(!disconnect){
+            otherUserCount++;
+            }
+            else{
+              otherUserCount--;
+            }
+
+            if (otherUserCount== 15) {
+              await _firestore.collection("badges").doc(otherUserId).update({
+                //if the count is == 15 then update the document with the unlocked status
+                "social_butterfly_badge": {
+                  "count": otherUserCount,
+                  "date_unlocked": DateTime.now(),
+                  "unlocked": true,
+                }
+              });
+            } else if (otherUserCount<15) {
+              await _firestore.collection("badges").doc(otherUserId).update({
+                //update the count and latest date in the document
+                "social_butterfly_badge": { 
+                  "count": otherUserCount,
+                  "date_unlocked": null,
+                  "unlocked": false,
+                }
+              });
+            }
+          }
+          
+        }
+      }
+    } catch (e) {
+      Exception("Failed to unlock social butterfly badge: $e"); 
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import '../../model/connection_M/user_model.dart';
 import '../../model/connection_M/friend_model.dart';
 
@@ -109,6 +110,7 @@ class UserService {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
         'connections': FieldValue.arrayRemove([targetUserId])
+       
       });
 
       await _firestore.collection('connections').doc(targetUserId).update({
