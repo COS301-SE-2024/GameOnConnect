@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/view/components/home/event_invite.dart';
@@ -21,27 +22,49 @@ class _EventInvitesListState extends State<EventInvitesList> {
   }
 
   Future<void> fetchInvitedEvents() async {
-    List<Map<String, dynamic>> invitedEvents = await _eventsService.getInvitedEvents();
+    List<Map<String, dynamic>> invitedEvents =
+        await _eventsService.getInvitedEvents();
 
     setState(() {
-      _invitedEvents = invitedEvents.map((e) => Event.fromMap(e, e['id'])).toList();
+      _invitedEvents =
+          invitedEvents.map((e) => Event.fromMap(e, e['id'])).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: _invitedEvents.isEmpty ? const Text('No new event invites') : 
-      ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 300),
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _invitedEvents.length,
-          itemBuilder: (context, index) {
-            return EventInvitation(inviterId: _invitedEvents[index].creatorID, event: _invitedEvents[index]);
-          },
-        ),
-      ),
+      child: _invitedEvents.isEmpty
+          ? Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("No new event \ninvites :(",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SvgPicture.asset(
+                      'assets/images/sad_icon.svg',
+                      height: 75,
+                      fit: BoxFit.contain,
+                    )
+                  ]))
+          : ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 300),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _invitedEvents.length,
+                itemBuilder: (context, index) {
+                  return EventInvitation(
+                      inviterId: _invitedEvents[index].creatorID,
+                      event: _invitedEvents[index]);
+                },
+              ),
+            ),
     );
   }
 }

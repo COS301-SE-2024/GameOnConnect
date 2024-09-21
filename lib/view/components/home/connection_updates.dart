@@ -3,6 +3,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/home/connection_update.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/connection_M/user_model.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ConnectionUpdates extends StatefulWidget {
   const ConnectionUpdates({super.key});
@@ -44,7 +45,24 @@ class _ConnectionUpdatesState extends State<ConnectionUpdates> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No new connection updates 😊'));
+            return Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    const Text("No new connection \nrequests :(",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SvgPicture.asset(
+                      'assets/images/sad_icon.svg',
+                      height: 75,
+                      fit: BoxFit.contain,
+                    )
+                  ]));
           } else {
             final connectionRequests = snapshot.data!;
             return ConstrainedBox(
