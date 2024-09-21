@@ -151,6 +151,7 @@ class AuthService {
             "view_requests": false,
             "view_stats": false,
             "want_to_play": false,
+            "unlocked_components": 0,
           },
           "gamer_badge": {"date_unlocked": null, "unlocked": false},
           "loyalty_badge": {
