@@ -48,22 +48,11 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
           12, 0, 12, 0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment:
-        MainAxisAlignment.spaceAround,
+
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        right: 32.0),
-                    child: Container(
-                      width: 152,
-                      height: 36,
-                      decoration: BoxDecoration(
+
+                   Expanded(
+                     child: DecoratedBox(decoration: BoxDecoration(
                         color: isCreator
                             ? Theme.of(context)
                             .colorScheme
@@ -71,14 +60,15 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                             : isJoined
                             ? Theme.of(context)
                             .colorScheme
-                            .secondary
+                            .primaryContainer
                             : Theme.of(context)
                             .colorScheme
                             .primary,
                         borderRadius:
                         BorderRadius.circular(50),
-                      ),
-                      child: MaterialButton(
+                        border: isJoined? Border.all(color: Theme.of(context).colorScheme.primary): null,),
+                        child: MaterialButton(
+                          height:36 ,
                         onPressed: () {
                           if (isCreator) {
                             Navigator.push(
@@ -107,12 +97,10 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                           isCreator
                               ? 'Edit'
                               : isJoined
-                              ? 'Joined'
+                              ? 'Leave'
                               : 'Join',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .tertiary,
+                          style: const TextStyle(
+                            color: Colors.black,
                             fontSize: 12,
                             fontWeight:
                             FontWeight.bold,
@@ -120,8 +108,7 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                         ),
                       ),
                     ),
-                  ),
-                  Container(
+                  /*Container(
                     width: 152,
                     height: 36,
                     decoration: BoxDecoration(
@@ -150,13 +137,11 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons>{
                         ),
                       ),
                     ),
-                  ),
+                  ),*/
+                      ),
+
                 ],
               ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 
