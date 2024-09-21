@@ -100,7 +100,7 @@ class BadgeService {
 
         if (data != null) {
           int count = data["collector_badge"]
-              ["count"]; //get the count from the document//CHANGE
+              ["count"]; //get the count from the document
           bool unlocked = data["collector_badge"]["unlocked"];
 
           if (unlocked == false) {
@@ -118,7 +118,6 @@ class BadgeService {
                   .update({
                 //if the count is == 10 then update the document with the unlocked status
                 "collector_badge": {
-                  //CHANGE
                   "count": count,
                   "date_unlocked": DateTime.now(),
                   "unlocked": true,
@@ -131,7 +130,6 @@ class BadgeService {
                   .update({
                 //update the count and latest date in the document
                 "collector_badge": {
-                  //CHANGE
                   "count": count,
                   "date_unlocked": null,
                   "unlocked": false,
@@ -142,7 +140,7 @@ class BadgeService {
         }
       }
     } catch (e) {
-      Exception("Failed to unlock collector badge: $e"); //CHANGE
+      Exception("Failed to unlock collector badge: $e"); 
     }
   }
 
@@ -169,7 +167,7 @@ class BadgeService {
         }
       }
     } catch (e) {
-      Exception("Failed to unlock achiever badge: $e"); //CHANGE
+      Exception("Failed to unlock achiever badge: $e"); 
     }
   }
 

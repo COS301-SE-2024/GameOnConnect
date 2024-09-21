@@ -37,12 +37,13 @@ class _GameLibraryState extends State<GameLibrary> {
   void initState() {
     super.initState();
     _badgeService.unlockNightOwlBadge(DateTime.now());
+    _loadGames();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           _searchQuery.isEmpty) {
-        //_loadGames();
+        _loadGames();
       }
     });
   }
@@ -58,7 +59,7 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
     });
 
-    //await _loadGames();
+    await _loadGames();
   }
 
   Future<void> _loadGames() async {
