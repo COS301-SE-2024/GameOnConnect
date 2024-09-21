@@ -82,7 +82,7 @@ class FriendSearchState extends State<FriendSearch> {
                   uid: _currentUserId,
                   loggedInUser: _currentUserId,
                 )));
-    BadgeService().unlockViewRequestsComponent();
+    _badgeService.unlockExplorerComponent('view_requests');
   }
 
   Future<void> nrOfRequests() async {
@@ -137,7 +137,7 @@ class FriendSearchState extends State<FriendSearch> {
                                     user.uid != _currentUserId)
                                 .toList();
                           });
-                          BadgeService().unlockSearchConnectionComponent();
+                          _badgeService.unlockExplorerComponent('search_connection');
                         }),
                   ),
                   Padding(

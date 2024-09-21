@@ -44,7 +44,7 @@ class Wishlist {
             .collection('profile_data')
             .doc(currentUser?.uid)
             .set(data, SetOptions(merge: true));
-            BadgeService().unlockAddWantToPlayComponent();
+            BadgeService().unlockExplorerComponent('want_to_play');
       }
     } catch (e) {
       //return 0;

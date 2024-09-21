@@ -117,7 +117,7 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
       _loadGames();
     });
-    BadgeService().unlockSearchGameComponent();
+    _badgeService.unlockExplorerComponent("search_game");
   }
 
   clearFilters() {

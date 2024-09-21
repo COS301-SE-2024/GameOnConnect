@@ -152,7 +152,7 @@ class _AllMyGamesListState extends State<AllMyGamesList> {
                                       ));
                                       if(widget.isOwnProfile)
                                       {
-                                          BadgeService().unlockViewActivityComponent();
+                                          BadgeService().unlockExplorerComponent('view_activity');
                                       }
                                 },
                                 child: ProfileGamesCard(

@@ -48,7 +48,7 @@ class _ConnectionsListState extends State<ConnectionsList> {
         )
       )
     ); 
-    BadgeService().unlockViewRequestsComponent();
+    BadgeService().unlockExplorerComponent('view_requests');
   }
 
 Future<void> nrOfRequests()async {

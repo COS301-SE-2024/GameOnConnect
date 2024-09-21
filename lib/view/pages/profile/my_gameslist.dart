@@ -198,7 +198,7 @@ class _MyGameListState extends State<MyGameList> {
 
                                 if(widget.isOwnProfile)
                                 {
-                                  BadgeService().unlockViewActivityComponent();
+                                  BadgeService().unlockExplorerComponent('view_activity');
                                 }
                                 
                               },

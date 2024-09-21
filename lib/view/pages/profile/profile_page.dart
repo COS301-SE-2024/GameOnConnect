@@ -283,7 +283,7 @@ class _ProfileState extends State<ProfilePage> {
       MaterialPageRoute(builder: (context) => StatsPage(userID: widget.uid)),
     );
     if (widget.isOwnProfile) {
-      BadgeService().unlockViewStatsComponent();
+      _badgeService.unlockExplorerComponent('view_stats');
     }
   }
 
