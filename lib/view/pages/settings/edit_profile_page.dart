@@ -52,6 +52,12 @@ class _EditProfilePage extends State<EditProfilePage> {
         if (_formKey.currentState?.validate() == true) {
           _formKey.currentState?.save();
           editProfile();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Updated profile successfully'),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+          );
           // ignore: use_build_context_synchronously
           Navigator.of(context).pop();
         }
@@ -155,11 +161,15 @@ class _EditProfilePage extends State<EditProfilePage> {
                             label: 'Birthday',
                             onChanged: (value) => {_birthday = value},
                           ),
-                          const Align(alignment: Alignment(-1,0),child:ToolTip(message: "When your profile is set "
-                              "to Private, only your connections can "
-                              "view your profile."),),
+                          const Align(
+                            alignment: Alignment(-1, 0),
+                            child: ToolTip(
+                                message: "When your profile is set "
+                                    "to Private, only your connections can "
+                                    "view your profile."),
+                          ),
                           const SizedBox(
-                            height:3,
+                            height: 3,
                           ),
                           EditSwitch(
                             label: 'Private',
