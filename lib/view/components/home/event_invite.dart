@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class EventInvitation extends StatefulWidget {
@@ -104,7 +105,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12)),
-                              Text(widget.event.startDate.toIso8601String(),
+                              Text(DateFormat('EEEE, d MMM yyyy  kk:mm').format(widget.event.startDate),
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
