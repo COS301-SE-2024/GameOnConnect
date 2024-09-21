@@ -78,10 +78,9 @@ class FriendSearchState extends State<FriendSearch> {
           loggedInUser: _currentUserId,
         )
       )
-    ); 
-
-  
-}
+    );  
+    BadgeService().unlockViewRequestsComponent();
+  }
   Future<void> nrOfRequests()async {
     final connections = await ConnectionService().getConnections('requests');
     requestsCount= connections.length; 
