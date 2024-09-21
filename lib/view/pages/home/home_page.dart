@@ -23,6 +23,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -45,7 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
- 
 
   @override
   void initState() {
@@ -63,7 +63,12 @@ class _HomePageState extends State<HomePage> {
       const GameLibrary(),
       const CreateEvents(),
       const ViewEvents(),
-      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
+      ProfilePage(
+        uid: currentUserId,
+        isOwnProfile: true,
+        isConnection: true,
+        loggedInUser: currentUserId,
+      ),
     ];
   }
 
@@ -359,6 +364,71 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
         SizedBox(height: 15),
         CurrentlyOnlineBar(),
         SizedBox(height: 30),
+        Text("Updates and invites",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+        SizedBox(height: 15),
+        Container(
+          padding: EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          height: 130,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start, // Align text to the left
+                children: [
+                  Text(
+                    "You have 15 event invites",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black
+                          : Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    "and 5 new friend requests",
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.black
+                          : Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/home_icon.svg',
+                    height: 75,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(
+                      width: 10), // Add some space between the icon and arrow
+                  Icon(
+                    Icons
+                        .arrow_forward_ios, // Arrow indicating it can be opened
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.black
+                        : Colors.white,
+                    size: 20, // Adjust size as needed
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 15),
         Text("Connection updates",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
         SizedBox(height: 15),
@@ -391,7 +461,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -408,7 +478,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -425,15 +495,14 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+                      builder: (context) =>
+                          GamePage(), //GameWidget(game: SpaceShooterGame())
                     ),
                   );
                 },
@@ -444,14 +513,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => GameScreen()
-                    ),
+                    MaterialPageRoute(builder: (context) => GameScreen()),
                   );
                 },
                 icon: Icon(
@@ -461,7 +528,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () async {
                   await Flame.device.fullScreen();
@@ -474,9 +541,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   );
                 },
                 icon: Icon(
-
                   Icons.games_outlined,
-
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
