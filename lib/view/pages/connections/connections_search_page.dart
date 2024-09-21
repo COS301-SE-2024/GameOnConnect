@@ -13,9 +13,12 @@ import '../../components/search/search_field.dart';
 
 class FriendSearch extends StatefulWidget {
   //final List<String> chosenInvites;
-  const FriendSearch({super.key,});
+  const FriendSearch({
+    super.key,
+  });
   @override
-FriendSearchState createState() => FriendSearchState();}
+  FriendSearchState createState() => FriendSearchState();
+}
 
 class FriendSearchState extends State<FriendSearch> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -24,7 +27,7 @@ class FriendSearchState extends State<FriendSearch> {
   final TextEditingController searchController = TextEditingController();
   String _searchQuery = '';
   String _currentUserId = '';
-  int requestsCount=0;
+  int requestsCount = 0;
 
   @override
   void dispose() {
@@ -60,7 +63,6 @@ class FriendSearchState extends State<FriendSearch> {
     }
   }
 
-
   //Future<void> getConnectionsInvite() async {
   Future<void> fetchUsers() async {
     list = await UserService().fetchAllUsers();
@@ -68,22 +70,20 @@ class FriendSearchState extends State<FriendSearch> {
   }
 
   void navigateToRequests(BuildContext context) {
-     Navigator.push(context,
-      MaterialPageRoute(
-        builder: (context) => ConnectionRequestList(
-          isOwnProfile: true,
-          uid: _currentUserId,
-          loggedInUser: _currentUserId,
-        )
-      )
-    ); 
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConnectionRequestList(
+                  isOwnProfile: true,
+                  uid: _currentUserId,
+                  loggedInUser: _currentUserId,
+                )));
+  }
 
-  
-}
-  Future<void> nrOfRequests()async {
+  Future<void> nrOfRequests() async {
     final connections = await ConnectionService().getConnections('requests');
-    requestsCount= connections.length; 
-    }
+    requestsCount = connections.length;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,14 +113,12 @@ class FriendSearchState extends State<FriendSearch> {
                             .contains(_searchQuery.toLowerCase()) &&
                         user.uid != _currentUserId) // Exclude current user
                     .toList();
-                return SingleChildScrollView( 
-                  child:Column(
-                    mainAxisSize: MainAxisSize.max, 
-                    children: [
+                return SingleChildScrollView(
+                    child: Column(mainAxisSize: MainAxisSize.max, children: [
                   Padding(
-                    padding:const EdgeInsets.fromLTRB(12, 12, 12, 12),
-                        //const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
-                        
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    //const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
+
                     child: SearchField(
                         controller: searchController,
                         onSearch: (query) {
@@ -162,28 +160,33 @@ class FriendSearchState extends State<FriendSearch> {
                     const Center(child: Text('No results found.'))
                   else
                     Container(
-                      decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
                         height: MediaQuery.of(context).size.height,
                         child: ListView.separated(
-                          itemCount: filteredUsers.length,
+                          itemCount: filteredUsers.length+1,
                           scrollDirection: Axis.vertical,
                           padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
-                            AppUser? i = filteredUsers[index];
+                            if (index == filteredUsers.length){
+                              return const SizedBox(height: 100,);
+                            }else {
+                              AppUser? i = filteredUsers[index];
 
-                            return ConnectionCardWidget(
-                                invited: invites,
-                                image: i.profilePicture,
-                                username: i.username,
-                                uniqueNum: i.uniqueNum.toString(),
-                                uid: i.uid,
-                                page: 'search',
-                                loggedInUser: _currentUserId,
-                                isOwnProfile: true,
-                                onSelected: (uid, selected) {});
+                              return ConnectionCardWidget(
+                                  invited: invites,
+                                  image: i.profilePicture,
+                                  username: i.username,
+                                  uniqueNum: i.uniqueNum.toString(),
+                                  uid: i.uid,
+                                  page: 'search',
+                                  loggedInUser: _currentUserId,
+                                  isOwnProfile: true,
+                                  onSelected: (uid, selected) {});
+                            }
                           },
+
                           separatorBuilder: (BuildContext context, int index) {
                             return const SizedBox();
                           },
@@ -192,8 +195,6 @@ class FriendSearchState extends State<FriendSearch> {
               }
             }),
       ),
-      
     );
-
   }
 }
