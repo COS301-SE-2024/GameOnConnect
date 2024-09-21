@@ -78,6 +78,7 @@ dependencies:
   flame_audio: ^2.10.3
   share_plus: ^10.0.0
   super_tooltip: ^2.0.8
+  flutter_svg: ^2.0.10+1
 
 
 
@@ -122,6 +123,7 @@ flutter:
     - assets/gifs/gaming_animation.gif
     - assets/images/stats_icon1.png
     - assets/images/stats_icon2.png
+    - assets/images/home_icon.svg
     - "assets/images/"
     - assets/images/bird_midflap.png
     - assets/images/bird_upflap.png
