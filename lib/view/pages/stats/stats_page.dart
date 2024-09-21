@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
-import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+//import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 
 import 'package:gameonconnect/view/components/stats/total_time_boxes.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart.dart';
 import 'package:gameonconnect/view/components/stats/genres_bar_graph.dart';
-import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
+//import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
 
 class StatsPage extends StatefulWidget {
   final String userID;
@@ -23,8 +23,8 @@ class _StatsPageState extends State<StatsPage> {
   late final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
   late final StatsMoodService statsMoodService = StatsMoodService();
   late final StatsGenresService statsGenresService = StatsGenresService();
-  late final StatsLeaderboardService leaderboardService =
-      StatsLeaderboardService();
+  //late final StatsLeaderboardService leaderboardService =
+      //StatsLeaderboardService();
 
   bool _isLoading = true;
   bool _isLoadingT = true;
@@ -35,13 +35,13 @@ class _StatsPageState extends State<StatsPage> {
   double allTime = 0;
   double playPercentage = 0;
 
-  Map<String, int> leaderboardData = {
+  /*Map<String, int> leaderboardData = {
     '1st': 0,
     '2nd': 0,
     '3rd': 0,
     'Top 5': 0,
     'Top 10': 0,
-  };
+  };*/
 
   @override
   void initState() {
@@ -80,9 +80,9 @@ class _StatsPageState extends State<StatsPage> {
 
   Future<void> _fetchLeaderboardData() async {
     try {
-      final data = await leaderboardService.fetchLeaderboardData(widget.userID);
+      //final data = await leaderboardService.fetchLeaderboardData(widget.userID);
       setState(() {
-        leaderboardData = data;
+        //leaderboardData = data;
         _isLoading = false;
       });
     } catch (e) {
@@ -169,7 +169,7 @@ class _StatsPageState extends State<StatsPage> {
                       endIndent: 15,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    StatsLeaderboardPage(userID: widget.userID),
+                    //StatsLeaderboardPage(userID: widget.userID),
                   ],
                 ),
               ),
