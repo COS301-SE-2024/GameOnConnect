@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/models/specific_badge_page.dart';
+import 'package:gameonconnect/view/pages/badges/badge_page.dart';
 
 class AchievementBadgesPage extends StatefulWidget {
   const AchievementBadgesPage({super.key});
@@ -56,7 +56,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
               onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SpecificBadgePage(badgeName: badges[index] ,badgeFileName: badgeFiles[index])),
+                    MaterialPageRoute(builder: (context) => BadgePage(badgeName: badges[index] ,badgeFileName: badgeFiles[index])),
                   );
               },
               child: Container(
