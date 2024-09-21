@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
@@ -85,24 +83,10 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-              builder: (context) {
-                return SnackBar(
-                  content: Text(
+     CustomSnackbar().show(context,
                     'Error disconnecting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
                 );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        // ignore: use_build_context_synchronously
-        context,
-      );
+
     }
   }
 
@@ -115,14 +99,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-     SnackBar(
-                  content: Text(
+   CustomSnackbar().show(context,
                     'Error accepting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-        // ignore: use_build_context_synchronously
       );
     }
   }
@@ -136,13 +114,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-      SnackBar(
-                  content: Text(
+     CustomSnackbar().show(context,
                     'Error rejecting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(// ignore: use_build_context_synchronously
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
       );
     }
   }

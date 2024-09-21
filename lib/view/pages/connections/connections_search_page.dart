@@ -1,9 +1,8 @@
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/connections/request_button.dart';
 import 'package:gameonconnect/view/pages/profile/connections_request_list.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -42,23 +41,8 @@ class FriendSearchState extends State<FriendSearch> {
     if (FirebaseAuth.instance.currentUser?.uid != null) {
       _currentUserId = FirebaseAuth.instance.currentUser!.uid;
     } else {
-      DelightToastBar(
-              builder: (context) {
-                return SnackBar(
-                  content: Text(
+      CustomSnackbar().show(context,
                     'An error occurred. Try to login again.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        // ignore: use_build_context_synchronously
-        context,
       );
     }
   }

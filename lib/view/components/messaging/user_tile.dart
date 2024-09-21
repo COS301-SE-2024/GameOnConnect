@@ -1,9 +1,8 @@
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 
 class UserTile extends StatefulWidget {
   final String text;
@@ -59,22 +58,9 @@ class _UserTileState extends State<UserTile> {
         });
       }
       //added feedback to user if the content was not loaded
-      DelightToastBar(
-          builder: (context) {
-            return SnackBar(
-              content: Text(
-                'Please check your internet connection.',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            );
-          },
-          position: DelightSnackbarPosition.top,
-          autoDismiss: true,
-          snackbarDuration: const Duration(seconds: 3));
-    });
-  }
+    CustomSnackbar().show(context, 'PLease check your internet connection');
+  });
+        }
 
   @override
   Widget build(BuildContext context) {
