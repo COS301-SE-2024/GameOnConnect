@@ -4,6 +4,7 @@ import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/model/connection_M/user_model.dart' as user;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:pulsator/pulsator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CurrentlyOnlineBar extends StatefulWidget {
   const CurrentlyOnlineBar({super.key});
@@ -50,8 +51,24 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
               ),
             )
           : _friends != null
-              ? const Text("None of your friends are currently online",
-                  style: TextStyle(fontWeight: FontWeight.bold))
+              ? Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                    const Text("No friends online \nright now :(",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SvgPicture.asset(
+                      'assets/images/sad_icon.svg',
+                      height: 100,
+                      fit: BoxFit.contain,
+                    )
+                  ]))
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _friends!.length,
