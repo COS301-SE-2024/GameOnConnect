@@ -83,37 +83,42 @@ void unlockCollectorBadge(bool add) async {
         if (data != null) {
           int count = 
               data["collector_badge"]["count"]; //get the count from the document//CHANGE
+          bool unlocked = 
+              data["collector_badge"]["unlocked"];
 
-          if(add){
+          if(unlocked==false) { // only update if its false
+            if(add){
             count++;
-          }
-          else{
-            count--;
-          }
+            }
+            else{
+              count--;
+            }
 
-          if (count== 10) {
-            await _firestore.collection("badges").doc(currentUser.uid).update({
-              //if the count is == 10 then update the document with the unlocked status
-              "collector_badge": {//CHANGE
-                "count": count,
-                "date_unlocked": DateTime.now(),
-                "unlocked": true,
-              }
-            });
-          } else if (count<10) {
-            await _firestore.collection("badges").doc(currentUser.uid).update({
-              //update the count and latest date in the document
-              "collector_badge": { //CHANGE
-                "count": count,
-                "date_unlocked": null,
-                "unlocked": false,
-              }
-            });
-          }
+            if (count== 10) {
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                //if the count is == 10 then update the document with the unlocked status
+                "collector_badge": {//CHANGE
+                  "count": count,
+                  "date_unlocked": DateTime.now(),
+                  "unlocked": true,
+                }
+              });
+            } else if (count<10) {
+              await _firestore.collection("badges").doc(currentUser.uid).update({
+                //update the count and latest date in the document
+                "collector_badge": { //CHANGE
+                  "count": count,
+                  "date_unlocked": null,
+                  "unlocked": false,
+                }
+              });
+            }
+          }   
+          
         }
       }
     } catch (e) {
-      throw Exception("Failed to unlock collector badge: $e"); //CHANGE
+      Exception("Failed to unlock collector badge: $e"); //CHANGE
     }
   }
 
@@ -140,12 +145,10 @@ void unlockCollectorBadge(bool add) async {
               }
             });
           }
-          else{
-          }
         }
       }
     } catch (e) {
-      throw Exception("Failed to unlock achiever badge: $e"); //CHANGE
+      Exception("Failed to unlock achiever badge: $e"); //CHANGE
     }
   }
 
@@ -163,12 +166,15 @@ void unlockCollectorBadge(bool add) async {
           int count = 
               data["customizer_badge"]["count"]; //get the count from the document
 
-        if(count<3)
-        {
-          count ++;
-        }
+        bool unlocked = 
+              data["customizer_badge"]["unlocked"];
 
-          
+        if(unlocked==false){ //Only update if its not unlocked yet
+          if(count<3)
+          {
+            count ++;
+          }
+
           if (count== 3) {
             await _firestore.collection("badges").doc(currentUser.uid).update({
               //if the count is ==3 then update the document with the unlocked status
@@ -188,6 +194,8 @@ void unlockCollectorBadge(bool add) async {
               }
             });
           }
+        }
+        
         }
       }
     } catch (e) {
