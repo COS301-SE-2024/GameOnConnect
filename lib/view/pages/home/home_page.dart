@@ -23,6 +23,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
+import 'package:gameonconnect/view/pages/games_page/games_page.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
         child: _HomePageDisplay(),
       ),
       const GameLibrary(),
-      const CreateEvents(),
+      const GamesPageWidget(),
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];

@@ -152,6 +152,7 @@ flutter:
     - assets/images/explosion.png
     - assets/images/player.png
     - assets/images/Frigate.png
+    - assets/images/Frigate_icon.png
     - assets/images/Battlecruiser.png
     - assets/images/Scout.png
     - assets/images/Scout_Destruction.png
