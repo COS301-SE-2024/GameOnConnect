@@ -459,16 +459,6 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             ),
           ),
         ),
-        SizedBox(height: 15),
-        Text("Connection updates",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        ConnectionUpdates(),
-        SizedBox(height: 30),
-        Text("Event invites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        EventInvitesList()
       ]),
     );
   }
