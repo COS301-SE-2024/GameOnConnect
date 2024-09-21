@@ -296,7 +296,22 @@ class EventsService {
       throw ("unable to subscribe to event");
     }
   }
-
+  Future<void> leaveEvent(Event Joined) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    try {
+      if (currentUser != null) {
+        Joined.participants.remove(currentUser.uid);
+        await db.collection('events').doc(Joined.eventID).update(
+          {
+            'participants': FieldValue.arrayRemove([currentUser.uid])
+          },
+        );
+      }
+    } catch (e) {
+      throw ("unable to leave event");
+    }
+  }
   int getAmountJoined(Event e) {
     return e.participants.length;
   }
