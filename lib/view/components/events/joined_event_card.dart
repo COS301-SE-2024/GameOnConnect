@@ -123,14 +123,13 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                               Text(
                                 'Upcoming: ${widget.e?.name}',
                                 style: TextStyle(
-                                  fontFamily: 'Inter',
                                   color: Theme.of(context).brightness ==
                                           Brightness.light
                                       ? Colors.black
                                       : Colors.white,
                                   fontSize: 16,
                                   letterSpacing: 0,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.bold,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
@@ -139,11 +138,9 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                 child: Text(
                                   '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
                                   style: const TextStyle(
-                                    fontFamily: 'Inter',
                                     color: Colors.grey,
                                     fontSize: 14,
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),

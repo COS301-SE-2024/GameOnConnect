@@ -97,29 +97,24 @@ class EventCard extends State<EventCardWidget> {
                                 Text(
                                   e.name,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
                                         ? Colors.black
                                         : Colors.white,
                                     fontSize: 12,
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
                                 Text(
                                   '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.black
-                                        : Colors.white,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
                                     fontSize: 12,
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 Icon(
