@@ -45,24 +45,33 @@ class _ConnectionUpdatesState extends State<ConnectionUpdates> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                    const Text("No new connection \nrequests :(",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SvgPicture.asset(
-                      'assets/images/sad_icon.svg',
-                      height: 75,
-                      fit: BoxFit.contain,
-                    )
-                  ]));
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Container(
+                    height: 100,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("No new connection \nrequests :(",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          SvgPicture.asset(
+                            'assets/images/sad_icon.svg',
+                            height: 75,
+                            fit: BoxFit.contain,
+                          )
+                        ])),
+              ),
+            );
           } else {
             final connectionRequests = snapshot.data!;
             return ConstrainedBox(
