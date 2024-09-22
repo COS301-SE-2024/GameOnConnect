@@ -98,8 +98,8 @@ class _SpecificEventsButtons extends State<SpecificEventsButtons> {
                     : isJoined
                         ? 'Leave'
                         : 'Join',
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: isJoined && !isCreator? Theme.of(context).brightness == Brightness.light ?Colors.black: Theme.of(context).colorScheme.secondary: Colors.black,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
