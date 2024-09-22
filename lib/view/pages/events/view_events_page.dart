@@ -156,6 +156,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       }
                     })),
             floatingActionButton: FloatingActionButton(
+              elevation: 0,
               onPressed: () {
                 Navigator.push(
                     context,

@@ -150,7 +150,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
   Padding sortFilter(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
