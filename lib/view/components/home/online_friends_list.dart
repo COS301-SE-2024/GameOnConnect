@@ -51,24 +51,30 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
               ),
             )
           : _friends != null
-              ? Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                    const Text("No friends online \nright now :(",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    SvgPicture.asset(
-                      'assets/images/sad_icon.svg',
+              ? Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Container(
                       height: 100,
-                      fit: BoxFit.contain,
-                    )
-                  ]))
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                        const Text("No friends online \nright now :(",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        SvgPicture.asset(
+                          'assets/images/sad_icon.svg',
+                          height: 100,
+                          fit: BoxFit.contain,
+                        )
+                      ])),
+                ),
+              )
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _friends!.length,

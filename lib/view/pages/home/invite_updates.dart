@@ -13,26 +13,44 @@ class _InviteUpdatesState extends State<InviteUpdates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Invites and requests', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
+        appBar: AppBar(
+          title: Text(
+            'Invites and requests',
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(12),
-        children: const [
-          Text("Connection requests",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          SizedBox(height: 15),
-          ConnectionUpdates(),
-          SizedBox(height: 30),
-          Text("Event invites",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-          SizedBox(height: 15),
-          EventInvitesList()
-        ],
-      ),
-    );
+        body: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              TabBar(
+                tabs: [
+                  Tab(
+                      icon: Icon(Icons.event_available,
+                          color: Theme.of(context).colorScheme.primary),
+                      text: 'Event Invites'),
+                  Tab(
+                      icon: Icon(Icons.person_add,
+                          color: Theme.of(context).colorScheme.primary),
+                      text: 'Connection Updates'),
+                ],
+              ),
+              const Expanded(
+                child: TabBarView(
+                  children: [
+                    EventInvitesList(),
+                    ConnectionUpdates(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }
