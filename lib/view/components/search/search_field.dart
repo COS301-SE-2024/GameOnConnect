@@ -38,6 +38,12 @@ class _SearchFieldState extends State<SearchField> {
                 borderSide: const BorderSide(
                     color: Colors.transparent),
               ),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  widget.controller.clear();
+                },
+              )
             ),
             onSubmitted: (value) {
               widget.onSearch(value);
