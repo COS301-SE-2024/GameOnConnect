@@ -342,122 +342,207 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   Widget _homeBody() {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: ListView(children: [
-        Text("Ready to game,",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-        Text("$currentUserName?",
-            style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary)),
-        SizedBox(height: 15),
-        GameTimer(),
-        SizedBox(height: 15),
-        Divider(
-          thickness: 1,
-          color: Theme.of(context).colorScheme.primaryContainer,
-        ),
-        SizedBox(height: 19),
-        Text("Friends currently online",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        CurrentlyOnlineBar(),
-        SizedBox(height: 30),
-        Text("Updates and invites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => InviteUpdates()),
-            );
-          },
-          child: Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white
-                  : Colors.black,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            height: 130,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start, 
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                        children: [
-                          TextSpan(text: "You have "),
-                          TextSpan(
-                            text:
-                                "15", 
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary
-                            ),
-                          ),
-                          TextSpan(text: " event invites"),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.black
-                              : Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                        children: [
-                          TextSpan(text: "and "),
-                          TextSpan(
-                            text: "5",
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onPrimary
-                            ),
-                          ),
-                          TextSpan(text: " new friend requests"),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/home_icon.svg',
-                      height: 75,
-                      fit: BoxFit.contain,
-                    ),
-                    SizedBox(width: 10),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.black
-                          : Colors.white,
-                      size: 20,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Ready to game,",
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+          Text("$currentUserName?",
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary)),
+          SizedBox(height: 15),
+          GameTimer(),
+          SizedBox(height: 15),
+          Divider(
+            thickness: 1,
+            color: Theme.of(context).colorScheme.primaryContainer,
           ),
-        ),
-      ]),
+          Expanded(
+            child: ListView(children: [
+              SizedBox(height: 19),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GameLibrary()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Explore,",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.onPrimary,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                              Text("Game,",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary
+                                          .withAlpha(175),
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                              Text("Connect",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary
+                                          .withAlpha(110),
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold))
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/start_hearts.svg',
+                                width: 110,
+                                fit: BoxFit.contain,
+                              ),
+                              SizedBox(width: 10),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color:
+                                    Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.black
+                                        : Colors.white,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Text("Friends currently online",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              SizedBox(height: 15),
+              CurrentlyOnlineBar(),
+              SizedBox(height: 30),
+              Text("Updates and invites",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              SizedBox(height: 15),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => InviteUpdates()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  height: 130,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                              children: [
+                                TextSpan(text: "Manage your "),
+                                TextSpan(
+                                  text: "event",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                ),
+                                TextSpan(text: " invites"),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                              children: [
+                                TextSpan(text: "and "),
+                                TextSpan(
+                                  text: "connection",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary),
+                                ),
+                                TextSpan(text: " requests."),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/home_icon.svg',
+                            height: 75,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 
