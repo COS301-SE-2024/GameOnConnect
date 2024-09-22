@@ -1,4 +1,3 @@
-
 // ignore_for_file: unnecessary_const
 // ignore_for_file: use_build_context_synchronously
 
@@ -48,8 +47,7 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
-
-  final ProfileService _profileService=ProfileService();
+  final ProfileService _profileService = ProfileService();
   final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
   late double totalTimePlayed;
@@ -59,26 +57,25 @@ class _ProfileState extends State<ProfilePage> {
   bool isRequestToParent = false;
 
   Future<void> isConnectionOfLoggedInUser() async {
-  final connections = await ConnectionService().getConnections('connections');
-  isConnectionOfParent= connections.contains(widget.uid);
-}
+    final connections = await ConnectionService().getConnections('connections');
+    isConnectionOfParent = connections.contains(widget.uid);
+  }
 
   Future<void> isPendingOfLoggedInUser() async {
     final connections = await ConnectionService().getConnections('pending');
     isPendingOfParent = connections.contains(widget.uid);
   }
 
-   Future<void> isRequestToLoggedInUser() async {
+  Future<void> isRequestToLoggedInUser() async {
     final connections = await ConnectionService().getConnections('requests');
     isRequestToParent = connections.contains(widget.uid);
   }
 
-  
-Future<void> getRelationToLoggedInUser() async {
-  isConnectionOfLoggedInUser();
-  isPendingOfLoggedInUser();
-  isRequestToLoggedInUser();
-}
+  Future<void> getRelationToLoggedInUser() async {
+    isConnectionOfLoggedInUser();
+    isPendingOfLoggedInUser();
+    isRequestToLoggedInUser();
+  }
 
   Future<void> getTimePlayed() async {
     totalTimePlayed =
@@ -119,7 +116,7 @@ Future<void> getRelationToLoggedInUser() async {
     try {
       await UserService().disconnect(widget.loggedInUser, widget.uid);
       setState(() {
-        isConnectionOfParent=false;
+        isConnectionOfParent = false;
       });
     } catch (e) {
       //'Error unfollowing user'
@@ -147,12 +144,12 @@ Future<void> getRelationToLoggedInUser() async {
     try {
       await ConnectionService().acceptConnectionRequest(widget.uid);
       setState(() {
-        isRequestToParent=false;
-        isConnectionOfParent=true;
+        isRequestToParent = false;
+        isConnectionOfParent = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Accepted')),
-        );
+        const SnackBar(content: Text('Accepted')),
+      );
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
@@ -179,11 +176,11 @@ Future<void> getRelationToLoggedInUser() async {
     try {
       await ConnectionService().rejectConnectionRequest(widget.uid);
       setState(() {
-        isRequestToParent=false;
+        isRequestToParent = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Rejected')),
-        );
+        const SnackBar(content: Text('Rejected')),
+      );
     } catch (e) {
       //'Error unfollowing user'
       DelightToastBar(
@@ -210,10 +207,10 @@ Future<void> getRelationToLoggedInUser() async {
     try {
       await UserService()
           .sendConnectionRequest(widget.loggedInUser, widget.uid);
-       setState(() {
-        isRequestToParent=false;
-        isPendingOfParent=true;
-      });   
+      setState(() {
+        isRequestToParent = false;
+        isPendingOfParent = true;
+      });
     } catch (e) {
       //Error sending Connection request.
       DelightToastBar(
@@ -241,7 +238,7 @@ Future<void> getRelationToLoggedInUser() async {
       await UserService()
           .undoConnectionRequest(widget.loggedInUser, widget.uid);
       setState(() {
-        isPendingOfParent=false;
+        isPendingOfParent = false;
       });
     } catch (e) {
       //'Error canceling friend request'
@@ -281,14 +278,9 @@ Future<void> getRelationToLoggedInUser() async {
   void navigateToStats(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => StatsPage(
-              userID: widget
-                  .uid)), 
+      MaterialPageRoute(builder: (context) => StatsPage(userID: widget.uid)),
     );
   }
-
-  
 
   @override
   void initState() {
@@ -463,7 +455,7 @@ Future<void> getRelationToLoggedInUser() async {
                                           ),
                                         ),
                                         Text(
-                                          '#${profileData.uniqueNumber.toString()}' ,
+                                          '#${profileData.uniqueNumber.toString()}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.w400,
                                             //fontSize: 12,
@@ -508,7 +500,8 @@ Future<void> getRelationToLoggedInUser() async {
                                 children: [
                                   Expanded(
                                     child: ProfileButton(
-                                        value: '${_profileService.mygGamesLength}',
+                                        value:
+                                            '${_profileService.mygGamesLength}',
                                         title: 'Games'),
                                   ),
                                   Expanded(
@@ -523,13 +516,11 @@ Future<void> getRelationToLoggedInUser() async {
                                           : null,
                                     ),
                                   ),
-                                   Expanded(
+                                  Expanded(
                                     child: ProfileButton(
-                                      value:
-                                          '$roundedTotalTime hrs',
+                                      value: '$roundedTotalTime hrs',
                                       title: 'Time Played',
-                                      onPressed: () =>
-                                          navigateToStats(context),
+                                      onPressed: () => navigateToStats(context),
                                     ),
                                   ),
                                 ],
@@ -541,56 +532,56 @@ Future<void> getRelationToLoggedInUser() async {
                             isParentsConnection ||
                             widget.uid == widget.loggedInUser) ...[
                           if (isRequestToParent)
-                          RequestContainer(
-                            requester: profileData.profileName,
-                            accept: () =>_accept(),
-                            reject: () =>_reject()
-                          ),
+                            RequestContainer(
+                                requester: profileData.profileName,
+                                accept: () => _accept(),
+                                reject: () => _reject()),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                  if(widget.uid != widget.loggedInUser)...[
-                                    ( isPendingOfParent)
-                                    ? Expanded(
-                                      child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Pending',
-                                          onPressed: () =>
-                                              _undoConnectionRequest(),
-                                          icon: Icons.hourglass_bottom 
-                                        ),
-                                      ),
-                                      )
-                                  : ( isConnectionOfParent)
-                                    ? Expanded(
-                                      child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Connected',
-                                           onPressed: () => _disconnect(), // drop down for disconnect 
-                                          icon: Icons.person
-                                        ),
-                                      ),
-                                      )
-                                  : (isRequestToParent)
-                                     ? const SizedBox.shrink()
-
-                                    : Expanded( // not connected yet
-                                        child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Connect',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(),
-                                          icon: Icons.person_add
-                                        ),
-                                        ),
-                                        
-                                      ),
-                                  ],
+                                if (widget.uid != widget.loggedInUser) ...[
+                                  (isPendingOfParent)
+                                      ? Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 0, 12, 0),
+                                            child: ActionButton(
+                                                type: 'Pending',
+                                                onPressed: () =>
+                                                    _undoConnectionRequest(),
+                                                icon: Icons.hourglass_bottom),
+                                          ),
+                                        )
+                                      : (isConnectionOfParent)
+                                          ? Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 12, 0),
+                                                child: ActionButton(
+                                                    type: 'Connected',
+                                                    onPressed: () =>
+                                                        _disconnect(), // drop down for disconnect
+                                                    icon: Icons.person),
+                                              ),
+                                            )
+                                          : (isRequestToParent)
+                                              ? const SizedBox.shrink()
+                                              : Expanded(
+                                                  // not connected yet
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(0, 0, 12, 0),
+                                                    child: ActionButton(
+                                                        type: 'Connect',
+                                                        onPressed: () =>
+                                                            _sendConnectionRequest(),
+                                                        icon: Icons.person_add),
+                                                  ),
+                                                ),
+                                ],
                                 /*Expanded(
                                   //here is the view stats button
                                   child: ActionButton(
@@ -608,58 +599,57 @@ Future<void> getRelationToLoggedInUser() async {
                                   ),
                                 ),*/
 
-                                if(widget.uid!=widget.loggedInUser)...[
+                                if (widget.uid != widget.loggedInUser) ...[
                                   Expanded(
-                                    child:ActionButton(
-                                  type: 'Message',
-                                  onPressed: () async {
-                                          String conversationID =
-                                              await _messagingService
-                                                  .findConversationID(
-                                                      widget.loggedInUser,
-                                                      widget.uid);
-                                          if (conversationID == 'Not found') {
-                                            List<String> newList = [
-                                              widget.loggedInUser,
-                                              widget.uid
-                                            ];
-                                            conversationID =
+                                      child: ActionButton(
+                                          type: 'Message',
+                                          onPressed: () async {
+                                            String conversationID =
                                                 await _messagingService
-                                                    .createConversation(
-                                                        newList);
-                                          }
-                                          if (mounted) {
-                                            if (!context.mounted) return;
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => ChatPage(
-                                                  profileName:
-                                                      profileData.profileName,
-                                                  receiverID: widget.uid,
-                                                  profilePicture: profileData
-                                                      .profilePicture,
+                                                    .findConversationID(
+                                                        widget.loggedInUser,
+                                                        widget.uid);
+                                            if (conversationID == 'Not found') {
+                                              List<String> newList = [
+                                                widget.loggedInUser,
+                                                widget.uid
+                                              ];
+                                              conversationID =
+                                                  await _messagingService
+                                                      .createConversation(
+                                                          newList);
+                                            }
+                                            if (mounted) {
+                                              if (!context.mounted) return;
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPage(
+                                                    profileName:
+                                                        profileData.profileName,
+                                                    receiverID: widget.uid,
+                                                    profilePicture: profileData
+                                                        .profilePicture,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                  icon: Icons.send)
-                                  ),
-                                  
+                                              );
+                                            }
+                                          },
+                                          icon: Icons.send)),
                                 ],
-                                  
                               ],
                             ),
                           ),
-                          const SizedBox(height: 24),
                           profileData.bio.isEmpty
-                              ? const SizedBox.shrink()
+                              ? const SizedBox()
                               : Bio(
                                   bio: profileData.bio,
                                   isOwnProfile: widget.isOwnProfile,
                                 ),
-                          const SizedBox(height: 24),
+                          profileData.bio.isEmpty
+                              ? const SizedBox()
+                              : const SizedBox(height: 24),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
@@ -681,7 +671,7 @@ Future<void> getRelationToLoggedInUser() async {
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
-                              :  Column(children: [
+                              : Column(children: [
                                   const Padding(
                                     padding:
                                         EdgeInsets.fromLTRB(12, 10, 12, 24),
@@ -694,150 +684,147 @@ Future<void> getRelationToLoggedInUser() async {
                                       gameIds: profileData.wantToPlay,
                                       heading: 'Want to play'),
                                   const SizedBox(height: 24)
-                                ]
-                                ),
+                                ]),
                         ] else ...[
                           if (isRequestToParent)
-                          RequestContainer(
-                            requester: profileData.profileName,
-                            accept: () =>_accept(),
-                            reject: () =>_reject()
-                          ),
+                            RequestContainer(
+                                requester: profileData.profileName,
+                                accept: () => _accept(),
+                                reject: () => _reject()),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 19, 12, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                   ( isPendingOfParent)
+                                (isPendingOfParent)
                                     ? Expanded(
-                                      child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Pending',
-                                          onPressed: () =>
-                                              _undoConnectionRequest(),
-                                          icon: Icons.hourglass_bottom 
-                                        ),
-                                      ),
-                                      )
-                                  : ( isConnectionOfParent)
-                                    ? Expanded(
-                                      child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Connected',
-                                          onPressed: () => _disconnect(),
-                                          icon: Icons.person
-                                        ),
-                                      ),
-                                      )
-                                  : (isRequestToParent)
-                                    ? const SizedBox.shrink()
-                                    
-                                    : Expanded( // not connected yet
                                         child: Padding(
-                                        padding:  const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                                        child: ActionButton(
-                                          type: 'Connect',
-                                          onPressed: () =>
-                                              _sendConnectionRequest(),
-                                          icon: Icons.person_add
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 0, 12, 0),
+                                          child: ActionButton(
+                                              type: 'Pending',
+                                              onPressed: () =>
+                                                  _undoConnectionRequest(),
+                                              icon: Icons.hourglass_bottom),
                                         ),
-                                        ),
-                                        
-                                      ),
-                              
-                              if(widget.uid!=widget.loggedInUser)...[
-                                  Expanded(
-                                    child:ActionButton(
-                                  type: 'Message',
-                                  onPressed: () async {
-                                          String conversationID =
-                                              await _messagingService
-                                                  .findConversationID(
-                                                      widget.loggedInUser,
-                                                      widget.uid);
-                                          if (conversationID == 'Not found') {
-                                            List<String> newList = [
-                                              widget.loggedInUser,
-                                              widget.uid
-                                            ];
-                                            conversationID =
-                                                await _messagingService
-                                                    .createConversation(
-                                                        newList);
-                                          }
-                                          if (mounted) {
-                                            if (!context.mounted) return;
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => ChatPage(
-                                                  profileName:
-                                                      profileData.profileName,
-                                                  receiverID: widget.uid,
-                                                  profilePicture: profileData
-                                                      .profilePicture,
+                                      )
+                                    : (isConnectionOfParent)
+                                        ? Expanded(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 0, 12, 0),
+                                              child: ActionButton(
+                                                  type: 'Connected',
+                                                  onPressed: () =>
+                                                      _disconnect(),
+                                                  icon: Icons.person),
+                                            ),
+                                          )
+                                        : (isRequestToParent)
+                                            ? const SizedBox.shrink()
+                                            : Expanded(
+                                                // not connected yet
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 12, 0),
+                                                  child: ActionButton(
+                                                      type: 'Connect',
+                                                      onPressed: () =>
+                                                          _sendConnectionRequest(),
+                                                      icon: Icons.person_add),
                                                 ),
                                               ),
-                                            );
-                                          }
-                                        },
-                                  icon: Icons.send)
-                                  ),
-                                  
+                                if (widget.uid != widget.loggedInUser) ...[
+                                  Expanded(
+                                      child: ActionButton(
+                                          type: 'Message',
+                                          onPressed: () async {
+                                            String conversationID =
+                                                await _messagingService
+                                                    .findConversationID(
+                                                        widget.loggedInUser,
+                                                        widget.uid);
+                                            if (conversationID == 'Not found') {
+                                              List<String> newList = [
+                                                widget.loggedInUser,
+                                                widget.uid
+                                              ];
+                                              conversationID =
+                                                  await _messagingService
+                                                      .createConversation(
+                                                          newList);
+                                            }
+                                            if (mounted) {
+                                              if (!context.mounted) return;
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPage(
+                                                    profileName:
+                                                        profileData.profileName,
+                                                    receiverID: widget.uid,
+                                                    profilePicture: profileData
+                                                        .profilePicture,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          icon: Icons.send)),
                                 ],
-                                      
                               ],
                             ),
                           ),
-                          
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 20, 0, 12),
                             child: Align(
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisSize: MainAxisSize
-                                  .min, // This ensures the Column takes up only the necessary space
-                              children: [
-                                Container(
-                                  width: 70, 
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisSize: MainAxisSize
+                                    .min, // This ensures the Column takes up only the necessary space
+                                children: [
+                                  Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.lock_outline,
+                                      size: 40,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
-                                      width: 2,
                                     ),
                                   ),
-                                  child: Icon(
-                                    Icons.lock_outline,
-                                    size: 40,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Container(
-                                  margin:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 82),
-
-                                  child:  Text(
-                                    'This account is Private',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Theme.of(context).colorScheme.secondary,
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 82),
+                                    child: Text(
+                                      'This account is Private',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          ),
-                          
-                        ],// else 
+                        ], // else
                       ],
                     ),
                   );

@@ -28,7 +28,7 @@ class _ProfileButtonState extends State<ProfileButton> {
         onTap: widget.onPressed, // Handle the onTap event
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
             border: Border.all(color: Theme.of(context).colorScheme.primary),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -40,15 +40,15 @@ class _ProfileButtonState extends State<ProfileButton> {
               Text(
                 widget.value,
                 style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
                 ),
               ),
               Text(
                 widget.title,
                 style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 13,
                 ),
               ),
             ],
