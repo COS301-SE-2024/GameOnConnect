@@ -2,7 +2,6 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
@@ -23,17 +22,15 @@ class ViewEvents extends StatefulWidget {
 class _HomePageWidgetState extends State<ViewEvents> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   EventsService events = EventsService();
-  late List<Event>? allEvents;
-  late List<Event>? publicAllEvents;
-  late List<Event>? subscribedEvents;
-  late List<Event>? myEvents;
-  late List<Event>? joinedEvents;
-  late List<String> creators;
+  List<Event>? allEvents;
+  List<Event>? publicAllEvents;
+  List<Event>? subscribedEvents;
+  List<Event>? myEvents;
+  List<Event>? joinedEvents;
 
   @override
   void initState() {
     super.initState();
-    getAllEvents();
   }
 
   @override
@@ -41,11 +38,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
     super.dispose();
   }
 
-  void getAllEvents() async {
-    publicAllEvents = events.getPublicEvents(allEvents!);
-    subscribedEvents = events.getSubscribedEvents(allEvents);
-    myEvents = events.getMyEvents(allEvents);
-    joinedEvents = events.getJoinedEvents(allEvents);
+  void getAllEvents(List<Event> eventsList) {
+    publicAllEvents = events.getPublicEvents(eventsList);
+    subscribedEvents = events.getSubscribedEvents(eventsList);
+    myEvents = events.getMyEvents(eventsList);
+    joinedEvents = events.getJoinedEvents(eventsList);
   }
 
   @override
@@ -99,198 +96,59 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
-                        allEvents = [];
-                        for (var x in snapshot.data!.docs) {
-                          var data = x.data() as Map<String, dynamic>;
-                          Event event = Event.fromMap(data, x.id);
-                          allEvents?.add(event);
+                        if (allEvents == null) {
+                          allEvents = snapshot.data!.docs.map((x) {
+                            var data = x.data() as Map<String, dynamic>;
+                            return Event.fromMap(data, x.id);
+                          }).toList();
+                          getAllEvents(allEvents!);
                         }
-                        getAllEvents();
-                        return SingleChildScrollView(
-                          child: DefaultTabController(
-                            length: 3,
-                            child: Wrap(
-                              children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.all(12),
-                                      child: joinedEvents!.isEmpty
-                                          ? const SizedBox()
-                                          : carousel_slider2.CarouselSlider
-                                              .builder(
-                                              itemCount: joinedEvents?.length,
-                                              carouselController: carousel_slider
-                                                  .CarouselSliderController(),
-                                              options: carousel_slider2
-                                                  .CarouselOptions(
-                                                padEnds: false,
-                                                initialPage: 0,
-                                                viewportFraction: 0.5,
-                                                disableCenter: true,
-                                                enlargeCenterPage: false,
-                                                enableInfiniteScroll: false,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                autoPlay: false,
-                                              ),
-                                              itemBuilder:
-                                                  (context, index, realIndex) {
-                                                Event i = joinedEvents![index];
-                                                return UpcomingEventCardWidget(
-                                                  e: i,
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      height: 360,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        borderRadius: BorderRadius.circular(10),
+                        return DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsetsDirectional.all(12),
+                                child: joinedEvents!.isEmpty
+                                    ? const SizedBox()
+                                    : carousel_slider2.CarouselSlider
+                                        .builder(
+                                        itemCount: joinedEvents?.length,
+                                        carouselController: carousel_slider
+                                            .CarouselSliderController(),
+                                        options: carousel_slider2
+                                            .CarouselOptions(
+                                          padEnds: false,
+                                          initialPage: 0,
+                                          viewportFraction: 0.5,
+                                          disableCenter: true,
+                                          enlargeCenterPage: false,
+                                          enableInfiniteScroll: false,
+                                          scrollDirection:
+                                              Axis.horizontal,
+                                          autoPlay: false,
+                                        ),
+                                        itemBuilder:
+                                            (context, index, realIndex) {
+                                          Event i = joinedEvents![index];
+                                          return UpcomingEventCardWidget(
+                                            e: i,
+                                          );
+                                        },
                                       ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(0, 12, 0, 20),
-                                                  child: ButtonsTabBar(
-                                                    buttonMargin: const EdgeInsets.symmetric(horizontal: 15),
-                                                    width: 120,
-                                                    contentCenter: true,
-                                                    labelStyle: TextStyle(
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.light
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .surface,
-                                                      fontSize: 16,
-                                                      letterSpacing: 0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                    unselectedLabelStyle:
-                                                        const TextStyle(
-                                                            color: Colors.grey),
-                                                    unselectedBackgroundColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .primaryContainer,
-                                                    elevation: 0,       
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .primary,
-                                                    tabs: const [
-                                                      Tab(
-                                                        text: 'All',
-                                                      ),
-                                                      Tab(
-                                                        text: 'Subscribed',
-                                                      ),
-                                                      Tab(
-                                                        text: 'My events',
-                                                      ),
-                                                    ],
-                                                    onTap: (i) async {
-                                                      [
-                                                        () async {},
-                                                        () async {},
-                                                        () async {}
-                                                      ][i]();
-                                                    },
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: TabBarView(
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    children: [
-                                                      ListView
-                                                          .builder(
-                                                        itemCount:
-                                                            publicAllEvents!
-                                                                .length,
-                                                        padding:
-                                                            const EdgeInsets.all(12),
-                                                        scrollDirection:
-                                                            Axis.vertical,
-                                                        itemBuilder:
-                                                            (context,
-                                                                index) {
-                                                          Event i =
-                                                              publicAllEvents![
-                                                                  index];
-                                                          return EventCardWidget(
-                                                            e: i,
-                                                          );
-                                                        },
-                                                      ),
-                                                      ListView
-                                                          .builder(
-                                                        itemCount:
-                                                            subscribedEvents!
-                                                                .length,
-                                                        padding:
-                                                            EdgeInsets.all(12),
-                                                        scrollDirection:
-                                                            Axis.vertical,
-                                                        itemBuilder:
-                                                            (context,
-                                                                index) {
-                                                          Event i =
-                                                              subscribedEvents![
-                                                                  index];
-                                                          return EventCardWidget(
-                                                            e: i,
-                                                          );
-                                                        },                                                      ),
-                                                      ListView.builder(
-                                                        itemCount: myEvents!
-                                                            .length,
-                                                        padding:
-                                                            const EdgeInsets.all(12),
-                                                        scrollDirection:
-                                                            Axis.vertical,
-                                                        itemBuilder:
-                                                            (context,
-                                                                index) {
-                                                          Event i =
-                                                              myEvents![
-                                                                  index];
-                                                          return EventCardWidget(
-                                                            e: i,
-                                                          );
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                              ),
+                              Expanded(
+                                child: EventsTabBar(
+                                  publicAllEvents: publicAllEvents!,
+                                  subscribedEvents: subscribedEvents!,
+                                  myEvents: myEvents!,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
                       } else {
@@ -311,5 +169,89 @@ class _HomePageWidgetState extends State<ViewEvents> {
                 color: Colors.black,
               ),
             )));
+  }
+}
+
+class EventsTabBar extends StatelessWidget {
+  final List<Event> publicAllEvents;
+  final List<Event> subscribedEvents;
+  final List<Event> myEvents;
+
+  const EventsTabBar({
+    Key? key,
+    required this.publicAllEvents,
+    required this.subscribedEvents,
+    required this.myEvents,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 12, 0, 20),
+          child: ButtonsTabBar(
+            buttonMargin: const EdgeInsets.symmetric(horizontal: 15),
+            width: 120,
+            contentCenter: true,
+            labelStyle: TextStyle(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.surface,
+              fontSize: 15,
+              letterSpacing: 0,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: const TextStyle(color: Colors.grey),
+            unselectedBackgroundColor:
+                Theme.of(context).colorScheme.primaryContainer,
+            elevation: 0,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            tabs: const [
+              Tab(text: 'All'),
+              Tab(text: 'Subscribed'),
+              Tab(text: 'My events'),
+            ],
+          ),
+        ),
+        Flexible(
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              ListView.separated(
+                itemCount: publicAllEvents.length,
+                padding: const EdgeInsets.all(12),
+                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                itemBuilder: (context, index) {
+                  Event event = publicAllEvents[index];
+                  return EventCardWidget(e: event);
+                },
+              ),
+              ListView.separated(
+                itemCount: subscribedEvents.length,
+                padding: const EdgeInsets.all(12),
+                scrollDirection: Axis.vertical,
+                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                itemBuilder: (context, index) {
+                  Event event = subscribedEvents[index];
+                  return EventCardWidget(e: event);
+                },
+              ),
+              ListView.separated(
+                itemCount: myEvents.length,
+                padding: const EdgeInsets.all(12),
+                scrollDirection: Axis.vertical,
+                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                itemBuilder: (context, index) {
+                  Event event = myEvents[index];
+                  return EventCardWidget(e: event);
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
