@@ -98,28 +98,10 @@ class _StatsPageState extends State<StatsPage> {
       key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        title: Text('Gaming Stats', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
         ),
-        title: Text(
-          'Gaming Stats',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: false,
-        elevation: 2,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())

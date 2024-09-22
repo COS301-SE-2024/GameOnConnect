@@ -128,7 +128,7 @@ class Options extends StatelessWidget {
                       size: 24,
                     ),
                     title: Text(
-                      'Appearance',
+                      'App Appearance',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: 12,

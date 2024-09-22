@@ -62,13 +62,11 @@ class __AppearancePagState extends State<AppearancePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Appearance',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('appearance_text'),
+      appBar: AppBar(
+        title: Text('App Appearance', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

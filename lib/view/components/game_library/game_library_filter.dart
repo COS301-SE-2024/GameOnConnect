@@ -55,25 +55,10 @@ class _FilterPageState extends State<FilterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            Navigator.pop(context);
-          },
+        title: Text('Filter', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
         ),
-        title: Text(
-          'Filter',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        actions: const [],
-        centerTitle: false,
-        elevation: 0,
       ),
       body: SafeArea(
         top: true,

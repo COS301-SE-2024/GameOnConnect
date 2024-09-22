@@ -207,11 +207,15 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       // Show loading indicator while data is being fetched
       return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.keyboard_backspace),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          title: Text(
+            'Customize Profile',
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary),
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
         body: Center(
@@ -229,13 +233,11 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
 
   Widget _buildContent(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Customize Profile',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('customize_profile_text'),
+      appBar: AppBar(
+        title: Text('Customize Profile', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       body: Stack(
         children: [

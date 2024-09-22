@@ -78,7 +78,10 @@ Future<void> nrOfRequests()async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connections'),
+        title: Text('Connections and requests', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       body: FutureBuilder<List<user.AppUser>?>(
           future: ConnectionService()

@@ -78,9 +78,15 @@ class _CreateEventsState extends State<CreateEvents> {
     return GestureDetector(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text(
+              title: Text(
                 'Create Event',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+              iconTheme: IconThemeData(
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
             key: scaffoldKey,
@@ -269,8 +275,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-
-
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
@@ -281,7 +285,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 20,
                                           ),
-
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -289,14 +292,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ChooseGame(
-                                                                chosenGame:
-                                                                    gameChosen,
-                                                              )))
-                                                  .then((gameInfo) {
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChooseGame(
+                                                            chosenGame:
+                                                                gameChosen,
+                                                          ))).then((gameInfo) {
                                                 setState(() {
                                                   if (gameInfo != null) {
                                                     gameChosen =
@@ -330,8 +332,10 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(gameName.isEmpty?
-                                                    'Choose game*' : gameName,
+                                                  Text(
+                                                    gameName.isEmpty
+                                                        ? 'Choose game*'
+                                                        : gameName,
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -347,9 +351,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: gameChosen==-1?Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary: Theme.of(context).colorScheme.primary,
+                                                    color: gameChosen == -1
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
                                                     size: 24,
                                                   ),
                                                 ],
@@ -433,13 +441,12 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-
                                           const ToolTip(
                                               message:
                                                   "Tournaments are competitive, "
-                                                      "whereas gaming sessions "
-                                                      "are more relaxed with "
-                                                      "people you know "),
+                                                  "whereas gaming sessions "
+                                                  "are more relaxed with "
+                                                  "people you know "),
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
@@ -687,9 +694,11 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 15,
                                           ),
-                                          const ToolTip(message: "Public events are seen by all users and anyone can join it."),
+                                          const ToolTip(
+                                              message:
+                                                  "Public events are seen by all users and anyone can join it."),
                                           const SizedBox(
-                                            height:3,
+                                            height: 3,
                                           ),
                                           Container(
                                             decoration: BoxDecoration(
@@ -708,7 +717,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 15,),
+                                                      left: 15,
+                                                    ),
                                                     child: Text(
                                                       'Public',
                                                       style: TextStyle(
@@ -795,8 +805,9 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    invites.isEmpty?'Invite connections*':
-                                                    'Invite connections (${invites.length})',
+                                                    invites.isEmpty
+                                                        ? 'Invite connections*'
+                                                        : 'Invite connections (${invites.length})',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -811,9 +822,13 @@ class _CreateEventsState extends State<CreateEvents> {
                                                             .add_circle_outline
                                                         : Icons
                                                             .check_circle_outline_rounded,
-                                                    color: invites.isEmpty?Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary:Theme.of(context).colorScheme.primary,
+                                                    color: invites.isEmpty
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
                                                     size: 24,
                                                   ),
                                                 ],

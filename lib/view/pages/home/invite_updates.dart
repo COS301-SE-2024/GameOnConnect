@@ -14,7 +14,7 @@ class _InviteUpdatesState extends State<InviteUpdates> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Invite and requests', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        title: Text('Invites and requests', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.primary,
         ),

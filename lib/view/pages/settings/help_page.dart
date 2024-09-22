@@ -32,14 +32,12 @@ class _HelpWidgetState extends State<HelpPage> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: BackButtonAppBar(
-          title: "Help Center",
-          onBackButtonPressed: () {
-            Navigator.pop(context);
-          },
-          iconkey: const Key('Help_back_button'),
-          textkey: const Key('Help_title_key'),
+        appBar: AppBar(
+        title: Text('Help Center', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
         ),
+      ),
         body: SafeArea(
           top: true,
           child: Column(

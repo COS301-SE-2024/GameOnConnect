@@ -90,13 +90,11 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Edit Profile',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('edit_profile_text'),
+      appBar: AppBar(
+        title: Text('Edit Profile', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: EditProfileService().databaseAccess(),
