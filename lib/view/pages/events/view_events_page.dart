@@ -179,11 +179,11 @@ class EventsTabBar extends StatelessWidget {
   final List<Event> myEvents;
 
   const EventsTabBar({
-    Key? key,
+    super.key,
     required this.publicAllEvents,
     required this.subscribedEvents,
     required this.myEvents,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

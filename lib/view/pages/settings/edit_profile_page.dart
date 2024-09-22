@@ -4,7 +4,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
 import '../../components/settings/edit_switch.dart';
-import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'dart:io';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../../../services/settings/edit_profile_service.dart';

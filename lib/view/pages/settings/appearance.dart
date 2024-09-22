@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
-import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
