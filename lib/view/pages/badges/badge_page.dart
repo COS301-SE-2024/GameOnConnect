@@ -1,3 +1,4 @@
+import 'package:avatar_stack/avatar_stack.dart';
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
@@ -28,7 +29,6 @@ class _BadgePageState extends State<BadgePage> {
       body: Column(children: [
         Expanded(
             child: ModelViewer(
-          shadowIntensity: 200,
           disablePan: true,
           disableZoom: true,
           src: 'assets/models/${widget.badgeFileName}.glb',
@@ -70,38 +70,26 @@ class _BadgePageState extends State<BadgePage> {
         const Padding(
           padding: EdgeInsets.fromLTRB(12, 0, 0, 0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Also earned by", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              Text("Also earned by", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ],
           ),
         ),
         const SizedBox(height: 18),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 15,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.grey,
-                      ),
-                      const SizedBox(height: 5),
-                      Text("User $index")
-                    ],
-                  ),
-                );
-              },
-            ),
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: AvatarStack(
+            width: 250,
+            height: 50,
+            borderColor: Theme.of(context).colorScheme.surface,
+            avatars: [
+                    for (var n = 0; n < 15; n++)
+                      NetworkImage('https://i.pravatar.cc/150?img=$n'),
+                  ],
           ),
-        )
+        ),
+        const SizedBox(height: 100)
       ]),
     );
   }
