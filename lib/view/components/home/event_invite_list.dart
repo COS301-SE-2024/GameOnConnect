@@ -23,6 +23,7 @@ class _EventInvitesListState extends State<EventInvitesList> {
   Future<void> fetchInvitedEvents() async {
     List<Map<String, dynamic>> invitedEvents = await _eventsService.getInvitedEvents();
 
+    if(!mounted) return;
     setState(() {
       _invitedEvents = invitedEvents.map((e) => Event.fromMap(e, e['id'])).toList();
     });

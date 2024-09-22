@@ -1,15 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
-//import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
-//import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/messaging/user_tile.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:intl/intl.dart';
@@ -50,23 +46,9 @@ class _MessagingState extends State<Messaging> {
           .getAllChatsForCurrentUser(), //get the existing chats
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          DelightToastBar(
-                  builder: (context) {
-                    return CustomToastCard(
-                      title: Text(
+      CustomSnackbar().show(context,
                         'Check your internet connection',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
                     );
-                  },
-                  position: DelightSnackbarPosition.top,
-                  autoDismiss: true,
-                  snackbarDuration: const Duration(seconds: 3))
-              .show(
-            context,
-          );
           return const Text('An unexpected error occurred.');
         }
 
