@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
@@ -117,327 +118,173 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                   children: [
                                     Padding(
                                       padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              24, 13, 0, 0),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 230,
-                                        child: joinedEvents!.isEmpty? const Align(alignment: Alignment(0, 0), child: Text("You currently have no upcoming events")):
-                                         carousel_slider2.CarouselSlider.builder(
-                                          itemCount: joinedEvents?.length,
-                                          carouselController:
-                                              carousel_slider.CarouselSliderController(),
-                                          options: carousel_slider2.CarouselOptions(
-                                            padEnds: false,
-                                            initialPage: 0,
-                                            viewportFraction: 0.5,
-                                            disableCenter: true,
-                                            enlargeCenterPage: false,
-                                            enableInfiniteScroll: false,
-                                            scrollDirection: Axis.horizontal,
-                                            autoPlay: false,
-                                            height: 250,
-                                          ),
-                                          itemBuilder:
-                                              (context, index, realIndex) {
-                                            Event i = joinedEvents![index];
-                                            return UpcomingEventCardWidget(
-                                              e: i,
-                                            );
-                                          },
-                                        ),
-                                      ),
+                                          const EdgeInsetsDirectional.all(12),
+                                      child: joinedEvents!.isEmpty
+                                          ? const SizedBox()
+                                          : carousel_slider2.CarouselSlider
+                                              .builder(
+                                              itemCount: joinedEvents?.length,
+                                              carouselController: carousel_slider
+                                                  .CarouselSliderController(),
+                                              options: carousel_slider2
+                                                  .CarouselOptions(
+                                                padEnds: false,
+                                                initialPage: 0,
+                                                viewportFraction: 0.5,
+                                                disableCenter: true,
+                                                enlargeCenterPage: false,
+                                                enableInfiniteScroll: false,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                autoPlay: false,
+                                              ),
+                                              itemBuilder:
+                                                  (context, index, realIndex) {
+                                                Event i = joinedEvents![index];
+                                                return UpcomingEventCardWidget(
+                                                  e: i,
+                                                );
+                                              },
+                                            ),
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              12, 42.56, 12, 12),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 360,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surface,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 0, 0, 0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          const Alignment(0, 1),
-                                                      child: ButtonsTabBar(
-                                                        width: 101,
-                                                        contentCenter: true,
-                                                        labelStyle: TextStyle(
-                                                          fontFamily: 'Inter',
-                                                          color: Theme.of(context)
-                                                                      .brightness ==
-                                                                  Brightness
-                                                                      .light
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .secondary
-                                                              : Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .surface,
-                                                          fontSize: 16,
-                                                          letterSpacing: 0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                        unselectedLabelStyle: TextStyle(
-                                                            color: Theme.of(
-                                                                            context)
-                                                                        .brightness ==
-                                                                    Brightness
-                                                                        .light
-                                                                ? Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .secondary
-                                                                : Colors.white),
-                                                        unselectedBackgroundColor:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .primaryContainer,
-                                                        elevation: 0,
-                                                        buttonMargin:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                                0, 0, 13, 10),
-                                                        backgroundColor:
-                                                            Theme.of(context)
-                                                                .colorScheme
-                                                                .primary,
-                                                        tabs: const [
-                                                          Tab(
-                                                            text: 'All',
-                                                          ),
-                                                          Tab(
-                                                            text: 'Subscribed',
-                                                          ),
-                                                          Tab(
-                                                            text: 'My events',
-                                                          ),
-                                                        ],
-                                                        onTap: (i) async {
-                                                          [
-                                                            () async {},
-                                                            () async {},
-                                                            () async {}
-                                                          ][i]();
+                                    Container(
+                                      width: double.infinity,
+                                      height: 360,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(0, 12, 0, 20),
+                                                  child: ButtonsTabBar(
+                                                    buttonMargin: const EdgeInsets.symmetric(horizontal: 15),
+                                                    width: 120,
+                                                    contentCenter: true,
+                                                    labelStyle: TextStyle(
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.light
+                                                          ? Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary
+                                                          : Theme.of(context)
+                                                              .colorScheme
+                                                              .surface,
+                                                      fontSize: 16,
+                                                      letterSpacing: 0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    unselectedLabelStyle:
+                                                        const TextStyle(
+                                                            color: Colors.grey),
+                                                    unselectedBackgroundColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primaryContainer,
+                                                    elevation: 0,       
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                    tabs: const [
+                                                      Tab(
+                                                        text: 'All',
+                                                      ),
+                                                      Tab(
+                                                        text: 'Subscribed',
+                                                      ),
+                                                      Tab(
+                                                        text: 'My events',
+                                                      ),
+                                                    ],
+                                                    onTap: (i) async {
+                                                      [
+                                                        () async {},
+                                                        () async {},
+                                                        () async {}
+                                                      ][i]();
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: TabBarView(
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    children: [
+                                                      ListView
+                                                          .builder(
+                                                        itemCount:
+                                                            publicAllEvents!
+                                                                .length,
+                                                        padding:
+                                                            const EdgeInsets.all(12),
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        itemBuilder:
+                                                            (context,
+                                                                index) {
+                                                          Event i =
+                                                              publicAllEvents![
+                                                                  index];
+                                                          return EventCardWidget(
+                                                            e: i,
+                                                          );
                                                         },
                                                       ),
-                                                    ),
-                                                    Expanded(
-                                                      child: TabBarView(
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        children: [
-                                                          ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            child: Container(
-                                                              width: 100,
-                                                              height: 30,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .surface,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              child: ListView
-                                                                  .separated(
-                                                                itemCount:
-                                                                    publicAllEvents!
-                                                                        .length,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .zero,
-                                                                scrollDirection:
-                                                                    Axis.vertical,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  Event i =
-                                                                      publicAllEvents![
-                                                                          index];
-                                                                  return EventCardWidget(
-                                                                    e: i,
-                                                                  );
-                                                                },
-                                                                separatorBuilder:
-                                                                    (context,
-                                                                            index) =>
-                                                                        const SizedBox(),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          ClipRRect(
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(12),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          12),
-                                                              topLeft: Radius
-                                                                  .circular(0),
-                                                              topRight: Radius
-                                                                  .circular(0),
-                                                            ),
-                                                            child: Container(
-                                                              width: 100,
-                                                              height: 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .surface,
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                ),
-                                                              ),
-                                                              child: ListView
-                                                                  .separated(
-                                                                itemCount:
-                                                                    subscribedEvents!
-                                                                        .length,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .zero,
-                                                                scrollDirection:
-                                                                    Axis.vertical,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  Event i =
-                                                                      subscribedEvents![
-                                                                          index];
-                                                                  return EventCardWidget(
-                                                                    e: i,
-                                                                  );
-                                                                },
-                                                                separatorBuilder: (context,
-                                                                        index) =>
-                                                                    const SizedBox(
-                                                                        height:
-                                                                            10),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          ClipRRect(
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                    .only(
-                                                              bottomLeft: Radius
-                                                                  .circular(12),
-                                                              bottomRight:
-                                                                  Radius
-                                                                      .circular(
-                                                                          12),
-                                                              topLeft: Radius
-                                                                  .circular(0),
-                                                              topRight: Radius
-                                                                  .circular(0),
-                                                            ),
-                                                            child: Container(
-                                                              width: 100,
-                                                              height: 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .surface,
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  bottomRight: Radius
-                                                                      .circular(
-                                                                          12),
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          0),
-                                                                ),
-                                                              ),
-                                                              child: ListView
-                                                                  .separated(
-                                                                itemCount:
-                                                                    myEvents!
-                                                                        .length,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .zero,
-                                                                scrollDirection:
-                                                                    Axis.vertical,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        index) {
-                                                                  Event i =
-                                                                      myEvents![
-                                                                          index];
-                                                                  return EventCardWidget(
-                                                                    e: i,
-                                                                  );
-                                                                },
-                                                                separatorBuilder: (context,
-                                                                        index) =>
-                                                                    const SizedBox(
-                                                                        height:
-                                                                            10),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
+                                                      ListView
+                                                          .builder(
+                                                        itemCount:
+                                                            subscribedEvents!
+                                                                .length,
+                                                        padding:
+                                                            EdgeInsets.all(12),
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        itemBuilder:
+                                                            (context,
+                                                                index) {
+                                                          Event i =
+                                                              subscribedEvents![
+                                                                  index];
+                                                          return EventCardWidget(
+                                                            e: i,
+                                                          );
+                                                        },                                                      ),
+                                                      ListView.builder(
+                                                        itemCount: myEvents!
+                                                            .length,
+                                                        padding:
+                                                            const EdgeInsets.all(12),
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        itemBuilder:
+                                                            (context,
+                                                                index) {
+                                                          Event i =
+                                                              myEvents![
+                                                                  index];
+                                                          return EventCardWidget(
+                                                            e: i,
+                                                          );
+                                                        },
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -450,14 +297,19 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         return const Text('No data found');
                       }
                     })),
-    floatingActionButton: FloatingActionButton(
-      onPressed:(){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => const CreateEvents()));
-    },
-      backgroundColor: Theme.of(context).colorScheme.primary,
-    child: const Icon(Icons.add,size: 30,color: Colors.black,),
-    )
-    ));
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CreateEvents()));
+              },
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: const Icon(
+                Icons.add,
+                size: 30,
+                color: Colors.black,
+              ),
+            )));
   }
 }
