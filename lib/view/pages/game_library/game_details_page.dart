@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -315,22 +314,23 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                            child: Text(gameDetails.publisher[0]['name'],
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                          ),
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 21, 0, 21),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(12, 0, 0, 12),
+                                    child: Text(
+                                        gameDetails.publisher[0]['name'],
+                                        style: const TextStyle(
+                                            fontSize: 13, color: Colors.grey)),
+                                  ),
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 100,
+                                    height: 25,
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
@@ -345,46 +345,50 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             .secondary,
                                       ),
                                     ),
-                                    child: Column(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Align(
-                                          alignment: const Alignment(0, -1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Text(
-                                              'Ratings',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight
-                                                    .w400, // Adjust font weight if needed
-                                              ),
-                                            ),
+                                        Text(
+                                          'Rating: ',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, 1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Text(
-                                                gameDetails.rating.toString(),
-                                                //ratings
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
+                                        Text(
+                                          gameDetails.rating.toStringAsFixed(1),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
                                           ),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        const Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.black,
+                                              size: 16,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Colors.yellow,
+                                              size: 14,
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 85,
+                                    height: 25,
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
@@ -398,48 +402,37 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             .secondary,
                                       ),
                                     ),
-                                    child: Column(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, -1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Text(
-                                              'Score',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
+                                        Text(
+                                          'Score: ',
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, 1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Text(
-                                              gameDetails.score.toString(),
-                                              //gameDetails.score,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                        Text(
+                                          gameDetails.score.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  const SizedBox(width: 1,),
                                 ],
                               ),
                             ),
                           ),
+                          const SizedBox(height: 10,),
                           Divider(
                             thickness: 1,
                             indent: 0,
@@ -458,17 +451,17 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       await wishlist
                                           .removeFromWishlist(
                                               gameDetails.id.toString())
-                                          .then((onValue) =>
-                                              CustomSnackbar().show(context,
+                                          .then((onValue) => CustomSnackbar()
+                                              .show(context,
                                                   'Removed from Want to Play'));
                                     } else {
                                       await wishlist
                                           .addToWishlist(
                                               gameDetails.id.toString())
                                           .then(
-                                            (onValue) =>
-                                                CustomSnackbar().show(context,
-                                                    'Added to Want to Play'),
+                                            (onValue) => CustomSnackbar().show(
+                                                context,
+                                                'Added to Want to Play'),
                                           );
                                     }
                                     checkWishlistStatus();
