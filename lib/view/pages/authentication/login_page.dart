@@ -295,28 +295,28 @@ class _LoginState extends State<Login> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.all(15.pixelScale(context)),
+                        padding: EdgeInsets.all(15),
                         key: Key('Google_Login'),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 190, 190, 190),
-                          borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child:  Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                            children: const [
                               Icon(
                                 FontAwesomeIcons.google,
-                                size: 20.pixelScale(context),
+                                size: 20,
                                 color: Colors.black,
                               ),
-                              SizedBox(width: 10.pixelScale(context)),
+                              SizedBox(width: 10),
                               Text(
                                 'Continue with Google',
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 24, 24, 24),
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 15.pixelScale(context),
+                                  fontSize: 15,
                                 ),
                               ),
                             ],
