@@ -146,9 +146,9 @@ class _ChooseGame extends State<ChooseGame> {
                                       fontSize: 14.pixelScale(context),
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(24, 24, 24, 1.0),
+                                      color: const Color.fromRGBO(24, 24, 24, 1.0),
                                     ),
-                                    key: Key('save_game_text'),
+                                    key: const Key('save_game_text'),
                                   ),
                                 ])),
                       )
