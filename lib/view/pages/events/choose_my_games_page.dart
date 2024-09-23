@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/card/game_list_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -15,7 +16,7 @@ class ChooseGame extends StatefulWidget {
 
 class _ChooseGame extends State<ChooseGame> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  late int chosenGame ;
+  late int chosenGame;
   late List<String> gameNames = [];
   late List<String> gameImages = [];
   late List<GameDetails>? games;
@@ -66,7 +67,7 @@ class _ChooseGame extends State<ChooseGame> {
             return Center(
               child: LoadingAnimationWidget.halfTriangleDot(
                 color: Theme.of(context).colorScheme.primary,
-                size: 36,
+                size: 36.pixelScale(context),
               ),
             );
           } else if (snapshot.hasError) {
@@ -88,7 +89,7 @@ class _ChooseGame extends State<ChooseGame> {
                 body: SafeArea(
                     top: true,
                     child: Column(mainAxisSize: MainAxisSize.max, children: [
-                      const SizedBox(height: 18),
+                      SizedBox(height: 18.pixelScale(context)),
                       Flexible(
                           child: ListView.separated(
                         itemCount: gameNames.length,
@@ -103,7 +104,7 @@ class _ChooseGame extends State<ChooseGame> {
                             gameID: getGameID(i),
                             chosen: chosenGame,
                             image: gameImages[index],
-                            onSelected: (gameID,name) {
+                            onSelected: (gameID, name) {
                               if (_isMounted) {
                                 setState(() {
                                   chosenGame = gameID;
@@ -114,31 +115,35 @@ class _ChooseGame extends State<ChooseGame> {
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(
-                            height: 18,
+                          return SizedBox(
+                            height: 18.pixelScale(context),
                           );
                         },
                       )),
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            15, 12, 15, 12),
+                        padding: EdgeInsetsDirectional.fromSTEB(
+                            15.pixelScale(context),
+                            12.pixelScale(context),
+                            15.pixelScale(context),
+                            12.pixelScale(context)),
                         child: MaterialButton(
                             key: const Key('save_game_button'),
                             onPressed: () {
-                              Navigator.pop(context, ({"chosen":chosenGame,"name":gameName}));
+                              Navigator.pop(context,
+                                  ({"chosen": chosenGame, "name": gameName}));
                             },
-                            height: 35,
+                            height: 35.pixelScale(context),
                             color: Theme.of(context).colorScheme.primary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: const Row(
+                            child:  Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "Save Game",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14.pixelScale(context),
                                       letterSpacing: 0,
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(24, 24, 24, 1.0),

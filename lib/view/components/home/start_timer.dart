@@ -68,99 +68,116 @@ class _GameTimer extends State<GameTimer> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _timerService.isRunning()
-                      ? Row(
-                          children: [
-                            const Icon(
-                              Icons.radio_button_checked,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(width: 10),
-                            ValueListenableBuilder<String>(
-                              valueListenable: _timerService.elapsedTime,
-                              builder: (context, value, child) {
-                                return Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.red),
-                                );
-                              },
-                            ),
-                          ],
-                        )
-                      : FutureBuilder<List<GameDetails>>(
-                          future: _userGames,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List<GameDetails>> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return LoadingAnimationWidget.halfTriangleDot(
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 36,
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Text('No data found');
-                            } else {
-                              return DropdownButton<String>(
-                                isDense: true,
-                                underline: const SizedBox(),
-                                hint: Text(_selectedGameName ??
-                                    'What are you playing?'),
-                                items: snapshot.data!.map((GameDetails game) {
-                                  return DropdownMenuItem<String>(
-                                    value: game.id.toString(),
-                                    child: Text(game.name),
+
+                child:Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 8.0,
+                    runSpacing: 4.0,
+                  runAlignment: WrapAlignment.spaceBetween,
+                    children: [
+                    _timerService.isRunning()
+                        ? FittedBox( child: Row(
+                            children: [
+                              const Icon(
+                                Icons.radio_button_checked,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(
+                                  width: 10),
+                              ValueListenableBuilder<String>(
+                                valueListenable: _timerService.elapsedTime,
+                                builder: (context, value, child) {
+                                  return Text(
+                                    value,
+                                    style: const TextStyle(color: Colors.red),
                                   );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    final selectedGame = snapshot.data!
-                                        .firstWhere((game) =>
-                                            game.id.toString() == newValue);
-                                    _selectedGameName = selectedGame.name;
-                                    _timerService.setGame(newValue);
-                                  });
                                 },
-                              );
-                            }
-                          }),
-                  IconButton.filled(
-                    style: IconButton.styleFrom(
-                        backgroundColor: _timerService.isRunning()
-                            ? Colors.red
-                            : !_timerService.isGameSelected()
-                                ? Colors.grey
-                                : Theme.of(context).colorScheme.primary),
-                    icon: _timerService.isRunning()
-                        ? const Icon(Icons.stop, color: Colors.white)
-                        : const Icon(Icons.play_arrow, color: Colors.white),
-                    onPressed: !_timerService.isGameSelected()
-                        ? null
-                        : () {
-                            setState(() {
-                              if (_timerService.isRunning()) {
-                                _stopStopwatch();
-                                //show emoji feedback
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    int? selectedRating = 1;
-                                    return AlertDialog(
-                                      title: const Text(
-                                          'How was your experience playing this game?',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold)),
-                                      content: StatefulBuilder(
-                                        builder: (context, StateSetter setDialogState) {
+                              ),
+                            ],
+                          )
+                    )
+                        :FutureBuilder<List<GameDetails>>(
+                            future: _userGames,
+                            builder: (BuildContext context,
+                                AsyncSnapshot<List<GameDetails>> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Text('No data found');
+                              } else {
+                                return FittedBox( child:DropdownButton<String>(
+                                  isDense: true,
+                                  underline: const SizedBox(),
+                                  hint: Text(
+                                    _selectedGameName ??
+                                        'What are you playing?',
+                                  ),
+                                  items: snapshot.data!.map((GameDetails game) {
+                                    return DropdownMenuItem<String>(
+                                      value: game.id.toString(),
+                                      child: Text(game.name,
+
+                                          ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      final selectedGame = snapshot.data!
+                                          .firstWhere((game) =>
+                                              game.id.toString() == newValue);
+                                      _selectedGameName = selectedGame.name;
+                                      _timerService.setGame(newValue);
+                                    });
+                                  },
+                                )
+                                );
+                              }
+                            }),
+                    IconButton.filled(
+                      style: IconButton.styleFrom(
+                          backgroundColor: _timerService.isRunning()
+                              ? Colors.red
+                              : !_timerService.isGameSelected()
+                                  ? Colors.grey
+                                  : Theme.of(context).colorScheme.primary),
+                      icon: _timerService.isRunning()
+                          ? const Icon(
+                              Icons.stop,
+                              color: Colors.white,
+                            )
+                          : const Icon(Icons.play_arrow,
+                              color: Colors.white,),
+                      onPressed: !_timerService.isGameSelected()
+                          ? null
+                          : () {
+                              setState(() {
+                                if (_timerService.isRunning()) {
+                                  _stopStopwatch();
+                                  //show emoji feedback
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      int? selectedRating = 1;
+                                      return AlertDialog(
+                                        title: const Text(
+                                            'How was your experience playing this game?',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold)),
+                                        insetPadding: const EdgeInsets.all(10),
+                                        content: StatefulBuilder(builder:
+                                            (context,
+                                                StateSetter setDialogState) {
                                           return SizedBox(
                                             width: double.maxFinite,
-                                            child: Column(
+                                              child:Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 EmojiFeedback(
@@ -168,7 +185,8 @@ class _GameTimer extends State<GameTimer> {
                                                   enableFeedback: true,
                                                   emojiPreset: const [
                                                     EmojiModel(
-                                                      src: Assets.classicTerrible,
+                                                      src: Assets
+                                                          .classicTerrible,
                                                       label: 'Scared',
                                                       package:
                                                           'flutter_emoji_feedback',
@@ -230,32 +248,32 @@ class _GameTimer extends State<GameTimer> {
                                               ],
                                             ),
                                           );
-                                        }
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Okay'),
-                                          onPressed: () async {
-                                            Navigator.of(context).pop();
-                                            _timerService.addSession(_mood);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              } else {
-                                _startStopWatch();
-                              }
-                            });
-                          },
-                  ),
-                ],
-              ),
+                                        }),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Okay'),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+                                              _timerService.addSession(_mood);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  _startStopWatch();
+                                }
+                              });
+                            },
+                    ),
+                  ],
+                ),
             ),
-          ],
-        ),
-      ),
+],
+              ),
+
+    )
     );
   }
 }
