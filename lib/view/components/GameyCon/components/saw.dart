@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
 
 class Saw extends SpriteAnimationComponent with HasGameRef<GameyCon> {
   final bool isVertical;
