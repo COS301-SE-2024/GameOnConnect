@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -138,9 +139,9 @@ class _EditEventsState extends State<EditEvent> {
     return GestureDetector(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text(
+              title:  Text(
                 'Edit Event',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 32.pixelScale(context), fontWeight: FontWeight.bold),
               ),
             ),
             key: scaffoldKey,
@@ -167,8 +168,8 @@ class _EditEventsState extends State<EditEvent> {
                                   decoration: const BoxDecoration(),
                                   child: Padding(
                                     padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            16, 12, 16, 0),
+                                         EdgeInsetsDirectional.fromSTEB(
+                                            16.pixelScale(context), 12.pixelScale(context), 16.pixelScale(context), 0),
                                     child: Column(
                                         mainAxisSize: MainAxisSize.max,
                                         crossAxisAlignment:
@@ -191,24 +192,24 @@ class _EditEventsState extends State<EditEvent> {
                                                     )),
                                                 ClipRRect(
                                                   borderRadius:
-                                                      BorderRadius.circular(8),
+                                                      BorderRadius.circular(8.pixelScale(context)),
                                                   child: filePath != null
                                                       ? Image.file(
                                                           File(filePath!.path),
-                                                          width: 359,
-                                                          height: 200,
+                                                          width: 359.pixelScale(context),
+                                                          height: 200.pixelScale(context),
                                                           fit: BoxFit.cover,
                                                         )
                                                       : Image.network(
                                                           imageUrl,
-                                                          width: 359,
-                                                          height: 200,
+                                                          width: 359.pixelScale(context),
+                                                          height: 200.pixelScale(context),
                                                           fit: BoxFit.cover,
                                                         ),
                                                 ),
                                                 Container(
-                                                    height: 40,
-                                                    width: 40,
+                                                    height: 40.pixelScale(context),
+                                                    width: 40.pixelScale(context),
                                                     decoration: BoxDecoration(
                                                         color: Theme.of(context)
                                                             .colorScheme
@@ -223,11 +224,11 @@ class _EditEventsState extends State<EditEvent> {
                                               ],
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                           SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
                                           SizedBox(
-                                            height: 70,
+                                            height: 70.pixelScale(context),
                                             child: TextFormField(
                                               onFieldSubmitted: (val) {
                                                 name = nameController.text;
@@ -268,7 +269,7 @@ class _EditEventsState extends State<EditEvent> {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .secondary,
-                                                  fontSize: 16,
+                                                  fontSize: 16.pixelScale(context),
                                                   letterSpacing: 0,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -282,7 +283,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 ),
                                                 border: OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(10.pixelScale(context)),
                                                   borderSide: BorderSide(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -291,7 +292,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 enabledBorder:
                                                     OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(10.pixelScale(context)),
                                                   borderSide: BorderSide(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -300,7 +301,7 @@ class _EditEventsState extends State<EditEvent> {
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(10.pixelScale(context)),
                                                   borderSide: BorderSide(
                                                       color: Theme.of(context)
                                                           .colorScheme
@@ -311,9 +312,9 @@ class _EditEventsState extends State<EditEvent> {
                                                     .colorScheme
                                                     .primaryContainer,
                                                 contentPadding:
-                                                    const EdgeInsetsDirectional
+                                                     EdgeInsetsDirectional
                                                         .fromSTEB(
-                                                        16, 20, 16, 20),
+                                                        16.pixelScale(context), 20.pixelScale(context), 16.pixelScale(context), 20.pixelScale(context)),
                                               ),
                                               style: TextStyle(
                                                 fontFamily: 'Inter',
@@ -322,7 +323,7 @@ class _EditEventsState extends State<EditEvent> {
                                                     .secondary,
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 16,
+                                                fontSize: 16.pixelScale(context),
                                               ),
                                               cursorColor: Theme.of(context)
                                                   .colorScheme
@@ -371,9 +372,9 @@ class _EditEventsState extends State<EditEvent> {
                                             },
                                             child: Container(
                                               padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 0, 16, 0),
-                                              height: 50,
+                                                   EdgeInsetsDirectional
+                                                      .fromSTEB(16.pixelScale(context), 0, 16.pixelScale(context), 0),
+                                              height: 50.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -384,7 +385,7 @@ class _EditEventsState extends State<EditEvent> {
                                                       .primary,
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(10.pixelScale(context)),
                                               ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -400,7 +401,7 @@ class _EditEventsState extends State<EditEvent> {
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 16,
+                                                      fontSize: 16.pixelScale(context),
                                                     ),
                                                   ),
                                                   Icon(
@@ -409,14 +410,14 @@ class _EditEventsState extends State<EditEvent> {
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .primary,
-                                                    size: 24,
+                                                    size: 24.pixelScale(context),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            height: 20,
+                                           SizedBox(
+                                            height: 20.pixelScale(context),
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
@@ -446,13 +447,13 @@ class _EditEventsState extends State<EditEvent> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .secondary,
-                                                fontSize: 14,
+                                                fontSize: 14.pixelScale(context),
                                                 letterSpacing: 0,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(10.pixelScale(context)),
                                                 borderSide: BorderSide(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -460,7 +461,7 @@ class _EditEventsState extends State<EditEvent> {
                                               ),
                                               focusedBorder: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(10.pixelScale(context)),
                                                 borderSide: BorderSide(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -471,15 +472,15 @@ class _EditEventsState extends State<EditEvent> {
                                                   .colorScheme
                                                   .primaryContainer,
                                               contentPadding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 16, 16, 16),
+                                                   EdgeInsetsDirectional
+                                                      .fromSTEB(16.pixelScale(context), 16.pixelScale(context), 16.pixelScale(context), 16.pixelScale(context)),
                                             ),
                                             style: TextStyle(
                                               fontFamily: 'Inter',
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .secondary,
-                                              fontSize: 16,
+                                              fontSize: 16.pixelScale(context),
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -493,8 +494,8 @@ class _EditEventsState extends State<EditEvent> {
                                                   descriptionController.text
                                             },
                                           ),
-                                          const SizedBox(
-                                            height: 10,
+                                           SizedBox(
+                                            height: 10.pixelScale(context),
                                           ),
                                           Text(
                                             'Start*',
@@ -503,7 +504,7 @@ class _EditEventsState extends State<EditEvent> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .secondary,
-                                              fontSize: 14,
+                                              fontSize: 14.pixelScale(context),
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -575,13 +576,13 @@ class _EditEventsState extends State<EditEvent> {
                                             },
                                             child: Container(
                                               width: double.infinity,
-                                              height: 48,
+                                              height: 48.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primaryContainer,
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(12.pixelScale(context)),
                                                 border: Border.all(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -593,9 +594,9 @@ class _EditEventsState extends State<EditEvent> {
                                                         -1, 0),
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsetsDirectional
+                                                       EdgeInsetsDirectional
                                                           .fromSTEB(
-                                                          12, 0, 0, 0),
+                                                          12.pixelScale(context), 0, 0, 0),
                                                   child: Text(
                                                     DateFormat(
                                                             'd MMMM , kk:mm ')
@@ -605,7 +606,7 @@ class _EditEventsState extends State<EditEvent> {
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 14,
+                                                      fontSize: 14.pixelScale(context),
                                                       letterSpacing: 0,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -615,7 +616,7 @@ class _EditEventsState extends State<EditEvent> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 10),
+                                           SizedBox(height: 10.pixelScale(context)),
                                           Text(
                                             'End*',
                                             style: TextStyle(
@@ -623,7 +624,7 @@ class _EditEventsState extends State<EditEvent> {
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .secondary,
-                                              fontSize: 14,
+                                              fontSize: 14.pixelScale(context),
                                               letterSpacing: 0,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -705,13 +706,13 @@ class _EditEventsState extends State<EditEvent> {
                                             },
                                             child: Container(
                                               width: double.infinity,
-                                              height: 48,
+                                              height: 48.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primaryContainer,
                                                 borderRadius:
-                                                    BorderRadius.circular(12),
+                                                    BorderRadius.circular(12.pixelScale(context)),
                                                 border: Border.all(
                                                     color: Theme.of(context)
                                                         .colorScheme
@@ -723,9 +724,9 @@ class _EditEventsState extends State<EditEvent> {
                                                         -1, 0),
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsetsDirectional
+                                                       EdgeInsetsDirectional
                                                           .fromSTEB(
-                                                          12, 0, 0, 0),
+                                                          12.pixelScale(context), 0, 0, 0),
                                                   child: Text(
                                                     validEndDate
                                                         ? DateFormat(
@@ -738,7 +739,7 @@ class _EditEventsState extends State<EditEvent> {
                                                       color: Theme.of(context)
                                                           .colorScheme
                                                           .secondary,
-                                                      fontSize: 14,
+                                                      fontSize: 14.pixelScale(context),
                                                       letterSpacing: 0,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -749,14 +750,10 @@ class _EditEventsState extends State<EditEvent> {
                                             ),
                                           ),
                                           const SizedBox(height: 20),
-                                          const ToolTip(
-                                              message:
-                                                  "Public events are seen by all users and anyone can join it."),
-                                          const SizedBox(height: 3,),
                                           Container(
                                             decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(10.pixelScale(context)),
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .primaryContainer,
@@ -769,8 +766,8 @@ class _EditEventsState extends State<EditEvent> {
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 15),
+                                                         EdgeInsets.only(
+                                                            left: 15.pixelScale(context)),
                                                     child: Text(
                                                       'Public',
                                                       style: TextStyle(
@@ -783,6 +780,12 @@ class _EditEventsState extends State<EditEvent> {
                                                     ),
                                                   ),
                                                   const Spacer(),
+                                                  SizedBox(
+                                                    width:
+                                                    43.pixelScale(context),
+                                                    child: FittedBox(
+                                                        fit: BoxFit.fill,
+                                                        child:
                                                   Switch.adaptive(
                                                     activeTrackColor:
                                                         Theme.of(context)
@@ -804,11 +807,13 @@ class _EditEventsState extends State<EditEvent> {
                                                       });
                                                     },
                                                   ),
-                                                  const SizedBox(width: 20),
+                                                    ),
+                                                  ),
+                                                   SizedBox(width: 20.pixelScale(context)),
                                                 ]),
                                           ),
-                                          const SizedBox(
-                                            height: 20,
+                                           SizedBox(
+                                            height: 20.pixelScale(context),
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -834,9 +839,9 @@ class _EditEventsState extends State<EditEvent> {
                                             },
                                             child: Container(
                                               padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(16, 0, 16, 0),
-                                              height: 50,
+                                                   EdgeInsetsDirectional
+                                                      .fromSTEB(16.pixelScale(context), 0, 16.pixelScale(context), 0),
+                                              height: 50.pixelScale(context),
                                               decoration: BoxDecoration(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -847,7 +852,7 @@ class _EditEventsState extends State<EditEvent> {
                                                       .primary,
                                                 ),
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(10.pixelScale(context)),
                                               ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.max,
@@ -878,18 +883,18 @@ class _EditEventsState extends State<EditEvent> {
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 40),
+                                           SizedBox(height: 40.pixelScale(context)),
                                         ]),
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    16, 12, 16, 12),
+                                padding:  EdgeInsetsDirectional.fromSTEB(
+                                    16.pixelScale(context), 12.pixelScale(context), 16.pixelScale(context), 12.pixelScale(context)),
                                 child: MaterialButton(
-                                  height: 50,
+                                  height: 50.pixelScale(context),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
+                                      borderRadius: BorderRadius.circular(10.pixelScale(context))),
                                   minWidth: double.infinity,
                                   onPressed: () {
                                     name = nameController.text;
