@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
@@ -19,8 +17,6 @@ import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-// import 'package:gameonconnect/view/pages/events/events_page.dart';
-// import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
 
@@ -100,30 +96,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showNoInternetToast() {
-    DelightToastBar(
-      builder: (context) {
-        return CustomToastCard(
-          title: Text(
-            'No internet connection', // Changed message here
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        );
-      },
-      position: DelightSnackbarPosition.top,
-      autoDismiss: true,
-      snackbarDuration: const Duration(seconds: 3),
-    ).show(context);
+    CustomSnackbar().show(context, 'Please check your internet connection');
   }
 
   void _showUsernameSet() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Username has been set successfully'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    CustomSnackbar().show(context, 'Username has been set successfully');
   }
 
   Future<bool> _saveUsername(String username) async {
