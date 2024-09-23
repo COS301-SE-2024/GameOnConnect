@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
@@ -58,7 +59,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                   'Events',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 32.pixelScale(context),
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -78,7 +79,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         return Center(
                           child: LoadingAnimationWidget.halfTriangleDot(
                             color: Theme.of(context).colorScheme.primary,
-                            size: 36,
+                            size: 36.pixelScale(context),
                           ),
                         );
                       } else if (snapshot.hasError) {
@@ -103,11 +104,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                   children: [
                                     Padding(
                                       padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              24, 13, 0, 0),
+                                           EdgeInsetsDirectional.fromSTEB(
+                                              24.pixelScale(context), 13.pixelScale(context), 0, 0),
                                       child: SizedBox(
                                         width: double.infinity,
-                                        height: 230,
+                                        height: 230.pixelScale(context),
                                         child: joinedEvents!.isEmpty? const Align(alignment: Alignment(0, 0), child: Text("You currently have no upcoming events")):
                                          carousel_slider2.CarouselSlider.builder(
                                           itemCount: joinedEvents?.length,
@@ -122,7 +123,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                             enableInfiniteScroll: false,
                                             scrollDirection: Axis.horizontal,
                                             autoPlay: false,
-                                            height: 250,
+                                            height: 250.pixelScale(context),
                                           ),
                                           itemBuilder:
                                               (context, index, realIndex) {
@@ -136,21 +137,21 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              12, 42.56, 12, 12),
+                                           EdgeInsetsDirectional.fromSTEB(
+                                              12.pixelScale(context), 42.56.pixelScale(context), 12.pixelScale(context), 12.pixelScale(context)),
                                       child: Container(
                                         width: double.infinity,
-                                        height: 360,
+                                        height: 360.pixelScale(context),
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
                                               .surface,
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                              BorderRadius.circular(10.pixelScale(context)),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsetsDirectional
-                                              .fromSTEB(12, 0, 0, 0),
+                                          padding: EdgeInsetsDirectional
+                                              .fromSTEB(12.pixelScale(context), 0, 0, 0),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
@@ -161,7 +162,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                       alignment:
                                                           const Alignment(0, 1),
                                                       child: ButtonsTabBar(
-                                                        width: 101,
+                                                        width: 101.pixelScale(context),
                                                         contentCenter: true,
                                                         labelStyle: TextStyle(
                                                           fontFamily: 'Inter',
@@ -177,7 +178,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                       context)
                                                                   .colorScheme
                                                                   .surface,
-                                                          fontSize: 16,
+                                                          fontSize: 16.pixelScale(context),
                                                           letterSpacing: 0,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -199,9 +200,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 .primaryContainer,
                                                         elevation: 0,
                                                         buttonMargin:
-                                                            const EdgeInsets
+                                                             EdgeInsets
                                                                 .fromLTRB(
-                                                                0, 0, 13, 10),
+                                                                0, 0, 13.pixelScale(context), 10.pixelScale(context)),
                                                         backgroundColor:
                                                             Theme.of(context)
                                                                 .colorScheme
@@ -235,10 +236,10 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        10),
+                                                                        10.pixelScale(context)),
                                                             child: Container(
-                                                              width: 100,
-                                                              height: 30,
+                                                              width: 100.pixelScale(context),
+                                                              height: 30.pixelScale(context),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Theme.of(
@@ -248,7 +249,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            10),
+                                                                            10.pixelScale(context)),
                                                               ),
                                                               child: ListView
                                                                   .separated(
@@ -279,22 +280,22 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                           ),
                                                           ClipRRect(
                                                             borderRadius:
-                                                                const BorderRadius
+                                                                 BorderRadius
                                                                     .only(
                                                               bottomLeft: Radius
-                                                                  .circular(12),
+                                                                  .circular(12.pixelScale(context)),
                                                               bottomRight:
                                                                   Radius
                                                                       .circular(
-                                                                          12),
-                                                              topLeft: Radius
+                                                                          12.pixelScale(context)),
+                                                              topLeft: const Radius
                                                                   .circular(0),
-                                                              topRight: Radius
+                                                              topRight: const Radius
                                                                   .circular(0),
                                                             ),
                                                             child: Container(
-                                                              width: 100,
-                                                              height: 100,
+                                                              width: 100.pixelScale(context),
+                                                              height: 100.pixelScale(context),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Theme.of(
@@ -302,18 +303,18 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     .colorScheme
                                                                     .surface,
                                                                 borderRadius:
-                                                                    const BorderRadius
+                                                                     BorderRadius
                                                                         .only(
                                                                   bottomLeft: Radius
                                                                       .circular(
-                                                                          12),
+                                                                          12.pixelScale(context)),
                                                                   bottomRight: Radius
                                                                       .circular(
-                                                                          12),
-                                                                  topLeft: Radius
+                                                                          12.pixelScale(context)),
+                                                                  topLeft: const Radius
                                                                       .circular(
                                                                           0),
-                                                                  topRight: Radius
+                                                                  topRight: const Radius
                                                                       .circular(
                                                                           0),
                                                                 ),
@@ -340,30 +341,30 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
-                                                                    const SizedBox(
+                                                                     SizedBox(
                                                                         height:
-                                                                            10),
+                                                                            10.pixelScale(context)),
                                                               ),
                                                             ),
                                                           ),
                                                           ClipRRect(
                                                             borderRadius:
-                                                                const BorderRadius
+                                                                 BorderRadius
                                                                     .only(
                                                               bottomLeft: Radius
-                                                                  .circular(12),
+                                                                  .circular(12.pixelScale(context)),
                                                               bottomRight:
                                                                   Radius
                                                                       .circular(
-                                                                          12),
-                                                              topLeft: Radius
+                                                                          12.pixelScale(context)),
+                                                              topLeft: const Radius
                                                                   .circular(0),
-                                                              topRight: Radius
+                                                              topRight: const Radius
                                                                   .circular(0),
                                                             ),
                                                             child: Container(
-                                                              width: 100,
-                                                              height: 100,
+                                                              width: 100.pixelScale(context),
+                                                              height: 100.pixelScale(context),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 color: Theme.of(
@@ -371,18 +372,18 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                     .colorScheme
                                                                     .surface,
                                                                 borderRadius:
-                                                                    const BorderRadius
+                                                                     BorderRadius
                                                                         .only(
                                                                   bottomLeft: Radius
                                                                       .circular(
-                                                                          12),
+                                                                          12.pixelScale(context)),
                                                                   bottomRight: Radius
                                                                       .circular(
-                                                                          12),
-                                                                  topLeft: Radius
+                                                                          12.pixelScale(context)),
+                                                                  topLeft: const Radius
                                                                       .circular(
                                                                           0),
-                                                                  topRight: Radius
+                                                                  topRight: const Radius
                                                                       .circular(
                                                                           0),
                                                                 ),
@@ -409,9 +410,9 @@ class _HomePageWidgetState extends State<ViewEvents> {
                                                                 },
                                                                 separatorBuilder: (context,
                                                                         index) =>
-                                                                    const SizedBox(
+                                                                     SizedBox(
                                                                         height:
-                                                                            10),
+                                                                            10.pixelScale(context)),
                                                               ),
                                                             ),
                                                           ),
@@ -437,12 +438,13 @@ class _HomePageWidgetState extends State<ViewEvents> {
                       }
                     })),
     floatingActionButton: FloatingActionButton(
+      
       onPressed:(){
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => const CreateEvents()));
     },
       backgroundColor: Theme.of(context).colorScheme.primary,
-    child: const Icon(Icons.add,size: 30,color: Colors.black,),
+    child:  Icon(Icons.add,size: 30.pixelScale(context),color: Colors.black,),
     )
     ));
   }
