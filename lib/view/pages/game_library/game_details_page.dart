@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:gameonconnect/view/pages/home/home_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -329,14 +330,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 110.pixelScale(context),
+                                    height: 75.pixelScale(context),
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15),
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
+                                      borderRadius:  BorderRadius.only(
+                                        bottomLeft: Radius.circular(15.pixelScale(context)),
+                                        bottomRight: Radius.circular(15.pixelScale(context)),
+                                        topLeft: Radius.circular(15.pixelScale(context)),
+                                        topRight: Radius.circular(15.pixelScale(context)),
                                       ),
                                       shape: BoxShape.rectangle,
                                       border: Border.all(
@@ -358,7 +359,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary,
-                                                fontSize: 14,
+                                                fontSize: 14.pixelScale(context),
                                                 fontWeight: FontWeight
                                                     .w400, // Adjust font weight if needed
                                               ),
@@ -373,8 +374,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             child: Text(
                                                 gameDetails.rating.toString(),
                                                 //ratings
-                                                style: const TextStyle(
-                                                  fontSize: 14,
+                                                style:  TextStyle(
+                                                  fontSize: 14.pixelScale(context),
                                                   fontWeight: FontWeight.bold,
                                                 )),
                                           ),
@@ -383,14 +384,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     ),
                                   ),
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 110.pixelScale(context),
+                                    height: 75.pixelScale(context),
                                     decoration: BoxDecoration(
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15),
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
+                                      borderRadius:  BorderRadius.only(
+                                        bottomLeft: Radius.circular(15.pixelScale(context)),
+                                        bottomRight: Radius.circular(15.pixelScale(context)),
+                                        topLeft: Radius.circular(15.pixelScale(context)),
+                                        topRight: Radius.circular(15.pixelScale(context)),
                                       ),
                                       border: Border.all(
                                         color: Theme.of(context)
@@ -412,7 +413,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary,
-                                                fontSize: 14,
+                                                fontSize: 14.pixelScale(context),
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
@@ -426,8 +427,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             child: Text(
                                               gameDetails.score.toString(),
                                               //gameDetails.score,
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                              style:  TextStyle(
+                                                fontSize: 14.pixelScale(context),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),

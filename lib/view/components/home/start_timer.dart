@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/feed_S/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
@@ -50,40 +51,35 @@ class _GameTimer extends State<GameTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding:  EdgeInsets.all(10.pixelScale(context)),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(15.pixelScale(context))),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           title: Text(
             _timerService.isRunning() ? 'Done playing?' : "Start playing",
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: 20.pixelScale(context),
               fontWeight: FontWeight.bold,
             ),
           ),
           leading: const Icon(Icons.videogame_asset),
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding:  EdgeInsets.all(10.pixelScale(context)),
 
-                child:Wrap(
-                  direction: Axis.horizontal,
-                  spacing: 8.0,
-                    runSpacing: 4.0,
-                  runAlignment: WrapAlignment.spaceBetween,
-                    children: [
-                    _timerService.isRunning()
+
+                    child:Row(children: [ _timerService.isRunning()
                         ? FittedBox( child: Row(
                             children: [
                               const Icon(
                                 Icons.radio_button_checked,
                                 color: Colors.red,
                               ),
-                              const SizedBox(
-                                  width: 10),
+                               SizedBox(
+                                  width: 10.pixelScale(context)),
                               ValueListenableBuilder<String>(
                                 valueListenable: _timerService.elapsedTime,
                                 builder: (context, value, child) {
@@ -104,7 +100,7 @@ class _GameTimer extends State<GameTimer> {
                                   ConnectionState.waiting) {
                                 return LoadingAnimationWidget.halfTriangleDot(
                                   color: Theme.of(context).colorScheme.primary,
-                                  size: 36,
+                                  size: 36.pixelScale(context),
                                 );
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
@@ -166,12 +162,12 @@ class _GameTimer extends State<GameTimer> {
                                     builder: (BuildContext context) {
                                       int? selectedRating = 1;
                                       return AlertDialog(
-                                        title: const Text(
+                                        title:  Text(
                                             'How was your experience playing this game?',
                                             style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.pixelScale(context),
                                                 fontWeight: FontWeight.bold)),
-                                        insetPadding: const EdgeInsets.all(10),
+                                        insetPadding:  EdgeInsets.all(10.pixelScale(context)),
                                         content: StatefulBuilder(builder:
                                             (context,
                                                 StateSetter setDialogState) {
@@ -267,13 +263,13 @@ class _GameTimer extends State<GameTimer> {
                               });
                             },
                     ),
-                  ],
-                ),
-            ),
+
 ],
               ),
 
     )
-    );
+        ],
+    ),
+    ));
   }
 }

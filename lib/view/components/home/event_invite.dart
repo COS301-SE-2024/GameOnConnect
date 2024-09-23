@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
@@ -133,18 +134,18 @@ class _EventInvitationState extends State<EventInvitation> {
                                 child: FittedBox(
                                   child: Container(
                                       alignment: Alignment.center,
-                                      height: 30,
-                                      width: 100,
+                                      height: 30.pixelScale(context),
+                                      width: 100.pixelScale(context),
                                       decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary,
-                                        borderRadius: BorderRadius.circular(7),
+                                        borderRadius: BorderRadius.circular(7.pixelScale(context)),
                                       ),
                                       child: Text('Yes',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
+                                              fontSize: 12.pixelScale(context),
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .surface))),
@@ -162,19 +163,19 @@ class _EventInvitationState extends State<EventInvitation> {
                                     },
                                     child: Container(
                                         alignment: Alignment.center,
-                                        height: 30,
-                                        width: 100,
+                                        height: 30.pixelScale(context),
+                                        width: 100.pixelScale(context),
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
                                           borderRadius:
-                                              BorderRadius.circular(7),
+                                              BorderRadius.circular(7.pixelScale(context)),
                                         ),
                                         child: Text('No',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12,
+                                                fontSize: 12.pixelScale(context),
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .surface)))),
@@ -193,20 +194,20 @@ class _EventInvitationState extends State<EventInvitation> {
                                     },
                                     child: Container(
                                         alignment: Alignment.center,
-                                        height: 30,
-                                        width: 100,
+                                        height: 30.pixelScale(context),
+                                        width: 100.pixelScale(context),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .primary),
                                           borderRadius:
-                                              BorderRadius.circular(7),
+                                              BorderRadius.circular(7.pixelScale(context)),
                                         ),
-                                        child: const Text('Maybe',
+                                        child:  Text('Maybe',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
+                                              fontSize: 12.pixelScale(context),
                                             )))),
                               ),
                             ],
