@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
+//import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
@@ -23,6 +25,13 @@ class _MessagingState extends State<Messaging> {
   final MessagingService _messagingService = MessagingService();
   final AuthService _authService = AuthService();
   final StorageService storageService = StorageService();
+  final BadgeService _badgeService = BadgeService();
+
+  @override
+  void initState() {
+    super.initState();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
