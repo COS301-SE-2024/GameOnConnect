@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/GameyCon/components/score.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/score.dart';
 
 class ScoreComponent extends TextComponent {
   ScoreComponent()

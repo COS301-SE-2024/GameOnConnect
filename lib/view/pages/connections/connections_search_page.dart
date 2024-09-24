@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
@@ -20,6 +21,7 @@ class FriendSearch extends StatefulWidget {
 }
 
 class FriendSearchState extends State<FriendSearch> {
+  final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<AppUser>? list;
   List<String> invites = [];
@@ -45,6 +47,7 @@ class FriendSearchState extends State<FriendSearch> {
                     'An error occurred. Try to login again.',
       );
     }
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   //Future<void> getConnectionsInvite() async {
@@ -62,6 +65,8 @@ class FriendSearchState extends State<FriendSearch> {
                   uid: _currentUserId,
                   loggedInUser: _currentUserId,
                 )));
+
+    _badgeService.unlockExplorerComponent('view_requests');
   }
 
   Future<void> nrOfRequests() async {
@@ -116,30 +121,28 @@ class FriendSearchState extends State<FriendSearch> {
                                     user.uid != _currentUserId)
                                 .toList();
                           });
+                          _badgeService.unlockExplorerComponent('search_connection');
                         }),
                   ),
-              
-              Padding(
-                padding:const EdgeInsets.fromLTRB(0, 0, 12, 0),
-                child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                      RequestButton(
-                    onPressed: () =>navigateToRequests(context),
-                    count: requestsCount,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        RequestButton(
+                          onPressed: () => navigateToRequests(context),
+                          count: requestsCount,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              ),
-              
-              
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
-                child: Divider(
-                  thickness: 1,
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                ),
-              ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 1, 12, 5),
+                    child: Divider(
+                      thickness: 1,
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                  ),
                   if (filteredUsers.isEmpty)
                     const Center(child: Text('No results found.'))
                   else

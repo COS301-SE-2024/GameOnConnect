@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter_emoji_feedback/gen/assets.gen.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/feed_S/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_emoji_feedback/flutter_emoji_feedback.dart';
@@ -17,6 +19,7 @@ class GameTimer extends StatefulWidget {
 }
 
 class _GameTimer extends State<GameTimer> {
+  final BadgeService _badgeService = BadgeService();
   final ProfileService _profileService = ProfileService();
   final TimerService _timerService = TimerService();
   Future<List<GameDetails>>? _userGames;
@@ -46,6 +49,7 @@ class _GameTimer extends State<GameTimer> {
   void _stopStopwatch() {
     _timerService.stopTimer();
     _profileService.setCurrentlyPlaying("");
+    _badgeService.unlockGamerBadge();
   }
 
   @override
