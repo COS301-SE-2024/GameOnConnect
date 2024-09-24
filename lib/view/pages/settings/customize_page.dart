@@ -25,12 +25,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
   List<String> _selectedInterests = [];
   List<String> _interests = [];
 
-  bool isDarkMode = false;
   bool _isDataFetched = false;
-  String _profileImageUrl = '';
-  dynamic _profileImage;
-  String _profileBannerUrl = '';
-  dynamic _profileBanner;
+
   String testBannerurl = '';
   bool _isMounted = false;
 
@@ -91,8 +87,7 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           _selectedGenres = customizeData.elementAt(0);
           _selectedAge = customizeData.elementAt(1);
           _selectedInterests = customizeData.elementAt(2);
-          _profileBannerUrl = customizeData.elementAt(3).elementAt(0);
-          _profileImageUrl = customizeData.elementAt(3).elementAt(1);
+
         });
       }
     }
@@ -103,91 +98,13 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     await Future.wait([_fetchAllTags()]);
   }
 
-  Future<void> _pickImage() async {
-    if (kIsWeb) {
-      // Web implementation
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
 
-      if (result != null) {
-        PlatformFile file = result.files.first;
-        if (file.bytes != null) {
-          setState(() {
-            _profileImage = (file.bytes!, file.name);
-          });
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
-    } else {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileImage = image.path;
-          _profileImageUrl = '';
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
-    }
-  }
 
-  Future<void> _pickBanner() async {
-    if (kIsWeb) {
-      // Web implementation
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
 
-      if (result != null) {
-        PlatformFile file = result.files.first;
-        if (file.bytes != null) {
-          setState(() {
-            _profileBanner = (file.bytes!, file.name);
-            //_profileBannerFB = file.name;
-          });
-        }
-        /* ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );*/
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
-    } else {
-      // Mobile/desktop implementation
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileBanner = image.path;
-          _profileBannerUrl = '';
-        });
-        /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );*/
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
-    }
-  }
 
   void _saveChangedProfileData() async {
-    final success = await CustomizeService().saveProfileData(_profileImage,
-        _profileBanner, _selectedGenres, _selectedAge, _selectedInterests);
+    final success = await CustomizeService().saveProfileData(
+       _selectedGenres, _selectedAge, _selectedInterests);
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully.')),
@@ -242,138 +159,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           ListView(
             padding: const EdgeInsets.all(12.0),
             children: [
-              Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    //banner
-                    InkWell(
-                      onTap: _pickBanner,
-                      child: Stack(
-                        alignment:
-                            Alignment.center, // Change to Alignment.center
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            width: double.infinity,
-                            height: 150,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: _profileBannerUrl.isNotEmpty
-                                  ? CachedNetworkImage(
-                                      imageUrl: _profileBannerUrl,
-                                      placeholder: (context, url) => const Center(
-                                          child:
-                                              CircularProgressIndicator()), // Loading indicator for banner
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(Icons.error),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.file(
-                                      File(_profileBanner),
-                                      width: 359,
-                                      height: 200,
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                          ),
-                          Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer
-                                      .withOpacity(0.7),
-                                  shape: BoxShape.circle),
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Theme.of(context).colorScheme.primary,
-                              )),
-                        ],
-                      ),
-                    ),
-
-                    Positioned(
-                      bottom:
-                          -50, // Half of the CircleAvatar's radius to align it properly
-                      left: 20,
-                      //profile picture
-                      child: InkWell(
-                        onTap: _pickImage,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            _profileImageUrl.isNotEmpty
-                                ? Container(
-                                    width: 104.0,
-                                    height: 104.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        width: 4.0,
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 50,
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                              _profileImageUrl),
-                                    ),
-                                  )
-                                : Container(
-                                    width: 104.0,
-                                    height: 104.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface,
-                                        width: 4.0,
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 50,
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                              _profileImage),
-                                    ),
-                                  ),
-                            Container(
-                              height: 25,
-                              width: 25,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer
-                                    .withOpacity(0.7),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               TagContainer(
                 tagType: 'Genre',
                 onPressed: () => _showSelectableDialog(
