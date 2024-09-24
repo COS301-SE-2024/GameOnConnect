@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
@@ -16,11 +17,13 @@ class MyGameList extends StatefulWidget {
     required this.heading,
     required this.currentlyPlaying,
     required this.gameActivities,
+    required this.isOwnProfile,
   });
   final List<GameStats> myGameStats;
   final List<GameStats> gameActivities;
   final String heading;
   final String currentlyPlaying;
+  final bool isOwnProfile;
 
   @override
   State<MyGameList> createState() => _MyGameListState();
@@ -61,7 +64,7 @@ class _MyGameListState extends State<MyGameList> {
               ),
             ),
           ),
-          if (widget.myGameStats.isEmpty)
+          if (widget.myGameStats.isEmpty && widget.isOwnProfile)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -190,7 +193,14 @@ class _MyGameListState extends State<MyGameList> {
                                         gameId: gameStat.gameId,
                                         gameName: gameDetails.name,
                                       ),
-                                    ));
+                                    )
+                                    );
+
+                                if(widget.isOwnProfile)
+                                {
+                                  BadgeService().unlockExplorerComponent('view_activity');
+                                }
+                                
                               },
                               child: ProfileGamesCard(
                                 image: gameDetails.backgroundImage,
@@ -230,9 +240,11 @@ class _MyGameListState extends State<MyGameList> {
                     MaterialPageRoute(
                       builder: (context) => AllMyGamesList(
                           myGameStats: widget.myGameStats,
+                          isOwnProfile: widget.isOwnProfile,
                           heading: widget.heading,
                           currentlyPlaying: widget.currentlyPlaying,
                           gameActivities: widget.gameActivities),
+
                     ));
               },
               child: Container(

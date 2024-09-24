@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
@@ -19,6 +20,7 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
   late final StatsMoodService statsMoodService = StatsMoodService();
@@ -48,6 +50,7 @@ class _StatsPageState extends State<StatsPage> {
     super.initState();
     _fetchTotalTimeStats();
     _fetchLeaderboardData();
+    _badgeService.unlockGamerBadge();
   }
 
   Future<void> _fetchTotalTimeStats() async {

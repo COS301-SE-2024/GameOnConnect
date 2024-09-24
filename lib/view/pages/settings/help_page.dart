@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/view/components/help/help_card.dart';
 import '../../components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
@@ -13,10 +14,13 @@ class HelpPage extends StatefulWidget {
 
 class _HelpWidgetState extends State<HelpPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final BadgeService _badgeService = BadgeService();
 
   @override
   void initState() {
     super.initState();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
+    _badgeService.unlockExplorerComponent("view_help");
   }
 
   @override

@@ -25,8 +25,8 @@ class AuthService {
 
   //getter function to return nextnum
   Future<int> getNextNum() async {
-    await getNextNumber(); 
-    return _nextNum ?? 0; 
+    await getNextNumber();
+    return _nextNum ?? 0;
   }
 
   signInWithGoogle() async {
@@ -54,16 +54,15 @@ class AuthService {
 
       final UserCredential authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      
 
       if (authResult.user != null) {
-      // Check if the user already has a profile
-      bool profileExists = await checkUserProfileExists(authResult.user!.uid);
-      if (!profileExists) {
-        // The account has been created, call the createDefaultProfile function
-        createDefaultProfile("Default user");
+        // Check if the user already has a profile
+        bool profileExists = await checkUserProfileExists(authResult.user!.uid);
+        if (!profileExists) {
+          // The account has been created, call the createDefaultProfile function
+          createDefaultProfile("Default user");
+        }
       }
-    }
 
       return authResult;
       //return await FirebaseAuth.instance.signInWithCredential(credential);
@@ -75,16 +74,17 @@ class AuthService {
   }
 
   Future<bool> checkUserProfileExists(String userId) async {
-    //Go to Firebase, see if there is a profile 
+    //Go to Firebase, see if there is a profile
     FirebaseFirestore db = FirebaseFirestore.instance;
-    
-    DocumentSnapshot profilesnapshot = await db.collection("profile_data").doc(userId).get();
+
+    DocumentSnapshot profilesnapshot =
+        await db.collection("profile_data").doc(userId).get();
     // Return true if exists, false otherwise
-    if ( profilesnapshot.exists ) {
+    if (profilesnapshot.exists) {
       //print('True'); use this print statement to see if the function gets called
       return true;
     } else {
-      return false; 
+      return false;
     }
   }
 
@@ -101,7 +101,7 @@ class AuthService {
           "birthday": Timestamp.now(),
           "profile_picture": dotenv.env['DEFAULT_IMAGE_URL'],
           "username": {"profile_name": username, "unique_num": _nextNum},
-          "currently_playing":"",
+          "currently_playing": "",
           "my_games": [],
           "recent_activity": [],
           "genre_interests_tags": [],
@@ -112,7 +112,7 @@ class AuthService {
           "userID": currentUser.uid,
           "visibility": true,
           "want_to_play": [],
-          "positions" : [],
+          "positions": [],
         };
 
         final connectionData = <String, dynamic>{
@@ -122,11 +122,59 @@ class AuthService {
           "userID": currentUser.uid
         };
 
+        final badgeData = <String, dynamic>{
+          "achiever_badge": {"date_unlocked": null, "unlocked": false},
+          "collector_badge": {
+            "count": 0,
+            "date_unlocked": null,
+            "unlocked": false
+          },
+          "customizer_badge": {
+            "count": 0,
+            "date_unlocked": null,
+            "unlocked": false
+          },
+          "event_planner_badge": {"date_unlocked": null, "unlocked": false},
+          "explorer_badge": {
+            "changed_theme": false,
+            "created_chat": false,
+            "date_unlocked": null,
+            //"edit_profile": false, 
+            "join_event": false,
+            "play_spaceshooter": false,
+            "search_connection": false,
+            "search_game": false,
+            "share_game": false,
+            "unlocked": false,
+            "view_activity": false,
+            "view_help": false,
+            "view_requests": false,
+            "view_stats": false,
+            "want_to_play": false,
+            "unlocked_components": 0,
+          },
+          "gamer_badge": {"date_unlocked": null, "unlocked": false},
+          "loyalty_badge": {
+            "count": 0,
+            "date_unlocked": null,
+            "latest_date": Timestamp.now(),
+            "unlocked": false
+          },
+          "newbie_badge": {"date_unlocked": Timestamp.now(), "unlocked": true},
+          "nightowl_badge": {"date_unlocked": null, "unlocked": false},
+          "social_butterfly_badge": {
+            "count": 0,
+            "date_unlocked": null,
+            "unlocked": false
+          },
+          "userID": currentUser.uid,
+        };
+
+        db.collection("badges").doc(currentUser.uid).set(badgeData);
         db.collection("profile_data").doc(currentUser.uid).set(defaultData);
         db.collection("connections").doc(currentUser.uid).set(connectionData);
       }
-    }catch(e)
-    {
+    } catch (e) {
       //do nothing
     }
   }

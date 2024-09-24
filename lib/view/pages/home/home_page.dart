@@ -19,6 +19,7 @@ import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+  final BadgeService _badgeService = BadgeService();
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
@@ -61,14 +63,14 @@ class _HomePageState extends State<HomePage> {
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
+
+    _badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   String getCurrentUserId() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return currentUserId;
-
-    //WidgetsBinding.instance
-    //.addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
 
   @override
@@ -298,7 +300,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername();
+    fetchUsername(); 
   }
 
   Future<void> fetchUsername() async {
