@@ -548,7 +548,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                   child: Text(
                                                     _datePicked != null
                                                         ? DateFormat(
-                                                                'd MMMM , hh:mm a')
+                                                                'd MMMM , kk:mm')
                                                             .format(
                                                                 _datePicked!)
                                                         : 'Select a start date',
@@ -667,7 +667,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     _endDatePicked != null &&
                                                             validEndDate
                                                         ? DateFormat(
-                                                                'd MMMM , hh:mm a')
+                                                                'd MMMM , kk:mm ')
                                                             .format(
                                                                 _endDatePicked!)
                                                         : 'Select an end date',

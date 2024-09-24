@@ -143,8 +143,8 @@ class _GameLibraryState extends State<GameLibrary> {
             body: Column(
               children: [
                 TabBar(tabs: const [
-                  Tab(text: 'GAMES'),
-                  Tab(text: 'CONNECTIONS'),
+                  Tab(text: 'Games'),
+                  Tab(text: 'Connections'),
                 ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),

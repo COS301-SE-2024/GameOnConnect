@@ -87,7 +87,6 @@ class ConnectionService {
 
     try {
       List<user.AppUser>? connections = await getConnectionlist("connections");
-      print(connections);
 
       if (connections != null) {
         for (var connection in connections) {

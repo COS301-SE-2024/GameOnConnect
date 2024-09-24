@@ -66,21 +66,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                actions: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: IconButton(
-                      key: const Key('history_icon_button'),
-                      onPressed: () {
-                        //Navigate to history page
-                      },
-                      icon: Icon(
-                        Icons.history,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ]),
+               ),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(
