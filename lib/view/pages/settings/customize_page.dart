@@ -1,14 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CustomizeProfilePage extends StatefulWidget {

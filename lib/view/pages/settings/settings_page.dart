@@ -148,6 +148,7 @@ class Options extends StatelessWidget {
                       });
                     },
                   ),
+
                   const AppearancePage(key: Key('Appearance')),
                 ],
               ),
