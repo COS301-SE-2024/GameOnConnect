@@ -62,7 +62,7 @@
     <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
-  <object id="37" type="Checkpoint" x="233.373" y="144.253" width="62.6859" height="62.6859"/>
+  <object id="37" type="Checkpoint" x="288.506" y="546.802" width="62.6859" height="62.6859"/>
   <object id="38" name="Chicken" type="Chicken" x="62.6859" y="575.502" width="33.2311" height="31.7206">
    <properties>
     <property name="offNeg" type="float" value="4"/>
