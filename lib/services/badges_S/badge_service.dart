@@ -14,6 +14,31 @@ class BadgeService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<Map<String, dynamic>> getBadges() async {
+    final currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      DocumentSnapshot<Map<String, dynamic>> doc = await _firestore
+          .collection("badges")
+          .doc(currentUser.uid)
+          .get();
+
+      Map<String, dynamic>? badgeData = doc.data();
+
+    if (badgeData != null) {
+      badgeData.remove('userID');
+      return badgeData; 
+    } else {
+      print("No badge data found.");
+    }
+  } else {
+    print("No user is currently logged in.");
+  }
+
+  return {}; 
+}
+
+
   void unlockLoyaltyBadge() async {
     try {
       DateTime currentDate = DateTime.now(); //get the current date
