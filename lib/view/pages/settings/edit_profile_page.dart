@@ -85,9 +85,7 @@ class _EditProfilePage extends State<EditProfilePage> {
             //_profileBannerFB = file.name;
           });
         }
-        /* ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );*/
+
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -123,12 +121,9 @@ class _EditProfilePage extends State<EditProfilePage> {
             _profileImage = (file.bytes!, file.name);
           });
         }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
       }
-    } else {
+      }
+     else {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
@@ -270,7 +265,7 @@ class _EditProfilePage extends State<EditProfilePage> {
 
                                 Positioned(
                                   bottom:
-                                      -50, // Half of the CircleAvatar's radius to align it properly
+                                      -80, // Half of the CircleAvatar's radius to align it properly
                                   left: 20,
                                   //profile picture
                                   child: InkWell(
@@ -333,6 +328,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 15),
                       Expanded(
                         child: ListView(
                           children: [
