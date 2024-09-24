@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/GameyCon/components/score.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/score.dart';
 
 class LeaveButton extends StatelessWidget {
   const LeaveButton({super.key});

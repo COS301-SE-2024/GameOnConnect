@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
-import 'package:gameonconnect/GameyCon/components/chicken.dart';
-import 'package:gameonconnect/GameyCon/components/collision_block.dart';
-import 'package:gameonconnect/GameyCon/components/custom_hitbox.dart';
-import 'package:gameonconnect/GameyCon/components/fruit.dart';
-import 'package:gameonconnect/GameyCon/components/saw.dart';
-import 'package:gameonconnect/GameyCon/components/tools.dart';
-import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/checkpoint.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/chicken.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/collision_block.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/custom_hitbox.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/fruit.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/saw.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/tools.dart';
+import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
 import 'package:flutter/services.dart';
 
 enum PlayerState {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
@@ -13,6 +14,7 @@ class AppearancePage extends StatefulWidget {
 }
 
 class __AppearancePagState extends State<AppearancePage> {
+  final BadgeService _badgeService = BadgeService();
   bool isDarkMode = false;
   bool _isMounted = false;
   Color selectedColor = const Color.fromRGBO(0, 255, 117, 1.0);
@@ -22,6 +24,7 @@ class __AppearancePagState extends State<AppearancePage> {
   void initState() {
     super.initState();
     _isMounted = true;
+    _badgeService.unlockExplorerComponent("changed_theme");
   }
 
   @override
