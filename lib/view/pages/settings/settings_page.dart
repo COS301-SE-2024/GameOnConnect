@@ -1,4 +1,5 @@
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/appearance.dart';
 import '../authentication/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -121,38 +122,6 @@ class Options extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    key: const Key('Appearance'),
-                    leading: Icon(
-                      Icons.brush_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 24,
-                    ),
-                    title: Text(
-                      'Appearance',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/appearance');
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              thickness: 1,
-              indent: 12,
-              endIndent: 12,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-              child: Column(
-                children: [
-                  ListTile(
                     key: const Key('Logout'),
                     leading: const Icon(
                       Icons.logout,
@@ -179,6 +148,8 @@ class Options extends StatelessWidget {
                       });
                     },
                   ),
+
+                  const AppearancePage(key: Key('Appearance')),
                 ],
               ),
             ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
-import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/edit_colour_icon_component.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/theme/themes.dart';
@@ -64,30 +63,12 @@ class __AppearancePagState extends State<AppearancePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Appearance',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('appearance_text'),
-      ),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 25, 0, 12),
-                  child: Text(
-                    'Theme',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ),
+
             
             ColourIconContainer(
                 updateTheme: _updateTheme,
@@ -102,7 +83,6 @@ class __AppearancePagState extends State<AppearancePage> {
               ),
         
         ]),
-      ),
     );
   }
 }
