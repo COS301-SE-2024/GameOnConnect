@@ -320,112 +320,113 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 style: const TextStyle(
                                     fontSize: 13, color: Colors.grey)),
                           ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 105,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15),
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                            child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 115,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(15),
+                                          bottomRight: Radius.circular(15),
+                                          topLeft: Radius.circular(15),
+                                          topRight: Radius.circular(15),
+                                        ),
+                                        shape: BoxShape.rectangle,
                                       ),
-                                      shape: BoxShape.rectangle,
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            'Rating: ',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(2.0),
+                                            child: Text(
+                                              'Rating: ',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          gameDetails.rating.toStringAsFixed(1),
-                                          style: const TextStyle(
-                                            fontSize: 13,
+                                          Text(
+                                            gameDetails.rating.toStringAsFixed(1),
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 2),
-                                        Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.star,
-                                              color: Colors.black,
-                                              size: 16,
-                                            ),
-                                            Icon(
-                                              Icons.star,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              size: 14,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    width: 110,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15),
-                                        topLeft: Radius.circular(15),
-                                        topRight: Radius.circular(15),
+                                          const SizedBox(width: 2),
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.star,
+                                                color: Colors.black,
+                                                size: 16,
+                                              ),
+                                              Icon(
+                                                Icons.star,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                size: 14,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Padding(
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Text(
-                                            'Metacritic: ',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      width: 115,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(15),
+                                          bottomRight: Radius.circular(15),
+                                          topLeft: Radius.circular(15),
+                                          topRight: Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.all(2.0),
+                                            child: Text(
+                                              'Metacritic: ',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Text(
-                                          gameDetails.score.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                          Text(
+                                            gameDetails.score.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ],
+                                ),
+                              
                             ),
                           ),
                           const SizedBox(
