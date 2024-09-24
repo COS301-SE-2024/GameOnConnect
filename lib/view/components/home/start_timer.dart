@@ -71,7 +71,9 @@ class _GameTimer extends State<GameTimer> {
               padding:  EdgeInsets.all(10.pixelScale(context)),
 
 
-                    child:Row(children: [ _timerService.isRunning()
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [ _timerService.isRunning()
                         ? FittedBox( child: Row(
                             children: [
                               const Icon(
