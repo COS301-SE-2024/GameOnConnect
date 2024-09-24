@@ -26,7 +26,7 @@ class _StatsPageState extends State<StatsPage> {
   late final StatsMoodService statsMoodService = StatsMoodService();
   late final StatsGenresService statsGenresService = StatsGenresService();
   //late final StatsLeaderboardService leaderboardService =
-      //StatsLeaderboardService();
+  //StatsLeaderboardService();
 
   bool _isLoading = true;
   bool _isLoadingT = true;
@@ -166,6 +166,13 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     GenresStatsComponent(userID: widget.userID),
+                    const Text(
+                      "Amount of games played per genre",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Divider(
                       thickness: 1,
                       indent: 15,
