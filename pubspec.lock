@@ -1580,6 +1580,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.14.0"
+  webviewtube:
+    dependency: "direct main"
+    description:
+      name: webviewtube
+      sha256: d842b68b90ee6788b25b1d637f3029047042c0f9397cd2ddd384ab97703ff694
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
   win32:
     dependency: transitive
     description:
