@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 
 class BadgeService {
@@ -29,10 +30,10 @@ class BadgeService {
       badgeData.remove('userID');
       return badgeData; 
     } else {
-      print("No badge data found.");
+      const SnackBar(content: Text("No badge data found."));
     }
   } else {
-    print("No user is currently logged in.");
+    const SnackBar(content: Text("No user is currently logged in."));
   }
 
   return {}; 
