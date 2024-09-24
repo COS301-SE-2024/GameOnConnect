@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/model/badges_M/badge_model.dart';
 import 'package:gameonconnect/view/pages/badges/badge_page.dart';
 
 class AchievementBadgesPage extends StatefulWidget {
@@ -9,31 +10,17 @@ class AchievementBadgesPage extends StatefulWidget {
 }
 
 class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
-  //this is temporary
-  List<String> badges = [
-    'Loyalty',
-    'Gamer',
-    'Night Owl',
-    'Newbie',
-    'Explorer',
-    'Event Planner',
-    'Customizer',
-    'Collector',
-    'Achiever',
-    'Social Butterfly'
-  ];
-
-  List<String> badgeFiles = [
-    'loyalty_badge',
-    'gamer_badge',
-    'night_owl_badge',
-    'newbie_badge',
-    'explorer_badge',
-    'event_planner_badge',
-    'customizer_badge',
-    'collector_badge',
-    'achiever_badge',
-    'social_butterfly_badge'
+  List<BadgeModel> badges = [
+    BadgeModel(badgeName: 'Loyalty', badgeFile: 'loyalty_badge', badgeDescription: ' using the app for 10 consecutive days'),
+    BadgeModel(badgeName: 'Gamer', badgeFile: 'gamer_badge', badgeDescription: ' playing games for a total of 20 hours'),
+    BadgeModel(badgeName: 'Night Owl', badgeFile: 'night_owl_badge', badgeDescription: ' using the app after 10pm for 3 days'),
+    BadgeModel(badgeName: 'Newbie', badgeFile: 'newbie_badge', badgeDescription: ' logging into the app for the first time'),
+    BadgeModel(badgeName: 'Explorer', badgeFile: 'explorer_badge', badgeDescription: ' exploring all aspects and features of the app'),
+    BadgeModel(badgeName: 'Event Planner', badgeFile: 'event_planner_badge', badgeDescription: ' creating more than 3 events'),
+    BadgeModel(badgeName: 'Customizer', badgeFile: 'customizer_badge', badgeDescription: ' customizing your profile more than 3 days'),
+    BadgeModel(badgeName: 'Collector', badgeFile: 'collector_badge', badgeDescription: ' adding more than 10 games to your "My Games"'),
+    BadgeModel(badgeName: 'Achiever', badgeFile: 'achiever_badge', badgeDescription: ' getting a score of 15 in flappy bird'),
+    BadgeModel(badgeName: 'Social Butterfly', badgeFile: 'social_butterfly_badge', badgeDescription: ' having more than 15 connections'),
   ];
 
   @override
@@ -64,9 +51,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BadgePage(
-                          badgeName: badges[index],
-                          badgeFileName: badgeFiles[index])),
+                      builder: (context) => BadgePage(badge: badges[index])),
                 );
               },
               child: Container(
@@ -79,14 +64,14 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                     children: [
                       Expanded(
                           child: Image.asset(
-                              'assets/badges_images/${badgeFiles[index]}.png',
+                              'assets/badges_images/${badges[index].badgeFile}.png',
                               height: 85,
                               width: 85,
                               fit: BoxFit.contain)),
                       Padding(
                         padding: const EdgeInsets.only(top: 9),
                         child: Text(
-                          "${badges[index]} Badge",
+                          "${badges[index].badgeName} Badge",
                           style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
