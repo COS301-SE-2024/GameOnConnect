@@ -28,6 +28,10 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      dataFetched = false;
+      fetchData();
+    });
   }
 
   @override
@@ -45,15 +49,26 @@ class _EditProfilePage extends State<EditProfilePage> {
   dynamic _profileImage;
   String _profileBannerUrl = '';
   dynamic _profileBanner;
+  late bool dataFetched;
+
   void databaseAccess(Map<String, dynamic>? d) async {
-    _username = d?['username']['profile_name'];
-    _firstName = d?['name'];
-    _lastName = d?['surname'];
-    _bio = d?['bio'];
-    _birthday = DateTime.parse(d!['birthday'].toDate().toString());
-    _isPrivate = d['visibility'];
-    _profileBannerUrl = d['banner'];
-    _profileImageUrl = d['profile_picture'];
+    setState(() {
+      _username = d?['username']['profile_name'];
+      _firstName = d?['name'];
+      _lastName = d?['surname'];
+      _bio = d?['bio'];
+      _birthday = DateTime.parse(d!['birthday'].toDate().toString());
+      _isPrivate = d['visibility'];
+      _profileBannerUrl = d['banner'];
+      _profileImageUrl = d['profile_picture'];
+      dataFetched = true;
+    });
+  }
+
+  Future<void> fetchData() async {
+    await EditProfileService().databaseAccess().then((onValue) {
+      databaseAccess(onValue);
+    });
   }
 
   Future<void> _pickBanner() async {
@@ -87,9 +102,6 @@ class _EditProfilePage extends State<EditProfilePage> {
           _profileBanner = image.path;
           _profileBannerUrl = '';
         });
-        /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );*/
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -111,9 +123,6 @@ class _EditProfilePage extends State<EditProfilePage> {
             _profileImage = (file.bytes!, file.name);
           });
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -127,14 +136,7 @@ class _EditProfilePage extends State<EditProfilePage> {
           _profileImage = image.path;
           _profileImageUrl = '';
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
-      }
+      } else {}
     }
   }
 
@@ -183,277 +185,248 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(
-        title: 'Edit Profile',
-        onBackButtonPressed: () {
-          Navigator.pop(context);
-        },
-        iconkey: const Key('Back_button_key'),
-        textkey: const Key('edit_profile_text'),
-      ),
-      body: FutureBuilder<Map<String, dynamic>?>(
-        future: EditProfileService().databaseAccess(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting &&
-              snapshot.data == null) {
-            return Center(
-              child: LoadingAnimationWidget.halfTriangleDot(
-                color: Theme.of(context).colorScheme.primary,
-                size: 36,
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            databaseAccess(snapshot.data);
-            return Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Stack(
-                      children: [
-                        InkWell(
-                          onTap: _pickBanner,
-                          child: Stack(
-                            alignment:
-                                Alignment.center, // Change to Alignment.center
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                width: double.infinity,
-                                height: 150,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: _profileBannerUrl.isNotEmpty
-                                      ? CachedNetworkImage(
-                                          imageUrl: _profileBannerUrl,
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                                  child:
-                                                      CircularProgressIndicator()), // Loading indicator for banner
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.file(
-                                          File(_profileBanner),
-                                          width: 359,
-                                          height: 200,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                              ),
-                              Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer
-                                          .withOpacity(0.7),
-                                      shape: BoxShape.circle),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  )),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                          height: 111,
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            clipBehavior: Clip.none,
-                            children: <Widget>[
-                              //banner
-
-                              Positioned(
-                                bottom:
-                                    -50, // Half of the CircleAvatar's radius to align it properly
-                                left: 20,
-                                //profile picture
-                                child: InkWell(
-                                  onTap: _pickImage,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      _profileImageUrl.isNotEmpty
-                                          ? Container(
-                                              width: 104.0,
-                                              height: 104.0,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
-                                                  width: 4.0,
-                                                ),
-                                              ),
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
-                                                backgroundImage:
-                                                    CachedNetworkImageProvider(
-                                                        _profileImageUrl),
-                                              ),
-                                            )
-                                          : Container(
-                                              width: 104.0,
-                                              height: 104.0,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .surface,
-                                                  width: 4.0,
-                                                ),
-                                              ),
-                                              child: CircleAvatar(
-                                                radius: 50,
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .primary,
-                                                backgroundImage:
-                                                    CachedNetworkImageProvider(
-                                                        _profileImage),
-                                              ),
-                                            ),
-                                      Container(
-                                        height: 25,
-                                        width: 25,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primaryContainer
-                                              .withOpacity(0.7),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.camera_alt_outlined,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          size: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView(
+        appBar: BackButtonAppBar(
+          title: 'Edit Profile',
+          onBackButtonPressed: () {
+            Navigator.pop(context);
+          },
+          iconkey: const Key('Back_button_key'),
+          textkey: const Key('edit_profile_text'),
+        ),
+        body: (!dataFetched)
+            ? Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
                         children: [
-                          EditInputText(
-                            inputKey: const Key('usernameField'),
-                            maxLines: 1,
-                            label: 'Username',
-                            onChanged: (value) => _username = value,
-                            input: _username,
-                          ),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          InkWell(
+                            onTap: _pickBanner,
+                            child: Stack(
+                              alignment: Alignment
+                                  .center, // Change to Alignment.center
                               children: [
-                                Flexible(
-                                  child: EditInputText(
-                                    inputKey: const Key('firstNameField'),
-                                    maxLines: 1,
-                                    label: 'First name',
-                                    onChanged: (value) => _firstName = value,
-                                    input: _firstName,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: _profileBannerUrl.isNotEmpty
+                                        ? CachedNetworkImage(
+                                            imageUrl: _profileBannerUrl,
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                                    child:
+                                                        CircularProgressIndicator()), // Loading indicator for banner
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.file(
+                                            File(_profileBanner),
+                                            width: 359,
+                                            height: 200,
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
                                 ),
-                                Flexible(
-                                  child: EditInputText(
-                                    inputKey: const Key('lastNameField'),
-                                    maxLines: 1,
-                                    label: 'Last Name',
-                                    onChanged: (value) => _lastName = value,
-                                    input: _lastName,
+                                Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer
+                                            .withOpacity(0.7),
+                                        shape: BoxShape.circle),
+                                    child: Icon(
+                                      Icons.camera_alt_outlined,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    )),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                            height: 111,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              clipBehavior: Clip.none,
+                              children: <Widget>[
+                                //banner
+
+                                Positioned(
+                                  bottom:
+                                      -50, // Half of the CircleAvatar's radius to align it properly
+                                  left: 20,
+                                  //profile picture
+                                  child: InkWell(
+                                    onTap: _pickImage,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          width: 104.0,
+                                          height: 104.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
+                                              width: 4.0,
+                                            ),
+                                          ),
+
+                                            child: ClipRRect(
+
+                                              borderRadius: BorderRadius.circular(300),
+                                              child: _profileImageUrl.isNotEmpty
+                                                  ? CachedNetworkImage(
+
+                                                  placeholder: (context, url) =>
+                                                  const Center(
+                                                      child:
+                                                      CircularProgressIndicator()),
+                                                      imageUrl:
+                                                          _profileImageUrl , fit: BoxFit.cover)
+                                                  : Image.file (File(_profileImage),fit: BoxFit.cover,),
+                                            ),
+                                          ),
+                                        Container(
+                                          height: 25,
+                                          width: 25,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primaryContainer
+                                                .withOpacity(0.7),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(
+                                            Icons.camera_alt_outlined,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            size: 17,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ]),
-                          EditInputText(
-                            inputKey: const Key('bioField'),
-                            maxLines: 5,
-                            label: 'Bio',
-                            onChanged: (value) => _bio = value,
-                            input: _bio,
-                          ),
-                          EditDateInput(
-                            currentDate: _birthday!,
-                            label: 'Birthday',
-                            onChanged: (value) => {_birthday = value},
-                          ),
-                          const Align(
-                            alignment: Alignment(-1, 0),
-                            child: ToolTip(
-                                message: "When your profile is set "
-                                    "to Private, only your connections can "
-                                    "view your profile."),
-                          ),
-                          const SizedBox(
-                            height: 3,
-                          ),
-                          EditSwitch(
-                            label: 'Private',
-                            currentValue: _isPrivate,
-                            onChanged: (value) => {_isPrivate = value},
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 25.0),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 35,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                      Expanded(
+                        child: ListView(
+                          children: [
+                            EditInputText(
+                              inputKey: const Key('usernameField'),
+                              maxLines: 1,
+                              label: 'Username',
+                              onChanged: (value) => _username = value,
+                              input: _username,
                             ),
-                            onPressed: _saveProfile,
-                            child: const Text(
-                              'Save Changes',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Flexible(
+                                    child: EditInputText(
+                                      inputKey: const Key('firstNameField'),
+                                      maxLines: 1,
+                                      label: 'First name',
+                                      onChanged: (value) => _firstName = value,
+                                      input: _firstName,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: EditInputText(
+                                      inputKey: const Key('lastNameField'),
+                                      maxLines: 1,
+                                      label: 'Last Name',
+                                      onChanged: (value) => _lastName = value,
+                                      input: _lastName,
+                                    ),
+                                  ),
+                                ]),
+                            EditInputText(
+                              inputKey: const Key('bioField'),
+                              maxLines: 5,
+                              label: 'Bio',
+                              onChanged: (value) => _bio = value,
+                              input: _bio,
+                            ),
+                            EditDateInput(
+                              currentDate: _birthday!,
+                              label: 'Birthday',
+                              onChanged: (value) => {_birthday = value},
+                            ),
+                            const Align(
+                              alignment: Alignment(-1, 0),
+                              child: ToolTip(
+                                  message: "When your profile is set "
+                                      "to Private, only your connections can "
+                                      "view your profile."),
+                            ),
+                            const SizedBox(
+                              height: 3,
+                            ),
+                            EditSwitch(
+                              label: 'Private',
+                              currentValue: _isPrivate,
+                              onChanged: (value) => {_isPrivate = value},
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 25.0),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 35,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: _saveProfile,
+                              child: const Text(
+                                'Save Changes',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                  ],
+                      const SizedBox(height: 15),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-        },
-      ),
-    );
+              ));
   }
 }
