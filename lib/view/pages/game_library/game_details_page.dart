@@ -314,24 +314,25 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
+                            child: Text(gameDetails.publisher[0]['name'],
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.grey)),
+                          ),
                           Center(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                                    child: Text(
-                                        gameDetails.publisher[0]['name'],
-                                        style: const TextStyle(
-                                            fontSize: 13, color: Colors.grey)),
-                                  ),
                                   Container(
-                                    width: 100,
-                                    height: 25,
+                                    width: 105,
+                                    height: 30,
                                     decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
                                         bottomRight: Radius.circular(15),
@@ -339,46 +340,42 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         topRight: Radius.circular(15),
                                       ),
                                       shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'Rating: ',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Rating: ',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                         Text(
                                           gameDetails.rating.toStringAsFixed(1),
                                           style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
                                             fontSize: 13,
                                           ),
                                         ),
                                         const SizedBox(width: 2),
-                                        const Stack(
+                                        Stack(
                                           alignment: Alignment.center,
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               Icons.star,
                                               color: Colors.black,
                                               size: 16,
                                             ),
                                             Icon(
                                               Icons.star,
-                                              color: Colors.yellow,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
                                               size: 14,
                                             ),
                                           ],
@@ -386,20 +383,21 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       ],
                                     ),
                                   ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
                                   Container(
-                                    width: 85,
-                                    height: 25,
+                                    width: 110,
+                                    height: 30,
                                     decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
                                         bottomRight: Radius.circular(15),
                                         topLeft: Radius.circular(15),
                                         topRight: Radius.circular(15),
-                                      ),
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
                                       ),
                                     ),
                                     child: Row(
@@ -407,32 +405,32 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'Score: ',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Metacritic: ',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                         Text(
                                           gameDetails.score.toString(),
                                           style: const TextStyle(
                                             fontSize: 14,
-                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 1,),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10,),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Divider(
                             thickness: 1,
                             indent: 0,
