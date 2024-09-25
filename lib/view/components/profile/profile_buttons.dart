@@ -28,7 +28,7 @@ class _ProfileButtonState extends State<ProfileButton> {
         onTap: widget.onPressed, // Handle the onTap event
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
             border: Border.all(color: Theme.of(context).colorScheme.primary),
             borderRadius: BorderRadius.circular(10),
           ),
