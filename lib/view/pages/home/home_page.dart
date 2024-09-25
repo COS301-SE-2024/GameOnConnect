@@ -61,12 +61,7 @@ class _HomePageState extends State<HomePage> {
       const GameLibrary(),
       const CreateEvents(),
       const ViewEvents(),
-      ProfilePage(
-        uid: currentUserId,
-        isOwnProfile: true,
-        isConnection: true,
-        loggedInUser: currentUserId,
-      ),
+      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
   }
 

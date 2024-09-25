@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -720,6 +721,10 @@ class _EditEventsState extends State<EditEvent> {
                                             ),
                                           ),
                                           const SizedBox(height: 20),
+                                          const ToolTip(
+                                              message:
+                                                  "Public events are seen by all users and anyone can join it."),
+                                          const SizedBox(height: 3,),
                                           Container(
                                             decoration: BoxDecoration(
                                               borderRadius:

@@ -288,13 +288,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChooseGame(
-                                                            chosenGame:
-                                                                gameChosen,
-                                                          ))).then((gameInfo) {
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChooseGame(
+                                                                chosenGame:
+                                                                    gameChosen,
+                                                              )))
+                                                  .then((gameInfo) {
                                                 setState(() {
                                                   if (gameInfo != null) {
                                                     gameChosen =
@@ -328,10 +329,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    gameName.isEmpty
-                                                        ? 'Choose game*'
-                                                        : gameName,
+                                                  Text(gameName.isEmpty?
+                                                    'Choose game*' : gameName,
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -801,9 +800,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    invites.isEmpty
-                                                        ? 'Invite connections*'
-                                                        : 'Invite connections (${invites.length})',
+                                                    invites.isEmpty?'Invite connections*':
+                                                    'Invite connections (${invites.length})',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
