@@ -79,6 +79,7 @@ dependencies:
   share_plus: ^10.0.0
   super_tooltip: ^2.0.8
   flutter_svg: ^2.0.10+1
+  avatar_stack: ^1.2.0
 
 
 
