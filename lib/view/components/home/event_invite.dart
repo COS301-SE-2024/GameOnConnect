@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class EventInvitation extends StatefulWidget {
@@ -39,9 +40,8 @@ class _EventInvitationState extends State<EventInvitation> {
   Widget build(BuildContext context) {
     if (_isWidgetVisible) {
       return Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 5),
-
-              child: Container(
+          padding: const EdgeInsets.all(12),
+          child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primaryContainer,
@@ -104,7 +104,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12)),
-                              Text(widget.event.startDate.toIso8601String(),
+                              Text(DateFormat('yyyy-MM-dd - kk:mm').format(widget.event.startDate),
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
