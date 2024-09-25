@@ -122,6 +122,88 @@ class AuthService {
           "userID": currentUser.uid
         };
 
+        final badgeData = <String, dynamic>{
+          "achiever_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by getting a high score of 15 in flappy bird.",
+          },
+          "collector_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge my adding 10 games to your My Games list.",
+          },
+          "customizer_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by editing your profile 3 times.",
+          },
+          "event_planner_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description": "You unlocked this badge by creating an event.",
+          },
+          "explorer_badge": {
+            "changed_theme": false,
+            "created_chat": false,
+            "date_unlocked": Timestamp.now(),
+            "edit_profile": false,
+            "join_event": false,
+            "play_spaceshooter": false,
+            "search_connection": false,
+            "search_game": false,
+            "share_game": false,
+            "unlocked": false,
+            "view_activity": false,
+            "view_help": false,
+            "view_requests": false,
+            "view_stats": false,
+            "want_to_play": false,
+            "unlocked_components": 0,
+            "description":
+                "You unlocked this badge by exploring most features of the app.",
+          },
+          "gamer_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by playing games for a total of 20 hours.",
+          },
+          "loyalty_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "latest_date": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by logging into the app for 10 consecutive days.",
+          },
+          "newbie_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": true,
+            "description":
+                "You unlocked this badge by logging into the app for the first time."
+          },
+          "night_owl_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by using the app after 10pm."
+          },
+          "social_butterfly_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description": "You unlocked this badge by having 20 connections.",
+          },
+          "userID": currentUser.uid,
+        };
+
+        db.collection("badges").doc(currentUser.uid).set(badgeData);
         db.collection("profile_data").doc(currentUser.uid).set(defaultData);
         db.collection("connections").doc(currentUser.uid).set(connectionData);
       }
