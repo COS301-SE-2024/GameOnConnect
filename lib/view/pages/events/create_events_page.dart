@@ -272,14 +272,14 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 10,
                                           ),
 
-
+/*
                                           ChipSelector(
                                               selectedOption: selectedOption,
                                               onSelected: (option) {
                                                 (setState(() {
                                                   selectedOption = option;
                                                 }));
-                                              }),
+                                              }),*/
                                           const SizedBox(
                                             height: 20,
                                           ),
