@@ -2,7 +2,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:gameonconnect/view/pages/home/home_page.dart';
