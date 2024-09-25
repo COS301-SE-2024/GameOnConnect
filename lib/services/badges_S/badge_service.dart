@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 
 class BadgeService {
@@ -13,6 +14,31 @@ class BadgeService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<Map<String, dynamic>> getBadges() async {
+    final currentUser = _auth.currentUser;
+
+    if (currentUser != null) {
+      DocumentSnapshot<Map<String, dynamic>> doc = await _firestore
+          .collection("badges")
+          .doc(currentUser.uid)
+          .get();
+
+      Map<String, dynamic>? badgeData = doc.data();
+
+    if (badgeData != null) {
+      badgeData.remove('userID');
+      return badgeData; 
+    } else {
+      const SnackBar(content: Text("No badge data found."));
+    }
+  } else {
+    const SnackBar(content: Text("No user is currently logged in."));
+  }
+
+  return {}; 
+}
+
 
   void unlockLoyaltyBadge() async {
     try {
