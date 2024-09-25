@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import '../../../model/events_M/chip_model.dart';
 
 class ChipSelector extends StatefulWidget {
@@ -36,7 +35,7 @@ class _ChipSelectorState extends State<ChipSelector> {
             color: selectedOption == 'Gaming Session'
                 ? Colors.black
                 : Theme.of(context).colorScheme.secondary,
-            size: 18.pixelScale(context),
+            size: 18,
           )),
       ChipData(
           'Tournament',
@@ -45,22 +44,22 @@ class _ChipSelectorState extends State<ChipSelector> {
             color: selectedOption == "Tournament"
                 ? Colors.black
                 : Theme.of(context).colorScheme.secondary,
-            size: 18.pixelScale(context),
+            size: 18,
           )),
     ];
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: options.map((option) {
         return ChoiceChip(
           showCheckmark: false,
           label: Center(
             child: Container(
-              height: 25.pixelScale(context),
+              height: 25,
               alignment: Alignment.center,
               child: Row(children: [
                 option.icon,
-                 SizedBox(
-                  width: 5.pixelScale(context),
+                const SizedBox(
+                  width: 5,
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -68,7 +67,7 @@ class _ChipSelectorState extends State<ChipSelector> {
                     option.label,
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 16.pixelScale(context),
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: selectedOption == option.label
                           ? Colors.black
@@ -101,7 +100,6 @@ class _ChipSelectorState extends State<ChipSelector> {
           elevation: 0,
         );
       }).toList(),
-    )
-    ;
+    );
   }
 }

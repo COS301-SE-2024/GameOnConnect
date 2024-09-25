@@ -2,7 +2,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/pages/home/welcome_splash.dart';
 import 'sign_up_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -114,47 +113,46 @@ class _LoginState extends State<Login> {
                     Theme.of(context).brightness == Brightness.dark
                         ? 'assets/icons/GameOnConnect_Logo_Transparent_White.png'
                         : 'assets/icons/GameOnConnect_Logo_Transparent.png',
-                    width: 100.pixelScale(context),
-                    height: 100.pixelScale(context),
+                    width: 100,
+                    height: 100,
                   ),
-                   SizedBox(height: 20.pixelScale(context)),
+                  const SizedBox(height: 20),
                   //Here is the login text
-                   Text(
+                  const Text(
                     'Login',
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 28.46200180053711.pixelScale(context)),
+                        fontSize: 28.46200180053711),
                   ),
                   //Here is the email text field
-                  SizedBox(height: 30.pixelScale(context)),
+                  const SizedBox(height: 30),
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 25.0.pixelScale(context)),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Padding(
                       padding: EdgeInsets.only(left: 0.0),
                       child: TextFormField(
                         key: Key('emailInput'),
                         controller: emailController,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 15.pixelScale(context), top: 12.5.pixelScale(context)),
+                          contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context).colorScheme.secondary,
                             ),
-                            borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context).colorScheme.primary,
                               width: 2.0,
                             ),
-                            borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           hintText: 'Email',
                           prefixIcon: Icon(
                             Icons.email,
-                            size: 20.pixelScale(context),
+                            size: 20,
                           ),
-                          hintStyle: TextStyle(fontSize: 16.pixelScale(context)),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -170,10 +168,10 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 15.pixelScale(context)),
+                  const SizedBox(height: 15),
                   //Here is the password text field
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 25.0.pixelScale(context)),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Padding(
                       padding: EdgeInsets.only(left: 0.0),
                       child: TextFormField(
@@ -181,26 +179,25 @@ class _LoginState extends State<Login> {
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 15.pixelScale(context), top: 12.5.pixelScale(context)),
+                          contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context).colorScheme.secondary,
                             ),
-                            borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Theme.of(context).colorScheme.primary,
                               width: 2.0,
                             ),
-                            borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           hintText: 'Password',
                           prefixIcon: Icon(
                             Icons.lock,
-                            size: 20.pixelScale(context),
+                            size: 20,
                           ),
-                          hintStyle: TextStyle(fontSize: 16.pixelScale(context)),
                         ),
                         //Leaving this code in should we require it later
                         //validator: (value) {
@@ -222,10 +219,9 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                   SizedBox(height: 10.pixelScale(context)),
+                  const SizedBox(height: 10),
                   Container(
                     alignment: Alignment.centerLeft, // Add this line
-
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: _showForgotPasswordDialog,
@@ -239,10 +235,10 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 25.pixelScale(context)),
+                  const SizedBox(height: 25),
                   //The Login button
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: 25.0.pixelScale(context)),
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
@@ -287,29 +283,29 @@ class _LoginState extends State<Login> {
                         }
                       },
                       child: Container(
-                        padding: EdgeInsets.all(15.pixelScale(context)),
+                        padding: EdgeInsets.all(15),
                         key: Key('Login_Button'),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 0, 255, 117),
-                          borderRadius: BorderRadius.circular(15.pixelScale(context)),
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        child:  Center(
+                        child: const Center(
                           child: Text(
                             'Login',
                             style: TextStyle(
                               color: Color.fromARGB(255, 24, 24, 24),
                               fontWeight: FontWeight.w700,
-                              fontSize: 15.pixelScale(context),
+                              fontSize: 15,
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                   SizedBox(height: 25.pixelScale(context)),
+                  const SizedBox(height: 25),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:  <Widget>[
+                    children: const <Widget>[
                       Expanded(
                         child: Divider(
                             color: Color.fromARGB(255, 190, 190, 190),
@@ -318,7 +314,7 @@ class _LoginState extends State<Login> {
                             endIndent: 10),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 1.pixelScale(context)),
+                        padding: EdgeInsets.symmetric(horizontal: 1),
                         child: Text("or"),
                       ),
                       Expanded(
@@ -330,9 +326,9 @@ class _LoginState extends State<Login> {
                       ),
                     ],
                   ),
-                   SizedBox(height: 25.pixelScale(context)),
+                  const SizedBox(height: 25),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0.pixelScale(context)),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
                       onTap: () {
                         google();
@@ -353,10 +349,10 @@ class _LoginState extends State<Login> {
                           color: Color.fromARGB(255, 190, 190, 190),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child:  Center(
+                        child: const Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children: [
                               Icon(
                                 FontAwesomeIcons.google,
                                 size: 20,
@@ -377,7 +373,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.pixelScale(context)),
+                  const SizedBox(height: 10),
                   /*Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     child: GestureDetector(
@@ -424,7 +420,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),*/
-                   SizedBox(height: 30.pixelScale(context)),
+                  const SizedBox(height: 30),
                   //here is the bottom text with a sign up text
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

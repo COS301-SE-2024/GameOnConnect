@@ -210,7 +210,7 @@ class _GameLibraryState extends State<GameLibrary> {
                         builder: (BuildContext context) => StatefulBuilder(
                           builder: (context, setState) => AlertDialog(
                             title: const Text('Sort by'),
-                            content: SingleChildScrollView(child: Column(
+                            content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   RadioListTile(
@@ -291,8 +291,6 @@ class _GameLibraryState extends State<GameLibrary> {
                                         });
                                       }),
                                 ]),
-    ),
-
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () =>

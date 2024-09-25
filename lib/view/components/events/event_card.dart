@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
@@ -54,7 +53,7 @@ class EventCard extends State<EventCardWidget> {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 80.pixelScale(context),
+                  height: 80,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                   ),
@@ -64,8 +63,8 @@ class EventCard extends State<EventCardWidget> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         SizedBox(
-                          width: 80.pixelScale(context),
-                          height: 60.pixelScale(context),
+                          width: 80,
+                          height: 60,
                           child: CachedNetworkImage(
                             width: double.infinity,
                             imageUrl: imageUrl,
@@ -103,7 +102,7 @@ class EventCard extends State<EventCardWidget> {
                                             Brightness.light
                                         ? Colors.black
                                         : Colors.white,
-                                    fontSize: 12.pixelScale(context),
+                                    fontSize: 12,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -127,7 +126,7 @@ class EventCard extends State<EventCardWidget> {
                                           Brightness.light
                                       ? Theme.of(context).colorScheme.secondary
                                       : Theme.of(context).colorScheme.primary,
-                                  size: 24.pixelScale(context),
+                                  size: 24,
                                 ),
                               ],
                             ),

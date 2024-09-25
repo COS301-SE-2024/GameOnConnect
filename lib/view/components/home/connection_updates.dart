@@ -75,7 +75,7 @@ class _ConnectionUpdatesState extends State<ConnectionUpdates> {
           } else {
             final connectionRequests = snapshot.data!;
             return ConstrainedBox(
-              constraints:  const BoxConstraints(maxHeight: 300),
+              constraints: const BoxConstraints(maxHeight: 300),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: connectionRequests.length,

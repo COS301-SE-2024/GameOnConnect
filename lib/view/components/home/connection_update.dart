@@ -24,8 +24,8 @@ class _ConnectionUpdateCardState extends State<ConnectionUpdateCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             widget.connectionStatus == "connect"
-                ? Expanded( child:Text("${widget.user} wants to connect", style: const TextStyle(fontWeight: FontWeight.bold)))
-                : Expanded(child:Text("${widget.user} disconnected", style: const TextStyle(fontWeight: FontWeight.bold))),
+                ? Text("${widget.user} wants to connect", style: const TextStyle(fontWeight: FontWeight.bold))
+                : Text("${widget.user} disconnected", style: const TextStyle(fontWeight: FontWeight.bold)),
             const Icon(Icons.close_sharp)
           ],
         ));
