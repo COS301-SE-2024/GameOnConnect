@@ -7,6 +7,7 @@ import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../components/settings/edit_input_text.dart';
 import '../../components/settings/edit_date_input.dart';
 import '../../components/settings/edit_switch.dart';
@@ -75,7 +76,7 @@ class _EditProfilePage extends State<EditProfilePage> {
     if (kIsWeb) {
       // Web implementation
       FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
+      await FilePicker.platform.pickFiles(type: FileType.image);
 
       if (result != null) {
         PlatformFile file = result.files.first;
@@ -85,7 +86,6 @@ class _EditProfilePage extends State<EditProfilePage> {
             //_profileBannerFB = file.name;
           });
         }
-
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to select Image.')),
@@ -93,17 +93,29 @@ class _EditProfilePage extends State<EditProfilePage> {
       }
     } else {
       // Mobile/desktop implementation
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileBanner = image.path;
-          _profileBannerUrl = '';
-        });
-      } else {
+      PermissionStatus status = await Permission.photos.request();
+
+      if (status.isGranted) {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image = await picker.pickImage(
+            source: ImageSource.gallery);
+        if (image != null) {
+          setState(() {
+            _profileBanner = image.path;
+            _profileBannerUrl = '';
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to select Image.')),
+          );
+        }
+      } else if (status.isDenied) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
+          const SnackBar(content: Text('Permission denied.')),
         );
+      }
+      else if (status.isPermanentlyDenied) {
+        openAppSettings();
       }
     }
   }
@@ -112,7 +124,7 @@ class _EditProfilePage extends State<EditProfilePage> {
     if (kIsWeb) {
       // Web implementation
       FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
+      await FilePicker.platform.pickFiles(type: FileType.image);
 
       if (result != null) {
         PlatformFile file = result.files.first;
@@ -122,19 +134,56 @@ class _EditProfilePage extends State<EditProfilePage> {
           });
         }
       }
+    }
+    else {
+      PermissionStatus status = await Permission.photos.request();
+
+      if (status.isGranted) {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image = await picker.pickImage(
+            source: ImageSource.gallery);
+        if (image != null) {
+          setState(() {
+            _profileImage = image.path;
+            _profileImageUrl = '';
+          });
+        } else {}
       }
-     else {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileImage = image.path;
-          _profileImageUrl = '';
-        });
-      } else {}
+      else {
+        if (status.isDenied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Permission denied.')),
+          );
+        } else if (status.isPermanentlyDenied) {
+          openAppSettings();
+        }
+      }
     }
   }
+    void _showNoInternetSnackbar() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No internet connection'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
 
+
+
+    void editProfile() async {
+      try {
+        await EditProfileService().editProfile(_username, _firstName, _lastName,
+            _bio, _birthday!, _isPrivate, _profileImage, _profileBanner);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error updating profile'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   Future<void> _saveProfile() async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
@@ -154,28 +203,8 @@ class _EditProfilePage extends State<EditProfilePage> {
     }
   }
 
-  void _showNoInternetSnackbar() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('No internet connection'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
 
-  void editProfile() async {
-    try {
-      await EditProfileService().editProfile(_username, _firstName, _lastName,
-          _bio, _birthday!, _isPrivate, _profileImage, _profileBanner);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error updating profile'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
