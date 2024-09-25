@@ -12,12 +12,10 @@ class GamesPageService {
         return 0;
       }
 
-      // Querying the badges collection for the current user's data based on userID
       QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection('badges')
         .where('userID', isEqualTo: currentUser.uid)
         .get();
       
-      // Check if any badge data exists for the user
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot<Map<String, dynamic>> badgesData = querySnapshot.docs.first;
         Map<String, dynamic>? data = badgesData.data();
@@ -28,7 +26,6 @@ class GamesPageService {
 
         int unlockedCount = 0;
 
-        // Loop through each badge and count how many are unlocked
         data.forEach((key, value) {
           if (value is Map<String, dynamic> && value['unlocked'] == true) {
             unlockedCount++;
