@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -77,18 +78,13 @@ class _CreateEventsState extends State<CreateEvents> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Create Event',
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary),
-              ),
-              iconTheme: IconThemeData(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            appBar: BackButtonAppBar(
+                title: 'Create Event',
+                onBackButtonPressed: () {
+                  Navigator.pop(context);
+                },
+                iconkey: const Key('Back_button_key'),
+                textkey: const Key('create_event_text')),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: SafeArea(

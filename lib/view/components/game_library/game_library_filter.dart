@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/game_library_M/game_filters_model.dart';
 import 'package:gameonconnect/model/game_library_M/game_filter_model.dart';
 import 'package:gameonconnect/services/game_library_S/game_filter_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FilterPage extends StatefulWidget {
@@ -54,12 +55,13 @@ class _FilterPageState extends State<FilterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Filter', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
+      appBar: BackButtonAppBar(
+                title: 'Filter',
+                onBackButtonPressed: () {
+                  Navigator.pop(context);
+                },
+                iconkey: const Key('Back_button_key'),
+                textkey: const Key('filter_games_text')),
       body: SafeArea(
         top: true,
         child: FutureBuilder<FilterList>(

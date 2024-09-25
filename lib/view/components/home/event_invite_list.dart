@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/home/event_invite.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -37,18 +38,13 @@ class _EventInvitesListState extends State<EventInvitesList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Event Invites',
-          style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary),
-        ),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
+      appBar: BackButtonAppBar(
+                title: 'Event Invites',
+                onBackButtonPressed: () {
+                  Navigator.pop(context);
+                },
+                iconkey: const Key('Back_button_key'),
+                textkey: const Key('event_invites__text')),
       body: _isLoading
           ? Center(
               child: LoadingAnimationWidget.halfTriangleDot(

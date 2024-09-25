@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
@@ -89,12 +90,13 @@ class _EditProfilePage extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
+      appBar: BackButtonAppBar(
+                title: 'Edit Profile',
+                onBackButtonPressed: () {
+                  Navigator.pop(context);
+                },
+                iconkey: const Key('Back_button_key'),
+                textkey: const Key('edit_profile_text')),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: EditProfileService().databaseAccess(),
         builder: (context, snapshot) {

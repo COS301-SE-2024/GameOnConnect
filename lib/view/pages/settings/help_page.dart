@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/help/help_card.dart';
 import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
 
@@ -31,12 +32,13 @@ class _HelpWidgetState extends State<HelpPage> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-        title: Text('Help Center', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),),
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
+        appBar: BackButtonAppBar(
+                title: 'Help',
+                onBackButtonPressed: () {
+                  Navigator.pop(context);
+                },
+                iconkey: const Key('Back_button_key'),
+                textkey: const Key('help_text')),
         body: SafeArea(
           top: true,
           child: Column(
