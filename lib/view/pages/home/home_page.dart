@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
@@ -9,16 +8,12 @@ import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
-import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
-import 'package:gameonconnect/view/pages/GameyCon/loadingpage.dart';
-import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
-import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
+import 'package:gameonconnect/view/pages/games_page/games_page.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         child: _HomePageDisplay(),
       ),
       const GameLibrary(),
-      const CreateEvents(),
+      const GamesPageWidget(),
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
@@ -386,80 +381,80 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AchievementBadgesPage(),
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.model_training,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const AchievementBadgesPage(),
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.model_training,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
 
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
 
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.sports_score,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GameScreen()
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.flutter_dash,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-              child: IconButton(
-                onPressed: () async {
-                  await Flame.device.fullScreen();
-                  if (!context.mounted) return;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoadingGameyConPage(),
-                    ),
-                  );
-                },
-                icon: Icon(
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.sports_score,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => GameScreen()
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.flutter_dash,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () async {
+            //       await Flame.device.fullScreen();
+            //       if (!context.mounted) return;
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const LoadingGameyConPage(),
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
 
-                  Icons.games_outlined,
+            //       Icons.games_outlined,
 
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
           ],
           centerTitle: false,
           elevation: 0,
