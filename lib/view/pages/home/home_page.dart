@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/connection_updates.dart';
@@ -56,7 +57,12 @@ class _HomePageState extends State<HomePage> {
       const GameLibrary(),
       const GamesPageWidget(),
       const ViewEvents(),
-      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
+      ProfilePage(
+        uid: currentUserId,
+        isOwnProfile: true,
+        isConnection: true,
+        loggedInUser: currentUserId,
+      ),
     ];
 
     _badgeService.unlockLoyaltyBadge();
@@ -310,39 +316,48 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   }
 
   Widget _homeBody() {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: ListView(children: [
-        Text("Ready to game,",
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-        Text("$currentUserName?",
-            style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary)),
-        SizedBox(height: 15),
-        GameTimer(),
-        SizedBox(height: 15),
-        Divider(
-          thickness: 1,
-          color: Theme.of(context).colorScheme.primaryContainer,
-        ),
-        SizedBox(height: 19),
-        Text("Friends currently online",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        CurrentlyOnlineBar(),
-        SizedBox(height: 30),
-        Text("Connection updates",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        ConnectionUpdates(),
-        SizedBox(height: 30),
-        Text("Event invites",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-        SizedBox(height: 15),
-        EventInvitesList()
-      ]),
+    return
+      Padding(
+        padding: EdgeInsets.all(15),
+        child: ListView(children: [
+           Text("Ready to game,",
+              style: TextStyle(
+                  fontSize: 32.pixelScale(context),
+                      fontWeight: FontWeight.bold)),
+          Text("$currentUserName?",
+              style: TextStyle(
+                  fontSize: 32.pixelScale(context),
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary)),
+          SizedBox(height: 15.pixelScale(context)),
+          GameTimer(),
+          SizedBox(height: 15.pixelScale(context)),
+          Divider(
+            thickness: 1,
+            color: Theme.of(context).colorScheme.primaryContainer,
+          ),
+          SizedBox(height:19.pixelScale(context)),
+          Text("Friends currently online",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.pixelScale(context))),
+          SizedBox(height:15.pixelScale(context)),
+          CurrentlyOnlineBar(),
+          SizedBox(height: 30.pixelScale(context)),
+          Text("Connection updates",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:20.pixelScale(context))),
+          SizedBox(height: 15.pixelScale(context)),
+          ConnectionUpdates(),
+          SizedBox(height: 30.pixelScale(context)),
+          Text("Event invites",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.pixelScale(context))),
+          SizedBox(height:15.pixelScale(context)),
+          EventInvitesList()
+        ]),
     );
   }
 
@@ -353,11 +368,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+            padding:
+                EdgeInsets.only(top: 16),
             child: Text(
               'Home',
               style: TextStyle(
-                fontSize: 32,
+                fontSize:32,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
@@ -365,7 +381,9 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: EdgeInsets.only(
+                  right:20.0,
+                  top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -455,6 +473,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //     ),
             //   ),
             // ),
+
           ],
           centerTitle: false,
           elevation: 0,
