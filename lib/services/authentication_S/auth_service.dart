@@ -124,34 +124,34 @@ class AuthService {
 
         final badgeData = <String, dynamic>{
           "achiever_badge": {
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description":
                 "You unlocked this badge by getting a high score of 15 in flappy bird.",
           },
           "collector_badge": {
             "count": 0,
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description":
                 "You unlocked this badge my adding 10 games to your My Games list.",
           },
           "customizer_badge": {
             "count": 0,
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description":
                 "You unlocked this badge by editing your profile 3 times.",
           },
           "event_planner_badge": {
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description": "You unlocked this badge by creating an event.",
           },
           "explorer_badge": {
             "changed_theme": false,
             "created_chat": false,
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "edit_profile": false,
             "join_event": false,
             "play_spaceshooter": false,
@@ -169,14 +169,14 @@ class AuthService {
                 "You unlocked this badge by exploring most features of the app.",
           },
           "gamer_badge": {
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description":
                 "You unlocked this badge by playing games for a total of 20 hours.",
           },
           "loyalty_badge": {
             "count": 0,
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "latest_date": Timestamp.now(),
             "unlocked": false,
             "description":
@@ -189,14 +189,14 @@ class AuthService {
                 "You unlocked this badge by logging into the app for the first time."
           },
           "night_owl_badge": {
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description":
                 "You unlocked this badge by using the app after 10pm."
           },
           "social_butterfly_badge": {
             "count": 0,
-            "date_unlocked": null,
+            "date_unlocked": Timestamp.now(),
             "unlocked": false,
             "description": "You unlocked this badge by having 20 connections.",
           },
