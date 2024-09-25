@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
@@ -313,21 +314,22 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   }
 
   Widget _homeBody() {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Ready to game,",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+    return
+      Padding(
+        padding: EdgeInsets.all(15),
+        child: ListView(children: [
+           Text("Ready to game,",
+              style: TextStyle(
+                  fontSize: 32.pixelScale(context),
+                      fontWeight: FontWeight.bold)),
           Text("$currentUserName?",
               style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 32.pixelScale(context),
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary)),
-          SizedBox(height: 15),
+          SizedBox(height: 15.pixelScale(context)),
           GameTimer(),
-          SizedBox(height: 15),
+          SizedBox(height: 15.pixelScale(context)),
           Divider(
             thickness: 1,
             color: Theme.of(context).colorScheme.primaryContainer,
@@ -403,15 +405,14 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
-              Text("Friends currently online",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              SizedBox(height: 15),
-              CurrentlyOnlineBar(),
-              SizedBox(height: 30),            ]),
-          ),
-        ],
-      ),
+          SizedBox(height:19.pixelScale(context)),
+          Text("Friends currently online",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.pixelScale(context))),
+          SizedBox(height:15.pixelScale(context)),
+          CurrentlyOnlineBar(),
+          SizedBox(height: 30.pixelScale(context)),
     );
   }
 
@@ -422,11 +423,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+            padding:
+                EdgeInsets.only(top: 16),
             child: Text(
               'Home',
               style: TextStyle(
-                fontSize: 32,
+                fontSize:32,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
@@ -434,7 +436,9 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
+              padding: EdgeInsets.only(
+                  right:20.0,
+                  top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -524,6 +528,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //     ),
             //   ),
             // ),
+
           ],
           centerTitle: false,
           elevation: 0,

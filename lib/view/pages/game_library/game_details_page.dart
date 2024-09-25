@@ -320,6 +320,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 style: const TextStyle(
                                     fontSize: 13, color: Colors.grey)),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                             child: Center(
@@ -351,6 +352,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             child: Text(
                                               'Rating: ',
                                               style: TextStyle(
+
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
                                               ),
