@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_controller.dart' as carousel_slider;
@@ -65,12 +66,15 @@ class _HomePageWidgetState extends State<ViewEvents> {
                   Padding(
                     padding: const EdgeInsets.only(right: 15.0),
                     child: IconButton(
-                      key: const Key('history_icon_button'),
+                      key: const Key('event_invites'),
                       onPressed: () {
-                        //Navigate to history page
+                         Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const EventInvitesList()),
+                        );
                       },
                       icon: Icon(
-                        Icons.history,
+                        Icons.mark_email_unread_outlined ,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),

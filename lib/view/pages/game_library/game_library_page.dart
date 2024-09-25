@@ -472,7 +472,13 @@ class _GameLibraryState extends State<GameLibrary> {
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [
-                                TextSpan(text: "Released: "),
+                                TextSpan(
+                                  text: "Released:  ",
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness == Brightness.dark ? 
+                                    Colors.white : 
+                                    Colors.black
+                                  )),
                                 TextSpan(
                                   text: game.released,
                                   style: TextStyle(
