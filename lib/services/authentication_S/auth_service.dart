@@ -172,7 +172,7 @@ class AuthService {
             "date_unlocked": null,
             "unlocked": false,
             "description":
-                "You unlocked this badge by playing games for a total of x hours.",
+                "You unlocked this badge by playing games for a total of 20 hours.",
           },
           "loyalty_badge": {
             "count": 0,
