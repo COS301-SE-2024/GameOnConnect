@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gameonconnect/GameyCon/components/background_tile.dart';
-import 'package:gameonconnect/GameyCon/components/checkpoint.dart';
-import 'package:gameonconnect/GameyCon/components/chicken.dart';
-import 'package:gameonconnect/GameyCon/components/collision_block.dart';
-import 'package:gameonconnect/GameyCon/components/fruit.dart';
-import 'package:gameonconnect/GameyCon/components/player.dart';
-import 'package:gameonconnect/GameyCon/components/saw.dart';
-import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/background_tile.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/checkpoint.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/chicken.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/collision_block.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/fruit.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/player.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/saw.dart';
+import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
 
 class Level extends World with HasGameRef<GameyCon> {
   final String levelName;

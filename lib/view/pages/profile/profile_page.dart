@@ -2,17 +2,16 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/model/connection_M/friend_model.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_request_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
@@ -47,6 +46,7 @@ class ProfilePage extends StatefulWidget {
 
 //NB rename
 class _ProfileState extends State<ProfilePage> {
+  final BadgeService _badgeService = BadgeService();
   final ProfileService _profileService = ProfileService();
   final MessagingService _messagingService = MessagingService();
   bool isParentsConnection = false;
@@ -120,22 +120,9 @@ class _ProfileState extends State<ProfilePage> {
       });
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error unfollowing user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
+      CustomSnackbar().show(
         context,
+        'Error unfollowing user. Please ensure that you have an active internet connection.',
       );
     }
   }
@@ -147,27 +134,12 @@ class _ProfileState extends State<ProfilePage> {
         isRequestToParent = false;
         isConnectionOfParent = true;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Accepted')),
-      );
+      CustomSnackbar().show(context, 'Accepted');
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error accepting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
+      CustomSnackbar().show(
         context,
+        'Error accepting user. Please ensure that you have an active internet connection.',
       );
     }
   }
@@ -178,27 +150,11 @@ class _ProfileState extends State<ProfilePage> {
       setState(() {
         isRequestToParent = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Rejected')),
-      );
+     CustomSnackbar().show(context,  'Rejected') ;
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error rejecting user. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        context,
+      CustomSnackbar().show(context,
+          'Error rejecting user. Please ensure that you have an active internet connection.',
       );
     }
   }
@@ -213,22 +169,8 @@ class _ProfileState extends State<ProfilePage> {
       });
     } catch (e) {
       //Error sending Connection request.
-      DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'Error sending friend request. Please ensure that you have an active internet connection.',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        context,
+     CustomSnackbar().show(context,
+          'Error sending friend request. Please ensure that you have an active internet connection.',
       );
     }
   }
@@ -242,22 +184,8 @@ class _ProfileState extends State<ProfilePage> {
       });
     } catch (e) {
       //'Error canceling friend request'
-      DelightToastBar(
-              builder: (context) {
-                return CustomToastCard(
-                  title: Text(
-                    'An error occurred. Please retry',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                );
-              },
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        context,
+    CustomSnackbar().show(context,
+          'An error occurred. Please retry',
       );
     }
   }
@@ -280,6 +208,9 @@ class _ProfileState extends State<ProfilePage> {
       context,
       MaterialPageRoute(builder: (context) => StatsPage(userID: widget.uid)),
     );
+    if (widget.isOwnProfile) {
+      _badgeService.unlockExplorerComponent('view_stats');
+    }
   }
 
   @override
@@ -287,6 +218,7 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     getRelationToLoggedInUser();
     getTimePlayed();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   @override
@@ -595,7 +527,7 @@ class _ProfileState extends State<ProfilePage> {
                                                     .uid)), //how do i get the correct userID t display here - get it and use it here
                                       );
                                     },
-                                    icon: Icons.bar_chart 
+                                    icon: Icons.bar_chart
                                   ),
                                 ),*/
 
@@ -660,6 +592,7 @@ class _ProfileState extends State<ProfilePage> {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
+                                      isOwnProfile: widget.isOwnProfile,
                                     )
                                   : MyGameList(
                                       myGameStats: sumOfMygames,
@@ -667,7 +600,7 @@ class _ProfileState extends State<ProfilePage> {
                                       currentlyPlaying:
                                           profileData.currentlyPlaying,
                                       gameActivities: profileData.myGames,
-                                    ),
+                                      isOwnProfile: widget.isOwnProfile),
                           profileData.myGames.isEmpty &&
                                   widget.uid != widget.loggedInUser
                               ? const SizedBox.shrink()
@@ -682,7 +615,8 @@ class _ProfileState extends State<ProfilePage> {
                                   ),
                                   WantToPlayList(
                                       gameIds: profileData.wantToPlay,
-                                      heading: 'Want to play'),
+                                      heading: 'Want to play',
+                                      isOwnProfile: widget.isOwnProfile),
                                   const SizedBox(height: 24)
                                 ]),
                         ] else ...[

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
 
 class JumpButton extends SpriteComponent
     with HasGameRef<GameyCon>, TapCallbacks {

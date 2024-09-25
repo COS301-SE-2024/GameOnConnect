@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import '../../../globals.dart' as global;
@@ -31,9 +32,14 @@ class GameService {
           .map((gameJson) => Game.fromJson(gameJson))
           .toList();
     } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGames_trace");
+      myTrace.start();
+
       //Load the games from API
       final response = await http.get(Uri.parse(
           'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
+
+      myTrace.stop();
 
       if (response.statusCode == 200) {
         //Cache data
@@ -63,8 +69,13 @@ class GameService {
       final jsonData = jsonDecode(await fileInfo.file.readAsString());
       return GameDetails.fromJson(jsonData);
     } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGameDetails_trace");
+      myTrace.start();
+
       //Load the games from API
       final response = await http.get(Uri.parse(request));
+
+      myTrace.stop();
 
       if (response.statusCode == 200) {
         //Cache data
@@ -92,8 +103,13 @@ class GameService {
       List<dynamic> screenshotJson = jsonData['results'];
       return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
     } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGameScreenshots_trace");
+      myTrace.start();
+
       //Load the games from API
       final response = await http.get(Uri.parse(request));
+
+      myTrace.stop();
 
       if (response.statusCode == 200) {
         //Cache data

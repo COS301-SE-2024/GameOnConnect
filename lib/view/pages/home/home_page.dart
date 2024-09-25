@@ -1,27 +1,19 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
-import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
-import 'package:gameonconnect/view/pages/GameyCon/loadingpage.dart';
-import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
-import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-// import 'package:gameonconnect/view/pages/events/events_page.dart';
-// import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-import 'package:gameonconnect/view/pages/space_shooter_game/game_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gameonconnect/view/pages/games_page/games_page.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -41,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+  final BadgeService _badgeService = BadgeService();
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
@@ -59,7 +52,7 @@ class _HomePageState extends State<HomePage> {
         child: _HomePageDisplay(),
       ),
       const GameLibrary(),
-      const CreateEvents(),
+      const GamesPageWidget(),
       const ViewEvents(),
       ProfilePage(
         uid: currentUserId,
@@ -68,14 +61,14 @@ class _HomePageState extends State<HomePage> {
         loggedInUser: currentUserId,
       ),
     ];
+
+    _badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   String getCurrentUserId() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return currentUserId;
-
-    //WidgetsBinding.instance
-    //.addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
 
   @override
@@ -98,30 +91,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showNoInternetToast() {
-    DelightToastBar(
-      builder: (context) {
-        return CustomToastCard(
-          title: Text(
-            'No internet connection', // Changed message here
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        );
-      },
-      position: DelightSnackbarPosition.top,
-      autoDismiss: true,
-      snackbarDuration: const Duration(seconds: 3),
-    ).show(context);
+    CustomSnackbar().show(context, 'Please check your internet connection');
   }
 
   void _showUsernameSet() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Username has been set successfully'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    CustomSnackbar().show(context, 'Username has been set successfully');
   }
 
   Future<bool> _saveUsername(String username) async {
@@ -324,7 +298,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername();
+    fetchUsername(); 
   }
 
   Future<void> fetchUsername() async {
@@ -476,75 +450,80 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AchievementBadgesPage(),
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.model_training,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          GamePage(), //GameWidget(game: SpaceShooterGame())
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.sports_score,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => GameScreen()),
-                  );
-                },
-                icon: Icon(
-                  Icons.flutter_dash,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
-              child: IconButton(
-                onPressed: () async {
-                  await Flame.device.fullScreen();
-                  if (!context.mounted) return;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoadingGameyConPage(),
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.games_outlined,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const AchievementBadgesPage(),
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.model_training,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.sports_score,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => GameScreen()
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.flutter_dash,
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   child: IconButton(
+            //     onPressed: () async {
+            //       await Flame.device.fullScreen();
+            //       if (!context.mounted) return;
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const LoadingGameyConPage(),
+            //         ),
+            //       );
+            //     },
+            //     icon: Icon(
+
+            //       Icons.games_outlined,
+
+            //       color: Theme.of(context).colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
           ],
           centerTitle: false,
           elevation: 0,
