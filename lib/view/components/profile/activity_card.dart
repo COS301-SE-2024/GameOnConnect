@@ -70,7 +70,7 @@ class _ActivityCardState extends State<ActivityCard> {
     return Container(
       margin: const EdgeInsets.fromLTRB(13, 0, 0, 0),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
@@ -87,21 +87,21 @@ class _ActivityCardState extends State<ActivityCard> {
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 9),
                   child: Text(
                     lastPlayedDateTime,
-                    style: const TextStyle(
+                    style:  TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 12,
                       height: 0.9,
-                      color: Color(0xFFFFFFFF),
+                      color: Theme.of(context).brightness == Brightness.dark? Colors.grey: Colors.black,
                     ),
                   ),
                 ),
                 Text(
                   timeRange,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12,
                     height: 1,
-                    color: Color(0xFFBEBEBE),
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ],
@@ -116,11 +116,11 @@ class _ActivityCardState extends State<ActivityCard> {
                     margin: const EdgeInsets.fromLTRB(0, 5.5, 0, 5.5),
                     child: Text(
                       widget.game.mood,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 12,
                         height: 0.9,
-                        color: Color(0xFFBEBEBE),
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   ),

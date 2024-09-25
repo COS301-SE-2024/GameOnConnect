@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -48,7 +49,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
             return Center(
               child: LoadingAnimationWidget.halfTriangleDot(
                 color: Theme.of(context).colorScheme.primary,
-                size: 36,
+                size: 36.pixelScale(context),
               ),
             );
           } else if (snapshot.hasError) {
@@ -63,14 +64,14 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         builder: (context) => ViewEventDetailsWidget(e: e)));
               },
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                padding:  EdgeInsetsDirectional.fromSTEB(0, 0, 12.pixelScale(context), 0),
                 child: Container(
-                  width: 147,
-                  height: 200,
+                  width: 147.pixelScale(context),
+                  height: 200.pixelScale(context),
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.pixelScale(context)),
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 2,
@@ -82,8 +83,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                         )
                       ]),
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        11.61, 11.61, 11.61, 11.61),
+                    padding:  EdgeInsetsDirectional.fromSTEB(
+                        11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -94,16 +95,16 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(2, 0, 2, 6),
+                                padding:  EdgeInsets.fromLTRB(2.pixelScale(context), 0, 2.pixelScale(context), 6.pixelScale(context)),
                                 child: CachedNetworkImage(
-                                  height: 83.65,
+                                  height: 83.65.pixelScale(context),
                                   width: double.infinity,
                                   imageUrl: imageUrl,
                                   imageBuilder: (context, imageProvider) =>
                                       Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(12.pixelScale(context)),
                                       image: DecorationImage(
                                           image: imageProvider,
                                           fit: BoxFit.cover),
@@ -113,7 +114,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                       child: LoadingAnimationWidget.halfTriangleDot(
                                         color:
                                             Theme.of(context).colorScheme.primary,
-                                        size: 36,
+                                        size: 36.pixelScale(context),
                                       ),
                                     ), // Loading indicator for banner
                                   errorWidget: (context, url, error) =>
@@ -129,7 +130,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                           Brightness.light
                                       ? Colors.black
                                       : Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 16.pixelScale(context),
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -138,10 +139,10 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                               ),
                               Expanded(
                                 child: Text(DateFormat('d EEEE MMM yyyy  kk:mm').format(e.startDate),
-                                  style: const TextStyle(
+                                  style:  TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey,
-                                    fontSize: 14,
+                                    fontSize: 14.pixelScale(context),
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w500,
                                   ),
