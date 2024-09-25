@@ -230,8 +230,13 @@ class _EditProfilePage extends State<EditProfilePage> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      Stack(
-                        children: [
+                  Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
                           InkWell(
                             onTap: _pickBanner,
                             child: Stack(
@@ -283,18 +288,11 @@ class _EditProfilePage extends State<EditProfilePage> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                            height: 111,
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              clipBehavior: Clip.none,
-                              children: <Widget>[
-                                //banner
+
 
                                 Positioned(
                                   bottom:
-                                      -80, // Half of the CircleAvatar's radius to align it properly
+                                      -50, // Half of the CircleAvatar's radius to align it properly
                                   left: 20,
                                   //profile picture
                                   child: InkWell(
@@ -355,8 +353,6 @@ class _EditProfilePage extends State<EditProfilePage> {
                               ],
                             ),
                           ),
-                        ],
-                      ),
                       const SizedBox(height: 15),
                       Expanded(
                         child: ListView(
@@ -449,7 +445,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                    ],
+          ],
                   ),
                 ),
               ));
