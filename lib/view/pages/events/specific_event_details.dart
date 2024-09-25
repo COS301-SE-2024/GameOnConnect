@@ -222,8 +222,7 @@ class _ViewEventDetailsWidgetState extends State<ViewEventDetailsWidget> {
                                 startInfo: "Ending at",
                                 endInfo: DateFormat('EEE, y/MM/d, kk:mm')
                                         .format(e.endDate) +
-                                    ' \n' +
-                                    timezone,
+                                    ' \n' + timezone,
                               ),
                               SpecificEventInfoContainer(
                                   startInfo: "Visibility",

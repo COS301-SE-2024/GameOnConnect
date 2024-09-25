@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 
 class Wishlist {
@@ -43,6 +44,7 @@ class Wishlist {
             .collection('profile_data')
             .doc(currentUser?.uid)
             .set(data, SetOptions(merge: true));
+            BadgeService().unlockExplorerComponent('want_to_play');
       }
     } catch (e) {
       //return 0;

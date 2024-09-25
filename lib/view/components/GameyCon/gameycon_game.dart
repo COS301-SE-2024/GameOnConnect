@@ -4,9 +4,9 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
-import 'package:gameonconnect/GameyCon/components/jump_button.dart';
-import 'package:gameonconnect/GameyCon/components/player.dart';
-import 'package:gameonconnect/GameyCon/components/levels.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/jump_button.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/player.dart';
+import 'package:gameonconnect/view/components/GameyCon/components/levels.dart';
 
 class GameyCon extends FlameGame
     with
@@ -23,7 +23,7 @@ class GameyCon extends FlameGame
   bool showControls = true;
   bool playSounds = true;
   double soundVolume = 1.0;
-  List<String> levelNames = ['Level-1', 'Level-2'];
+  List<String> levelNames = ['Level-1', 'Level-2', 'Level-3'];
   int currentLevelIndex = 0;
 
   GameyCon({required String selectedCharacter}) {

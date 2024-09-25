@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../pages/events/specific_event_details.dart';
@@ -110,7 +111,7 @@ class EventCard extends State<EventCardWidget> {
                                   maxLines: 1,
                                 ),
                                 Text(
-                                  '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
+                                  DateFormat('EEEE, d MMM yyyy  kk:mm').format(e.startDate),
                                   style: TextStyle(
                                     fontFamily: 'Inter',
                                     color: Theme.of(context).brightness ==

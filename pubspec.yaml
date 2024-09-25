@@ -47,7 +47,6 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   expandable: ^5.0.1
   url_launcher: ^6.0.20
-  delightful_toast: ^1.1.0
   file_picker: ^8.0.5
   image_picker: ^1.1.2
   internet_connection_checker_plus: ^2.3.0
@@ -72,6 +71,8 @@ dependencies:
   html_unescape: ^2.0.0
   insta_image_viewer: ^1.0.4
   youtube_player_flutter: ^9.0.3
+  permission_handler: ^11.3.1
+  avatar_stack: ^1.2.0
 
   flame: ^1.19.0
   flame_tiled: ^1.20.3

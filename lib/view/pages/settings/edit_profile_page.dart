@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
+ import 'package:flutter/material.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../components/settings/edit_input_text.dart';
@@ -52,7 +54,9 @@ class _EditProfilePage extends State<EditProfilePage> {
         if (_formKey.currentState?.validate() == true) {
           _formKey.currentState?.save();
           editProfile();
-          // ignore: use_build_context_synchronously
+         CustomSnackbar().show(context,'Updated profile successfully'
+          );
+
           Navigator.of(context).pop();
         }
       } else {
@@ -77,7 +81,6 @@ class _EditProfilePage extends State<EditProfilePage> {
       await EditProfileService().editProfile(
           _username, _firstName, _lastName, _bio, _birthday!, _isPrivate);
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error updating profile'),
@@ -155,11 +158,15 @@ class _EditProfilePage extends State<EditProfilePage> {
                             label: 'Birthday',
                             onChanged: (value) => {_birthday = value},
                           ),
-                          const Align(alignment: Alignment(-1,0),child:ToolTip(message: "When your profile is set "
-                              "to Private, only your connections can "
-                              "view your profile."),),
+                          const Align(
+                            alignment: Alignment(-1, 0),
+                            child: ToolTip(
+                                message: "When your profile is set "
+                                    "to Private, only your connections can "
+                                    "view your profile."),
+                          ),
                           const SizedBox(
-                            height:3,
+                            height: 3,
                           ),
                           EditSwitch(
                             label: 'Private',

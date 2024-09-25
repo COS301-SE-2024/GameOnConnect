@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_genres_service.dart';
-import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+//import 'package:gameonconnect/services/stats_S/stats_leaderboard_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 
 import 'package:gameonconnect/view/components/stats/total_time_boxes.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart.dart';
 import 'package:gameonconnect/view/components/stats/genres_bar_graph.dart';
-import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
+//import 'package:gameonconnect/view/components/stats/leaderboard_pie_chart.dart';
 
 class StatsPage extends StatefulWidget {
   final String userID;
@@ -18,12 +20,13 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late final StatsTotalTimeService totalTimeService = StatsTotalTimeService();
   late final StatsMoodService statsMoodService = StatsMoodService();
   late final StatsGenresService statsGenresService = StatsGenresService();
-  late final StatsLeaderboardService leaderboardService =
-      StatsLeaderboardService();
+  //late final StatsLeaderboardService leaderboardService =
+  //StatsLeaderboardService();
 
   bool _isLoading = true;
   bool _isLoadingT = true;
@@ -34,19 +37,20 @@ class _StatsPageState extends State<StatsPage> {
   double allTime = 0;
   double playPercentage = 0;
 
-  Map<String, int> leaderboardData = {
+  /*Map<String, int> leaderboardData = {
     '1st': 0,
     '2nd': 0,
     '3rd': 0,
     'Top 5': 0,
     'Top 10': 0,
-  };
+  };*/
 
   @override
   void initState() {
     super.initState();
     _fetchTotalTimeStats();
     _fetchLeaderboardData();
+    _badgeService.unlockGamerBadge();
   }
 
   Future<void> _fetchTotalTimeStats() async {
@@ -79,9 +83,9 @@ class _StatsPageState extends State<StatsPage> {
 
   Future<void> _fetchLeaderboardData() async {
     try {
-      final data = await leaderboardService.fetchLeaderboardData(widget.userID);
+      //final data = await leaderboardService.fetchLeaderboardData(widget.userID);
       setState(() {
-        leaderboardData = data;
+        //leaderboardData = data;
         _isLoading = false;
       });
     } catch (e) {
@@ -97,29 +101,13 @@ class _StatsPageState extends State<StatsPage> {
         child: Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Text(
-          'Gaming Stats',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: false,
-        elevation: 2,
+      appBar: BackButtonAppBar(
+        onBackButtonPressed: () {
+          Navigator.of(context).pop();
+        },
+        title: 'Gaming Stats',
+        iconkey: const Key('Gamaing_stats_icon'),
+        textkey: const Key('Gaming_stats_text'),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -178,13 +166,20 @@ class _StatsPageState extends State<StatsPage> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                     GenresStatsComponent(userID: widget.userID),
+                    const Text(
+                      "Amount of games played per genre",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Divider(
                       thickness: 1,
                       indent: 15,
                       endIndent: 15,
                       color: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    StatsLeaderboardPage(userID: widget.userID),
+                    //StatsLeaderboardPage(userID: widget.userID),
                   ],
                 ),
               ),

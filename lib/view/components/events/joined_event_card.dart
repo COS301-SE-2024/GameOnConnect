@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/events/specific_event_details.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../services/events_S/event_service.dart';
@@ -136,8 +137,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                                 maxLines: 2,
                               ),
                               Expanded(
-                                child: Text(
-                                  '${e.startDate.year}/${e.startDate.month}/${e.startDate.day} at ${e.startDate.hour}:${e.startDate.minute}',
+                                child: Text(DateFormat('d EEEE MMM yyyy  kk:mm').format(e.startDate),
                                   style: const TextStyle(
                                     fontFamily: 'Inter',
                                     color: Colors.grey,

@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters
 import 'dart:io';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
@@ -16,6 +14,7 @@ import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
 import 'package:gameonconnect/view/pages/games_page/games_page.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -35,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+  final BadgeService _badgeService = BadgeService();
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
@@ -58,14 +58,14 @@ class _HomePageState extends State<HomePage> {
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
+
+    _badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   String getCurrentUserId() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return currentUserId;
-
-    //WidgetsBinding.instance
-    //.addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
 
   @override
@@ -88,30 +88,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showNoInternetToast() {
-    DelightToastBar(
-      builder: (context) {
-        return CustomToastCard(
-          title: Text(
-            'No internet connection', // Changed message here
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        );
-      },
-      position: DelightSnackbarPosition.top,
-      autoDismiss: true,
-      snackbarDuration: const Duration(seconds: 3),
-    ).show(context);
+    CustomSnackbar().show(context, 'Please check your internet connection');
   }
 
   void _showUsernameSet() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Username has been set successfully'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    CustomSnackbar().show(context, 'Username has been set successfully');
   }
 
   Future<bool> _saveUsername(String username) async {
@@ -314,7 +295,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername();
+    fetchUsername(); 
   }
 
   Future<void> fetchUsername() async {

@@ -10,6 +10,7 @@ import 'package:gameonconnect/view/components/appbars/backbutton_appbar_componen
 import 'package:gameonconnect/view/components/settings/customize_tag_container.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomizeProfilePage extends StatefulWidget {
   const CustomizeProfilePage({super.key});
@@ -125,20 +126,31 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
         );
       }
     } else {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileImage = image.path;
-          _profileImageUrl = '';
-        });
+      PermissionStatus status = await Permission.photos.request();
+
+      if (status.isGranted) {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          setState(() {
+            _profileImage = image.path;
+            _profileImageUrl = '';
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Image selected successfully.')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to select Image.')),
+          );
+        }
+      } else if (status.isDenied) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image selected successfully.')),
+          const SnackBar(content: Text('Permission denied.')),
         );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
-        );
+      } else if (status.isPermanentlyDenied) {
+        openAppSettings();
       }
     }
   }
@@ -167,20 +179,32 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
       }
     } else {
       // Mobile/desktop implementation
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() {
-          _profileBanner = image.path;
-          _profileBannerUrl = '';
-        });
-        /*ScaffoldMessenger.of(context).showSnackBar(
+
+      PermissionStatus status = await Permission.photos.request();
+
+      if (status.isGranted) {
+        final ImagePicker picker = ImagePicker();
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          setState(() {
+            _profileBanner = image.path;
+            _profileBannerUrl = '';
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Image selected successfully.')),
-        );*/
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to select Image.')),
         );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to select Image.')),
+          );
+        }
+      } else if (status.isDenied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission denied.')),
+        );
+      } else if (status.isPermanentlyDenied) {
+        openAppSettings();
       }
     }
   }
