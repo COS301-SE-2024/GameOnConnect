@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +30,10 @@ class _GameLibraryState extends State<GameLibrary> {
   List<String> selectedPlatforms = [];
   List<String> _activeFilters = [];
   String _filterString = '';
-  final BadgeService _badgeService = BadgeService();
 
   @override
   void initState() {
     super.initState();
-    _badgeService.unlockNightOwlBadge(DateTime.now());
     _loadGames();
 
     _scrollController.addListener(() {
@@ -118,7 +115,6 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
       _loadGames();
     });
-    _badgeService.unlockExplorerComponent("search_game");
   }
 
   clearFilters() {
@@ -143,8 +139,8 @@ class _GameLibraryState extends State<GameLibrary> {
             body: Column(
               children: [
                 TabBar(tabs: const [
-                  Tab(text: 'Games'),
-                  Tab(text: 'Connections'),
+                  Tab(text: 'GAMES'),
+                  Tab(text: 'CONNECTIONS'),
                 ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),

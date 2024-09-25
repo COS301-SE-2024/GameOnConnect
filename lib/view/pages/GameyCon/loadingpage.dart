@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
+import 'package:gameonconnect/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/view/pages/GameyCon/gameycon_page.dart';
 
 class LoadingGameyConPage extends StatefulWidget {

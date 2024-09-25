@@ -7,20 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import '../../../model/events_M/events_model.dart';
 import '../../../model/game_library_M/game_details_model.dart';
-import '../../components/settings/tooltip.dart';
 import 'choose_my_games_page.dart';
 import '../../components/events/create_event_chips.dart';
+
+
 
 class EditEvent extends StatefulWidget {
   final Event e;
   final String imageUrl;
   final void Function(Event updatedEvent) edited;
 
-  const EditEvent(
-      {super.key,
-      required this.e,
-      required this.imageUrl,
-      required this.edited});
+  const EditEvent({super.key, required this.e, required this.imageUrl,required this.edited});
 
   @override
   State<EditEvent> createState() => _EditEventsState();
@@ -51,23 +48,12 @@ class _EditEventsState extends State<EditEvent> {
   List<String> invites = [];
 
   Future<void> editEvent() async {
-    Event updated = Event(
-        creatorID: e.creatorID,
-        startDate: _datePicked,
-        endDate: _endDatePicked,
-        gameID: gameID,
-        name: name,
-        eventID: e.eventID,
-        subscribed: e.subscribed,
-        participants: e.participants,
-        description: description,
-        privacy: isChanged,
-        invited: invites,
-        creatorName: e.creatorName,
-        eventType: selectedOption);
+    Event updated = Event(creatorID:  e.creatorID,startDate: _datePicked,endDate: _endDatePicked,gameID:  gameID,
+        name: name,eventID: e.eventID, subscribed: e.subscribed, participants: e.participants,description: description,
+        privacy: isChanged,invited: invites,creatorName: e.creatorName,eventType: selectedOption);
     widget.edited(updated);
-    await EventsService().editEvent(
-        imageChanged,
+     await EventsService().editEvent(
+      imageChanged,
         selectedOption,
         _datePicked,
         name,
@@ -78,6 +64,7 @@ class _EditEventsState extends State<EditEvent> {
         filePath != null ? filePath!.path : imageUrl,
         description,
         e.eventID);
+
   }
 
   Future pickImage() async {
@@ -124,6 +111,7 @@ class _EditEventsState extends State<EditEvent> {
     isChanged = e.privacy;
     imageUrl = widget.imageUrl;
     invites = e.invited;
+
   }
 
   @override
@@ -330,23 +318,7 @@ class _EditEventsState extends State<EditEvent> {
                                             ),
                                           ),
                                           const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const ToolTip(
-                                              message:
-                                                  "Tournaments are competitive, "
-                                                  "whereas gaming sessions "
-                                                  "are more relaxed with "
-                                                  "people you know "),
-                                          ChipSelector(
-                                              selectedOption: selectedOption,
-                                              onSelected: (option) {
-                                                (setState(() {
-                                                  selectedOption = option;
-                                                }));
-                                              }),
-                                          const SizedBox(
-                                            height: 10,
+                                            height: 15,
                                           ),
                                           InkWell(
                                             splashColor: Colors.transparent,
@@ -355,16 +327,18 @@ class _EditEventsState extends State<EditEvent> {
                                             highlightColor: Colors.transparent,
                                             onTap: () async {
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChooseGame(
-                                                            chosenGame: gameID,
-                                                          ))).then(
-                                                  (gameChosen) {
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChooseGame(
+                                                                chosenGame:
+                                                                    gameID,
+                                                              )))
+                                                  .then((gameChosen) {
                                                 setState(() {
                                                   if (gameChosen != null) {
-                                                    gameID = gameChosen;
+                                                    gameID =
+                                                        gameChosen;
                                                   }
                                                 });
                                               });
@@ -408,7 +382,7 @@ class _EditEventsState extends State<EditEvent> {
                                                         .check_circle_outline_rounded,
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .primary,
+                                                        .secondary,
                                                     size: 24,
                                                   ),
                                                 ],
@@ -420,8 +394,7 @@ class _EditEventsState extends State<EditEvent> {
                                           ),
                                           TextFormField(
                                             onTapOutside: (event) {
-                                              description =
-                                                  descriptionController.text;
+                                              description = descriptionController.text;
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
                                             },
@@ -488,14 +461,18 @@ class _EditEventsState extends State<EditEvent> {
                                             cursorColor: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
-                                            onFieldSubmitted: (val) => {
-                                              description =
-                                                  descriptionController.text
-                                            },
+                                              onFieldSubmitted: (val) => {description = descriptionController.text},
                                           ),
                                           const SizedBox(
                                             height: 10,
                                           ),
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),
                                           Text(
                                             'Start*',
                                             style: TextStyle(
@@ -538,11 +515,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     await showTimePicker(
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
-                                                        initialTime: TimeOfDay(
-                                                            hour: _datePicked
-                                                                .hour,
-                                                            minute: _datePicked
-                                                                .minute),
+                                                        initialTime:
+                                                            TimeOfDay(hour: _datePicked.hour, minute: _datePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -597,9 +571,10 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    DateFormat(
-                                                            'd MMMM , kk:mm ')
-                                                        .format(_datePicked),
+                                                        DateFormat(
+                                                                'd MMMM , hh:mm a')
+                                                            .format(
+                                                                _datePicked),
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       color: Theme.of(context)
@@ -657,12 +632,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     await showTimePicker(
                                                         //ignore: use_build_context_synchronously
                                                         context: context,
-                                                        initialTime: TimeOfDay(
-                                                            hour: _endDatePicked
-                                                                .hour,
-                                                            minute:
-                                                                _endDatePicked
-                                                                    .minute),
+                                                        initialTime:
+                                                        TimeOfDay(hour: _endDatePicked.hour, minute: _endDatePicked.minute),
                                                         builder:
                                                             (context, child) {
                                                           return Theme(
@@ -727,9 +698,9 @@ class _EditEventsState extends State<EditEvent> {
                                                           .fromSTEB(
                                                           12, 0, 0, 0),
                                                   child: Text(
-                                                    validEndDate
+                                                            validEndDate
                                                         ? DateFormat(
-                                                                'd MMMM , kk:mm')
+                                                                'd MMMM , hh:mm a')
                                                             .format(
                                                                 _endDatePicked)
                                                         : 'Select a date',
@@ -749,10 +720,6 @@ class _EditEventsState extends State<EditEvent> {
                                             ),
                                           ),
                                           const SizedBox(height: 20),
-                                          const ToolTip(
-                                              message:
-                                                  "Public events are seen by all users and anyone can join it."),
-                                          const SizedBox(height: 3,),
                                           Container(
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -855,8 +822,8 @@ class _EditEventsState extends State<EditEvent> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(invites.isEmpty?'Invite connections*':
-                                                  'Invite connections (${invites.length})',
+                                                  Text(
+                                                    'Invite connections*',
                                                     style: TextStyle(
                                                       fontFamily: 'Inter',
                                                       letterSpacing: 0,
@@ -871,9 +838,9 @@ class _EditEventsState extends State<EditEvent> {
                                                               .add_circle_outline
                                                           : Icons
                                                               .check_circle_outline_rounded,
-                                                      color:  invites.isEmpty?Theme.of(context)
+                                                      color: Theme.of(context)
                                                           .colorScheme
-                                                          .secondary:Theme.of(context).colorScheme.primary,)
+                                                          .secondary),
                                                 ],
                                               ),
                                             ),

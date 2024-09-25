@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/view/pages/space_shooter_game/space_shooter_game.dart';
 
-class GamePage extends StatefulWidget {
+class GamePage extends StatelessWidget {
   const GamePage({super.key});
-
-  @override
-  State<GamePage> createState() => _GamePageState();
-}
-
-class _GamePageState extends State<GamePage> {
-  final BadgeService _badgeService = BadgeService();
-  
-  @override
-  void initState() {
-    super.initState();
-    _badgeService.unlockExplorerComponent("play_spaceshooter");
-  }
 
   @override
   Widget build(BuildContext context) {

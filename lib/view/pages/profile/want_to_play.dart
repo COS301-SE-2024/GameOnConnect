@@ -13,11 +13,9 @@ class WantToPlayList extends StatefulWidget {
     super.key,
     required this.gameIds,
     required this.heading,
-    required this.isOwnProfile,
   });
   final List<String> gameIds;
   final String heading;
-  final bool isOwnProfile;
 
   @override
   State<WantToPlayList> createState() => _WantToPlayListState();
@@ -64,7 +62,7 @@ class _WantToPlayListState extends State<WantToPlayList> {
               ),
             ),
           ),
-          if (widget.gameIds.isEmpty && widget.isOwnProfile)
+          if (widget.gameIds.isEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

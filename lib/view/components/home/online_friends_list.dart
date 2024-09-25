@@ -31,12 +31,11 @@ class _CurrentlyOnlineBarState extends State<CurrentlyOnlineBar> {
 
     List<AppUser>? onlineUsers =
         await _connectionService.getOnlineConnections();
-    if(mounted) {
-      setState(() {
-        _friends = onlineUsers;
-        _isLoading = false;
-      });
-    }else {return;}
+
+    setState(() {
+      _friends = onlineUsers;
+      _isLoading = false;
+    });
   }
 
   @override

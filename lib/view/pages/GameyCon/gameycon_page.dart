@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
-import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/score.dart'; 
+import 'package:gameonconnect/GameyCon/components/leavebutton.dart';
+import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/GameyCon/components/score.dart'; 
 
 class GameyConPage extends StatefulWidget {
   final String selectedCharacter;

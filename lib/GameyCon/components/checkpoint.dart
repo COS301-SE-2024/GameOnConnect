@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/player.dart';
+import 'package:gameonconnect/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/GameyCon/components/player.dart';
 
 class Checkpoint extends SpriteAnimationComponent
     with HasGameRef<GameyCon>, CollisionCallbacks {

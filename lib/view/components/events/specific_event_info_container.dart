@@ -51,7 +51,7 @@ class _InfoContainer extends State<SpecificEventInfoContainer>{
               style: TextStyle(
                 color: Theme.of(context)
                     .colorScheme
-                    .primary,
+                    .secondary,
                 fontSize: 12,
                 fontWeight: FontWeight.normal,
               ),

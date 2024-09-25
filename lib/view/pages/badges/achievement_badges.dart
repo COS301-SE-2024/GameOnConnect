@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/view/pages/badges/badge_page.dart';
+import 'package:gameonconnect/view/pages/models/specific_badge_page.dart';
 
 class AchievementBadgesPage extends StatefulWidget {
   const AchievementBadgesPage({super.key});
@@ -40,14 +40,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary
-        ),
-        title: Text('My Badges',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.primary)),
+        title: const Text('My Badges'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -61,13 +54,10 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BadgePage(
-                          badgeName: badges[index],
-                          badgeFileName: badgeFiles[index])),
-                );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SpecificBadgePage(badgeName: badges[index] ,badgeFileName: badgeFiles[index])),
+                  );
               },
               child: Container(
                 decoration: BoxDecoration(

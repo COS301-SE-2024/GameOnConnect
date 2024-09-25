@@ -26,24 +26,24 @@ class _LoginState extends State<Login> {
   UserCredential? _userG;
 
   Future<void> signIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-    } catch (e) {
-      passwordController.clear();
-      emailController.clear();
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Email or password incorrect"),
-          backgroundColor: Colors.red.shade300,
-        ),
-      );
-      rethrow;
-    }
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+  } catch (e) {
+    passwordController.clear();
+    emailController.clear();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Email or password incorrect"),
+        backgroundColor: Colors.red.shade300,
+      ),
+    );
+    rethrow; 
   }
+}
 
   Future google() async {
     _userG = await AuthService().signInWithGoogle();
@@ -54,48 +54,6 @@ class _LoginState extends State<Login> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  void _showForgotPasswordDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Forgot Password'),
-          content: TextField(
-            controller: emailController,
-            decoration: InputDecoration(hintText: 'Enter your email'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                try {
-                  AuthService().sendPasswordResetEmail(emailController.text);
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: ${e.toString()}')),
-                  );
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Password reset email sent'),
-                  ),
-                );
-
-                Navigator.of(context).pop();
-              },
-              child: Text('Send'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -137,7 +95,8 @@ class _LoginState extends State<Login> {
                           contentPadding: EdgeInsets.only(left: 15, top: 12.5),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: Theme.of(context).colorScheme.secondary
+                            ,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -199,23 +158,22 @@ class _LoginState extends State<Login> {
                             size: 20,
                           ),
                         ),
-                        //Leaving this code in should we require it later
-                        //validator: (value) {
-                        //  if (value == null || value.isEmpty) {
-                        //    return 'Please enter a password';
-                        //  }
-                        //  if (!RegExp(r'^.{8,}$').hasMatch(value)) {
-                        //    return 'Password must be at least 8 characters';
-                        //  }
-                        //  if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
-                        //    return 'Password must contain an uppercase letter';
-                        //  }
-                        //  if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
-                        //      .hasMatch(value)) {
-                        //    return 'Password must contain a symbol';
-                        //  }
-                        //  return null;
-                        //},
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          if (!RegExp(r'^.{8,}$').hasMatch(value)) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          if (!RegExp(r'^.*[A-Z].*$').hasMatch(value)) {
+                            return 'Password must contain an uppercase letter';
+                          }
+                          if (!RegExp(r'^.*[!@#$%^&*(),.?":{}|<>].*$')
+                              .hasMatch(value)) {
+                            return 'Password must contain a symbol';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -223,15 +181,12 @@ class _LoginState extends State<Login> {
                   Container(
                     alignment: Alignment.centerLeft, // Add this line
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
-                    child: GestureDetector(
-                      onTap: _showForgotPasswordDialog,
-                      child: Text(
-                        "Forgot password?",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                    child: Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
@@ -242,38 +197,33 @@ class _LoginState extends State<Login> {
                     child: GestureDetector(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          await signIn();
-                          if (!mounted) return;
-
-                          FirebaseAuth.instance
-                              .userChanges()
-                              .listen((User? user) {
-                            if (user != null) {
+                            await signIn();
+                            if (!mounted) return;
+                            
+                            FirebaseAuth.instance.userChanges().listen((User? user) {
+                             if(user != null){
                               if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("Welcome to GameOnConnect"),
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .primary));
+                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                   content: Text("Welcome to GameOnConnect"),
+                              backgroundColor: Theme.of(context).colorScheme.primary));
                               if (!mounted) return;
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        SplashScreen()),
-                                (Route<dynamic> route) => false,
-                              );
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          SplashScreen()),
+                                      (Route<dynamic> route) => false,
+                                );
+                              }
                             }
-                          });
+                            );
 
                           if (validUser) {
                             if (!context.mounted) return;
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      SplashScreen()),
+                                  builder: (BuildContext context) => SplashScreen()),
                               (Route<dynamic> route) => false,
                             );
                           } else {
@@ -336,8 +286,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SplashScreen()),
+                                builder: (BuildContext context) => SplashScreen()),
                             (Route<dynamic> route) => false,
                           );
                         }

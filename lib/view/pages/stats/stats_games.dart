@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/stats_S/stats_games_service.dart';
-import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -23,6 +22,7 @@ class _GamesWidgetState extends State<GamesWidget> {
 
   void _fetchGameData() async {
     setState(() {
+      // print('gameData given to function form games page: ${widget.gameData}');
       _gameData = StatsGamesService().fetchGameImages(widget.gameData);
     });
   }
@@ -31,17 +31,29 @@ class _GamesWidgetState extends State<GamesWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: BackButtonAppBar(
-       onBackButtonPressed:
-           () {
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 30,
+          ),
+          onPressed: () {
             Navigator.of(context).pop();
           },
-
-        title:
+        ),
+        title: Text(
           'Games',
-        iconkey: const Key('Stats_back_key'),
-        textkey: const Key('Stats_text_key'),
-
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: 32,
+            letterSpacing: 0,
+          ),
+        ),
+        centerTitle: false,
+        elevation: 2,
       ),
       body: FutureBuilder<List<Map<String, String>>>(
         future: _gameData,

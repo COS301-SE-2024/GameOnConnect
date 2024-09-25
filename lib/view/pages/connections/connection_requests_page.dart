@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart'; //You can remove this service when replacing with your own
 
@@ -13,14 +12,6 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
-  final BadgeService _badgeService = BadgeService();
-  
-  @override
-  void initState() {
-    super.initState();
-    _badgeService.unlockNightOwlBadge(DateTime.now());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

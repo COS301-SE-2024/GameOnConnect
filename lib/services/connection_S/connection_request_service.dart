@@ -109,7 +109,6 @@ class UserService {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
         'connections': FieldValue.arrayRemove([targetUserId])
-       
       });
 
       await _firestore.collection('connections').doc(targetUserId).update({

@@ -3,7 +3,6 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
 enum MovingBird { middle, up, down }
@@ -69,12 +68,6 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
  void gameIsOver(){
   FlameAudio.play('collision.wav');
   game.collision=true;
-
-  if(totalScore>= 15)
-  {
-    BadgeService().unlockAchieverBadge();
-  }
-
   gameRef.overlays.add('gameOver');
   gameRef.pauseEngine();
  }

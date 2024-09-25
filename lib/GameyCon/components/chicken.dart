@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/player.dart';
-import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
+import 'package:gameonconnect/GameyCon/components/player.dart';
+import 'package:gameonconnect/GameyCon/gameycon_game.dart';
 
 enum State { idle, run, hit }
 

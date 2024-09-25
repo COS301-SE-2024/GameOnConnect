@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gameonconnect/view/pages/settings/settings_page.dart';
-import 'package:gameonconnect/view/theme/theme_provider.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('test the settings page', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ],
-        child: const MaterialApp(home: Options()),
-      ),
-    );
+  testWidgets('Navigates to Customize Profile on tap',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: Options()));
     await tester.pumpAndSettle();
 
     expect(

@@ -16,14 +16,6 @@ class TotalTimeComponent extends StatelessWidget {
     required this.playPercentage,
   });
 
-  String formatTime(double time) {
-    if (time < 1) {
-      return '${(time * 60).toStringAsFixed(0)} minutes';
-    } else {
-      return '${time.toStringAsFixed(1)} hours';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,7 +74,7 @@ class TotalTimeComponent extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: Text(
-                              formatTime(todayTime),
+                              '${todayTime.toStringAsFixed(2)} hours',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold,
@@ -121,7 +113,7 @@ class TotalTimeComponent extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: Text(
-                              formatTime(pastWeekTime),
+                              '${pastWeekTime.toStringAsFixed(2)} hours',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold,
@@ -160,7 +152,7 @@ class TotalTimeComponent extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: Text(
-                              formatTime(pastMonthTime),
+                              '${pastMonthTime.toStringAsFixed(2)} hours',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.bold,
@@ -213,7 +205,7 @@ class TotalTimeComponent extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(2, 0, 2, 0),
                                   child: Text(
-                                    allTime.toStringAsFixed(1),
+                                    allTime.toStringAsFixed(3),
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
@@ -294,7 +286,7 @@ class TotalTimeComponent extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 2, 0),
                                   child: Text(
-                                    '${playPercentage.toStringAsFixed(0)}%',
+                                    '${playPercentage.toStringAsFixed(3)}%',
                                     style: TextStyle(
                                       color: Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,

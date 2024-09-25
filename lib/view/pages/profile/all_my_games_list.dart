@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/Stats_M/game_stats.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/profile/game_card.dart';
@@ -16,13 +15,11 @@ class AllMyGamesList extends StatefulWidget {
     required this.heading,
     required this.currentlyPlaying,
     required this.gameActivities,
-    required this.isOwnProfile,
   });
   final List<GameStats> myGameStats;
   final List<GameStats> gameActivities;
   final String heading;
   final String currentlyPlaying;
-  final bool isOwnProfile;
 
   @override
   State<AllMyGamesList> createState() => _AllMyGamesListState();
@@ -150,10 +147,6 @@ class _AllMyGamesListState extends State<AllMyGamesList> {
                                           gameName: gameDetails.name,
                                         ),
                                       ));
-                                      if(widget.isOwnProfile)
-                                      {
-                                          BadgeService().unlockExplorerComponent('view_activity');
-                                      }
                                 },
                                 child: ProfileGamesCard(
                                   image: gameDetails.backgroundImage,
