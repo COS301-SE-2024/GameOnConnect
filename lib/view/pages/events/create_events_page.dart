@@ -310,6 +310,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                           SizedBox(
                                             height: 20.pixelScale(context),
                                           ),
+
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
