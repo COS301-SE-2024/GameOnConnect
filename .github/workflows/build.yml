@@ -1,0 +1,129 @@
+name: Build and Upload Release APK to Github
+
+# This will only trigger on pushes to main and Develop branches.
+on:
+  push:
+    branches:
+      - main
+      - Develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Java (JDK 17)
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    # Step 3: Set up Flutter
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.1'
+    
+    # Step 4: Create .env file with secrets
+    - name: Create .env file
+      run: |
+        echo "WEB_API_KEY=${{ secrets.WEB_API_KEY }}" >> .env
+        echo "WEB_APP_ID=${{ secrets.WEB_APP_ID }}" >> .env
+        echo "ANDROID_API_KEY=${{ secrets.ANDROID_API_KEY }}" >> .env
+        echo "ANDROID_APP_ID=${{ secrets.ANDROID_APP_ID }}" >> .env
+        echo "IOS_API_KEY=${{ secrets.IOS_API_KEY }}" >> .env
+        echo "IOS_APP_ID=${{ secrets.IOS_APP_ID }}" >> .env
+        echo "MESSAGE_SENDER_ID=${{ secrets.MESSAGE_SENDER_ID }}" >> .env
+        echo "PROJECT_ID=${{ secrets.PROJECT_ID }}" >> .env
+        echo "STORAGE_BUCKET=${{ secrets.STORAGE_BUCKET }}" >> .env
+        echo "AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }}" >> .env
+        echo "IOS_BUNDLE_ID=${{ secrets.IOS_BUNDLE_ID }}" >> .env
+        echo "DEFAULT_IMAGE_URL=${{ secrets.DEFAULT_IMAGE_URL }}" >> .env
+        echo "DEFAULT_BANNER_URL=${{ secrets.DEFAULT_BANNER_URL }}" >> .env
+      shell: bash
+
+    # Step 5: Create local.properties file
+    - name: Create local.properties file
+      run: |
+        echo "sdk.dir=/usr/local/lib/android/sdk" > android/local.properties
+        echo "flutter.sdk=/opt/hostedtoolcache/flutter/3.24.1-stable/x64" >> android/local.properties
+        echo "flutter.buildMode=debug" >> android/local.properties
+        echo "flutter.versionName=1.0.0" >> android/local.properties
+        echo "flutter.versionCode=1" >> android/local.properties
+        echo "flutter.minSdkVersion=23" >> android/local.properties
+        echo "flutter.targetSdkVersion=34" >> android/local.properties
+        echo "flutter.compileSdkVersion=34" >> android/local.properties
+      shell: bash
+
+    # Step 6: Create google-services.json file
+    - name: Create google-services.json file
+      run: |
+        cat <<EOF > android/app/google-services.json
+        ${{ secrets.GOOGLE_SERVICES_JSON }}
+        EOF
+      shell: bash
+
+    # Step 7: Install all the dependencies
+    - name: Install dependencies
+      run: flutter pub get
+
+    # Step 8: Upgrade dependencies to newer versions
+    - name: Upgrade dependencies
+      run: flutter pub upgrade
+
+    # Step 9: Make sure dependencies are up to date
+    - name: Check outdated dependencies
+      run: flutter pub outdated
+      
+    # Step 10: Build the release APK
+    - name: Build release APK
+      run: flutter build apk --release
+
+    # Step 11: Upload the build artifacts
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 12: Checkout the repository again to get the artifact build that was created
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 13: Download the build artifacts from the previous job
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/
+
+    # Step 14: Create a new release
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Version_${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    # Step 15: Upload the APK to the release on GitHub
+    - name: Upload APK
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: build/app/outputs/flutter-apk/app-release.apk
+        asset_name: app-release.apk
+        asset_content_type: application/vnd.android.package-archive

@@ -1,12 +1,11 @@
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class BadgePage extends StatefulWidget {
-  final String badgeFileName;
-  final String badgeName;
-  const BadgePage(
-      {super.key, required this.badgeFileName, required this.badgeName});
+  final MapEntry<String, dynamic> badge;
+  const BadgePage({super.key, required this.badge});
 
   @override
   State<BadgePage> createState() => _BadgePageState();
@@ -17,9 +16,7 @@ class _BadgePageState extends State<BadgePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.primary
-        ),
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text('My Badges',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -31,7 +28,7 @@ class _BadgePageState extends State<BadgePage> {
             child: ModelViewer(
           disablePan: true,
           disableZoom: true,
-          src: 'assets/models/${widget.badgeFileName}.glb',
+          src: 'assets/models/${widget.badge.key}.glb',
           alt: 'A 3D model of a badge',
           autoRotate: true,
           cameraControls: true,
@@ -42,13 +39,13 @@ class _BadgePageState extends State<BadgePage> {
             color: Theme.of(context).colorScheme.primaryContainer,
           ),
         ),
-        Text(widget.badgeName,
+        Text(widget.badge.key.replaceAll('_', ' ').toUpperCase(),
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
         const SizedBox(height: 18),
         const SizedBox(
             width: 280,
             child: Text(
-              "You earned this badge by using the app for 10 consecutive days",
+              "You earned this badge by",
               style: TextStyle(fontSize: 13, color: Colors.grey),
               textAlign: TextAlign.center,
             )),
@@ -63,7 +60,10 @@ class _BadgePageState extends State<BadgePage> {
             const SizedBox(
               width: 10,
             ),
-            const Text("2024/03/02", style: TextStyle(color: Colors.grey))
+            Text(
+                DateFormat('yyyy/MM/dd')
+                    .format(widget.badge.value['date_unlocked'].toDate()),
+                style: const TextStyle(color: Colors.grey))
           ],
         ),
         const SizedBox(height: 31),
@@ -72,7 +72,8 @@ class _BadgePageState extends State<BadgePage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Also earned by", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              Text("Also earned by",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ],
           ),
         ),
@@ -84,9 +85,9 @@ class _BadgePageState extends State<BadgePage> {
             height: 50,
             borderColor: Theme.of(context).colorScheme.surface,
             avatars: [
-                    for (var n = 0; n < 15; n++)
-                      NetworkImage('https://i.pravatar.cc/150?img=$n'),
-                  ],
+              for (var n = 0; n < 15; n++)
+                NetworkImage('https://i.pravatar.cc/150?img=$n'),
+            ],
           ),
         ),
         const SizedBox(height: 100)

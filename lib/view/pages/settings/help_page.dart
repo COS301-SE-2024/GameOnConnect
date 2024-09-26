@@ -45,24 +45,29 @@ class _HelpWidgetState extends State<HelpPage> {
         ),
         body: SafeArea(
           top: true,
-          child: Column(mainAxisSize: MainAxisSize.max, children: [
-            Padding(
-              padding: EdgeInsets.all(25.pixelScale(context)),
-              child: Expanded(
-                child: Text(
-                  "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
-                  style: TextStyle(
-                    fontSize: 12.pixelScale(context),
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            HelpCard(
-              heading: "Frequently Asked Questions",
-              followHeading: "Answers to commonly asked questions about "
-                  "GameOnConnect",
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+
+                          const Padding(
+                            padding: EdgeInsets.all(25),
+                            child:Flex(
+                              direction: Axis.horizontal,
+                              children:[Expanded( child:  Text(
+                              "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+        ],
+                            ),
+                    ),
+               HelpCard(heading: "Frequently Asked Questions",
+                  followHeading: "Answers to commonly asked questions about "
+                      "GameOnConnect",
               icon: Icon(
                 Icons.question_mark,
                 color: Theme.of(context).colorScheme.primary,
