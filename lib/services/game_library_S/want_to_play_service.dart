@@ -48,6 +48,7 @@ class Wishlist {
       }
     } catch (e) {
       //return 0;
+      throw "Add To Wishlist error";
     }
   }
 
@@ -64,6 +65,7 @@ class Wishlist {
       });
     } catch (e) {
       //return [];
+      throw "Remove From Wishlist Error";
     }
   }
 
