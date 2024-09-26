@@ -96,34 +96,45 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getPercentageTimePlayedComparedToOthers(String userID) async {
-    try {
-      // User? currentUser = await getCurrentUser();
-      // if (currentUser == null) return 0.0;
+ Future<double> getPercentageTimePlayedComparedToOthers(String userID) async {
+  try {
+    // Fetch all game session stats from Firestore
+    QuerySnapshot<Map<String, dynamic>> snapshot = await db
+        .collection('game_session_stats')
+        .get();
 
-      QuerySnapshot<Map<String, dynamic>> snapshot = await db
-          .collection('game_session_stats')
-          .get();
+    // Map to store the total time played by each user
+    Map<String, double> userTimeMap = {};
 
-      double totalTimePlayedByCurrentUser = 0.0;
-      double totalTimePlayedByAllUsers = 0.0;
+    // Populate the map with total time played by each user
+    for (var doc in snapshot.docs) {
+      String user = doc.data()['user_id'];
+      double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600); // Convert ms to hours
 
-      for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
-        if (doc.data()['user_id'] == userID) {
-          totalTimePlayedByCurrentUser += timePlayed;
-        }
-        totalTimePlayedByAllUsers += timePlayed;
-      }
-
-      if (totalTimePlayedByAllUsers == 0.0) return 0.0;
-
-      double percentage = 100 - ((totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100);
-      return percentage;
-    } catch (e) {
-      return 0.0;
+      // Accumulate the time played for each user
+      userTimeMap[user] = (userTimeMap[user] ?? 0) + timePlayed;
     }
+
+    // Get the total time played by the current user
+    double totalTimePlayedByCurrentUser = userTimeMap[userID] ?? 0.0;
+
+    // Sort the map values (time played) and count how many users played less than the current user
+    int usersOutplayed = userTimeMap.values.where((time) => time < totalTimePlayedByCurrentUser).length;
+
+    // Total number of users
+    int totalUsers = userTimeMap.length;
+
+    if (totalUsers == 0) return 0.0;
+
+    // Calculate the percentage of users that the current user has outplayed
+    double percentage = (usersOutplayed / totalUsers) * 100;
+
+    return percentage;
+  } catch (e) {
+    return 0.0;
   }
+}
+
 
    Future<double> getTotalTimePlayedAll(String userID) async {
     try {
