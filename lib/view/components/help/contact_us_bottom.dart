@@ -12,12 +12,12 @@ class ContactUsBar extends StatelessWidget {
           Clipboard.setData(
             const ClipboardData(text: "support@gameonconnect.com"),
           );
-          ScaffoldMessenger.of(context).showSnackBar(
+         /* ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('Email copied to clipboard'),
               backgroundColor: Theme.of(context).colorScheme.primary,
             ),
-          );
+          );*/
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
