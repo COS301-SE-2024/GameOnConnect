@@ -67,7 +67,6 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                 padding:  EdgeInsetsDirectional.fromSTEB(0, 0, 12.pixelScale(context), 0),
                 child: Container(
                   width: 147.pixelScale(context),
-                  height: 200.pixelScale(context),
                   decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.rectangle,
@@ -85,82 +84,74 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                   child: Padding(
                     padding:  EdgeInsetsDirectional.fromSTEB(
                         11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:  EdgeInsets.fromLTRB(2.pixelScale(context), 0, 2.pixelScale(context), 6.pixelScale(context)),
-                                child: CachedNetworkImage(
-                                  height: 83.65.pixelScale(context),
-                                  width: double.infinity,
-                                  imageUrl: imageUrl,
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(12.pixelScale(context)),
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover),
-                                    ),
+                    child: Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:  EdgeInsets.fromLTRB(2.pixelScale(context), 0, 2.pixelScale(context), 6.pixelScale(context)),
+                            child: CachedNetworkImage(
+                              height: 83.65.pixelScale(context),
+                              width: double.infinity,
+                              imageUrl: imageUrl,
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(12.pixelScale(context)),
+                                  image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
+                              placeholder: (context, url) => Center(
+                                  child: LoadingAnimationWidget.halfTriangleDot(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 36.pixelScale(context),
                                   ),
-                                  placeholder: (context, url) => Center(
-                                      child: LoadingAnimationWidget.halfTriangleDot(
-                                        color:
-                                            Theme.of(context).colorScheme.primary,
-                                        size: 36.pixelScale(context),
-                                      ),
-                                    ), // Loading indicator for banner
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Text(
-                                'Upcoming: ${widget.e?.name}',
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 16.pixelScale(context),
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                              Expanded(
-                                child: Text(DateFormat('d EEEE MMM yyyy  kk:mm').format(e.startDate),
-                                  style:  TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: Colors.grey,
-                                    fontSize: 14.pixelScale(context),
-                                    letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                e.eventType == "Gaming Session"
-                                    ? CupertinoIcons.game_controller
-                                    : Icons.emoji_events_outlined,
-                                color: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context).colorScheme.primary,
-                              ),
-                            ],
+                                ), // Loading indicator for banner
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      ],
+                          Text(
+                            widget.e!.name,
+                            style: TextStyle(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.black
+                                  : Colors.white,
+                              fontSize: 16.pixelScale(context),
+                              letterSpacing: 0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                            child: Text(DateFormat('EEE, MM/d/y @\nkk:mm').format(e.startDate),
+                              style:  TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14.pixelScale(context),
+                                letterSpacing: 0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            e.eventType == "Gaming Session"
+                                ? CupertinoIcons.game_controller
+                                : Icons.emoji_events_outlined,
+                            color: Theme.of(context).brightness ==
+                                    Brightness.light
+                                ? Theme.of(context).colorScheme.secondary
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
