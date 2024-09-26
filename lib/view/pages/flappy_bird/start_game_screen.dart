@@ -16,22 +16,48 @@ class StartScreen extends StatelessWidget {
     game.pauseEngine();
 
     return Scaffold(
-      body:GestureDetector(
-        onTap: () {
-          game.overlays.remove('start');
-          game.resumeEngine();
-        },
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/menu.jpg'),
-              fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              game.overlays.remove('start');
+              game.resumeEngine();
+            },
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/ice-background.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/3-birds.png'),
+                    const SizedBox(height: 20),
+                    Image.asset('assets/images/message.png'),
+                  ],
+                ),
+              ),
             ),
           ),
-          child: Image.asset('assets/images/message.png'),
-        ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back, 
+                color: Colors.orange),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

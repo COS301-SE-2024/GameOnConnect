@@ -4,6 +4,7 @@ import 'package:flame/effects.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:gameonconnect/view/components/flappy_bird/seed.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
 enum MovingBird { middle, up, down }
@@ -61,10 +62,17 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
  void onCollisionStart(
   Set<Vector2> intersectionPoints,
   PositionComponent other,
- ){
+ ){ 
     super.onCollisionStart(intersectionPoints, other);
-    gameIsOver();
- }
+    if (other is Seed) {
+      this.totalScore += 2; 
+      FlameAudio.play('point.wav');
+      //Seed.removeFromParent(); 
+    }
+    else{
+      gameIsOver();
+    }
+  }
 
  void gameIsOver(){
   FlameAudio.play('collision.wav');

@@ -11,7 +11,7 @@ class Seed extends SpriteComponent with HasGameRef<FlappyBird>,
   final double seedSize = 100; 
   final double fallSpeed = 100; 
   
-  Seed() : super(size: Vector2(100, 100)); 
+  Seed() : super(size: Vector2(50, 50)); 
 
   @override
   Future<void> onLoad() async {
@@ -46,8 +46,6 @@ class Seed extends SpriteComponent with HasGameRef<FlappyBird>,
     super.onCollision(intersectionPoints, other);
 
     if (other is Bird) {
-      gameRef.bird.totalScore += 2; 
-      FlameAudio.play('point.wav');
       removeFromParent(); 
     }
   }
