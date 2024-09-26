@@ -72,7 +72,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                       final badgeDetails = badgeEntry.value; 
 
                       return GestureDetector(
-                        onTap: badgeDetails['unlocked']
+                        onTap: badgeDetails['unlocked'] && badgeDetails['date_unlocked'] != null
                             ? () {
                                 Navigator.push(
                                   context,
@@ -96,7 +96,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                                 child: Column(
                                   children: [
                                     Expanded(
-                                      child: badgeDetails['unlocked']
+                                      child: badgeDetails['unlocked'] && badgeDetails['date_unlocked'] != null
                                           ? Image.asset(
                                               'assets/badges_images/$badgeName.png',
                                               height: 85,
@@ -145,7 +145,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    badgeDetails['unlocked']
+                                    badgeDetails['unlocked'] && badgeDetails['date_unlocked'] != null
                                         ? Padding(
                                             padding: const EdgeInsets.all(9),
                                             child: Text(
@@ -160,7 +160,7 @@ class _AchievementBadgesPageState extends State<AchievementBadgesPage> {
                                 ),
                               ),
                             ),
-                            if (!badgeDetails['unlocked'])
+                            if (!badgeDetails['unlocked'] || badgeDetails['date_unlocked'] == null)
                               Positioned(
                                 top: 15,
                                 right: 15,
