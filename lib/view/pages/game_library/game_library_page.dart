@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +30,10 @@ class _GameLibraryState extends State<GameLibrary> {
   List<String> selectedPlatforms = [];
   List<String> _activeFilters = [];
   String _filterString = '';
-  final BadgeService _badgeService = BadgeService();
 
   @override
   void initState() {
     super.initState();
-    _badgeService.unlockNightOwlBadge(DateTime.now());
     _loadGames();
 
     _scrollController.addListener(() {
@@ -118,7 +115,6 @@ class _GameLibraryState extends State<GameLibrary> {
       _currentPage = 1;
       _loadGames();
     });
-    _badgeService.unlockExplorerComponent("search_game");
   }
 
   clearFilters() {
@@ -143,8 +139,8 @@ class _GameLibraryState extends State<GameLibrary> {
             body: Column(
               children: [
                 TabBar(tabs: const [
-                  Tab(text: 'Games'),
-                  Tab(text: 'Connections'),
+                  Tab(text: 'GAMES'),
+                  Tab(text: 'CONNECTIONS'),
                 ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),
@@ -154,7 +150,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
   Padding sortFilter(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -210,7 +206,7 @@ class _GameLibraryState extends State<GameLibrary> {
                         builder: (BuildContext context) => StatefulBuilder(
                           builder: (context, setState) => AlertDialog(
                             title: const Text('Sort by'),
-                            content: SingleChildScrollView(child: Column(
+                            content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   RadioListTile(
@@ -291,8 +287,6 @@ class _GameLibraryState extends State<GameLibrary> {
                                         });
                                       }),
                                 ]),
-    ),
-
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () =>
@@ -459,27 +453,7 @@ class _GameLibraryState extends State<GameLibrary> {
                           Row(
                               children: game.getPlatformIcons(context,
                                   Theme.of(context).colorScheme.primary)),
-                          Text("Released: ${game.released}"),
-                          Row(
-                            children: [
-                              Text("Genres:"),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: game.getStyledGenres(context),
-                                ),
-                              )
-                            ],
-                          ),
-                          Text("Reviews: ${game.reviewsCount}")
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
+                          Container(
                           padding: EdgeInsets.only(
                               left: 5, top: 3, right: 5, bottom: 3),
                           decoration: BoxDecoration(
@@ -487,18 +461,39 @@ class _GameLibraryState extends State<GameLibrary> {
                             border: Border.all(
                                 color: Theme.of(context).colorScheme.primary),
                           ),
-                          child: Text("${game.score}",
+                          child: Text("Metacritic: ${game.score}",
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontSize: 12)),
                         ),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).colorScheme.secondary),
-                        SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    )
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "Released:  ",
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness == Brightness.dark ? 
+                                    Colors.white : 
+                                    Colors.black
+                                  )),
+                                TextSpan(
+                                  text: game.released,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.secondary),
                   ],
                 ),
               ),
