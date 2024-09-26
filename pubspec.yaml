@@ -81,6 +81,7 @@ dependencies:
   super_tooltip: ^2.0.8
   webviewtube: ^2.1.2
   firebase_performance: ^0.10.0+7
+  flutter_svg: ^2.0.10+1
 
 
 
