@@ -21,12 +21,24 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.24.1'
+    
+    # Step 3: Create local.properties file
+    - name: Create local.properties file
+      run: |
+        echo "sdk.dir=/usr/local/lib/android/sdk" > android/local.properties
+        echo "flutter.sdk=/opt/hostedtoolcache/flutter/3.24.1-stable/x64" >> android/local.properties
+        echo "flutter.buildMode=debug" >> android/local.properties
+        echo "flutter.versionName=1.0.0" >> android/local.properties
+        echo "flutter.versionCode=1" >> android/local.properties
+        echo "flutter.minSdkVersion=23" >> android/local.properties
+        echo "flutter.targetSdkVersion=34" >> android/local.properties
+        echo "flutter.compileSdkVersion=34" >> android/local.properties
 
-    # Step 3: Build the release APK
+    # Step 4: Build the release APK
     - name: Build release APK
       run: flutter build apk --release
 
-    # Step 4: Upload the build artifacts
+    # Step 5: Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -38,18 +50,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 5: Checkout the repository agin to get the artifact build that was created
+    # Step 6: Checkout the repository agin to get the artifact build that was created
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 6: Download the build artifacts from the previous job
+    # Step 7: Download the build artifacts from the previous job
     - name: Download build artifacts
       uses: actions/download-artifact@v2
       with:
         name: app-release-apk
         path: build/app/outputs/flutter-apk/
 
-    # Step 7: Create a new release
+    # Step 8: Create a new release
     - name:  GameOnConnect
       id: create_release
       uses: actions/create-release@v1
@@ -61,7 +73,7 @@ jobs:
         draft: false
         prerelease: false
 
-    # Step 8: Upload the APK to the release on github
+    # Step 9: Upload the APK to the release on github
     - name: Upload APK
       uses: actions/upload-release-asset@v1
       with:
