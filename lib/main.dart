@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
-import 'package:gameonconnect/view/pages/settings/appearance.dart';
+import 'package:gameonconnect/view/components/settings/appearance.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/settings/faq.dart';

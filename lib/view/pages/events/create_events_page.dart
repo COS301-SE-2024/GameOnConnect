@@ -311,6 +311,18 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 20.pixelScale(context),
                                           ),
 
+/*
+                                          ChipSelector(
+                                              selectedOption: selectedOption,
+                                              onSelected: (option) {
+                                                (setState(() {
+                                                  selectedOption = option;
+                                                }));
+                                              }),*/
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,

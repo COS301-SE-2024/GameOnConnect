@@ -79,7 +79,9 @@ dependencies:
   flame_audio: ^2.10.3
   share_plus: ^10.0.0
   super_tooltip: ^2.0.8
+  webviewtube: ^2.1.2
   firebase_performance: ^0.10.0+7
+
 
 
 

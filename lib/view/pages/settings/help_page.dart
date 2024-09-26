@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/components/help/help_card.dart';
 import '../../components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/help/contact_us_bottom.dart';
-
 
 class HelpPage extends StatefulWidget {
   const HelpPage({super.key});
@@ -28,7 +28,6 @@ class _HelpWidgetState extends State<HelpPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -52,7 +51,9 @@ class _HelpWidgetState extends State<HelpPage> {
 
                           const Padding(
                             padding: EdgeInsets.all(25),
-                            child:Expanded( child:  Text(
+                            child:Flex(
+                              direction: Axis.horizontal,
+                              children:[Expanded( child:  Text(
                               "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
                               style: TextStyle(
                                 fontSize: 12,
@@ -61,6 +62,8 @@ class _HelpWidgetState extends State<HelpPage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+        ],
+                            ),
                     ),
                HelpCard(heading: "Frequently Asked Questions",
                   followHeading: "Answers to commonly asked questions about "
@@ -68,24 +71,24 @@ class _HelpWidgetState extends State<HelpPage> {
               icon: Icon(
                 Icons.question_mark,
                 color: Theme.of(context).colorScheme.primary,
-                size: 44,
-
+                size: 44.pixelScale(context),
               ),
-               navigation: '/faq',
-               ),
-               HelpCard(heading: "Getting Started", followHeading:
-              "Tutorial videos to help you get started  on GameOnConnect",
+              navigation: '/faq',
+            ),
+            HelpCard(
+              heading: "Getting Started",
+              followHeading:
+                  "Tutorial videos to help you get started  on GameOnConnect",
               icon: Icon(
                 Icons.play_arrow,
                 color: Theme.of(context).colorScheme.primary,
-                size: 44,
+                size: 44.pixelScale(context),
               ),
-               navigation: '/getting_started',),
-
-      ]),
-              ),
-          bottomNavigationBar: const ContactUsBar(),
-
+              navigation: '/getting_started',
+            ),
+          ]),
+        ),
+        bottomNavigationBar: const ContactUsBar(),
       ),
     );
   }

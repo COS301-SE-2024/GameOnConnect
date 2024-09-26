@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
@@ -68,6 +69,9 @@ class _ChatPageState extends State<ChatPage> {
     String messageText = _textEditingController.text.trim();
 
     if (messageText.isNotEmpty) {
+      Trace sendTrace = FirebasePerformance.instance.newTrace("sendMessage_trace");
+      sendTrace.start();
+
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
           currentUser, widget.receiverID);
@@ -80,9 +84,11 @@ class _ChatPageState extends State<ChatPage> {
       //send a message
       await _messagingService.sendMessage(
           conversationID, _textEditingController.text, widget.receiverID);
+
+      sendTrace.stop();
+
       //clear the controller
       _textEditingController.clear();
-
       scrollDownPage();
     }
   }
@@ -148,6 +154,9 @@ class _ChatPageState extends State<ChatPage> {
                   )));
         } else {
           String conversationID = snapshot.data!;
+          Trace messageReceiveTrace = FirebasePerformance.instance.newTrace("messageReceive_trace");
+          messageReceiveTrace.start();
+
           return StreamBuilder<QuerySnapshot>(
             stream: _messagingService.getSnapshotMessages(conversationID),
             builder: (context, snapshot) {
@@ -172,6 +181,7 @@ class _ChatPageState extends State<ChatPage> {
                     )),
               );
             }
+              messageReceiveTrace.stop(); 
               return ListView.builder(
                 controller: _scrollController,
                 itemCount: documents.length,

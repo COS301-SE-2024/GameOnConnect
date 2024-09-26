@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/cache_managers/filtering_cache_manager.dart';
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
@@ -247,8 +246,7 @@ class CustomizeService {
   }
 
   Future<bool> saveProfileData(
-      profileImage,
-      profileBanner,
+
       List<String> selectedGenres,
       List<String> selectedAge,
       List<String> selectedInterests) async {
@@ -260,41 +258,6 @@ class CustomizeService {
         final db = FirebaseFirestore.instance;
         final profileDocRef =
             db.collection("profile_data").doc(currentUser.uid);
-        if (profileImage != null) {
-          String imageUrl;
-          if (kIsWeb) {
-            imageUrl = await CustomizeService()
-                .uploadImageToFirebase(File(profileImage!), 'Profile_picture');
-          } else {
-            imageUrl = await CustomizeService()
-                .uploadImageToFirebase(File(profileImage!), 'Profile_picture');
-          }
-
-          await CustomizeService().saveImageURL(imageUrl, 'Profile_picture');
-
-          // Show a confirmation message or navigate
-          /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile picture updated successfully.')),
-        );*/
-        }
-
-        if (profileBanner != null) {
-          String bannerUrl;
-          if (kIsWeb) {
-            bannerUrl = await CustomizeService()
-                .uploadImageToFirebase(File(profileBanner!), 'banner');
-          } else {
-            bannerUrl = await CustomizeService()
-                .uploadImageToFirebase(File(profileBanner!), 'banner');
-          }
-          await CustomizeService().saveImageURL(bannerUrl, 'banner');
-
-          // Show a confirmation message or navigate
-          /*ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Banner updated successfully.')),
-        );*/
-        }
-
         final data = {
           "genre_interests_tags":
               selectedGenres.isNotEmpty ? selectedGenres : FieldValue.delete(),
