@@ -9,7 +9,6 @@ import 'package:gameonconnect/view/components/home/connection_updates.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
-import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
 import 'package:gameonconnect/view/pages/GameyCon/loadingpage.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/game_screen_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
@@ -43,7 +42,6 @@ class _HomePageState extends State<HomePage> {
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
- 
 
   @override
   void initState() {
@@ -61,7 +59,12 @@ class _HomePageState extends State<HomePage> {
       const GameLibrary(),
       const CreateEvents(),
       const ViewEvents(),
-      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
+      ProfilePage(
+        uid: currentUserId,
+        isOwnProfile: true,
+        isConnection: true,
+        loggedInUser: currentUserId,
+      ),
     ];
 
     _badgeService.unlockLoyaltyBadge();
@@ -300,7 +303,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername(); 
+    fetchUsername();
   }
 
   Future<void> fetchUsername() async {
@@ -370,7 +373,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -387,32 +390,14 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AchievementBadgesPage(),
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.model_training,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            ),
-            Padding(
-
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+                      builder: (context) =>
+                          GamePage(), //GameWidget(game: SpaceShooterGame())
                     ),
                   );
                 },
@@ -423,14 +408,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => GameScreen()
-                    ),
+                    MaterialPageRoute(builder: (context) => GameScreen()),
                   );
                 },
                 icon: Icon(
@@ -440,7 +423,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () async {
                   await Flame.device.fullScreen();
@@ -453,9 +436,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                   );
                 },
                 icon: Icon(
-
                   Icons.games_outlined,
-
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
