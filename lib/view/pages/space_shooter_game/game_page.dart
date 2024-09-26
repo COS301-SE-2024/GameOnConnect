@@ -27,11 +27,11 @@ class _GamePageState extends State<GamePage> {
         'quitButton': (BuildContext context, SpaceShooterGame game) {
           return Positioned(
             top: 20,
-            right: 20,
+            left: 20,
             child: IconButton(
-              icon: const Icon(Icons.exit_to_app, color: Colors.grey, size: 30),
+              icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 30),
               onPressed: () {
-                Navigator.pop(context); // This will exit the game and return to the previous screen
+                Navigator.pop(context); 
               },
             ),
           );
@@ -47,9 +47,10 @@ class _GamePageState extends State<GamePage> {
                     'Game Over',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 48,
+                      fontSize: 60,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,
+                      fontFamily: 'ThaleahFat',
                     ),
                   ),
                 ),
@@ -57,7 +58,7 @@ class _GamePageState extends State<GamePage> {
                   onPressed: () {
                     Navigator.pop(context); // Navigate back to the home page
                   },
-                  child: const Text('Go to Home'),
+                  child: const Text('Quit Game'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -81,8 +82,70 @@ class _GamePageState extends State<GamePage> {
             child: ScoreOverlay(isGameOver: false),
           );
         },
+        'startOverlay': (BuildContext context, SpaceShooterGame game) {
+          return Center(
+            child: Stack(
+              children: [
+                // Background image
+                Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/stars_2.png'), // Path to your image
+                      fit: BoxFit.cover, // Adjust the image to cover the entire screen
+                    ),
+                  ),
+                ),
+                // Content on top of the background
+                Center( // Add this Center widget to center the Column
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center, // Center items vertically
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                        child: Column( // Wrap both Text widgets in a Column
+                          children: [
+                            Text(
+                              'Welcome to',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.none,
+                                fontFamily: 'ThaleahFat',
+                              ),
+                            ),
+                            Text(
+                              'Space Shooter!',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.none,
+                                fontFamily: 'ThaleahFat',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          game.overlays.remove('startOverlay'); // Remove the start overlay
+                          game.startGame(); // Start the game (implement this method in your game)
+                        },
+                        child: const Text('Start Game'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       },
-      initialActiveOverlays: const ['quitButton', 'scoreOverlay'], // Display the quit button when the game starts
+      initialActiveOverlays: const ['startOverlay', 'quitButton'], // Display the start overlay when the game starts
+
+      // initialActiveOverlays: const ['quitButton', 'scoreOverlay'], // Display the quit button when the game starts
     );
   }
 }
@@ -101,20 +164,23 @@ class ScoreOverlay extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 100))
           .asyncMap((_) => game?.score ?? 0),
       builder: (context, snapshot) {
-        return Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-              border: Border.all(color: primaryColor, width: 3), // Border color
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              'Score: ${snapshot.data ?? 0}',
-              style: TextStyle(
-                color: primaryColor,  // Text color
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.none,
+        return Positioned.fill(
+          child: Align(
+            alignment: Alignment.topCenter, // Align the score at the top center of the screen
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20), // Adds some spacing from the top edge
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  'Score: ${snapshot.data ?? 0}',
+                  style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'ThaleahFat',
+                  ),
+                ),
               ),
             ),
           ),
