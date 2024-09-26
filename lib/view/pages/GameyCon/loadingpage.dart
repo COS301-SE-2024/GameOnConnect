@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/view/pages/GameyCon/gameycon_page.dart';
 
 class LoadingGameyConPage extends StatefulWidget {
@@ -45,96 +44,100 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
     return Scaffold(
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 100),
-                Image.asset(
-                  Theme.of(context).brightness == Brightness.dark
-                      ? 'assets/icons/GameOnConnect_Logo_Transparent_White.png'
-                      : 'assets/icons/GameOnConnect_Logo_Transparent.png',
-                  width: 100,
-                  height: 100,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  "Welcome to GameyCon!",
-                  style: TextStyle(
+          SingleChildScrollView( // Make the content scrollable
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 100),
+                  Image.asset(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? 'assets/icons/GameOnConnect_Logo_Transparent_White.png'
+                        : 'assets/icons/GameOnConnect_Logo_Transparent.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Welcome to GameyCon!",
+                    style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Select a character',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 100,
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    itemCount: characterSprites.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => selectCharacter(index),
-                        child: Container(
-                          margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: selectedCharacterIndex == index
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Colors.transparent,
-                              width: 2,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Select a character',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 100,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemCount: characterSprites.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => selectCharacter(index),
+                          child: Container(
+                            margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: selectedCharacterIndex == index
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: SpriteAnimationWidget(
+                              character: characterSprites[index],
                             ),
                           ),
-                          child: SpriteAnimationWidget(
-                            character: characterSprites[index],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
-                  child: ElevatedButton(
-                    onPressed: startGame,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 20),
-                      textStyle: const TextStyle(fontSize: 20),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      side: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 1,
-                      ),
+                        );
+                      },
                     ),
-                    child: const Text('Start Game'),
                   ),
-                ),
-                const SizedBox(
-                  height: 225,
-                ),
-                const Text('Credits: Spellthorn (Youtube)'),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: ElevatedButton(
+                      onPressed: startGame,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 40, vertical: 20),
+                        textStyle: const TextStyle(fontSize: 20),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      child: const Text('Start Game'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 225,
+                  ),
+                  const Text('Credits: Spellthorn (Youtube)'),
+                ],
+              ),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 10,
             left: 20,
-            child: LeaveButton(),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 30),
+              onPressed: () {
+                Navigator.pop(context); 
+              },
+            ),
           ),
         ],
       ),
