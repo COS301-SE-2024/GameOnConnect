@@ -53,9 +53,8 @@ class _HomePageState extends State<HomePage> {
         child: _HomePageDisplay(),
       ),
       const GameLibrary(),
-      const CreateEvents(),
-      const ViewEvents(),
       const GamesPageWidget(),
+      const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
   }
