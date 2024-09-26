@@ -44,8 +44,6 @@ class BadgeService {
     }
   }
 
-  print("The unlocked profiles: ${unlockedProfiles.toString()}");
-
   return unlockedProfiles;
 }
 
