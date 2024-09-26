@@ -22,7 +22,7 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
         key: iconkey,
         icon: Icon(
           Icons.arrow_back,
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.primary,
         ),
         onPressed: onBackButtonPressed,
       ),
@@ -30,9 +30,9 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
         key: textkey,
         title,
         style: TextStyle(
-          fontSize: 32,
+          fontSize: 15,
           fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.onSurface,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
