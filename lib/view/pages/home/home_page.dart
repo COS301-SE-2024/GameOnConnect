@@ -10,7 +10,6 @@ import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
 import 'package:gameonconnect/view/pages/games_page/games_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
-import 'package:gameonconnect/view/pages/events/create_events_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 // import 'package:gameonconnect/view/pages/events/events_page.dart';
 // import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
