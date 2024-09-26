@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
+// import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/view/components/GameyCon/gameycon_game.dart';
 import 'package:gameonconnect/view/components/GameyCon/components/score.dart'; 
 
@@ -39,27 +39,35 @@ class _GameyConPageState extends State<GameyConPage> {
               game: game,
               overlayBuilderMap: {
                 'LeaveButton': (context, game) {
-                  return const Positioned(
+                  return Positioned(
                     top: 10,
                     left: 20,
-                    child: LeaveButton(),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 30),
+                      onPressed: () {
+                        Navigator.pop(context); 
+                      },
+                    ),//LeaveButton(),
                   );
                 },
                 'ScoreOverlay': (context, game) {
-                  return Positioned(
-                    top: 18,
-                    right: 20,
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: ScoreManager().scoreNotifier,
-                      builder: (context, score, child) {
-                        return Text(
-                          'Score: $score',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 22,
-                          ),
-                        );
-                      },
+                  return Align(
+                    alignment: Alignment.topCenter, // Align the widget to the top center
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10), // Adds padding from the top
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: ScoreManager().scoreNotifier,
+                        builder: (context, score, child) {
+                          return Text(
+                            'Score: $score',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 40,
+                              fontFamily: 'ThaleahFat',
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   );
                 },
