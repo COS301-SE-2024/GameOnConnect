@@ -60,23 +60,31 @@ jobs:
         echo "flutter.compileSdkVersion=34" >> android/local.properties
       shell: bash
 
-    # Step 6: Install all the dependencies
+    # Step 6: Create google-services.json file
+    - name: Create google-services.json file
+      run: |
+        cat <<EOF > android/app/google-services.json
+        ${{ secrets.GOOGLE_SERVICES_JSON }}
+        EOF
+      shell: bash
+
+    # Step 7: Install all the dependencies
     - name: Install dependencies
       run: flutter pub get
 
-    # Step 7: Upgrade dependencies to newer versions
+    # Step 8: Upgrade dependencies to newer versions
     - name: Upgrade dependencies
       run: flutter pub upgrade
 
-    # Step 8: Make sure dependencies are up to date
+    # Step 9: Make sure dependencies are up to date
     - name: Check outdated dependencies
       run: flutter pub outdated
       
-    # Step 9: Build the release APK
+    # Step 10: Build the release APK
     - name: Build release APK
       run: flutter build apk --release
 
-    # Step 10: Upload the build artifacts
+    # Step 11: Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -88,18 +96,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 11: Checkout the repository again to get the artifact build that was created
+    # Step 12: Checkout the repository again to get the artifact build that was created
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 12: Download the build artifacts from the previous job
+    # Step 13: Download the build artifacts from the previous job
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: app-release-apk
         path: build/app/outputs/flutter-apk/
 
-    # Step 13: Create a new release
+    # Step 14: Create a new release
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
@@ -111,7 +119,7 @@ jobs:
         draft: false
         prerelease: false
 
-    # Step 14: Upload the APK to the release on GitHub
+    # Step 15: Upload the APK to the release on GitHub
     - name: Upload APK
       uses: actions/upload-release-asset@v1
       with:
