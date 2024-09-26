@@ -77,7 +77,7 @@ class GameOverScreen extends StatelessWidget {
         top: 10,
         left: 10,
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back, 
             color: Colors.orange
             ),

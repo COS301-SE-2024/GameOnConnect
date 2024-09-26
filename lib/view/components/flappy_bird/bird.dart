@@ -65,9 +65,8 @@ class Bird extends SpriteGroupComponent<MovingBird> with HasGameRef<FlappyBird>,
  ){ 
     super.onCollisionStart(intersectionPoints, other);
     if (other is Seed) {
-      this.totalScore += 2; 
+      totalScore += 2; 
       FlameAudio.play('point.wav');
-      //Seed.removeFromParent(); 
     }
     else{
       gameIsOver();

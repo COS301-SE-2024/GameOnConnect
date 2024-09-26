@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:gameonconnect/view/components/flappy_bird/bird.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 

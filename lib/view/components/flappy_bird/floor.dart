@@ -1,7 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/flame.dart';
-import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/view/pages/flappy_bird/flappy_bird.dart';
 
@@ -16,7 +14,7 @@ class Floor extends PositionComponent with HasGameRef<FlappyBird> {
     final blueContainer = RectangleComponent(
       position: Vector2(0, gameRef.size.y - floorHeight),
       size: Vector2(gameRef.size.x, floorHeight),
-      paint: Paint()..color = Color(0xFF8FCAF0),
+      paint: Paint()..color = const Color(0xFF8FCAF0),
     );
 
     // Add a black top border
@@ -38,11 +36,6 @@ class Floor extends PositionComponent with HasGameRef<FlappyBird> {
     );
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-    // Update logic if needed
-  }
 }
 
 
