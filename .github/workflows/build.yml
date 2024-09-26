@@ -68,23 +68,38 @@ jobs:
         EOF
       shell: bash
 
-    # Step 7: Install all the dependencies
+    # Step 7: Create keystore file
+    - name: Create keystore file
+      run: |
+        echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/release.keystore
+      shell: bash
+
+    # Step 8: Set up environment variables for signing
+    - name: Set up environment variables
+      run: |
+        echo "KEYSTORE_FILE=android/app/release.keystore" >> $GITHUB_ENV
+        echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+        echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+        echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+      shell: bash
+
+    # Step 9: Install all the dependencies
     - name: Install dependencies
       run: flutter pub get
 
-    # Step 8: Upgrade dependencies to newer versions
+    # Step 10: Upgrade dependencies to newer versions
     - name: Upgrade dependencies
       run: flutter pub upgrade
 
-    # Step 9: Make sure dependencies are up to date
+    # Step 11: Make sure dependencies are up to date
     - name: Check outdated dependencies
       run: flutter pub outdated
       
-    # Step 10: Build the release APK
+    # Step 12: Build the release APK
     - name: Build release APK
       run: flutter build apk --release
 
-    # Step 11: Upload the build artifacts
+    # Step 13: Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -96,18 +111,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 12: Checkout the repository again to get the artifact build that was created
+    # Step 14: Checkout the repository again to get the artifact build that was created
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 13: Download the build artifacts from the previous job
+    # Step 15: Download the build artifacts from the previous job
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: app-release-apk
         path: build/app/outputs/flutter-apk/
 
-    # Step 14: Create a new release
+    # Step 16: Create a new release
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
@@ -119,7 +134,7 @@ jobs:
         draft: false
         prerelease: false
 
-    # Step 15: Upload the APK to the release on GitHub
+    # Step 17: Upload the APK to the release on GitHub
     - name: Upload APK
       uses: actions/upload-release-asset@v1
       with:
