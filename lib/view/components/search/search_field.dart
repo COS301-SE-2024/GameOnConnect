@@ -15,37 +15,46 @@ class SearchField extends StatefulWidget {
 class _SearchFieldState extends State<SearchField> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: widget.controller,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(left: 20, right: 20),
-              labelText: 'Search',
-              prefixIcon: const Icon(Icons.search),
-              fillColor: Theme.of(context).colorScheme.primaryContainer,
-              filled: true,
-              enabledBorder: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(100),
-                borderSide: const BorderSide(
-                    color: Colors.transparent), 
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: widget.controller,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(left: 20, right: 20),
+                labelText: 'Search',
+                prefixIcon: const Icon(Icons.search),
+                fillColor: Theme.of(context).colorScheme.primaryContainer,
+                filled: true,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(100),
+                  borderSide: const BorderSide(
+                      color: Colors.transparent), 
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius:
+                      BorderRadius.circular(100),
+                  borderSide: const BorderSide(
+                      color: Colors.transparent),
+                ),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    widget.controller.clear();
+                  },
+                )
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(100),
-                borderSide: const BorderSide(
-                    color: Colors.transparent),
-              ),
+              onSubmitted: (value) {
+                widget.onSearch(value);
+              },
             ),
-            onSubmitted: (value) {
-              widget.onSearch(value);
-            },
           ),
-        ),
-        const SizedBox(width: 15),
-      ],
+          const SizedBox(width: 15),
+        ],
+      ),
     );
   }
 }
