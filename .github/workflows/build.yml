@@ -1,0 +1,71 @@
+name: Build and Upload Release APK to Github
+
+# This will only trigger on pushes to main. 
+on:
+  push:
+    branches:
+      - main
+      - Develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Flutter
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'
+
+    # Step 3: Build the release APK
+    - name: Build release APK
+      run: flutter build apk --release
+
+    # Step 4: Upload the build artifacts
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 5: Checkout the repository agin to get the artifact build that was created
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 6: Download the build artifacts from the previous job
+    - name: Download build artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/
+
+    # Step 7: Create a new release
+    - name:  GameOnConnect
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Version_${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    # Step 8: Upload the APK to the release on github
+    - name: Upload APK
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: build/app/outputs/flutter-apk/app-release.apk
+        asset_name: app-release.apk
+        asset_content_type: application/vnd.android.package-archive
