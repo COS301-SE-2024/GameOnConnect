@@ -52,7 +52,9 @@ class _HelpWidgetState extends State<HelpPage> {
 
                           const Padding(
                             padding: EdgeInsets.all(25),
-                            child:Expanded( child:  Text(
+                            child:Flex(
+                              direction: Axis.horizontal,
+                              children:[Expanded( child:  Text(
                               "Quick answers to questions you may have. Can't find what your looking for? Contact us through our email address.",
                               style: TextStyle(
                                 fontSize: 12,
@@ -61,6 +63,8 @@ class _HelpWidgetState extends State<HelpPage> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+        ],
+                            ),
                     ),
                HelpCard(heading: "Frequently Asked Questions",
                   followHeading: "Answers to commonly asked questions about "
