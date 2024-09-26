@@ -83,23 +83,31 @@ jobs:
         echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
       shell: bash
 
-    # Step 9: Install all the dependencies
+    # Step 9: Create build.gradle file
+    - name: Create build.gradle file
+      run: |
+        cat <<EOF > android/app/build.gradle
+        ${{ secrets.BUILD_GRADLE_ANDROID }}
+        EOF
+      shell: bash
+
+    # Step 10: Install all the dependencies
     - name: Install dependencies
       run: flutter pub get
 
-    # Step 10: Upgrade dependencies to newer versions
+    # Step 11: Upgrade dependencies to newer versions
     - name: Upgrade dependencies
       run: flutter pub upgrade
 
-    # Step 11: Make sure dependencies are up to date
+    # Step 12: Make sure dependencies are up to date
     - name: Check outdated dependencies
       run: flutter pub outdated
       
-    # Step 12: Build the release APK
+    # Step 13: Build the release APK
     - name: Build release APK
       run: flutter build apk --release
 
-    # Step 13: Upload the build artifacts
+    # Step 14: Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -111,18 +119,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 14: Checkout the repository again to get the artifact build that was created
+    # Step 15: Checkout the repository again to get the artifact build that was created
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 15: Download the build artifacts from the previous job
+    # Step 16: Download the build artifacts from the previous job
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: app-release-apk
         path: build/app/outputs/flutter-apk/
 
-    # Step 16: Create a new release
+    # Step 17: Create a new release
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
@@ -134,7 +142,7 @@ jobs:
         draft: false
         prerelease: false
 
-    # Step 17: Upload the APK to the release on GitHub
+    # Step 18: Upload the APK to the release on GitHub
     - name: Upload APK
       uses: actions/upload-release-asset@v1
       with:
