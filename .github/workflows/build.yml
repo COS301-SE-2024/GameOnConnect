@@ -71,9 +71,7 @@ jobs:
     # Step 7: Create keystore file
     - name: Create keystore file
       run: |
-        cat <<EOF > android/app/release.keystore
-        ${{ secrets.RELEASE_KEYSTORE }}
-        EOF
+        echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/release.keystore
       shell: bash
 
     # Step 8: Create key.properties file
