@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:gameonconnect/services/profile_S/storage_service.dart';
 import 'package:gameonconnect/services/stats_S/stats_total_time_service.dart';
 
 class BadgeService {
@@ -14,6 +16,37 @@ class BadgeService {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<List<String>> getConnectionsBadgeStatus(String badgeName) async {
+  final currentUser = _auth.currentUser?.uid;
+
+  List<String> connections = await ConnectionService().getConnections("connections", currentUser);
+  List<String> unlockedProfiles = []; 
+
+  for (String connectionId in connections) {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> badgeSnapshot =
+          await _firestore.collection('badges').doc(connectionId).get();
+
+      if (badgeSnapshot.exists && badgeSnapshot.data() != null) {
+        Map<String, dynamic> badgeData = badgeSnapshot.data()!;
+
+        if (badgeData.containsKey(badgeName) && badgeData[badgeName]['unlocked'] == true) {
+          StorageService storageService = StorageService();
+          String profilePictureUrl =
+              await storageService.getProfilePictureUrl(connectionId);
+
+          unlockedProfiles.add(profilePictureUrl);
+        }
+      }
+    } catch (e) {
+      //print("Error checking badge for user $connectionId: $e");
+    }
+  }
+
+  return unlockedProfiles;
+}
+
 
   Future<Map<String, dynamic>> getBadges() async {
     final currentUser = _auth.currentUser;
