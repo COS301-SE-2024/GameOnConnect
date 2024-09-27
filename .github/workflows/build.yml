@@ -71,16 +71,17 @@ jobs:
     # Step 7: Create keystore file
     - name: Create keystore file
       run: |
-        echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/release.keystore
+        cat <<EOF > android/app/release.keystore
+        ${{ secrets.RELEASE_KEYSTORE }}
+        EOF
       shell: bash
 
-    # Step 8: Set up environment variables for signing
-    - name: Set up environment variables
+    # Step 8: Create key.properties file
+    - name: Create key.properties file
       run: |
-        echo "KEYSTORE_FILE=android/app/release.keystore" >> $GITHUB_ENV
-        echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-        echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
-        echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+        cat <<EOF > android/key.properties
+        ${{ secrets.KEY_PROPERTIES }}
+        EOF
       shell: bash
 
     # Step 9: Create build.gradle file
