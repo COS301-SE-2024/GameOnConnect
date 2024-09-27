@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/components/events/joined_event_card.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/pages/events/create_events_page.dart';
@@ -39,11 +40,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
     super.dispose();
   }
 
-  void getAllEvents(List<Event> eventsList) {
-    publicAllEvents = events.getPublicEvents(eventsList);
-    subscribedEvents = events.getSubscribedEvents(eventsList);
-    myEvents = events.getMyEvents(eventsList);
-    joinedEvents = events.getJoinedEvents(eventsList);
+  void getAllEvents() async {
+    publicAllEvents = events.getPublicEvents(allEvents!);
+    subscribedEvents = events.getSubscribedEvents(allEvents);
+    myEvents = events.getMyEvents(allEvents);
+    joinedEvents = events.getJoinedEvents(allEvents);
   }
 
   @override
@@ -57,7 +58,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                   'Events',
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 32.pixelScale(context),
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -68,13 +69,14 @@ class _HomePageWidgetState extends State<ViewEvents> {
                     child: IconButton(
                       key: const Key('event_invites'),
                       onPressed: () {
-                         Navigator.push(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const EventInvitesList()),
+                          MaterialPageRoute(
+                              builder: (context) => const EventInvitesList()),
                         );
                       },
                       icon: Icon(
-                        Icons.mark_email_unread_outlined ,
+                        Icons.mark_email_unread_outlined,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
@@ -94,50 +96,49 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         return Center(
                           child: LoadingAnimationWidget.halfTriangleDot(
                             color: Theme.of(context).colorScheme.primary,
-                            size: 36,
+                            size: 36.pixelScale(context),
                           ),
                         );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
-                        if (allEvents == null) {
-                          allEvents = snapshot.data!.docs.map((x) {
-                            var data = x.data() as Map<String, dynamic>;
-                            return Event.fromMap(data, x.id);
-                          }).toList();
-                          getAllEvents(allEvents!);
+                        allEvents = [];
+                        for (var x in snapshot.data!.docs) {
+                          var data = x.data() as Map<String, dynamic>;
+                          Event event = Event.fromMap(data, x.id);
+                          allEvents?.add(event);
                         }
+                        getAllEvents();
                         return DefaultTabController(
                           length: 3,
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               const Padding(
                                 padding: EdgeInsets.all(12),
-                                child: Text("Upcoming Events", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                child: Text("Upcoming Events",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold)),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsetsDirectional.all(12),
+                                padding: const EdgeInsetsDirectional.all(12),
                                 child: joinedEvents!.isEmpty
                                     ? const SizedBox()
-                                    : carousel_slider2.CarouselSlider
-                                        .builder(
+                                    : carousel_slider2.CarouselSlider.builder(
                                         itemCount: joinedEvents?.length,
                                         carouselController: carousel_slider
                                             .CarouselSliderController(),
-                                        options: carousel_slider2
-                                            .CarouselOptions(
+                                        options:
+                                            carousel_slider2.CarouselOptions(
                                           padEnds: false,
                                           initialPage: 0,
                                           viewportFraction: 0.5,
                                           disableCenter: true,
                                           enlargeCenterPage: false,
                                           enableInfiniteScroll: false,
-                                          scrollDirection:
-                                              Axis.horizontal,
+                                          scrollDirection: Axis.horizontal,
                                           autoPlay: false,
                                         ),
                                         itemBuilder:
@@ -231,7 +232,10 @@ class EventsTabBar extends StatelessWidget {
               ListView.separated(
                 itemCount: publicAllEvents.length,
                 padding: const EdgeInsets.all(12),
-                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                separatorBuilder: (context, index) => Divider(
+                  thickness: 0.5,
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
                 itemBuilder: (context, index) {
                   Event event = publicAllEvents[index];
                   return EventCardWidget(e: event);
@@ -241,7 +245,10 @@ class EventsTabBar extends StatelessWidget {
                 itemCount: subscribedEvents.length,
                 padding: const EdgeInsets.all(12),
                 scrollDirection: Axis.vertical,
-                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                separatorBuilder: (context, index) => Divider(
+                  thickness: 0.5,
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
                 itemBuilder: (context, index) {
                   Event event = subscribedEvents[index];
                   return EventCardWidget(e: event);
@@ -251,7 +258,10 @@ class EventsTabBar extends StatelessWidget {
                 itemCount: myEvents.length,
                 padding: const EdgeInsets.all(12),
                 scrollDirection: Axis.vertical,
-                separatorBuilder: (context, index) => Divider(thickness: 0.5, color: Theme.of(context).colorScheme.primaryContainer,),
+                separatorBuilder: (context, index) => Divider(
+                  thickness: 0.5,
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
                 itemBuilder: (context, index) {
                   Event event = myEvents[index];
                   return EventCardWidget(e: event);
