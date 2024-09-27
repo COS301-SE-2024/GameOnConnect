@@ -56,11 +56,12 @@ class FlappyBird extends FlameGame with TapDetector,HasCollisionDetection{
               fontSize: 40, 
               fontFamily: 'ThaleahFat', 
               //fontWeight: FontWeight.bold),
-              color: Colors.white,
+              color: Colors.orange,
         ),
         )
     );
   }
+
 }
 
  
