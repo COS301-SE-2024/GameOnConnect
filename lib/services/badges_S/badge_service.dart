@@ -34,7 +34,7 @@ class BadgeService {
         if (badgeData.containsKey(badgeName) && badgeData[badgeName]['unlocked'] == true) {
           StorageService storageService = StorageService();
           String profilePictureUrl =
-              await storageService.getProfilePictureUrl(currentUser!);
+              await storageService.getProfilePictureUrl(connectionId);
 
           unlockedProfiles.add(profilePictureUrl);
         }
