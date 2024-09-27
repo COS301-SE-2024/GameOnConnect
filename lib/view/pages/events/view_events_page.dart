@@ -115,11 +115,11 @@ class _HomePageWidgetState extends State<ViewEvents> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.all(12),
+                              Padding(
+                                padding: const EdgeInsets.all(12),
                                 child: Text("Upcoming Events",
                                     style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.pixelScale(context),
                                         fontWeight: FontWeight.bold)),
                               ),
                               Padding(
@@ -209,7 +209,7 @@ class EventsTabBar extends StatelessWidget {
               color: Theme.of(context).brightness == Brightness.light
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.surface,
-              fontSize: 15,
+              fontSize: 15.pixelScale(context),
               letterSpacing: 0,
               fontWeight: FontWeight.bold,
             ),

@@ -142,6 +142,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                             ),
                           ),
                           Icon(
+                            size: 24.pixelScale(context),
                             e.eventType == "Gaming Session"
                                 ? CupertinoIcons.game_controller
                                 : Icons.emoji_events_outlined,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 
 class ProfileButton extends StatefulWidget {
   final String value;
@@ -39,16 +40,16 @@ class _ProfileButtonState extends State<ProfileButton> {
             children: [
               Text(
                 widget.value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontSize: 13.pixelScale(context),
                 ),
               ),
               Text(
                 widget.title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.normal,
-                  fontSize: 13,
+                  fontSize: 13.pixelScale(context),
                 ),
               ),
             ],

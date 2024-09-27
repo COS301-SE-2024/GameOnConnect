@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/events_S/event_service.dart';
 import 'package:gameonconnect/model/events_M/events_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
@@ -61,7 +62,7 @@ class _EventInvitationState extends State<EventInvitation> {
                         color: Theme.of(context).colorScheme.primary,
                         size: 24,
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15.pixelScale(context)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,32 +90,32 @@ class _EventInvitationState extends State<EventInvitation> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Description',
+                              Text('Description',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12)),
+                                      fontSize: 12.pixelScale(context))),
                               Text(widget.event.description,
-                                  style: const TextStyle(fontSize: 12))
+                                  style: TextStyle(fontSize: 12.pixelScale(context)))
                             ],
                           ) : const SizedBox(),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.pixelScale(context)),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Date and time',
+                              Text('Date and time',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12)),
+                                      fontSize: 12.pixelScale(context))),
                               Text(DateFormat('yyyy-MM-dd - kk:mm').format(widget.event.startDate),
                                   style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.pixelScale(context),
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .primary))
                             ],
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: 15.pixelScale(context)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -130,8 +131,8 @@ class _EventInvitationState extends State<EventInvitation> {
                                 },
                                 child: Container(
                                     alignment: Alignment.center,
-                                    height: 30,
-                                    width: 100,
+                                    height: 30.pixelScale(context),
+                                    width: 100.pixelScale(context),
                                     decoration: BoxDecoration(
                                       color:
                                           Colors.green,
@@ -140,7 +141,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                     child: Text('Accept',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12,
+                                            fontSize: 12.pixelScale(context),
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .surface))),
@@ -156,8 +157,8 @@ class _EventInvitationState extends State<EventInvitation> {
                                   },
                                   child: Container(
                                       alignment: Alignment.center,
-                                      height: 30,
-                                      width: 100,
+                                      height: 30.pixelScale(context),
+                                      width: 100.pixelScale(context),
                                       decoration: BoxDecoration(
                                         color: Colors.red,
                                         borderRadius: BorderRadius.circular(7),
@@ -165,7 +166,7 @@ class _EventInvitationState extends State<EventInvitation> {
                                       child: Text('Decline',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12,
+                                              fontSize: 12.pixelScale(context),
                                               color: Theme.of(context)
                                                   .colorScheme
                                                   .surface)))),
@@ -182,8 +183,8 @@ class _EventInvitationState extends State<EventInvitation> {
                                   },
                                   child: Container(
                                       alignment: Alignment.center,
-                                      height: 30,
-                                      width: 100,
+                                      height: 30.pixelScale(context),
+                                      width: 100.pixelScale(context),
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                             color: Theme.of(context)
@@ -191,10 +192,10 @@ class _EventInvitationState extends State<EventInvitation> {
                                                 .primary),
                                         borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child: const Text('Maybe',
+                                      child: Text('Maybe',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12,
+                                            fontSize: 12.pixelScale(context),
                                           )))),
                             ],
                           )
