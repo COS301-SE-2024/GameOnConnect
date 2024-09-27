@@ -29,8 +29,8 @@ class GameDetailsPage extends StatefulWidget {
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
   final BadgeService _badgeService = BadgeService();
-  late Future<GameDetails> _gameDetails;
-  late Future<List<Screenshot>> _gameScreenshots;
+  late Future<GameDetails?> _gameDetails;
+  late Future<List<Screenshot>?> _gameScreenshots;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -64,7 +64,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     });
   }
 
-  Future<GameDetails> _fetchGameDetails(int gameId) async {
+  Future<GameDetails?> _fetchGameDetails(int gameId) async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
@@ -73,11 +73,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         throw ('No internet connection');
       }
     } catch (e) {
-      throw ('Error fetching data');
+      // throw ('Error fetching data   - me');
+      return null;
     }
   }
 
-  Future<List<Screenshot>> _fetchGameScreenshots(int gameId) async {
+  Future<List<Screenshot>?> _fetchGameScreenshots(int gameId) async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
@@ -86,7 +87,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         throw ('No internet connection');
       }
     } catch (e) {
-      throw ('Error fetching data');
+      // throw ('Error fetching data   - me2');
+      return null;
     }
   }
 
@@ -99,11 +101,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     final unescape = HtmlUnescape();
     String decodedDescription = unescape.convert(description);
 
-    decodedDescription =
-        utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
+    decodedDescription = utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
 
-    decodedDescription =
-        decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+    decodedDescription = decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
 
     return _stripHtmlTags(decodedDescription);
   }
@@ -113,20 +113,13 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     return htmlString.replaceAll(regex, '');
   }
 
-  // @override
-  // void dispose() {
-  //   // _model.dispose();
-
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: FutureBuilder<GameDetails>(
+        body: FutureBuilder<GameDetails?>(
           future: _gameDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -143,6 +136,27 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                 backgroundColor: Colors.red.shade300,
               ));
               return const SizedBox.shrink();
+            } else if (snapshot.data == null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 64),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "No data found",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Return to the previous page
+                      },
+                      child: const Text("Go back"),
+                    ),
+                  ],
+                ),
+              );
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available'));
             } else {
@@ -316,7 +330,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                            child: Text(gameDetails.publisher[0]['name'],
+                            child: Text(gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher',          //gameDetails.publisher[0]['name'],
                                 style: const TextStyle(
                                     fontSize: 13, color: Colors.grey)),
                           ),
@@ -359,7 +373,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             ),
                                           ),
                                           Text(
-                                            gameDetails.rating.toStringAsFixed(1),
+                                            gameDetails.rating.toStringAsFixed(1), 
+                                            // gameDetails.rating.toStringAsFixed(1),
                                             style: const TextStyle(
                                               fontSize: 13,
                                             ),
@@ -419,6 +434,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           ),
                                           Text(
                                             gameDetails.score.toString(),
+                                            // gameDetails.score.toString(),
                                             style: const TextStyle(
                                               fontSize: 14,
                                             ),
@@ -598,7 +614,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          FutureBuilder<List<Screenshot>>(
+                          FutureBuilder<List<Screenshot>?>(
                             future: _gameScreenshots,
                             builder: (context, screenshotSnapshot) {
                               if (screenshotSnapshot.connectionState ==
@@ -614,7 +630,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 return const Center(
                                     child: Text('Error loading screenshots'));
                               } else if (!screenshotSnapshot.hasData ||
-                                  screenshotSnapshot.data!.isEmpty) {
+                                  screenshotSnapshot.data!.isEmpty || snapshot.data == null) {
                                 return const Center(
                                     child: Text('No screenshots available'));
                               } else {
@@ -625,6 +641,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     scrollDirection: Axis.horizontal,
                                     itemCount: screenshots.length,
                                     itemBuilder: (context, index) {
+                                      if (index < 0 || index >= screenshots.length) {
+                                        return const Center(child: Text('Invalid screenshot index'));
+                                      }
+
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 0, 2, 0),
@@ -770,7 +790,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                                 Text(
                                   // gameDetails.developer,
-                                  gameDetails.publisher[0]['name'],
+                                  gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher',
+                                  // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
                                     color:
@@ -800,7 +821,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                                 Text(
-                                  gameDetails.publisher[0]['name'],
+                                  gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher', 
+                                  // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
                                     color:
@@ -863,8 +885,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   flex: 1,
                                   child: Wrap(
                                     spacing: 4.0,
-                                    children:
-                                        snapshot.data!.getStyledGenres(context),
+                                    children: () {
+                                      if (snapshot.data == null || snapshot.data!.genres.isEmpty) {
+                                        return [const Text('No genres available')];
+                                      }
+                                      return snapshot.data!.getStyledGenres(context);
+                                    }(),
                                   ),
                                 )
                               ],

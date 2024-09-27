@@ -165,22 +165,22 @@ class GameDetails {
 
     if (genres.isNotEmpty) {
       for (var genre in genres) {
-        genresWidgets.add(
-          Text(
-            genre['name'],
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              decorationColor: Theme.of(context).colorScheme.secondary,
-              fontSize: 12,
-              color: Theme.of(context).colorScheme.secondary,
+        if (genre != null && genre.containsKey('name')) {
+          genresWidgets.add(
+            Text(
+              genre['name'],
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                decorationColor: Theme.of(context).colorScheme.secondary,
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-            // overflow: TextOverflow.fade,
-          ),
-        );
-        genresWidgets.add(const SizedBox(
-          width: 10,
-          // overflow: TextOverflow.visible,
-        ));
+          );
+          genresWidgets.add(const SizedBox(
+            width: 10,
+          ));
+        }
       }
     } else {
       return [
