@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/settings/customize_service.dart';
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
@@ -82,7 +81,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
           _selectedGenres = customizeData.elementAt(0);
           _selectedAge = customizeData.elementAt(1);
           _selectedInterests = customizeData.elementAt(2);
-
         });
       }
     }
@@ -92,10 +90,6 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
     await _fetchUserSelectionsFromDatabase();
     await Future.wait([_fetchAllTags()]);
   }
-
-
-
-
 
   void _saveChangedProfileData() async {
     final success = await CustomizeService().saveProfileData(
@@ -155,7 +149,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
             padding: const EdgeInsets.all(12.0),
             children: [
               TagContainer(
-                tagType: 'Genre',
+                // Show the number of selected genres
+                tagType: 'Genre (${_selectedGenres.length} selected)',
                 onPressed: () => _showSelectableDialog(
                   'Select Genre',
                   _genres,
@@ -167,7 +162,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 ),
               ),
               TagContainer(
-                tagType: 'ESRB rating',
+                // Show the number of selected ESRB ratings
+                tagType: 'ESRB rating (${_selectedAge.length} selected)',
                 onPressed: () => _showSelectableDialog(
                   'Select ESRB rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
@@ -179,7 +175,8 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
                 ),
               ),
               TagContainer(
-                tagType: 'Social interests',
+                // Show the number of selected social interests
+                tagType: 'Social interests (${_selectedInterests.length} selected)',
                 onPressed: () => _showSelectableDialog(
                   'Select Social interest',
                   _interests,
