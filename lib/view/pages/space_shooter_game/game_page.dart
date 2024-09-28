@@ -74,75 +74,69 @@ class _GamePageState extends State<GamePage> {
           );
         },
         'scoreOverlay': (BuildContext context, SpaceShooterGame game) {
-          return const Positioned(
-            top: 20, 
-            left: 20,
+          return const Align(
+            alignment: Alignment.topLeft,
             child: ScoreOverlay(isGameOver: false),
           );
         },
         'startOverlay': (BuildContext context, SpaceShooterGame game) {
-          return Center(
-            child: Stack(
-              children: [
-                // Background image
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/stars_2.png'),
-                      fit: BoxFit.cover,
+          return Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/stars_2.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center, 
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Welcome to',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'ThaleahFat',
+                            ),
+                          ),
+                          Text(
+                            'Space Shooter!',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'ThaleahFat',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    ElevatedButton(
+                      onPressed: () {
+                        game.overlays.remove('startOverlay'); 
+                        game.startGame(); 
+                      },
+                      child: const Text('Start Game'),
+                    ),
+                  ],
                 ),
-                Center( 
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center, 
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Welcome to',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.none,
-                                fontFamily: 'ThaleahFat',
-                              ),
-                            ),
-                            Text(
-                              'Space Shooter!',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.none,
-                                fontFamily: 'ThaleahFat',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          game.overlays.remove('startOverlay'); 
-                          game.startGame(); 
-                        },
-                        child: const Text('Start Game'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       },
-      initialActiveOverlays: const ['startOverlay', 'quitButton'], 
-
-      // initialActiveOverlays: const ['quitButton', 'scoreOverlay'], 
+      initialActiveOverlays: const ['startOverlay', 'quitButton'],
     );
   }
 }
@@ -161,22 +155,20 @@ class ScoreOverlay extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 100))
           .asyncMap((_) => game?.score ?? 0),
       builder: (context, snapshot) {
-        return Positioned.fill(
-          child: Align(
-            alignment: Alignment.topCenter, 
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20), 
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: Text(
-                  'Score: ${snapshot.data ?? 0}',
-                  style: TextStyle(
-                    color: primaryColor,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                    fontFamily: 'ThaleahFat',
-                  ),
+        return Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                'Score: ${snapshot.data ?? 0}',
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'ThaleahFat',
                 ),
               ),
             ),
