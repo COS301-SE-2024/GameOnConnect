@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="23" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="43">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="23" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="44">
  <tileset firstgid="1" source="GameyCon.tsx"/>
  <layer id="1" name="Background" width="23" height="40">
   <properties>
@@ -49,7 +49,6 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="1" name="Player" type="Player" x="48.3357" y="569.46" width="38.5178" height="38.5178"/>
   <object id="5" name="Orange" type="Fruit" x="296.814" y="528.676" width="31.7206" height="30.2101"/>
   <object id="6" name="Apple" type="Fruit" x="136.701" y="529.432" width="31.7206" height="30.2101"/>
   <object id="7" name="Cherries" type="Fruit" x="135.19" y="417.654" width="31.7206" height="30.2101"/>
@@ -91,6 +90,7 @@
     <property name="offPos" type="float" value="5"/>
    </properties>
   </object>
+  <object id="43" name="Player" type="Player" x="51.3571" y="572.481" width="33.2311" height="31.7206"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="9" x="0" y="0.755251" width="15.105" height="638.187"/>

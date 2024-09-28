@@ -70,7 +70,7 @@
     <property name="offPos" type="float" value="8"/>
    </properties>
   </object>
-  <object id="40" name="Player" type="Player" x="15.8603" y="592.117" width="31.7206" height="31.7206"/>
+  <object id="40" name="Player" type="Player" x="16.6156" y="592.117" width="31.7206" height="31.7206"/>
   <object id="41" name="Chicken" type="Chicken" x="320.227" y="592.495" width="31.7206" height="30.9653">
    <properties>
     <property name="offNeg" type="float" value="18"/>
