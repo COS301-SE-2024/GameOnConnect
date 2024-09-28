@@ -18,8 +18,8 @@ class Pipe extends SpriteComponent with HasGameRef<FlappyBird>{
 
  @override
   Future<void> onLoad() async {
-    final pipe = await Flame.images.load('pipe.png');
-    final upsideDownPipe = await Flame.images.load('pipe_rotated.png');
+    final pipe = await Flame.images.load('rotated_icicle.png');
+    final upsideDownPipe = await Flame.images.load('icicle.png');
     size = Vector2(50, height);
 
     if(pipePosition== WhichPipe.top){

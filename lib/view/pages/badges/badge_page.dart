@@ -1,6 +1,8 @@
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class BadgePage extends StatefulWidget {
@@ -12,6 +14,15 @@ class BadgePage extends StatefulWidget {
 }
 
 class _BadgePageState extends State<BadgePage> {
+  late Future<List<String>> _profilePicturesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _profilePicturesFuture = BadgeService().getConnectionsBadgeStatus(
+        widget.badge.key); // Use the desired badge name
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +53,11 @@ class _BadgePageState extends State<BadgePage> {
         Text(widget.badge.key.replaceAll('_', ' ').toUpperCase(),
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
         const SizedBox(height: 18),
-        const SizedBox(
+        SizedBox(
             width: 280,
             child: Text(
-              "You earned this badge by",
-              style: TextStyle(fontSize: 13, color: Colors.grey),
+              widget.badge.value['description'],
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
               textAlign: TextAlign.center,
             )),
         const SizedBox(height: 18),
@@ -80,14 +91,36 @@ class _BadgePageState extends State<BadgePage> {
         const SizedBox(height: 18),
         Padding(
           padding: const EdgeInsets.all(12),
-          child: AvatarStack(
-            width: 250,
-            height: 50,
-            borderColor: Theme.of(context).colorScheme.surface,
-            avatars: [
-              for (var n = 0; n < 15; n++)
-                NetworkImage('https://i.pravatar.cc/150?img=$n'),
-            ],
+          child: FutureBuilder<List<String>>(
+            future: _profilePicturesFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: LoadingAnimationWidget.halfTriangleDot(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 36,
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Text('No users with the unlocked badge');
+              } else {
+                List<String> profilePictures = snapshot.data!;
+
+                return Center(
+                  child: AvatarStack(
+                    width: 250,
+                    height: 50,
+                    borderColor: Theme.of(context).colorScheme.surface,
+                    avatars: [
+                      for (var picture in profilePictures)
+                        NetworkImage(picture),
+                    ],
+                  ),
+                );
+              }
+            },
           ),
         ),
         const SizedBox(height: 100)
