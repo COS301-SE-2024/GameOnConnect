@@ -336,7 +336,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             color: Theme.of(context).colorScheme.primaryContainer,
           ),
           SizedBox(height:19.pixelScale(context)),
-          Text("Friends currently online",
+          Text("Connections currently online",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20.pixelScale(context))),
