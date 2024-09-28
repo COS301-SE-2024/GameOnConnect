@@ -388,7 +388,7 @@ class _SignUpState extends State<SignUp> {
 
                     child: Text(' Login',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 128, 216, 50),
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold
                       ),
                     )

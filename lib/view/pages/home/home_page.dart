@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
 
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
- 
 
   @override
   void initState() {
@@ -301,7 +300,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   initState() {
     super.initState();
     currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    fetchUsername(); 
+    fetchUsername();
   }
 
   Future<void> fetchUsername() async {
@@ -381,9 +380,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(
-                  right:20.0,
-                  top: 16.0),
+              padding: const EdgeInsets.only(right: 20.0, top: 16.0),
               child: IconButton(
                 onPressed: () {
                   Navigator.push(

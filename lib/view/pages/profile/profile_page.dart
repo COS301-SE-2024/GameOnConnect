@@ -16,6 +16,7 @@ import 'package:gameonconnect/view/components/profile/bio.dart';
 import 'package:gameonconnect/view/components/profile/profile_buttons.dart';
 import 'package:gameonconnect/view/components/profile/action_button.dart';
 import 'package:gameonconnect/view/components/profile/request_container.dart';
+import 'package:gameonconnect/view/pages/badges/achievement_badges.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
 import 'package:gameonconnect/view/pages/profile/connections_list.dart';
 import 'package:gameonconnect/view/pages/profile/my_gameslist.dart';
@@ -55,6 +56,8 @@ class _ProfileState extends State<ProfilePage> {
   bool isPendingOfParent = false;
   bool isConnectionOfParent = false;
   bool isRequestToParent = false;
+  Map<String, dynamic> _badges = {};
+  int _badgesCount = 0;
 
   Future<void> isConnectionOfLoggedInUser() async {
     final connections = await ConnectionService().getConnections('connections');
@@ -203,6 +206,19 @@ class _ProfileState extends State<ProfilePage> {
     );
   }
 
+  Future<void> getNumBadges() async {
+    _badges = await BadgeService().getBadges();
+    int count = 0;
+
+    for (Map<String, dynamic> badge in _badges.values) {
+      if (badge['unlocked']) {
+        count++;
+      }
+    }
+
+    _badgesCount = count;
+  }
+
   void navigateToStats(BuildContext context) {
     Navigator.push(
       context,
@@ -218,6 +234,7 @@ class _ProfileState extends State<ProfilePage> {
     super.initState();
     getRelationToLoggedInUser();
     getTimePlayed();
+    getNumBadges();
     _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
@@ -433,8 +450,14 @@ class _ProfileState extends State<ProfilePage> {
                                   Expanded(
                                     child: ProfileButton(
                                         value:
-                                            '${_profileService.mygGamesLength}',
-                                        title: 'Games'),
+                                            _badgesCount.toString(),
+                                        title: 'Badges',
+                                        onPressed:() {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => AchievementBadgesPage(badges: _badges)),
+                                          );
+                                        },),
                                   ),
                                   Expanded(
                                     child: ProfileButton(

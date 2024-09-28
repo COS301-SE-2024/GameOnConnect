@@ -46,6 +46,7 @@ class MyGamesService {
       } 
     } catch (e) {
       //return 0;
+      throw "Add to My Games Error";
     }
   }
 
@@ -63,6 +64,7 @@ class MyGamesService {
       BadgeService().unlockCollectorBadge(false);
     } catch (e) {
       //return [];
+      throw "Remove from My Games Error";
     }
   }
 
