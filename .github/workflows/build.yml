@@ -1,11 +1,10 @@
 name: Build and Upload Release APK to Github
 
-# This will only trigger on pushes to main and Develop branches.
+# This will only trigger on pushes to main.
 on:
   push:
     branches:
-      - main
-      - Develop
+      - main    
 
 jobs:
   build:
