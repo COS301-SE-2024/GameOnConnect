@@ -49,12 +49,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
-  <object id="2" name="Player" type="Player" x="160.113" y="577.011" width="31.7206" height="31.7206"/>
+  <object id="2" name="Player" type="Player" x="16.6152" y="575.5" width="31.7206" height="31.7206"/>
   <object id="26" name="Apple" type="Fruit" x="97.4275" y="209.96" width="31.7206" height="30.2101"/>
   <object id="27" name="Kiwi" type="Fruit" x="111.022" y="302.856" width="33.2311" height="33.9863"/>
   <object id="28" name="Cherries" type="Fruit" x="173.708" y="255.275" width="32.4758" height="33.2311"/>
   <object id="30" name="Orange" type="Fruit" x="64.1964" y="383.668" width="31.7206" height="32.4758"/>
-  <object id="32" name="Apple" type="Fruit" x="208.449" y="576.257" width="31.7206" height="30.2101"/>
+  <object id="32" name="Apple" type="Fruit" x="262.827" y="465.235" width="31.7206" height="30.2101"/>
   <object id="36" type="Saw" x="303.611" y="266.981" width="31.7206" height="30.9653">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
@@ -62,13 +62,7 @@
     <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
-  <object id="37" type="Checkpoint" x="233.373" y="145.008" width="62.6859" height="62.6859"/>
-  <object id="38" name="Chicken" type="Chicken" x="62.6859" y="575.502" width="33.2311" height="31.7206">
-   <properties>
-    <property name="offNeg" type="float" value="4"/>
-    <property name="offPos" type="float" value="17"/>
-   </properties>
-  </object>
+  <object id="37" type="Checkpoint" x="289.262" y="544.536" width="62.6859" height="62.6859"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="3" x="-0.755251" y="6.04201" width="6.79726" height="635.166"/>
