@@ -116,22 +116,24 @@ class _HomePageWidgetState extends State<ViewEvents> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.all(12),
+                                padding:  EdgeInsets.all(12.pixelScale(context)),
                                 child: Text("Upcoming Events",
                                     style: TextStyle(
                                         fontSize: 20.pixelScale(context),
                                         fontWeight: FontWeight.bold)),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.all(12),
+                                padding:  EdgeInsetsDirectional.all(12.pixelScale(context)),
                                 child: joinedEvents!.isEmpty
                                     ? const SizedBox()
                                     : carousel_slider2.CarouselSlider.builder(
+
                                         itemCount: joinedEvents?.length,
                                         carouselController: carousel_slider
                                             .CarouselSliderController(),
                                         options:
                                             carousel_slider2.CarouselOptions(
+                                              height: 250.pixelScale(context),
                                           padEnds: false,
                                           initialPage: 0,
                                           viewportFraction: 0.5,
