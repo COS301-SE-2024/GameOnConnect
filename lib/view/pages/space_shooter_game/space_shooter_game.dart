@@ -18,11 +18,19 @@ class SpaceShooterGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    await initializeGame();
+    overlays.add('startOverlay');
+    // await initializeGame();
 
-    overlays.add('quitButton');
+    // overlays.add('quitButton');
 
-    overlays.add('scoreOverlay');
+    // overlays.add('scoreOverlay');
+  }
+
+  void startGame() {
+    reset(); // Reset game state
+    overlays.remove('startOverlay'); // Remove the start button overlay
+    overlays.add('scoreOverlay'); // Add score overlay
+    overlays.add('quitButton'); // Add quit button overlay
   }
 
   Future<void> initializeGame() async {
