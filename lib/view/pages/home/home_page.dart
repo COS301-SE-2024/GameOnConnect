@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
@@ -36,6 +37,8 @@ class _HomePageState extends State<HomePage> {
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
 
+  final BadgeService _badgeService = BadgeService();
+
   late String currentUserId; // Declare currentUserId here
   late List<Widget> _pages; // Declare _pages as late
 
@@ -57,6 +60,9 @@ class _HomePageState extends State<HomePage> {
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
+
+    _badgeService.unlockLoyaltyBadge();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   String getCurrentUserId() {

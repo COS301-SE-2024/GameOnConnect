@@ -2,6 +2,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider2;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/view/components/events/joined_event_card.dart';
 import 'package:gameonconnect/view/components/home/event_invite_list.dart';
@@ -22,6 +23,7 @@ class ViewEvents extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<ViewEvents> {
+  final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   EventsService events = EventsService();
   List<Event>? allEvents;
@@ -33,6 +35,8 @@ class _HomePageWidgetState extends State<ViewEvents> {
   @override
   void initState() {
     super.initState();
+    getAllEvents();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
   }
 
   @override
