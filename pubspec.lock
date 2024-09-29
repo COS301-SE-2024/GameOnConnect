@@ -599,18 +599,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_inappwebview
-      sha256: f918b6d8ec1e988f72bdbd65b7317dbdf626ce8b7c00dd93c271e030ff66218f
+      sha256: "3e9a443a18ecef966fb930c3a76ca5ab6a7aafc0c7b5e14a4a850cf107b09959"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.1"
+    version: "6.0.0"
   flutter_inappwebview_android:
     dependency: transitive
     description:
       name: flutter_inappwebview_android
-      sha256: "94690a226193bb8ee0648c69a1cd8f1e3c6466cfb1b8dd813c1bb1a498343f3b"
+      sha256: d247f6ed417f1f8c364612fa05a2ecba7f775c8d0c044c1d3b9ee33a6515c421
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0+3"
+    version: "1.0.13"
   flutter_inappwebview_internal_annotations:
     dependency: transitive
     description:
@@ -623,42 +623,34 @@ packages:
     dependency: transitive
     description:
       name: flutter_inappwebview_ios
-      sha256: e13f79a4527629c0cf66b991b34a993e9a5387b8a1806d37e0534d9e18f20835
+      sha256: f363577208b97b10b319cd0c428555cd8493e88b468019a8c5635a0e4312bd0f
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0+2"
+    version: "1.0.13"
   flutter_inappwebview_macos:
     dependency: transitive
     description:
       name: flutter_inappwebview_macos
-      sha256: "6b6d4ebfaaf0559ea65e53969f6011a6fad5eba8bd01346132cf9b6fce6c3780"
+      sha256: b55b9e506c549ce88e26580351d2c71d54f4825901666bd6cfa4be9415bb2636
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0+2"
+    version: "1.0.11"
   flutter_inappwebview_platform_interface:
     dependency: transitive
     description:
       name: flutter_inappwebview_platform_interface
-      sha256: "685b82b62c7704275e10781273bf87b4abfc086a3b83c7ef20ebc679ee551c43"
+      sha256: "545fd4c25a07d2775f7d5af05a979b2cac4fbf79393b0a7f5d33ba39ba4f6187"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0+1"
+    version: "1.0.10"
   flutter_inappwebview_web:
     dependency: transitive
     description:
       name: flutter_inappwebview_web
-      sha256: e0f4418493ba55d7f905de530d2abb22281e4e98d867cda3aba90005cf9546d5
+      sha256: d8c680abfb6fec71609a700199635d38a744df0febd5544c5a020bd73de8ee07
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0+1"
-  flutter_inappwebview_windows:
-    dependency: transitive
-    description:
-      name: flutter_inappwebview_windows
-      sha256: "1a9b2d5b6999b402dafbad801dc1adbce5bfb9e289ae5e572b26a46dfd505d8e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0+1"
+    version: "1.0.8"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -822,10 +814,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: c0a6763d50b354793d0192afd0a12560b823147d3ded7c6b77daf658fa05cc85
+      sha256: "8c5abf0dcc24fe6e8e0b4a5c0b51a5cf30cefdf6407a3213dae61edc75a70f56"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.12+13"
+    version: "0.8.12+12"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -903,6 +895,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.19.0"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:
@@ -1312,18 +1312,18 @@ packages:
     dependency: transitive
     description:
       name: sqflite
-      sha256: ff5a2436ef8ebdfda748fbfe957f9981524cb5ff11e7bafa8c42771840e8a788
+      sha256: a43e5a27235518c03ca238e7b4732cf35eabe863a369ceba6cbefa537a66f16d
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3+2"
+    version: "2.3.3+1"
   sqflite_common:
     dependency: transitive
     description:
       name: sqflite_common
-      sha256: "2d8e607db72e9cb7748c9c6e739e2c9618320a5517de693d5a24609c4671b1a4"
+      sha256: "3da423ce7baf868be70e2c0976c28a1bb2f73644268b7ffa7d2e08eab71f16a4"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.4+4"
+    version: "2.5.4"
   stack_trace:
     dependency: transitive
     description:
@@ -1384,10 +1384,10 @@ packages:
     dependency: transitive
     description:
       name: synchronized
-      sha256: "69fe30f3a8b04a0be0c15ae6490fc859a78ef4c43ae2dd5e8a623d45bfcf9225"
+      sha256: "539ef412b170d65ecdafd780f924e5be3f60032a1128df156adad6c5b373d558"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0+3"
+    version: "3.1.0+1"
   term_glyph:
     dependency: transitive
     description:
@@ -1456,10 +1456,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: e35a698ac302dd68e41f73250bd9517fe3ab5fa4f18fe4647a0872db61bacbab
+      sha256: f0c73347dfcfa5b3db8bc06e1502668265d39c08f310c29bff4e28eea9699f79
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.10"
+    version: "6.3.9"
   url_launcher_ios:
     dependency: transitive
     description:
@@ -1560,10 +1560,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_android
-      sha256: "45d21bbba3d10b7182aa08ade5d4c68ed3367016d40f29732bb04a799b26842d"
+      sha256: e343701aa890b74a863fa460f5c0e628127ed06a975d7d9af6b697133fb25bdf
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.5"
+    version: "2.7.1"
   video_player_avfoundation:
     dependency: transitive
     description:
@@ -1632,10 +1632,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter
-      sha256: ec81f57aa1611f8ebecf1d2259da4ef052281cb5ad624131c93546c79ccc7736
+      sha256: "6869c8786d179f929144b4a1f86e09ac0eddfe475984951ea6c634774c16b522"
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.0"
+    version: "4.8.0"
   webview_flutter_android:
     dependency: transitive
     description:
@@ -1656,10 +1656,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: "1942a12224ab31e9508cf00c0c6347b931b023b8a4f0811e5dec3b06f94f117d"
+      sha256: "9c62cc46fa4f2d41e10ab81014c1de470a6c6f26051a2de32111b2ee55287feb"
       url: "https://pub.dev"
     source: hosted
-    version: "3.15.0"
+    version: "3.14.0"
   webviewtube:
     dependency: "direct main"
     description:
@@ -1704,10 +1704,10 @@ packages:
     dependency: "direct main"
     description:
       name: youtube_player_flutter
-      sha256: "77317d420c78a5de4819cd352d050b69542d60fea0b37e0cbf89ebf115076bb9"
+      sha256: "30f84e2f7063c56e536f507e37c1e803546842707cf58e5b5a71253b9ff9b455"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.0"
+    version: "9.0.4"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.0"
+  dart: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"

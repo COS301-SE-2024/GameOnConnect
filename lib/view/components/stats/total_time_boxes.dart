@@ -19,7 +19,7 @@ class TotalTimeComponent extends StatelessWidget {
 
   String formatTime(double time) {
     if (time < 1) {
-      return '${(time * 60 * 1000).toStringAsFixed(0)} minutes';
+      return '${(time * 60).toStringAsFixed(0)} minutes';
     } else {
       return '${time.toStringAsFixed(1)} hours';
     }
