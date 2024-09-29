@@ -22,7 +22,7 @@ class _SearchFieldState extends State<SearchField> {
             controller: widget.controller,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.only(left: 20, right: 20),
-              labelText: 'Search',
+              hintText: 'Search',
               prefixIcon: const Icon(Icons.search),
               fillColor: Theme.of(context).colorScheme.primaryContainer,
               filled: true,

@@ -78,7 +78,7 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
                     children: [
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(12, 0, 12, 21),
+                             EdgeInsetsDirectional.fromSTEB(12.pixelScale(context), 12.pixelScale(context), 0, 21.pixelScale(context)),
                         child: SearchField(
                             controller: searchController,
                             onSearch: (query) {
