@@ -955,6 +955,7 @@ class _CreateEventsState extends State<CreateEvents> {
                                         _endDatePicked = null;
                                         _datePicked = null;
                                       });
+                                      Navigator.of(context).pop();
                                     } else {
                                       if (!validName) {
                                         ScaffoldMessenger.of(context)
