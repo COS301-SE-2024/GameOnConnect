@@ -13,8 +13,7 @@
         },
         "Level-1.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                2
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
@@ -53,7 +52,7 @@
                 3
             ],
             "scale": 1.3240625,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 249.61057351899927,
                 "y": 320.2265754071277

@@ -10,11 +10,11 @@
 113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,111,
-113,0,0,0,0,0,0,35,13,14,14,14,14,14,15,35,0,0,0,13,14,15,111,
+113,0,0,0,0,0,0,35,13,14,14,14,14,14,15,35,0,0,0,0,0,0,111,
 113,0,0,0,13,14,15,16,0,0,0,0,0,0,0,16,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
-113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
-113,13,14,15,0,0,0,38,0,0,0,0,0,0,0,38,13,14,15,0,0,0,111,
+113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,13,14,15,0,0,0,111,
+113,13,14,15,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,40,41,42,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,13,14,15,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
@@ -25,8 +25,8 @@
 113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,13,14,15,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,40,41,42,0,0,38,0,0,0,0,0,0,111,
-113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
-113,13,14,15,0,0,0,38,0,0,0,0,0,0,0,38,13,14,15,0,0,0,111,
+113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,13,14,15,0,0,0,111,
+113,13,14,15,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,40,41,42,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,0,0,0,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
 113,0,0,0,13,14,15,38,0,0,0,0,0,0,0,38,0,0,0,0,0,0,111,
@@ -64,13 +64,13 @@
    </properties>
   </object>
   <object id="34" name="Melon" type="Fruit" x="166.155" y="111.777" width="31.7206" height="30.2101"/>
-  <object id="35" type="Checkpoint" x="288.884" y="418.786" width="62.6859" height="62.6859"/>
+  <object id="35" type="Checkpoint" x="289.639" y="418.786" width="62.6859" height="62.6859"/>
   <object id="36" name="Cherries" type="Fruit" x="166.91" y="305.877" width="31.7206" height="30.2101"/>
   <object id="39" type="Saw" x="257.54" y="209.583" width="31.7206" height="30.9653">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
-    <property name="offNeg" type="float" value="4"/>
-    <property name="offPos" type="float" value="5"/>
+    <property name="offNeg" type="float" value="5"/>
+    <property name="offPos" type="float" value="2"/>
    </properties>
   </object>
   <object id="40" name="Player" type="Player" x="16.6156" y="592.117" width="31.7206" height="31.7206"/>
@@ -90,15 +90,15 @@
   <object id="43" type="Saw" x="261.317" y="384.045" width="31.7206" height="30.9653">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
-    <property name="offNeg" type="float" value="3"/>
+    <property name="offNeg" type="float" value="4"/>
     <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
   <object id="44" type="Saw" x="313.429" y="127.26" width="31.7206" height="30.9653">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
-    <property name="offNeg" type="float" value="3"/>
-    <property name="offPos" type="float" value="3"/>
+    <property name="offNeg" type="float" value="7"/>
+    <property name="offPos" type="float" value="1"/>
    </properties>
   </object>
   <object id="45" name="Apple" type="Fruit" x="167.666" y="208.449" width="31.7206" height="30.2101"/>
@@ -134,10 +134,9 @@
   <object id="30" type="Platform" x="158.98" y="142.365" width="47.5808" height="15.8603"/>
   <object id="37" x="129.903" y="64.1964" width="109.511" height="15.105"/>
   <object id="38" x="14.7276" y="0.755265" width="339.107" height="15.105"/>
-  <object id="47" x="305.499" y="63.4411" width="46.8251" height="15.105"/>
-  <object id="48" x="256.786" y="129.903" width="46.8251" height="15.105"/>
+  <object id="48" x="256.031" y="113.287" width="46.8251" height="15.105"/>
   <object id="49" x="304.367" y="208.449" width="46.8251" height="15.105"/>
-  <object id="50" x="256.03" y="320.227" width="46.8251" height="15.105"/>
+  <object id="50" x="256.785" y="305.877" width="46.8251" height="15.105"/>
   <object id="51" x="305.122" y="401.038" width="46.8251" height="15.105"/>
  </objectgroup>
 </map>

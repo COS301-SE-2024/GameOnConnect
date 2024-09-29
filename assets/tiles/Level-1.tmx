@@ -62,7 +62,7 @@
     <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
-  <object id="37" type="Checkpoint" x="232.618" y="145.008" width="62.6859" height="62.6859"/>
+  <object id="37" type="Checkpoint" x="233.373" y="145.008" width="62.6859" height="62.6859"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="3" x="-0.755251" y="6.04201" width="16.6155" height="635.166"/>

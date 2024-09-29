@@ -57,7 +57,7 @@
     <property name="offPos" type="float" value="17"/>
    </properties>
   </object>
-  <object id="26" type="Checkpoint" x="160.492" y="16.2378" width="62.6859" height="62.6859"/>
+  <object id="26" type="Checkpoint" x="162.003" y="16.2378" width="62.6859" height="62.6859"/>
   <object id="27" name="Melon" type="Fruit" x="33.231" y="144.253" width="31.7206" height="30.2101"/>
   <object id="28" name="Melon" type="Fruit" x="297.569" y="145.008" width="31.7206" height="30.2101"/>
   <object id="29" name="Apple" type="Fruit" x="37.7625" y="286.24" width="31.7206" height="30.2101"/>
