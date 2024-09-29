@@ -262,52 +262,24 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                 },
               )
             else if (page == 'requests')
-              PopupMenuButton<String>(
-                itemBuilder: (context) => [
-                  const PopupMenuItem<String>(
-                    value: 'accept',
-                    child: Row(
-                      children: [
-                        Text('Accept'),
-                        Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'reject',
-                    child: Row(
-                      children: [
-                        Text('Reject'),
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'message',
-                    child: Text('Message'),
-                  ),
-                ],
-                onSelected: (value) {
-                  if (value == 'accept') {
+            Row(
+              children: [
+                IconButton(
+                  color: Colors.green,
+                  icon: Icon(Icons.check),
+                  onPressed: () {
                     _accept(uid);
-                  } else if (value == 'reject') {
+                  },
+                ),
+                IconButton(
+                  color: Colors.red,
+                  icon: Icon(Icons.close),
+                  onPressed: () {
                     _reject(uid);
-                  } else if (value == 'message') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Messaging(),
-                      ),
-                    );
-                  }
-                },
-              ),
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
