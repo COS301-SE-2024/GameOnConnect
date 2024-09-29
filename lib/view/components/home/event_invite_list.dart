@@ -71,7 +71,7 @@ class _EventInvitesListState extends State<EventInvitesList> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold)),
                         SvgPicture.asset(
-                          'assets/images/sad_icon.svg',
+                          'assets/icons/sad_icon.svg',
                           height: 75,
                           fit: BoxFit.contain,
                         )

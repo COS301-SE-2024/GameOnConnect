@@ -38,9 +38,9 @@ class EventsService {
     }
   }
 
-  List<Event> getPublicEvents(List<Event> e) {
+  List<Event> getPublicEvents(List<Event>? e) {
     List<Event> all = [];
-    for (var x in e) {
+    for (var x in e!) {
         if (x.privacy == true && !DateTime.now().isAfter(x.endDate)) {
         all.add(x);
       }

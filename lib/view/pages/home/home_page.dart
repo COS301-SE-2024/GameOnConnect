@@ -384,11 +384,11 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                           ),
                           Row(
                             children: [
-                              SvgPicture.asset(
-                                'assets/images/start_hearts.svg',
+                               SvgPicture.asset(
+                                'assets/icons/start_hearts.svg',
                                 width: 110,
                                 fit: BoxFit.contain,
-                              ),
+                              ), 
                               SizedBox(width: 10),
                               Icon(
                                 Icons.arrow_forward_ios,
