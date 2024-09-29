@@ -6,7 +6,6 @@ import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
-import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -266,14 +265,14 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               children: [
                 IconButton(
                   color: Colors.green,
-                  icon: Icon(Icons.check),
+                  icon: const Icon(Icons.check),
                   onPressed: () {
                     _accept(uid);
                   },
                 ),
                 IconButton(
                   color: Colors.red,
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   onPressed: () {
                     _reject(uid);
                   },
