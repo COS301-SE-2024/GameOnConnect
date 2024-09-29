@@ -44,6 +44,7 @@ jobs:
         echo "IOS_BUNDLE_ID=${{ secrets.IOS_BUNDLE_ID }}" >> .env
         echo "DEFAULT_IMAGE_URL=${{ secrets.DEFAULT_IMAGE_URL }}" >> .env
         echo "DEFAULT_BANNER_URL=${{ secrets.DEFAULT_BANNER_URL }}" >> .env
+        echo "RAWG_API_KEY=${{ secrets.RAWG_API_KEY }}" >> .env
       shell: bash
 
     # Step 5: Create local.properties file
