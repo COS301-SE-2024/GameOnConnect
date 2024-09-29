@@ -34,7 +34,7 @@ class StatsTotalTimeService {
 
       double totalTimePlayedToday = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedToday += timePlayed;
       }
 
@@ -60,7 +60,7 @@ class StatsTotalTimeService {
 
       double totalTimePlayedLastWeek = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastWeek += timePlayed;
       }
 
@@ -86,7 +86,7 @@ class StatsTotalTimeService {
 
       double totalTimePlayedLastMonth = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastMonth += timePlayed;
       }
 
@@ -109,7 +109,7 @@ class StatsTotalTimeService {
     // Populate the map with total time played by each user
     for (var doc in snapshot.docs) {
       String user = doc.data()['user_id'];
-      double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600); // Convert ms to hours
+      double timePlayed = (doc.data()['time_played'] ?? 0) / 3600; // Convert s to hours
 
       // Accumulate the time played for each user
       userTimeMap[user] = (userTimeMap[user] ?? 0) + timePlayed;
@@ -148,7 +148,7 @@ class StatsTotalTimeService {
 
       double totalTimePlayedLastYear = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastYear += timePlayed;
       }
 
