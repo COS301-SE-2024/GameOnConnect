@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 //import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'package:gameonconnect/model/game_library_M/game_model.dart';
-import '../../../globals.dart' as global;
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../../components/game_library/game_library_filter.dart';
 import 'package:gameonconnect/view/pages/game_library/game_details_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,14 +20,8 @@ class GameLibrary extends StatefulWidget {
 }
 
 class _GameLibraryState extends State<GameLibrary> {
+  final _badgeService = BadgeService();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  /*static final customCacheManager = CacheManager(
-    Config(
-      'GamePicturesCache',
-      stalePeriod: Duration(days: 5),
-    ),
-  );*/
-
   final List<Game> _games = [];
   int _currentPage = 1;
   bool _isLoading = false;
@@ -36,19 +30,59 @@ class _GameLibraryState extends State<GameLibrary> {
   String _searchQuery = '';
   String? _sortValue = '';
   List<String> selectedPlatforms = [];
+  List<String> _activeFilters = [];
+  String _filterString = '';
 
   @override
   void initState() {
     super.initState();
-    _loadGames(_currentPage);
+    _loadGames();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           _searchQuery.isEmpty) {
-        _loadGames(_currentPage);
+        _loadGames();
       }
     });
+  }
+
+  Future<void> _filterGames(
+      String filterString, List<String> activeFilters) async {
+    if (_isLoading) return;
+
+    setState(() {
+      _activeFilters = activeFilters;
+      _filterString = filterString;
+      _games.clear();
+      _currentPage = 1;
+    });
+
+    await _loadGames();
+  }
+
+  Future<void> _loadGames() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final games = await GameService.fetchGames(_currentPage,
+          sortValue: _sortValue, searchQuery: _searchQuery, filterString: _filterString);
+
+      setState(() {
+        _games.addAll(games);
+        _currentPage++;
+      });
+    } catch (e) {
+      //Handle error
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -79,77 +113,24 @@ class _GameLibraryState extends State<GameLibrary> {
   void _onSearchEntered(String query) {
     setState(() {
       _searchQuery = query;
-      if (_searchQuery.isNotEmpty) {
-        _games.clear(); // Clear previous search results
-        _searchGames();
-      } else {
-        _games.clear();
-        _searchQuery = '';
-        _currentPage = 1;
-        _loadGames(_currentPage);
-      }
+      _games.clear();
+      _currentPage = 1;
+      _loadGames();
     });
-  }
-
-  // void _navigateToGameDetails(Game game) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => GameDetailsPage(gameId: game.id),
-  //     ),
-  //   );
-  // }
-
-  Future<void> _runApiRequest(String request) async {
-    if (_isLoading) return;
-    setState(() {
-      _isLoading = true;
-    });
-
-
-    final response = await http.get(Uri.parse(
-        'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final games = (jsonData['results'] as List)
-          .map((gameJson) => Game.fromJson(gameJson))
-          .toList();
-
-      setState(() {
-        _games.clear();
-        _games.addAll(games);
-        _currentPage++;
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      throw Exception('Failed to load games');
-    }
-  }
-
-  Future<void> _searchGames() async {
-    _runApiRequest('&search=$_searchQuery');
-  }
-
-  Future<void> _loadGames(int page) async {
-    if (_sortValue!.isNotEmpty) {
-      _runApiRequest('&ordering=-$_sortValue&page_size=20&page=$page');
-    } else {
-      _runApiRequest('&page_size=20&page=$page');
-    }
   }
 
   clearFilters() {
     setState(() {
+      _activeFilters = [];
+      _filterString = '';
       _searchQuery = '';
       _sortValue = '';
       _games.clear();
       _currentPage = 1;
-      _loadGames(_currentPage);
+      _loadGames();
     });
+
+     _badgeService.unlockExplorerComponent("search_game");
   }
 
   @override
@@ -162,9 +143,9 @@ class _GameLibraryState extends State<GameLibrary> {
             body: Column(
               children: [
                 TabBar(tabs: const [
-                    Tab(text: 'GAMES'),
-                    Tab(text: 'CONNECTIONS'),
-                  ]),
+                  Tab(text: 'GAMES'),
+                  Tab(text: 'CONNECTIONS'),
+                ]),
                 Expanded(
                     child: TabBarView(children: [games(), FriendSearch()])),
               ],
@@ -173,7 +154,7 @@ class _GameLibraryState extends State<GameLibrary> {
 
   Padding sortFilter(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
       child: Container(
         padding: EdgeInsets.all(5),
         decoration: BoxDecoration(
@@ -181,145 +162,196 @@ class _GameLibraryState extends State<GameLibrary> {
                 bottom: BorderSide(
                     width: 0.5,
                     color: Theme.of(context).colorScheme.secondary))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _activeFilters.isNotEmpty
+                ? Row(
+                    children: [
+                      Text(
+                        "Active Filters (${_activeFilters.length}):",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 8.0),
+                      Expanded(
+                        child: SizedBox(
+                          height: 25,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: _activeFilters.map((filter) {
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(6, 1, 6, 1),
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Text(filter),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Sort by'),
-                      content:
-                          Column(mainAxisSize: MainAxisSize.min, children: [
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Name'),
-                            value: 'name',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Released'),
-                            value: 'released',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Added'),
-                            value: 'added',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Created'),
-                            value: 'created',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Updated'),
-                            value: 'updated',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Rating'),
-                            value: 'rating',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                        RadioListTile(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            title: Text('Metacritic'),
-                            value: 'metacritic',
-                            groupValue: _sortValue,
-                            onChanged: (value) {
-                              setState(() {
-                                _sortValue = value;
-                              });
-                            }),
-                      ]),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => StatefulBuilder(
+                          builder: (context, setState) => AlertDialog(
+                            title: const Text('Sort by'),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Name'),
+                                      value: 'name',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Released'),
+                                      value: 'released',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Added'),
+                                      value: 'added',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Created'),
+                                      value: 'created',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Updated'),
+                                      value: 'updated',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Rating'),
+                                      value: 'rating',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                  RadioListTile(
+                                      activeColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      title: Text('Metacritic'),
+                                      value: 'metacritic',
+                                      groupValue: _sortValue,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _sortValue = value;
+                                        });
+                                      }),
+                                ]),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  Navigator.pop(context, 'Sort');
+                                  setState(() {
+                                    _games.clear();
+                                  });
+                                  await _loadGames();
+                                },
+                                child: const Text('Sort'),
+                              ),
+                            ],
+                          ),
                         ),
-                        TextButton(
-                          onPressed: () async {
-                            Navigator.pop(context, 'Sort');
-                            setState(() {
-                              _games.clear();
-                            });
-                            await _loadGames(1);
-                          },
-                          child: const Text('Sort'),
-                        ),
-                      ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Sort",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.sort,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text("Sort",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.sort,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              FilterPage(apiFunction: _runApiRequest)),
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      Text("Filter",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.tune,
-                        color: Theme.of(context).colorScheme.primary,
-                      )
-                    ],
-                  ),
+                Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FilterPage(
+                                  filterFunction: _filterGames,
+                                  clearFiltersFunction: clearFilters)),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text("Filter",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.tune,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -337,37 +369,20 @@ class _GameLibraryState extends State<GameLibrary> {
   }
 
   Widget games() {
-    return Column(
-      children: [
+    return Column(children: [
       Padding(
-        padding: const EdgeInsets.all(12),
-        child: SearchField(
-          key: const Key('searchTextField'),
-          controller: _searchController,
-          onSearch: (query) {
-            _onSearchEntered(query);
-          },
-        )
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: SizedBox(
-          height: 40,
-          width: 200,
-          child: FilledButton(
-              onPressed: () => clearFilters(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Text('Clear filters'),
-                  Icon(Icons.clear),
-                ],
-              )),
-        ),
-      ),
+          padding: const EdgeInsets.all(12),
+          child: SearchField(
+            key: const Key('searchTextField'),
+            controller: _searchController,
+            onSearch: (query) {
+              _onSearchEntered(query);
+            },
+          )),
       sortFilter(context),
-      Expanded(child: gameList(),)
+      Expanded(
+        child: gameList(),
+      )
     ]);
   }
 
@@ -378,7 +393,12 @@ class _GameLibraryState extends State<GameLibrary> {
       itemBuilder: (context, index) {
         if (index == _games.length) {
           return _isLoading
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: LoadingAnimationWidget.halfTriangleDot(
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 36,
+                  ),
+                )
               : SizedBox.shrink();
         }
         final game = _games[index];
@@ -396,7 +416,7 @@ class _GameLibraryState extends State<GameLibrary> {
                       height: 120,
                       width: 134,
                       child: CachedNetworkImage(
-                        //cacheManager: customCacheManager,
+                        //cacheManager: GameCacheManager(),
                         imageUrl: game.backgroundImage,
                         imageBuilder: (context, imageProvider) => Container(
                           decoration: BoxDecoration(
@@ -409,7 +429,10 @@ class _GameLibraryState extends State<GameLibrary> {
                         ),
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),
+                          child: LoadingAnimationWidget.halfTriangleDot(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 36,
+                          ),
                         ),
                         fadeInDuration: Duration(milliseconds: 0),
                         fadeOutDuration: Duration(milliseconds: 0),
@@ -431,28 +454,10 @@ class _GameLibraryState extends State<GameLibrary> {
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Row(children: game.getPlatformIcons(context, Theme.of(context).colorScheme.primary)),
-                          Text("Released: ${game.released}"),
                           Row(
-                            children: [
-                              Text("Genres:"),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: game.getStyledGenres(context),
-                                ),
-                              )
-                            ],
-                          ),
-                          Text("Reviews: ${game.reviewsCount}")
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
+                              children: game.getPlatformIcons(context,
+                                  Theme.of(context).colorScheme.primary)),
+                          Container(
                           padding: EdgeInsets.only(
                               left: 5, top: 3, right: 5, bottom: 3),
                           decoration: BoxDecoration(
@@ -460,18 +465,39 @@ class _GameLibraryState extends State<GameLibrary> {
                             border: Border.all(
                                 color: Theme.of(context).colorScheme.primary),
                           ),
-                          child: Text("${game.score}",
+                          child: Text("Metacritic: ${game.score}",
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontSize: 12)),
                         ),
-                        Icon(Icons.chevron_right,
-                            color: Theme.of(context).colorScheme.secondary),
-                        SizedBox(
-                          height: 10,
-                        )
-                      ],
-                    )
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "Released:  ",
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness == Brightness.dark ? 
+                                    Colors.white : 
+                                    Colors.black
+                                  )),
+                                TextSpan(
+                                  text: game.released,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.secondary),
                   ],
                 ),
               ),

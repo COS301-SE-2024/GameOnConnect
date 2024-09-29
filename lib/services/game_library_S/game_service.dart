@@ -1,42 +1,129 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:gameonconnect/cache_managers/game_cache_manager.dart';
+import 'package:gameonconnect/model/game_library_M/game_model.dart';
 import '../../../globals.dart' as global;
-
 import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
 
 class GameService {
+  static Future<List<Game>> fetchGames(int page,
+      {String? sortValue, String? searchQuery, String? filterString}) async {
+    String request = '&page_size=20&page=$page';
 
-  Future<GameDetails> fetchGameDetails( gameId) async {
-    try {
+    if (sortValue != null && sortValue.isNotEmpty) {
+      request += '&ordering=-$sortValue';
+    }
+
+    if (searchQuery != null && searchQuery.isNotEmpty) {
+      request += '&search=$searchQuery';
+    }
+
+    if (filterString != null && filterString.isNotEmpty) {
+      request += filterString;
+    }
+
+    var fileInfo = await GameCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      return (jsonData['results'] as List)
+          .map((gameJson) => Game.fromJson(gameJson))
+          .toList();
+    } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGames_trace");
+      myTrace.start();
+
+      //Load the games from API
       final response = await http.get(Uri.parse(
-          'https://api.rawg.io/api/games/$gameId?key=${global.apiKey}'));
+          'https://api.rawg.io/api/games?key=${global.apiKey}$request'));
+
+      myTrace.stop();
+
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        return GameDetails.fromJson(jsonResponse);
+        //Cache data
+        await GameCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        return (jsonData['results'] as List)
+            .map((gameJson) => Game.fromJson(gameJson))
+            .toList();
       } else {
-        throw Exception('Failed to load game details');
+        throw Exception('Failed to load games');
       }
-    } on SocketException {
-      throw Exception('No Internet connection');
+    }
+  }
+
+  Future<GameDetails> fetchGameDetails(gameId) async {
+    String request =
+        'https://api.rawg.io/api/games/$gameId?key=${global.apiKey}';
+
+    var fileInfo = await GameDetailsCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      return GameDetails.fromJson(jsonData);
+    } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGameDetails_trace");
+      myTrace.start();
+
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
+      myTrace.stop();
+
+      if (response.statusCode == 200) {
+        //Cache data
+        await GameDetailsCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        return GameDetails.fromJson(jsonData);
+      } else {
+        throw Exception('Failed to load games');
+      }
     }
   }
 
   Future<List<Screenshot>> fetchGameScreenshots(int gameId) async {
-    try {
-      final response = await http.get(Uri.parse(
-          'https://api.rawg.io/api/games/$gameId/screenshots?key=${global.apiKey}'));
+    String request = 'https://api.rawg.io/api/games/$gameId/screenshots?key=${global.apiKey}';
+
+    var fileInfo = await GameScreenshotCacheManager().getFileFromCache(request);
+
+    if (fileInfo != null && fileInfo.validTill.isAfter(DateTime.now())) {
+      //Load the games from cache
+      final jsonData = jsonDecode(await fileInfo.file.readAsString());
+      List<dynamic> screenshotJson = jsonData['results'];
+      return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
+    } else {
+      Trace myTrace = FirebasePerformance.instance.newTrace("fetchGameScreenshots_trace");
+      myTrace.start();
+
+      //Load the games from API
+      final response = await http.get(Uri.parse(request));
+
+      myTrace.stop();
+
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        List<dynamic> screenshotJson = jsonResponse['results'];
+        //Cache data
+        await GameDetailsCacheManager().putFile(
+          request,
+          response.bodyBytes,
+          fileExtension: 'json',
+        );
+        final jsonData = jsonDecode(response.body);
+        List<dynamic> screenshotJson = jsonData['results'];
         return screenshotJson.map((json) => Screenshot.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load game screenshots');
       }
-    } on SocketException {
-      throw Exception('No Internet connection');
     }
   }
-
 }
-

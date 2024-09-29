@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 
 
 class MyGamesService {
@@ -41,9 +42,11 @@ class MyGamesService {
             .collection('profile_data')
             .doc(currentUser?.uid)
             .set(data, SetOptions(merge: true));
+        BadgeService().unlockCollectorBadge(true);
       } 
     } catch (e) {
       //return 0;
+      throw "Add to My Games Error";
     }
   }
 
@@ -58,8 +61,10 @@ class MyGamesService {
         'my_games': FieldValue.arrayRemove([gameID])
 
       });
+      BadgeService().unlockCollectorBadge(false);
     } catch (e) {
       //return [];
+      throw "Remove from My Games Error";
     }
   }
 

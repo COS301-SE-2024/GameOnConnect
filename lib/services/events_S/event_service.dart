@@ -41,7 +41,7 @@ class EventsService {
   List<Event> getPublicEvents(List<Event> e) {
     List<Event> all = [];
     for (var x in e) {
-        if (x.privacy == false && !DateTime.now().isAfter(x.endDate)) {
+        if (x.privacy == true && !DateTime.now().isAfter(x.endDate)) {
         all.add(x);
       }
     }
@@ -171,6 +171,8 @@ class EventsService {
           list.add(u);
         }
       }
+
+      list.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return list;
     } catch (e) {
       throw ('Error: $e');
@@ -294,7 +296,22 @@ class EventsService {
       throw ("unable to subscribe to event");
     }
   }
-
+  Future<void> leaveEvent(Event joined) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    try {
+      if (currentUser != null) {
+        joined.participants.remove(currentUser.uid);
+        await db.collection('events').doc(joined.eventID).update(
+          {
+            'participants': FieldValue.arrayRemove([currentUser.uid])
+          },
+        );
+      }
+    } catch (e) {
+      throw ("unable to leave event");
+    }
+  }
   int getAmountJoined(Event e) {
     return e.participants.length;
   }
@@ -312,7 +329,7 @@ class EventsService {
 
   Future<void> editEvent(
       bool imageChanged,
-      String? type,
+      String type,
       DateTime? startDate,
       String name,
       DateTime? endDate,

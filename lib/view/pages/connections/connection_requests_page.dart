@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gameonconnect/services/connection_S/connection_service.dart'; //You can remove this service when replacing with your own
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:gameonconnect/services/connection_S/connection_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart'; //You can remove this service when replacing with your own
 
 class Requests extends StatefulWidget {
   //final String currentUserId;
@@ -11,13 +13,19 @@ class Requests extends StatefulWidget {
 }
 
 class _RequestsState extends State<Requests> {
- 
+  final BadgeService _badgeService = BadgeService();
+  
+  @override
+  void initState() {
+    super.initState();
+    _badgeService.unlockNightOwlBadge(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           'Connection Requests',
           style: TextStyle(
             fontFamily: 'Inter',
@@ -27,12 +35,17 @@ class _RequestsState extends State<Requests> {
       ),
       body: SingleChildScrollView(
         child: FutureBuilder<List<Map<String, dynamic>?>>(
-          future: ConnectionService().getConnections("requests").then((friendIds) => Future.wait(
-              friendIds
-                  .map((id) => ConnectionService().fetchFriendProfileData(id)))),
+          future: ConnectionService().getConnections("requests").then(
+              (friendIds) => Future.wait(friendIds.map(
+                  (id) => ConnectionService().fetchFriendProfileData(id)))),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: LoadingAnimationWidget.halfTriangleDot(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 36,
+                ),
+              );
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
@@ -96,17 +109,20 @@ class _RequestsState extends State<Requests> {
                                   Text(
                                     connectionProfile['profileName'] ??
                                         'No Name Found',
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                     ),
                                   ),
                                   Text(
                                     connectionProfile['username'] ??
                                         'No Username Found',
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Inter',
-                                      color: Theme.of(context).colorScheme.secondary,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
                                   ),
                                 ],
@@ -117,14 +133,16 @@ class _RequestsState extends State<Requests> {
                               color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
                                 //code to accept the request goes here
-                                ConnectionService().acceptConnectionRequest(connectionProfile['userID'] );
+                                ConnectionService().acceptConnectionRequest(
+                                    connectionProfile['userID']);
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.close),
                               color: Theme.of(context).colorScheme.primary,
                               onPressed: () {
-                                ConnectionService().rejectConnectionRequest(connectionProfile['userID'] );
+                                ConnectionService().rejectConnectionRequest(
+                                    connectionProfile['userID']);
                               },
                             ),
                           ],
@@ -149,6 +167,4 @@ class _RequestsState extends State<Requests> {
       ),
     );
   }
-  
-
 }

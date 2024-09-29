@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element, avoid_print, non_constant_identifier_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 //import 'package:gameonconnect/model/connection_M/user_model.dart';
 import '../../../model/connection_M/user_model.dart' as user;
 import 'package:gameonconnect/services/profile_S/storage_service.dart';
@@ -86,7 +87,6 @@ class ConnectionService {
 
     try {
       List<user.AppUser>? connections = await getConnectionlist("connections");
-      print(connections);
 
       if (connections != null) {
         for (var connection in connections) {
@@ -116,6 +116,8 @@ class ConnectionService {
         'connections': FieldValue.arrayUnion([currentUserId]),
         'pending': FieldValue.arrayRemove([currentUserId])
       });
+
+       BadgeService().unlockSocialButterflyBadge(false,requesterUserId );
     } catch (e) {
       throw Exception('Error accepting connection request: $e');
     }
@@ -133,6 +135,7 @@ class ConnectionService {
         'pending': FieldValue.arrayRemove([currentUserId])
         // later might have to send a notification to let the other user they were rejected
       });
+      //BadgeService().unlockSocialButterflyBadge(true);
     } catch (e) {
       throw Exception('Error rejecting connection request: $e');
     }
@@ -178,7 +181,6 @@ class ConnectionService {
   Future<List<user.AppUser>?> getProfileConnections(String type, String UserId) async {
     try {
 
-      //print('for the profile page pls get the  $type for user: $UserId');
       List<user.AppUser> list = [];
 
         List<String>? connections =
@@ -188,6 +190,7 @@ class ConnectionService {
               await ConnectionService().fetchFriendProfileData(i));
           list.add(u);
       }
+      list.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return list;
     } catch (e) {
       throw ('Error: $e');
@@ -205,6 +208,7 @@ class ConnectionService {
       await db.collection('connections').doc(targetUserId).update({
         'connections': FieldValue.arrayRemove([currentUserId])
       });
+      BadgeService().unlockSocialButterflyBadge(true,targetUserId);
     } catch (e) {
       throw Exception('Error disconnecting user: $e');
     }

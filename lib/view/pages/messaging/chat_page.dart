@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/authentication_S/auth_service.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/components/messaging/chat_bubble_component.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatPage extends StatefulWidget {
   final String profileName;
@@ -26,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
   final MessagingService _messagingService = MessagingService();
   final AuthService _authService = AuthService();
   FocusNode newFocusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -36,10 +39,11 @@ class _ChatPageState extends State<ChatPage> {
             const Duration(milliseconds: 500), () => scrollDownPage());
       }
     });
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () => scrollDownPage(),
-    );
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        scrollDownPage();
+      }
+    });
   }
 
   @override
@@ -49,18 +53,25 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  final ScrollController _scrollController = ScrollController();
   void scrollDownPage() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    );
+    if (_scrollController.hasClients &&
+        _scrollController.position.maxScrollExtent > 0) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   void sendMessage() async {
     String currentUser = _authService.getCurrentUser()!.uid;
-    if (_textEditingController.text.isNotEmpty) {
+    String messageText = _textEditingController.text.trim();
+
+    if (messageText.isNotEmpty) {
+      Trace sendTrace = FirebasePerformance.instance.newTrace("sendMessage_trace");
+      sendTrace.start();
+
       //find the conversationID
       String conversationID = await _messagingService.findConversationID(
           currentUser, widget.receiverID);
@@ -73,9 +84,11 @@ class _ChatPageState extends State<ChatPage> {
       //send a message
       await _messagingService.sendMessage(
           conversationID, _textEditingController.text, widget.receiverID);
+
+      sendTrace.stop();
+
       //clear the controller
       _textEditingController.clear();
-
       scrollDownPage();
     }
   }
@@ -85,17 +98,25 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Row(
-          children: [
-            buildProfilePicture(widget.profilePicture),
-            const SizedBox(width: 8),
-            Text(widget.profileName,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w600,
-                )),
-          ],
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+          child: Row(
+            children: [
+              buildProfilePicture(widget.profilePicture),
+              const SizedBox(width: 8),
+              Text(widget.profileName,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                  )),
+            ],
+          ),
+        ),
+        scrolledUnderElevation: 0,
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(5.0),
+          child: SizedBox(height: 2.0),
         ),
       ),
       body: Column(
@@ -117,23 +138,50 @@ class _ChatPageState extends State<ChatPage> {
       future: _messagingService.findConversationID(senderID, widget.receiverID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: LoadingAnimationWidget.halfTriangleDot(
+              color: Theme.of(context).colorScheme.primary,
+              size: 36,
+            ),
+          );
         } else if (snapshot.hasError ||
             !snapshot.hasData ||
             snapshot.data == 'Not found') {
-          return const Center(child: Text("No conversation found"));
+          return Center(
+              child: Text("No conversation found",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  )));
         } else {
           String conversationID = snapshot.data!;
+          Trace messageReceiveTrace = FirebasePerformance.instance.newTrace("messageReceive_trace");
+          messageReceiveTrace.start();
+
           return StreamBuilder<QuerySnapshot>(
             stream: _messagingService.getSnapshotMessages(conversationID),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return const Text("Error loading messages");
+                return Text("Error loading messages",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text('Loading messages...');
+                return Text('Loading messages...',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ));
               }
               var documents = snapshot.data!.docs;
+              if (documents.isEmpty) {
+              return Center(
+                child: Text("No messages found",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
+              );
+            }
+              messageReceiveTrace.stop(); 
               return ListView.builder(
                 controller: _scrollController,
                 itemCount: documents.length,
@@ -173,41 +221,46 @@ class _ChatPageState extends State<ChatPage> {
             child: ValueListenableBuilder<TextEditingValue>(
               valueListenable: _textEditingController,
               builder: (context, value, child) {
-                return TextFormField(
-                  focusNode: newFocusNode,
-                  controller: _textEditingController,
-                  obscureText: false,
-                  maxLines: null,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                    fillColor: Theme.of(context).colorScheme.primaryContainer,
-                    filled: true,
-                    hintText: "Enter your message here",
-                    hintStyle: const TextStyle(
-                      fontFamily: 'Inter',
-                    ),
-                    border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: const BorderSide(
-                      color: Colors.transparent, 
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent, 
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: TextFormField(
+                    focusNode: newFocusNode,
+                    controller: _textEditingController,
+                    obscureText: false,
+                    maxLines: null,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
+                      filled: true,
+                      hintText: "Enter your message here",
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Inter',
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
                       ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.transparent, 
-                      ),
-                    ),
+                    onFieldSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        sendMessage();
+                      }
+                    },
                   ),
-                  onFieldSubmitted: (value) {
-                    sendMessage();
-                  },
                 );
               },
             ),
@@ -215,7 +268,7 @@ class _ChatPageState extends State<ChatPage> {
           ValueListenableBuilder<TextEditingValue>(
             valueListenable: _textEditingController,
             builder: (context, value, child) {
-              return value.text.isNotEmpty
+              return value.text.trim().isNotEmpty
                   ? IconButton(
                       onPressed: sendMessage,
                       icon: Icon(
@@ -223,7 +276,7 @@ class _ChatPageState extends State<ChatPage> {
                         color: Theme.of(context).colorScheme.primary,
                       ),
                     )
-                  : Container(); 
+                  : Container();
             },
           ),
         ],
@@ -260,12 +313,15 @@ class _ChatPageState extends State<ChatPage> {
 
   //this widget builds while the image is still loading
   Widget _buildLoadingWidget() {
-    return const SizedBox(
+    return SizedBox(
       width: 44,
       height: 44,
       child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
+        padding: const EdgeInsets.all(8.0),
+        child: LoadingAnimationWidget.halfTriangleDot(
+          color: Theme.of(context).colorScheme.primary,
+          size: 36,
+        ),
       ),
     );
   }

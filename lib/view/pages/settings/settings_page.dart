@@ -1,4 +1,5 @@
 import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
+import 'package:gameonconnect/view/components/settings/appearance.dart';
 import '../authentication/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,29 +25,27 @@ class Options extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
-              child: Column(
-                children: [
-                  ListTile(
-                    key: const Key('Edit_Profile'),
-                    leading: Icon(
-                      Icons.edit_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 24,
-                    ),
-                    title: Text(
-                      'Edit Profile',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/edit-profile');
-                    },
+              child: Column(children: [
+                ListTile(
+                  key: const Key('Edit_Profile'),
+                  leading: Icon(
+                    Icons.edit_outlined,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 24,
                   ),
-                ]
-              ),
+                  title: Text(
+                    'Edit Profile',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/edit-profile');
+                  },
+                ),
+              ]),
             ),
             Divider(
               color: Theme.of(context).colorScheme.primaryContainer,
@@ -137,8 +136,9 @@ class Options extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       FirebaseAuth.instance.signOut().then((value) {
+                        if (!context.mounted) return;
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -148,6 +148,8 @@ class Options extends StatelessWidget {
                       });
                     },
                   ),
+
+                  const AppearancePage(key: Key('Appearance')),
                 ],
               ),
             ),

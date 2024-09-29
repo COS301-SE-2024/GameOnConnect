@@ -2,6 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class StatsTotalTimeService {
+  StatsTotalTimeService._privateConstructor();
+
+  static final StatsTotalTimeService _instance = StatsTotalTimeService._privateConstructor();
+
+  factory StatsTotalTimeService() {
+    return _instance;
+  }
+
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -10,23 +18,23 @@ class StatsTotalTimeService {
     return user;
   }
 
-  Future<double> getTotalTimePlayedToday() async {
+  Future<double> getTotalTimePlayedToday(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfDay = DateTime(now.year, now.month, now.day);
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfDay)
           .get();
 
       double totalTimePlayedToday = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedToday += timePlayed;
       }
 
@@ -36,23 +44,23 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getTotalTimePlayedLastWeek() async {
+  Future<double> getTotalTimePlayedLastWeek(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfWeek = now.subtract(Duration(days: now.weekday));
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfWeek)
           .get();
 
       double totalTimePlayedLastWeek = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastWeek += timePlayed;
       }
 
@@ -62,23 +70,23 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getTotalTimePlayedLastMonth() async {
+  Future<double> getTotalTimePlayedLastMonth(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       DateTime now = DateTime.now();
       DateTime startOfMonth = DateTime(now.year, now.month);
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .where('last_played', isGreaterThanOrEqualTo: startOfMonth)
           .get();
 
       double totalTimePlayedLastMonth = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastMonth += timePlayed;
       }
 
@@ -88,48 +96,59 @@ class StatsTotalTimeService {
     }
   }
 
-  Future<double> getPercentageTimePlayedComparedToOthers() async {
-    try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+ Future<double> getPercentageTimePlayedComparedToOthers(String userID) async {
+  try {
+    // Fetch all game session stats from Firestore
+    QuerySnapshot<Map<String, dynamic>> snapshot = await db
+        .collection('game_session_stats')
+        .get();
 
-      QuerySnapshot<Map<String, dynamic>> snapshot = await db
-          .collection('game_session_stats')
-          .get();
+    // Map to store the total time played by each user
+    Map<String, double> userTimeMap = {};
 
-      double totalTimePlayedByCurrentUser = 0.0;
-      double totalTimePlayedByAllUsers = 0.0;
+    // Populate the map with total time played by each user
+    for (var doc in snapshot.docs) {
+      String user = doc.data()['user_id'];
+      double timePlayed = (doc.data()['time_played'] ?? 0) / 3600; // Convert s to hours
 
-      for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
-        if (doc.data()['user_id'] == currentUser.uid) {
-          totalTimePlayedByCurrentUser += timePlayed;
-        }
-        totalTimePlayedByAllUsers += timePlayed;
-      }
-
-      if (totalTimePlayedByAllUsers == 0.0) return 0.0;
-
-      double percentage = 100 - ((totalTimePlayedByCurrentUser / totalTimePlayedByAllUsers) * 100);
-      return percentage;
-    } catch (e) {
-      return 0.0;
+      // Accumulate the time played for each user
+      userTimeMap[user] = (userTimeMap[user] ?? 0) + timePlayed;
     }
-  }
 
-   Future<double> getTotalTimePlayedAll() async {
+    // Get the total time played by the current user
+    double totalTimePlayedByCurrentUser = userTimeMap[userID] ?? 0.0;
+
+    // Sort the map values (time played) and count how many users played less than the current user
+    int usersOutplayed = userTimeMap.values.where((time) => time < totalTimePlayedByCurrentUser).length;
+
+    // Total number of users
+    int totalUsers = userTimeMap.length;
+
+    if (totalUsers == 0) return 0.0;
+
+    // Calculate the percentage of users that the current user has outplayed
+    double percentage = (usersOutplayed / totalUsers) * 100;
+
+    return percentage;
+  } catch (e) {
+    return 0.0;
+  }
+}
+
+
+   Future<double> getTotalTimePlayedAll(String userID) async {
     try {
-      User? currentUser = await getCurrentUser();
-      if (currentUser == null) return 0.0;
+      // User? currentUser = await getCurrentUser();
+      // if (currentUser == null) return 0.0;
 
       QuerySnapshot<Map<String, dynamic>> snapshot = await db
           .collection('game_session_stats')
-          .where('user_id', isEqualTo: currentUser.uid)
+          .where('user_id', isEqualTo: userID)
           .get();
 
       double totalTimePlayedLastYear = 0.0;
       for (var doc in snapshot.docs) {
-        double timePlayed = (doc.data()['time_played'] ?? 0) / (1000 * 3600);
+        double timePlayed = (doc.data()['time_played'] ?? 0) / 3600;
         totalTimePlayedLastYear += timePlayed;
       }
 

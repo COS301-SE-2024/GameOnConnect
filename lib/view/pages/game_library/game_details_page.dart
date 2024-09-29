@@ -1,19 +1,23 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:gameonconnect/model/game_library_M/game_details_model.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:gameonconnect/view/pages/home/home_page.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../services/game_library_S/game_service.dart';
 import 'dart:async';
 import 'package:gameonconnect/services/game_library_S/want_to_play_service.dart';
 import 'package:gameonconnect/services/game_library_S/my_games_service.dart';
-import 'package:flutter_share/flutter_share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/game_library/carousel_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:expandable_text/expandable_text.dart';
+import 'package:html_unescape/html_unescape.dart';
+import 'dart:convert';
 
 class GameDetailsPage extends StatefulWidget {
   const GameDetailsPage({super.key, required this.gameId});
@@ -24,8 +28,9 @@ class GameDetailsPage extends StatefulWidget {
 }
 
 class _GameDetailsPageState extends State<GameDetailsPage> {
-  late Future<GameDetails> _gameDetails;
-  late Future<List<Screenshot>> _gameScreenshots;
+  final BadgeService _badgeService = BadgeService();
+  late Future<GameDetails?> _gameDetails;
+  late Future<List<Screenshot>?> _gameScreenshots;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -59,7 +64,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     });
   }
 
-  Future<GameDetails> _fetchGameDetails(int gameId) async {
+  Future<GameDetails?> _fetchGameDetails(int gameId) async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
@@ -68,11 +73,12 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         throw ('No internet connection');
       }
     } catch (e) {
-      throw ('Error fetching data');
+      // throw ('Error fetching data   - me');
+      return null;
     }
   }
 
-  Future<List<Screenshot>> _fetchGameScreenshots(int gameId) async {
+  Future<List<Screenshot>?> _fetchGameScreenshots(int gameId) async {
     try {
       bool result = await InternetConnection().hasInternetAccess;
       if (result) {
@@ -81,20 +87,32 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
         throw ('No internet connection');
       }
     } catch (e) {
-      throw ('Error fetching data');
+      // throw ('Error fetching data   - me2');
+      return null;
     }
   }
 
   Future shareLink(String link, String message) async {
-    await FlutterShare.share(title: "Share Game", text: message, linkUrl: link);
+    await Share.share(link);
   }
 
-  // @override
-  // void dispose() {
-  //   // _model.dispose();
+  String sanitizeDescription(String description) {
+    final unescape = HtmlUnescape();
+    String decodedDescription = unescape.convert(description);
 
-  //   super.dispose();
-  // }
+    decodedDescription =
+        utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
+
+    decodedDescription =
+        decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+
+    return _stripHtmlTags(decodedDescription);
+  }
+
+  String _stripHtmlTags(String htmlString) {
+    final regex = RegExp(r'<[^>]*>', multiLine: true, caseSensitive: false);
+    return htmlString.replaceAll(regex, '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +120,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: FutureBuilder<GameDetails>(
+        body: FutureBuilder<GameDetails?>(
           future: _gameDetails,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -119,6 +137,28 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                 backgroundColor: Colors.red.shade300,
               ));
               return const SizedBox.shrink();
+            } else if (snapshot.data == null) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error_outline,
+                        color: Colors.red, size: 64),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "No data found",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Return to the previous page
+                      },
+                      child: const Text("Go back"),
+                    ),
+                  ],
+                ),
+              );
             } else if (!snapshot.hasData) {
               return const Center(child: Text('No data available'));
             } else {
@@ -175,7 +215,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .secondary
+                                              .primary
                                               .withOpacity(0.6),
                                           borderRadius: BorderRadius.circular(
                                               30), // Rounded corners
@@ -185,7 +225,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             Icons.arrow_back_ios_rounded,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .secondary,
+                                                .tertiary,
                                             size: 20,
                                           ),
                                           onPressed: () {
@@ -227,13 +267,41 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                           20,
                                           5,
                                           5), // Adjust top, left, right padding as needed
-                                      child: Icon(
-                                        Icons.play_circle,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        size: 24,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.play_circle,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          size: 24,
+                                        ),
+                                        onPressed: () async {
+                                          if (!isInMyGames) {
+                                            await myGames
+                                                .addToMyGames(
+                                                    gameDetails.id.toString())
+                                                .then((onValue) =>
+                                                    CustomSnackbar().show(
+                                                        context,
+                                                        'Added to My Games'));
+                                          }
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomePage(
+                                                      title: 'GameOnConnect',
+                                                    )),
+                                          );
+                                        },
                                       ),
+                                      // child: Icon(
+                                      //   Icons.play_circle,
+                                      //   color: Theme.of(context)
+                                      //       .colorScheme
+                                      //       .primary,
+                                      //   size: 24,
+                                      // ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
@@ -247,6 +315,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             .colorScheme
                                             .primary,
                                         onPressed: () {
+                                          _badgeService.unlockExplorerComponent(
+                                              "share_game");
                                           final String link =
                                               gameDetails.website;
                                           const String message =
@@ -263,21 +333,27 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                            child: Text(gameDetails.publisher[0]['name'],
+                            child: Text(
+                                gameDetails.publisher.isNotEmpty
+                                    ? gameDetails.publisher[0]['name'] ??
+                                        'Unknown Publisher'
+                                    : 'Unknown Publisher', //gameDetails.publisher[0]['name'],
                                 style: const TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
+                                    fontSize: 13, color: Colors.grey)),
                           ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 21, 0, 21),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                            child: Center(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 115,
+                                    height: 32,
                                     decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
                                         bottomRight: Radius.circular(15),
@@ -285,98 +361,87 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                         topRight: Radius.circular(15),
                                       ),
                                       shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
                                     ),
-                                    child: Column(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Align(
-                                          alignment: const Alignment(0, -1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: Text(
-                                              'RATINGS',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight
-                                                    .w400, // Adjust font weight if needed
-                                              ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Rating: ',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, 1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4),
-                                            child: Text(
-                                                gameDetails.rating.toString(),
-                                                //ratings
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
+                                        Text(
+                                          gameDetails.rating.toStringAsFixed(1),
+                                          // gameDetails.rating.toStringAsFixed(1),
+                                          style: const TextStyle(
+                                            fontSize: 13,
                                           ),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.black,
+                                              size: 16,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              size: 14,
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
                                   Container(
-                                    width: 110,
-                                    height: 75,
+                                    width: 115,
+                                    height: 32,
                                     decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
                                       borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(15),
                                         bottomRight: Radius.circular(15),
                                         topLeft: Radius.circular(15),
                                         topRight: Radius.circular(15),
                                       ),
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
                                     ),
-                                    child: Column(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, -1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: Text(
-                                              'SCORE',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Metacritic: ',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                         ),
-                                        Align(
-                                          alignment:
-                                              const AlignmentDirectional(0, 1),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Text(
-                                              gameDetails.score.toString(),
-                                              //gameDetails.score,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                        Text(
+                                          gameDetails.score.toString(),
+                                          // gameDetails.score.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
                                           ),
                                         ),
                                       ],
@@ -385,6 +450,9 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ],
                               ),
                             ),
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                           Divider(
                             thickness: 1,
@@ -401,74 +469,24 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ElevatedButton(
                                   onPressed: () async {
                                     if (isInWishlist) {
-                                      await wishlist.removeFromWishlist(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                        builder: (context) {
-                                          return CustomToastCard(
-                                            title: Text(
-                                              'Removed from Want to Play!',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        position: DelightSnackbarPosition.top,
-                                        autoDismiss: true,
-                                        snackbarDuration:
-                                            const Duration(seconds: 3),
-                                      ).show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
+                                      await wishlist
+                                          .removeFromWishlist(
+                                              gameDetails.id.toString())
+                                          .then((onValue) => CustomSnackbar()
+                                              .show(context,
+                                                  'Removed from Want to Play'));
                                     } else {
-                                      await wishlist.addToWishlist(
-                                          gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Added to Want to Play!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
+                                      await wishlist
+                                          .addToWishlist(
+                                              gameDetails.id.toString())
+                                          .then(
+                                            (onValue) => CustomSnackbar().show(
+                                                context,
+                                                'Added to Want to Play'),
+                                          );
                                     }
-                                    // setState(() {
-                                    //   isInWishlist = !isInWishlist;
-                                    // });
                                     checkWishlistStatus();
                                   },
-                                  // child: ElevatedButton(
-                                  // onPressed: () {
-                                  //   wishlist.addToWishlist(
-                                  //       gameDetails.id.toString());
-                                  //    ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text(
-                                  //             "Added to wishlist!"),
-                                  //         backgroundColor: Colors.green,
-                                  //       ));
-                                  //
-                                  // },
                                   style: ButtonStyle(
                                     backgroundColor: WidgetStateProperty.all<
                                             Color>(
@@ -518,82 +536,16 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     if (isInMyGames) {
                                       await myGames.removeFromMyGames(
                                           gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Removed from My Games!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
+                                      CustomSnackbar().show(
+                                          context, 'Removed from My Games');
                                     } else {
                                       await myGames.addToMyGames(
                                           gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      DelightToastBar(
-                                              builder: (context) {
-                                                return CustomToastCard(
-                                                  title: Text(
-                                                    'Added to My Games!',
-                                                    style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              position:
-                                                  DelightSnackbarPosition.top,
-                                              autoDismiss: true,
-                                              snackbarDuration:
-                                                  const Duration(seconds: 3))
-                                          .show(
-                                        // ignore: use_build_context_synchronously
-                                        context,
-                                      );
-                                    } /*else {
-                                      await currentlyPlaying
-                                          .addToCurrentlyPlaying(
-                                              gameDetails.id.toString());
-                                      // ignore: use_build_context_synchronously
-                                      context,
-                                    );
-                                  }*/
-                                    // setState(() {
-                                    //   isInWishlist = !isInWishlist;
-                                    // });
+                                      CustomSnackbar()
+                                          .show(context, 'Added to My Games');
+                                    }
                                     checkMyGamesStatus();
                                   },
-                                  // child: ElevatedButton(
-                                  //   onPressed: () {
-                                  //     myGames.addTomyGames(
-                                  //         gameDetails.id.toString());
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //         const SnackBar(
-                                  //           content: Text(
-                                  //               "Successfully added game to "
-                                  //                   "currently playing list"),
-                                  //           backgroundColor: Colors.green,
-                                  //         ));
-                                  //
-                                  //   },
-
                                   style: ButtonStyle(
                                     backgroundColor:
                                         WidgetStateProperty.all<Color>(
@@ -655,41 +607,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               color: Theme.of(context).colorScheme.surface,
                             ),
                           ),
-                          const Align(
-                            alignment: Alignment(-1, -1),
-                            child: Padding(
-                              padding: EdgeInsets.all(12),
-                              child: Text(
-                                'About',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Row(
-                              children: [
-                                Icon(Icons.language_outlined,
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                                const SizedBox(width: 10),
-                                InkWell(
-                                  child: const Text("Game website",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  onTap: () =>
-                                      launchUrlString(gameDetails.website),
-                                ),
-                              ],
-                            ),
-                          ),
                           Align(
                             alignment: const AlignmentDirectional(0, -1),
                             child: Padding(
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.fromLTRB(10, 4, 10, 10),
                               child: CarouselNetworkImageWithPlaceholder(
                                 imageUrl: gameDetails.backgroundImage,
                                 width: 464,
@@ -697,7 +618,7 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                               ),
                             ),
                           ),
-                          FutureBuilder<List<Screenshot>>(
+                          FutureBuilder<List<Screenshot>?>(
                             future: _gameScreenshots,
                             builder: (context, screenshotSnapshot) {
                               if (screenshotSnapshot.connectionState ==
@@ -713,7 +634,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 return const Center(
                                     child: Text('Error loading screenshots'));
                               } else if (!screenshotSnapshot.hasData ||
-                                  screenshotSnapshot.data!.isEmpty) {
+                                  screenshotSnapshot.data!.isEmpty ||
+                                  snapshot.data == null) {
                                 return const Center(
                                     child: Text('No screenshots available'));
                               } else {
@@ -724,39 +646,49 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     scrollDirection: Axis.horizontal,
                                     itemCount: screenshots.length,
                                     itemBuilder: (context, index) {
+                                      if (index < 0 ||
+                                          index >= screenshots.length) {
+                                        return const Center(
+                                            child: Text(
+                                                'Invalid screenshot index'));
+                                      }
+
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             10, 0, 2, 0),
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: screenshots[index].image,
-                                            placeholder: (context, url) => SizedBox(
-                                                width: 110, // Set the width of the images
-                                                height: 85, // Set the height of the images
-                                                child: Center(
-                                                  child: SizedBox(
-                                                    width:
-                                                        30, // Adjust the size of the loader
-                                                    height:
-                                                        30, // Adjust the size of the loader
-                                                    child:
-                                                        LoadingAnimationWidget
-                                                            .halfTriangleDot(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      size: 36,
+                                          child: InstaImageViewer(
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  screenshots[index].image,
+                                              placeholder: (context, url) => SizedBox(
+                                                  width: 110, // Set the width of the images
+                                                  height: 85, // Set the height of the images
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width:
+                                                          30, // Adjust the size of the loader
+                                                      height:
+                                                          30, // Adjust the size of the loader
+                                                      child:
+                                                          LoadingAnimationWidget
+                                                              .halfTriangleDot(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary,
+                                                        size: 36,
+                                                      ),
                                                     ),
+                                                  )
+                                                  // placeholder: (context, url) => const CircularProgressIndicator(),
+                                                  // errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                  // width: 110,
+                                                  // height: 85,
+                                                  // fit: BoxFit.cover,
                                                   ),
-                                                )
-                                                // placeholder: (context, url) => const CircularProgressIndicator(),
-                                                // errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                // width: 110,
-                                                // height: 85,
-                                                // fit: BoxFit.cover,
-                                                ),
+                                            ),
                                           ),
                                         ),
                                       );
@@ -768,21 +700,59 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(12),
-                            child: Html(
-                                data: gameDetails.description,
-                                //TODO : character representation is weird
-                                style: {
-                                  "body": Style(
-                                    fontFamily: 'Inter',
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    letterSpacing: 0,
-                                    fontSize: FontSize(16.0),
-                                    // Adjust font size as needed
-                                    fontWeight: FontWeight.normal,
-                                    // Adjust font weight as needed
-                                  ),
-                                }),
+                            child: InkWell(
+                              onTap: () => launchUrlString(gameDetails.website),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.link,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      "Game website",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment(-1, -1),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(12, 12, 12, 0),
+                              child: Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: ExpandableText(
+                              sanitizeDescription(gameDetails.description),
+                              expandText: 'See more',
+                              collapseText: 'See less',
+                              maxLines: 4,
+                              linkColor: Theme.of(context).colorScheme.primary,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
@@ -828,7 +798,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                                 Text(
                                   // gameDetails.developer,
-                                  gameDetails.publisher[0]['name'],
+                                  gameDetails.publisher.isNotEmpty
+                                      ? gameDetails.publisher[0]['name'] ??
+                                          'Unknown Publisher'
+                                      : 'Unknown Publisher',
+                                  // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
                                     color:
@@ -858,7 +832,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                                 Text(
-                                  gameDetails.publisher[0]['name'],
+                                  gameDetails.publisher.isNotEmpty
+                                      ? gameDetails.publisher[0]['name'] ??
+                                          'Unknown Publisher'
+                                      : 'Unknown Publisher',
+                                  // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
                                     color:
@@ -916,9 +894,22 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     fontSize: 12,
                                   ),
                                 ),
-                                Row(
-                                  children:
-                                      snapshot.data!.getStyledGenres(context),
+                                const Spacer(),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    spacing: 4.0,
+                                    children: () {
+                                      if (snapshot.data == null ||
+                                          snapshot.data!.genres.isEmpty) {
+                                        return [
+                                          const Text('No genres available')
+                                        ];
+                                      }
+                                      return snapshot.data!
+                                          .getStyledGenres(context);
+                                    }(),
+                                  ),
                                 )
                               ],
                             ),
@@ -1121,10 +1112,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 )
                               : const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                    "Check the game's website for the software requirements.", style: TextStyle(color: Colors.grey)),
-                              )
+                                  padding: EdgeInsets.all(12),
+                                  child: Text(
+                                      "Check the game's website for the software requirements.",
+                                      style: TextStyle(color: Colors.grey)),
+                                ),
+                          const Center(
+                            child: Text('Credits: RAWG Video Games API'),
+                          ),
                         ],
                       ),
                     ),

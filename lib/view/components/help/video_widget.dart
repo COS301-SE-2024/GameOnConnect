@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:webviewtube/webviewtube.dart';
+
 
 class TutorialVideo extends StatefulWidget {
   final String videoPath;
@@ -12,18 +13,13 @@ class TutorialVideo extends StatefulWidget {
 }
 
 class _TutorialVideoState extends State<TutorialVideo> {
-  late VideoPlayerController _controller;
-
+  late WebviewtubeController _controller;
+  late String video;
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset(widget.videoPath)
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.setLooping(true);
-        _controller.setVolume(0);
-        _controller.play();
-      });
+    _controller = WebviewtubeController();
+    video = widget.videoPath;
   }
 
   @override
@@ -34,11 +30,8 @@ class _TutorialVideoState extends State<TutorialVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-        : const Center(child: CircularProgressIndicator());
+    return
+        WebviewtubeVideoPlayer(videoId:video );
+
   }
 }

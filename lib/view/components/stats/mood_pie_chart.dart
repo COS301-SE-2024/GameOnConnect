@@ -5,9 +5,11 @@ import 'package:gameonconnect/services/stats_S/stats_mood_service.dart';
 import 'package:gameonconnect/view/pages/stats/stats_games.dart';
 import 'package:gameonconnect/model/stats_M/stats_chart_model.dart';
 import 'package:gameonconnect/view/components/stats/mood_pie_chart_sections.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class StatsMoodPage extends StatefulWidget {
-  const StatsMoodPage({super.key});
+  final String userID;
+  const StatsMoodPage({super.key, required this.userID});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -34,7 +36,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   Future<void> _fetchMoodData() async {
     try {
-      final fetchedMoodCounts = await _statsMoodService.fetchMoodData();
+      final fetchedMoodCounts = await _statsMoodService.fetchMoodData(widget.userID);
       setState(() {
         moodCounts = fetchedMoodCounts;
         nonZeroMoods = _getNonZeroMoods();
@@ -77,15 +79,18 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),)
                 : Padding(
                     padding: const EdgeInsets.all(12),
                     child: allZero
-                      ? Center(
+                      ? const Center(
                           child: Text(
                             'You have not rated a gaming session yet',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
+                              color: Colors.grey,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                             ),
@@ -175,7 +180,7 @@ class _StatsMoodPageState extends State<StatsMoodPage> {
 
   Future<List<Map<String, dynamic>>> fetchGameIDsByMood(String mood2) async {
     try {
-      List<Map<String, dynamic>> gameData = await _statsMoodService.fetchGameIDsAndTimestamps(mood2);
+      List<Map<String, dynamic>> gameData = await _statsMoodService.fetchGameIDsAndTimestamps(widget.userID, mood2);
       return gameData;
     } catch (e) {
       throw Exception('Error fetching game IDs for mood: $e');

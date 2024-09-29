@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,8 +25,8 @@ class AuthService {
 
   //getter function to return nextnum
   Future<int> getNextNum() async {
-    await getNextNumber(); 
-    return _nextNum ?? 0; 
+    await getNextNumber();
+    return _nextNum ?? 0;
   }
 
   signInWithGoogle() async {
@@ -53,16 +54,15 @@ class AuthService {
 
       final UserCredential authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      
 
       if (authResult.user != null) {
-      // Check if the user already has a profile
-      bool profileExists = await checkUserProfileExists(authResult.user!.uid);
-      if (!profileExists) {
-        // The account has been created, call the createDefaultProfile function
-        createDefaultProfile("Default user");
+        // Check if the user already has a profile
+        bool profileExists = await checkUserProfileExists(authResult.user!.uid);
+        if (!profileExists) {
+          // The account has been created, call the createDefaultProfile function
+          createDefaultProfile("Default user");
+        }
       }
-    }
 
       return authResult;
       //return await FirebaseAuth.instance.signInWithCredential(credential);
@@ -74,16 +74,17 @@ class AuthService {
   }
 
   Future<bool> checkUserProfileExists(String userId) async {
-    //Go to Firebase, see if there is a profile 
+    //Go to Firebase, see if there is a profile
     FirebaseFirestore db = FirebaseFirestore.instance;
-    
-    DocumentSnapshot profilesnapshot = await db.collection("profile_data").doc(userId).get();
+
+    DocumentSnapshot profilesnapshot =
+        await db.collection("profile_data").doc(userId).get();
     // Return true if exists, false otherwise
-    if ( profilesnapshot.exists ) {
+    if (profilesnapshot.exists) {
       //print('True'); use this print statement to see if the function gets called
       return true;
     } else {
-      return false; 
+      return false;
     }
   }
 
@@ -95,12 +96,12 @@ class AuthService {
       if (currentUser != null) {
         final defaultData = <String, dynamic>{
           "age_rating_tags": [],
-          "banner": "gs://gameonconnect-cf66d.appspot.com/default_banner.jpg",
+          "banner": dotenv.env['DEFAULT_BANNER_URL'],
           "bio": "",
           "birthday": Timestamp.now(),
-          "profilepicture": "gs://gameonconnect-cf66d.appspot.com/default_image.jpg",
+          "profile_picture": dotenv.env['DEFAULT_IMAGE_URL'],
           "username": {"profile_name": username, "unique_num": _nextNum},
-          "currently_playing":"",
+          "currently_playing": "",
           "my_games": [],
           "recent_activity": [],
           "genre_interests_tags": [],
@@ -111,7 +112,7 @@ class AuthService {
           "userID": currentUser.uid,
           "visibility": true,
           "want_to_play": [],
-          "positions" : [],
+          "positions": [],
         };
 
         final connectionData = <String, dynamic>{
@@ -121,11 +122,92 @@ class AuthService {
           "userID": currentUser.uid
         };
 
+        final badgeData = <String, dynamic>{
+          "achiever_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by getting a high score of 15 in flappy bird.",
+          },
+          "collector_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge my adding 10 games to your My Games list.",
+          },
+          "customizer_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by editing your profile 3 times.",
+          },
+          "event_planner_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description": "You unlocked this badge by creating an event.",
+          },
+          "explorer_badge": {
+            "changed_theme": false,
+            "created_chat": false,
+            "date_unlocked": Timestamp.now(),
+            "edit_profile": false,
+            "join_event": false,
+            "play_spaceshooter": false,
+            "search_connection": false,
+            "search_game": false,
+            "share_game": false,
+            "unlocked": false,
+            "view_activity": false,
+            "view_help": false,
+            "view_requests": false,
+            "view_stats": false,
+            "want_to_play": false,
+            "unlocked_components": 0,
+            "description":
+                "You unlocked this badge by exploring most features of the app.",
+          },
+          "gamer_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by playing games for a total of 20 hours.",
+          },
+          "loyalty_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "latest_date": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by logging into the app for 10 consecutive days.",
+          },
+          "newbie_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": true,
+            "description":
+                "You unlocked this badge by logging into the app for the first time."
+          },
+          "night_owl_badge": {
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description":
+                "You unlocked this badge by using the app after 10pm."
+          },
+          "social_butterfly_badge": {
+            "count": 0,
+            "date_unlocked": Timestamp.now(),
+            "unlocked": false,
+            "description": "You unlocked this badge by having 20 connections.",
+          },
+          "userID": currentUser.uid,
+        };
+
+        db.collection("badges").doc(currentUser.uid).set(badgeData);
         db.collection("profile_data").doc(currentUser.uid).set(defaultData);
         db.collection("connections").doc(currentUser.uid).set(connectionData);
       }
-    }catch(e)
-    {
+    } catch (e) {
       //do nothing
     }
   }
@@ -157,5 +239,9 @@ class AuthService {
 
   User? getCurrentUser() {
     return FirebaseAuth.instance.currentUser;
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 }

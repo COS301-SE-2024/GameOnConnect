@@ -1,12 +1,15 @@
+
+// ignore_for_file: use_build_context_synchronously
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
-import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
+import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class ConnectionCardWidget extends StatefulWidget {
   final String image;
@@ -17,7 +20,7 @@ class ConnectionCardWidget extends StatefulWidget {
   final List<String>? invited;
   final String loggedInUser;
   final bool isOwnProfile;
-  final void Function(String uid,bool selected) onSelected;
+  final void Function(String uid, bool selected) onSelected;
   final void Function(String uid)? onDisconnected;
   final void Function(String uid)? onAccepted;
   final void Function(String uid)? onRejected;
@@ -36,7 +39,6 @@ class ConnectionCardWidget extends StatefulWidget {
     this.onAccepted,
     this.onRejected,
     this.invited,
-
   });
 
   @override
@@ -44,6 +46,8 @@ class ConnectionCardWidget extends StatefulWidget {
 }
 
 class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
+  final BadgeService _badgeService = BadgeService();
+  final MessagingService _messagingService = MessagingService();
   late List<String>? invited;
   late String image;
   late String username;
@@ -61,13 +65,11 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     uid = widget.uid;
     page = widget.page;
     invited = widget.invited;
-  if(invited == null)
-    {
+    if (invited == null) {
       selected = false;
-    }else {
+    } else {
       selected = invited!.contains(uid);
     }
-
   }
 
   @override
@@ -84,24 +86,10 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-        builder: (context) {
-          return CustomToastCard(
-            title: Text(
-              'Error disconnecting user. Please ensure that you have an active internet connection.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          );
-        },
-        position: DelightSnackbarPosition.top,
-        autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        // ignore: use_build_context_synchronously
-        context,
-      );
+     CustomSnackbar().show(context,
+                    'Error disconnecting user. Please ensure that you have an active internet connection.',
+                );
+
     }
   }
 
@@ -114,23 +102,8 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-        builder: (context) {
-          return CustomToastCard(
-            title: Text(
-              'Error accepting user. Please ensure that you have an active internet connection.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          );
-        },
-        position: DelightSnackbarPosition.top,
-        autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        // ignore: use_build_context_synchronously
-        context,
+   CustomSnackbar().show(context,
+                    'Error accepting user. Please ensure that you have an active internet connection.',
       );
     }
   }
@@ -144,32 +117,44 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
       }
     } catch (e) {
       //'Error unfollowing user'
-      DelightToastBar(
-        builder: (context) {
-          return CustomToastCard(
-            title: Text(
-              'Error rejecting user. Please ensure that you have an active internet connection.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          );
-        },
-        position: DelightSnackbarPosition.top,
-        autoDismiss: true,
-              snackbarDuration: const Duration(seconds: 3))
-          .show(
-        // ignore: use_build_context_synchronously
-        context,
+     CustomSnackbar().show(context,
+                    'Error rejecting user. Please ensure that you have an active internet connection.',
       );
+    }
+  }
+
+  void _handleMenuSelection(
+      String value, String uid, String username, String image) async {
+    if (value == 'disconnect') {
+      _disconnect(uid);
+    } else if (value == 'message') {
+      String conversationID =
+          await _messagingService.findConversationID(widget.loggedInUser, uid);
+      if (conversationID == 'Not found') {
+        List<String> newList = [widget.loggedInUser, uid];
+        conversationID = await _messagingService.createConversation(newList);
+      }
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatPage(
+              profileName: username,
+              receiverID: uid,
+              profilePicture: image,
+            ),
+          ),
+        );
+      }
+      _badgeService.unlockExplorerComponent("created_chat");
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Widget cardContent = Container(
-      width: page =="events"?360:388,
-      height:  page =="events"?68:72,
+      width: page == "events" ? 360 : 388,
+      height: page == "events" ? 68 : 72,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -191,26 +176,42 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: page!="events" ?44:50,
-                  height: page!="events" ?44:50,
-
+                  width: page != "events" ? 44 : 50,
+                  height: page != "events" ? 44 : 50,
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(44),
-                      child: selected? Container(color:Theme.of(context).colorScheme.primary,
-                        child: Icon(Icons.check,size:24,color: Theme.of(context).brightness == Brightness.light
-                            ? Theme.of(context).colorScheme.secondary
-                            : Theme.of(context).colorScheme.surface,), ):CachedNetworkImage(
-                        imageUrl: image,
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // Loading indicator for banner
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                        fit: BoxFit.cover,
-                      ),
+                      child: selected
+                          ? Container(
+                              color: Theme.of(context).colorScheme.primary,
+                              child: Icon(
+                                Icons.check,
+                                size: 24,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Theme.of(context).colorScheme.surface,
+                              ),
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: image,
+
+                              placeholder: (context, url) => Center(
+                                child: LoadingAnimationWidget.halfTriangleDot(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 36,
+                                ),
+                              ), // Loading indicator for banner
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12), // Add spacing between profile picture and name
+                const SizedBox(
+                    width: 12), // Add spacing between profile picture and name
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +222,9 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                         fontSize: 14,
-                        fontWeight: page=="events"?FontWeight.bold:FontWeight.normal,
+                        fontWeight: page == "events"
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                     ),
                     Text(
@@ -239,7 +242,9 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
               ],
             ),
             // Popup menu button
-            if (page == 'connections' && username!='You' && widget.isOwnProfile==true)
+            if (page == 'connections' &&
+                username != 'You' &&
+                widget.isOwnProfile == true)
               PopupMenuButton<String>(
                 itemBuilder: (context) => [
                   const PopupMenuItem<String>(
@@ -252,69 +257,28 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                   ),
                 ],
                 onSelected: (value) {
-                  if (value == 'disconnect') {
-                    _disconnect(uid);
-                  } else if (value == 'message') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatPage(
-                          profileName: username,
-                          receiverID: uid,
-                          profilePicture: image,
-                        ),
-                      ),
-                    );
-                  }
+                  _handleMenuSelection(value, uid, username, image);
                 },
               )
             else if (page == 'requests')
-              PopupMenuButton<String>(
-                itemBuilder: (context) => [
-                  const PopupMenuItem<String>(
-                    value: 'accept',
-                    child: Row(
-                      children: [
-                        Text('Accept'),
-                        Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'reject',
-                    child: Row(
-                      children: [
-                        Text('Reject'),
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'message',
-                    child: Text('Message'),
-                  ),
-                ],
-                onSelected: (value) {
-                  if (value == 'accept') {
+            Row(
+              children: [
+                IconButton(
+                  color: Colors.green,
+                  icon: const Icon(Icons.check),
+                  onPressed: () {
                     _accept(uid);
-                  } else if (value == 'reject') {
+                  },
+                ),
+                IconButton(
+                  color: Colors.red,
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
                     _reject(uid);
-                  } else if (value == 'message') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Messaging(),
-                      ),
-                    );
-                  }
-                },
-              ),
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -323,24 +287,31 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
     // Wrap cardContent in GestureDetector for navigation
     return GestureDetector(
       onTap: () {
-        if (page == 'connections' ) {
-          if(username!='You')
-          {
+        if (page == 'connections' || page=='search') {
+          if (username != 'You') {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: true, loggedInUser: widget.loggedInUser,)), // Navigate to ConnectionsList page
+              MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                        uid: widget.uid,
+                        isOwnProfile: false,
+                        isConnection: true,
+                        loggedInUser: widget.loggedInUser,
+                      )), // Navigate to ConnectionsList page
             );
           }
-            
-        }
-        else if(page == 'requests')
-        {
+        } else if (page == 'requests') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProfilePage(uid: widget.uid, isOwnProfile:false, isConnection: false, loggedInUser: widget.loggedInUser)), // Navigate to ConnectionsList page
+            MaterialPageRoute(
+                builder: (context) => ProfilePage(
+                    uid: widget.uid,
+                    isOwnProfile: false,
+                    isConnection: false,
+                    loggedInUser: widget
+                        .loggedInUser)), // Navigate to ConnectionsList page
           );
-        }
-        else{
+        } else {
           setState(() {
             selected = !selected;
           });

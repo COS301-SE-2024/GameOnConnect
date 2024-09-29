@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:delightful_toast/delight_toast.dart';
-import 'package:delightful_toast/toast/utils/enums.dart';
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/model/profile_M/profile_model.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
-import 'package:gameonconnect/view/components/card/custom_toast_card.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 
 class UserTile extends StatefulWidget {
   final String text;
@@ -13,6 +11,7 @@ class UserTile extends StatefulWidget {
   final String profilepictureURL;
   final String lastMessage;
   final String time;
+  final Widget profileImage;
 
   const UserTile({
     super.key,
@@ -21,6 +20,7 @@ class UserTile extends StatefulWidget {
     required this.profilepictureURL,
     required this.lastMessage,
     required this.time,
+    required this.profileImage,
   });
 
   @override
@@ -45,33 +45,23 @@ class _UserTileState extends State<UserTile> {
           true; //sets the loading state to true to build the loading widget
     });
     _profileService.fetchProfileData().then((data) {
-      setState(() {
-        profileData = data;
-        isLoading =
-            false; //data has been loaded so we cna stop the loading state
-      });
+      if (mounted) {
+        setState(() {
+          profileData = data;
+          isLoading =
+              false; //data has been loaded so we cna stop the loading state
+        });
+      }
     }).catchError((error) {
-      setState(() {
-        isLoading = false;
-      });
-
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
       //added feedback to user if the content was not loaded
-      DelightToastBar(
-          builder: (context) {
-            return CustomToastCard(
-              title: Text(
-                'Please check your internet connection.',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
-            );
-          },
-          position: DelightSnackbarPosition.top,
-          autoDismiss: true,
-          snackbarDuration: const Duration(seconds: 3));
-    });
-  }
+    CustomSnackbar().show(context, 'PLease check your internet connection');
+  });
+        }
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +97,11 @@ class _UserTileState extends State<UserTile> {
                           color: Theme.of(context).colorScheme.surface,
                           shape: BoxShape.circle,
                         ),
-                        child: buildProfilePicture(widget
-                            .profilepictureURL), //build the profile picture widget
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: widget
+                                .profileImage //build the profile picture widget
+                            ),
                       ),
                       Expanded(
                         child: Padding(
@@ -145,11 +138,9 @@ class _UserTileState extends State<UserTile> {
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.w700,
                                   ),
-                                  maxLines:
-                                      1, 
-                                  minFontSize: 12, 
-                                  overflow: TextOverflow
-                                      .ellipsis, 
+                                  maxLines: 1,
+                                  minFontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               Row(
@@ -200,58 +191,6 @@ class _UserTileState extends State<UserTile> {
           )
         ],
       ),
-    );
-  }
-
-  //this widget builds the image as a cached network image
-  Widget buildProfilePicture(String? profilePicUrl) {
-    if (isLoading) {
-      return _buildLoadingWidget();
-    } else if (profilePicUrl != null) {
-      return Padding(
-        padding: const EdgeInsets.all(2),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: CachedNetworkImage(
-            imageUrl: profilePicUrl,
-            width: 65,
-            height: 65,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => _buildLoadingWidget(),
-            errorWidget: (context, url, error) => _buildErrorWidget(),
-            fadeInDuration: const Duration(milliseconds: 200),
-            fadeInCurve: Curves.easeIn,
-            memCacheWidth: 65,
-            memCacheHeight: 65,
-            maxWidthDiskCache: 65,
-            maxHeightDiskCache: 65,
-          ),
-        ),
-      );
-    } else {
-      return _buildErrorWidget();
-    }
-  }
-
-  //this widget builds while the image is still loading
-  Widget _buildLoadingWidget() {
-    return const SizedBox(
-      width: 65,
-      height: 65,
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
-
-  //this widget builds if there is an error with the image
-  Widget _buildErrorWidget() {
-    return Container(
-      width: 65,
-      height: 65,
-      color: Colors.grey[300],
-      child: const Icon(Icons.error),
     );
   }
 }

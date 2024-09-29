@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="23" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="44">
+ <tileset firstgid="1" source="GameyCon.tsx"/>
+ <layer id="1" name="Background" width="23" height="40">
+  <properties>
+   <property name="BackgroundColor" value="Blue"/>
+  </properties>
+  <data encoding="csv">
+216,194,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,196,216,
+197,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,197,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,194,195,195,195,195,196,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,194,195,196,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,18,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,194,195,196,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,18,19,20,0,0,0,0,0,0,0,18,19,20,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,194,195,195,195,195,195,195,195,195,195,195,195,196,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,194,195,196,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,194,195,196,0,0,0,0,0,0,0,194,195,196,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,194,195,196,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,18,19,20,0,0,0,0,0,0,0,18,19,20,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,194,195,195,195,195,195,195,195,195,195,195,195,196,0,219,
+219,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,217,218,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,239,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,0,0,0,0,0,0,0,18,19,20,0,0,0,0,0,0,0,18,19,20,0,219,
+219,217,218,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+219,239,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,219,
+241,194,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,196,241,
+216,216,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,195,216,216
+</data>
+ </layer>
+ <objectgroup id="2" name="Spawnpoints">
+  <object id="5" name="Orange" type="Fruit" x="296.814" y="528.676" width="31.7206" height="30.2101"/>
+  <object id="6" name="Apple" type="Fruit" x="136.701" y="529.432" width="31.7206" height="30.2101"/>
+  <object id="7" name="Cherries" type="Fruit" x="135.19" y="417.654" width="31.7206" height="30.2101"/>
+  <object id="8" name="Apple" type="Fruit" x="296.059" y="419.919" width="31.7206" height="30.2101"/>
+  <object id="25" name="Chicken" type="Chicken" x="302.1" y="465.235" width="31.7206" height="30.9653">
+   <properties>
+    <property name="offNeg" type="float" value="11"/>
+    <property name="offPos" type="float" value="1"/>
+   </properties>
+  </object>
+  <object id="27" type="Checkpoint" x="271.513" y="32.8539" width="62.6859" height="62.6859"/>
+  <object id="28" type="Saw" x="223.554" y="527.543" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="false"/>
+    <property name="offNeg" type="float" value="6"/>
+    <property name="offPos" type="float" value="5"/>
+   </properties>
+  </object>
+  <object id="30" type="Saw" x="129.148" y="271.513" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="false"/>
+    <property name="offNeg" type="float" value="0"/>
+    <property name="offPos" type="float" value="11"/>
+   </properties>
+  </object>
+  <object id="38" name="Melon" type="Fruit" x="295.303" y="207.694" width="31.7206" height="30.2101"/>
+  <object id="39" type="Saw" x="62.6858" y="369.696" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="true"/>
+    <property name="offNeg" type="float" value="1"/>
+    <property name="offPos" type="float" value="6"/>
+   </properties>
+  </object>
+  <object id="41" name="Melon" type="Fruit" x="135.19" y="209.205" width="31.7206" height="30.2101"/>
+  <object id="42" type="Saw" x="295.303" y="127.26" width="31.7206" height="30.9653">
+   <properties>
+    <property name="isVertical" type="bool" value="true"/>
+    <property name="offNeg" type="float" value="0"/>
+    <property name="offPos" type="float" value="5"/>
+   </properties>
+  </object>
+  <object id="43" name="Player" type="Player" x="51.3571" y="572.481" width="33.2311" height="31.7206"/>
+ </objectgroup>
+ <objectgroup id="3" name="Collisions">
+  <object id="9" x="0" y="0.755251" width="15.105" height="638.187"/>
+  <object id="10" x="16.6155" y="623.082" width="350.437" height="16.6155"/>
+  <object id="11" x="351.947" y="0.755251" width="15.8603" height="638.943"/>
+  <object id="12" x="15.8603" y="0.755251" width="334.576" height="14.3498"/>
+  <object id="13" x="17.3708" y="577.012" width="29.4548" height="29.4548"/>
+  <object id="14" x="16.6155" y="607.977" width="335.332" height="15.8603"/>
+  <object id="15" type="Platform" x="128.393" y="560.397" width="47.5808" height="14.3498"/>
+  <object id="16" type="Platform" x="286.996" y="560.397" width="47.5808" height="15.8603"/>
+  <object id="17" x="64.9516" y="529.432" width="29.4548" height="29.4548"/>
+  <object id="18" x="129.148" y="497.711" width="204.673" height="12.084"/>
+  <object id="19" type="Platform" x="126.882" y="447.864" width="49.0913" height="15.105"/>
+  <object id="20" type="Platform" x="288.506" y="449.375" width="47.5808" height="15.105"/>
+  <object id="22" x="48.3364" y="336.086" width="46.8256" height="15.105"/>
+  <object id="23" x="206.939" y="416.899" width="47.5808" height="15.105"/>
+  <object id="24" x="287.751" y="368.562" width="46.8256" height="14.3498"/>
+  <object id="31" type="Platform" x="288.128" y="239.792" width="47.5808" height="15.8603"/>
+  <object id="32" type="Platform" x="127.26" y="240.547" width="47.5808" height="15.8603"/>
+  <object id="33" x="126.882" y="369.318" width="46.8256" height="15.105"/>
+  <object id="34" x="48.3361" y="207.694" width="46.8256" height="15.105"/>
+  <object id="35" type="Platform" x="48.7137" y="159.735" width="47.5808" height="15.8603"/>
+  <object id="36" x="144.253" y="128.393" width="46.8256" height="15.105"/>
+  <object id="37" x="240.925" y="97.4277" width="95.1617" height="15.105"/>
+  <object id="40" x="129.148" y="287.751" width="206.184" height="15.105"/>
+ </objectgroup>
+</map>

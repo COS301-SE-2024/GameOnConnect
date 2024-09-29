@@ -41,6 +41,7 @@ class UserService {
             print("---------------------------- \n");*/
         }
       }
+      users.sort((a, b) => a.username.toLowerCase().compareTo(b.username.toLowerCase()));
       return users;
     } catch (e) {
       throw Exception('Error fetching users: $e');
@@ -108,6 +109,7 @@ class UserService {
     try {
       await _firestore.collection('connections').doc(currentUserId).update({
         'connections': FieldValue.arrayRemove([targetUserId])
+       
       });
 
       await _firestore.collection('connections').doc(targetUserId).update({

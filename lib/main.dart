@@ -1,17 +1,21 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
+import 'package:gameonconnect/view/components/settings/appearance.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
-import 'package:gameonconnect/view/pages/settings/getting_started_page.dart';
+import 'package:gameonconnect/view/pages/settings/faq.dart';
+import 'package:gameonconnect/view/pages/settings/help_page.dart';
 import 'package:gameonconnect/view/pages/settings/settings_page.dart';
 import 'package:gameonconnect/view/theme/theme_provider.dart';
 import 'package:gameonconnect/view/pages/authentication/sign_up_page.dart';
-import 'view/pages/settings/help_page.dart';
+import 'view/pages/settings/getting_started.dart';
 import 'package:provider/provider.dart';
-import 'view/pages/feed/feed_page.dart';
+import 'view/pages/home/home_page.dart';
 import 'view/pages/events/create_events_page.dart';
 import 'view/pages/events/view_events_page.dart';
 import 'firebase_options.dart';
@@ -38,6 +42,11 @@ void main() async {
     androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.debug,
   );
+
+  SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  WidgetsFlutterBinding.ensureInitialized();
+  await Flame.device.fullScreen();
   
   //TO turn off APP check
   //FirebaseAppCheck.instance.setTokenAutoRefreshEnabled(false);
@@ -63,10 +72,10 @@ void main() async {
           themeProvider.setDarkBlueMode();
         } else if (theme == 'light_blue') {
           themeProvider.setLightBlueMode();
-        } else if (theme == 'dark_yellow') {
-          themeProvider.setDarkYellowMode();
-        } else if (theme == 'light_yellow') {
-          themeProvider.setLightYellowMode();
+        } else if (theme == 'dark_orange') {
+          themeProvider.setDarkOrangeMode();
+        } else if (theme == 'light_orange') {
+          themeProvider.setLightOrangeMode();
         } else if (theme == 'dark_pink') {
           themeProvider.setDarkPinkMode();
         } else if (theme == 'light_pink') {
@@ -98,7 +107,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
                 if (snapshot.hasData) {
-                  return FeedPage(
+                  return HomePage(
                     title: 'GameOnConnect',
                   );
                 } else {
@@ -106,7 +115,7 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
-        '/home': (context) => FeedPage(
+        '/home': (context) => HomePage(
               title: 'GameOnConnect',
             ),
         '/edit-profile': (context) => EditProfilePage(),
@@ -117,11 +126,13 @@ class MyApp extends StatelessWidget {
         '/create_events': (context) => CreateEvents(),
         '/events': (context) => ViewEvents(),
         '/login': (context) => Login(),
-        '/help': (context) => Help(),
+        '/help': (context) => HelpPage(),
         '/getting_started': (context) => GettingStarted(),
         '/settings' : (context) => Options(),
         '/requests' : (context) => Requests(),
         '/messages' : (context) => Messaging(),
+        '/appearance' : (context) => AppearancePage(),
+        '/faq' :(context) => FaqWidget()
       },
       initialRoute: '/',
     );

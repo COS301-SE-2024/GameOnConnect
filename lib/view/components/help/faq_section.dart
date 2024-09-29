@@ -6,7 +6,8 @@ class FaqSection extends StatefulWidget {
   late final List<FAQ> faq;
   late final String title;
   late final IconData icon;
-  FaqSection(this.faq, this.title, this.icon, {super.key}) {
+  final Key? subKey;
+  FaqSection(this.faq, this.title, this.icon,this.subKey, {super.key}) {
     super.key;
   }
 
@@ -24,6 +25,7 @@ class _FaqSectionState extends State<FaqSection> {
             color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
+          key: widget.subKey,
           children: [
             Icon(widget.icon, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 10),
@@ -42,14 +44,14 @@ class _FaqSectionState extends State<FaqSection> {
                       title: Text(
                         faqItem.faqHeading,
                         style:
-                            const TextStyle(fontSize: 12, color: Colors.grey),
+                             const TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold),
                       ),
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(faqItem.faqDetails),
+                          padding: const EdgeInsets.all(13.0),
+                          child: Text(faqItem.faqDetails,style: const TextStyle(fontSize: 12,color: Colors.grey,)),
                         ),
-                        TutorialVideo(videoPath: faqItem.videoPath),
+                        faqItem.videoPath.isNotEmpty? TutorialVideo(videoPath: faqItem.videoPath): const SizedBox(height: 5,),
                       ],
                     ),
                   );

@@ -10,14 +10,19 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 **[Github project board](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
 **[User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual)** <br>
 **[Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual)**<br>
+**[Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E)**<br>
 **[Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards)**
 <br>
 # 🎮Badges: #
 [![codecov](https://codecov.io/github/COS301-SE-2024/GameOnConnect/graph/badge.svg?token=Wer3BjZWpE)](https://codecov.io/github/COS301-SE-2024/GameOnConnect)
+[![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
 [![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
+![issues - GameOnConnect](https://img.shields.io/github/issues-closed/COS301-SE-2024/GameOnConnect?color=brightgreen)
 [![Flutter](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml)
-
-
+![GitHub pull requests](https://img.shields.io/github/repo-size/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/last-commit/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/languages/count/COS301-SE-2024/GameOnConnect)
 
 
 
