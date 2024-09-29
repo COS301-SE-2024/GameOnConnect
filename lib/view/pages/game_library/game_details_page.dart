@@ -96,14 +96,15 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
     await Share.share(link);
   }
 
-
   String sanitizeDescription(String description) {
     final unescape = HtmlUnescape();
     String decodedDescription = unescape.convert(description);
 
-    decodedDescription = utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
+    decodedDescription =
+        utf8.decode(decodedDescription.runes.toList(), allowMalformed: true);
 
-    decodedDescription = decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+    decodedDescription =
+        decodedDescription.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
 
     return _stripHtmlTags(decodedDescription);
   }
@@ -141,7 +142,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, color: Colors.red, size: 64),
+                    const Icon(Icons.error_outline,
+                        color: Colors.red, size: 64),
                     const SizedBox(height: 16),
                     const Text(
                       "No data found",
@@ -313,7 +315,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                             .colorScheme
                                             .primary,
                                         onPressed: () {
-                                          _badgeService.unlockExplorerComponent("share_game");
+                                          _badgeService.unlockExplorerComponent(
+                                              "share_game");
                                           final String link =
                                               gameDetails.website;
                                           const String message =
@@ -330,121 +333,122 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 0, 0, 12),
-                            child: Text(gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher',          //gameDetails.publisher[0]['name'],
+                            child: Text(
+                                gameDetails.publisher.isNotEmpty
+                                    ? gameDetails.publisher[0]['name'] ??
+                                        'Unknown Publisher'
+                                    : 'Unknown Publisher', //gameDetails.publisher[0]['name'],
                                 style: const TextStyle(
                                     fontSize: 13, color: Colors.grey)),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
                             child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 115,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primaryContainer,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          bottomRight: Radius.circular(15),
-                                          topLeft: Radius.circular(15),
-                                          topRight: Radius.circular(15),
-                                        ),
-                                        shape: BoxShape.rectangle,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 115,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(15),
+                                        topLeft: Radius.circular(15),
+                                        topRight: Radius.circular(15),
                                       ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.all(2.0),
-                                            child: Text(
-                                              'Rating: ',
-                                              style: TextStyle(
-
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            gameDetails.rating.toStringAsFixed(1), 
-                                            // gameDetails.rating.toStringAsFixed(1),
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 2),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              const Icon(
-                                                Icons.star,
-                                                color: Colors.black,
-                                                size: 16,
-                                              ),
-                                              Icon(
-                                                Icons.star,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary,
-                                                size: 14,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                      shape: BoxShape.rectangle,
                                     ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Container(
-                                      width: 115,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primaryContainer,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          bottomRight: Radius.circular(15),
-                                          topLeft: Radius.circular(15),
-                                          topRight: Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.all(2.0),
-                                            child: Text(
-                                              'Metacritic: ',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            gameDetails.score.toString(),
-                                            // gameDetails.score.toString(),
-                                            style: const TextStyle(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Rating: ',
+                                            style: TextStyle(
                                               fontSize: 14,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ],
+                                        ),
+                                        Text(
+                                          gameDetails.rating.toStringAsFixed(1),
+                                          // gameDetails.rating.toStringAsFixed(1),
+                                          style: const TextStyle(
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 2),
+                                        Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.star,
+                                              color: Colors.black,
+                                              size: 16,
+                                            ),
+                                            Icon(
+                                              Icons.star,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              size: 14,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    width: 115,
+                                    height: 32,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(15),
+                                        topLeft: Radius.circular(15),
+                                        topRight: Radius.circular(15),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Text(
+                                            'Metacritic: ',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          gameDetails.score.toString(),
+                                          // gameDetails.score.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -630,7 +634,8 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 return const Center(
                                     child: Text('Error loading screenshots'));
                               } else if (!screenshotSnapshot.hasData ||
-                                  screenshotSnapshot.data!.isEmpty || snapshot.data == null) {
+                                  screenshotSnapshot.data!.isEmpty ||
+                                  snapshot.data == null) {
                                 return const Center(
                                     child: Text('No screenshots available'));
                               } else {
@@ -641,8 +646,11 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                     scrollDirection: Axis.horizontal,
                                     itemCount: screenshots.length,
                                     itemBuilder: (context, index) {
-                                      if (index < 0 || index >= screenshots.length) {
-                                        return const Center(child: Text('Invalid screenshot index'));
+                                      if (index < 0 ||
+                                          index >= screenshots.length) {
+                                        return const Center(
+                                            child: Text(
+                                                'Invalid screenshot index'));
                                       }
 
                                       return Padding(
@@ -790,7 +798,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                 ),
                                 Text(
                                   // gameDetails.developer,
-                                  gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher',
+                                  gameDetails.publisher.isNotEmpty
+                                      ? gameDetails.publisher[0]['name'] ??
+                                          'Unknown Publisher'
+                                      : 'Unknown Publisher',
                                   // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
@@ -821,7 +832,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   ),
                                 ),
                                 Text(
-                                  gameDetails.publisher.isNotEmpty ? gameDetails.publisher[0]['name'] ?? 'Unknown Publisher' : 'Unknown Publisher', 
+                                  gameDetails.publisher.isNotEmpty
+                                      ? gameDetails.publisher[0]['name'] ??
+                                          'Unknown Publisher'
+                                      : 'Unknown Publisher',
                                   // gameDetails.publisher[0]['name'],
                                   style: TextStyle(
                                     fontSize: 12,
@@ -886,10 +900,14 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   child: Wrap(
                                     spacing: 4.0,
                                     children: () {
-                                      if (snapshot.data == null || snapshot.data!.genres.isEmpty) {
-                                        return [const Text('No genres available')];
+                                      if (snapshot.data == null ||
+                                          snapshot.data!.genres.isEmpty) {
+                                        return [
+                                          const Text('No genres available')
+                                        ];
                                       }
-                                      return snapshot.data!.getStyledGenres(context);
+                                      return snapshot.data!
+                                          .getStyledGenres(context);
                                     }(),
                                   ),
                                 )
@@ -1098,7 +1116,10 @@ class _GameDetailsPageState extends State<GameDetailsPage> {
                                   child: Text(
                                       "Check the game's website for the software requirements.",
                                       style: TextStyle(color: Colors.grey)),
-                                )
+                                ),
+                          const Center(
+                            child: Text('Credits: RAWG Video Games API'),
+                          ),
                         ],
                       ),
                     ),

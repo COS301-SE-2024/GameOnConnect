@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-2.tmx",
+    "activeFile": "Level-5.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,8 +13,7 @@
         },
         "Level-1.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                2
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
@@ -41,7 +40,39 @@
                 3
             ],
             "scale": 1.3240625,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.90370545197072,
+                "y": 320.2265754071277
+            }
+        },
+        "Level-4.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.3240625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 249.61057351899927,
+                "y": 320.2265754071277
+            }
+        },
+        "Level-5.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.3240625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 183.90370545197072,
+                "y": 320.2265754071277
+            }
+        },
+        "Level-6.tmx": {
+            "scale": 1.3240625,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 183.90370545197072,
                 "y": 320.2265754071277
@@ -57,14 +88,19 @@
     "openFiles": [
         "Level-1.tmx",
         "Level-2.tmx",
-        "Level-3.tmx"
+        "Level-3.tmx",
+        "Level-4.tmx",
+        "Level-5.tmx"
     ],
     "project": "GameyCon.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "Level-6.tmx",
+        "Level-5.tmx",
         "Level-1.tmx",
-        "Level-3.tmx",
         "Level-2.tmx",
+        "Level-3.tmx",
+        "Level-4.tmx",
         "level-1.tmx",
         "GameyCon.tsx",
         "level-2.tmx"

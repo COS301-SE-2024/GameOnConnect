@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:gameonconnect/view/components/GameyCon/components/leavebutton.dart';
 import 'package:gameonconnect/view/pages/GameyCon/gameycon_page.dart';
 
 class LoadingGameyConPage extends StatefulWidget {
@@ -61,7 +60,8 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
                 Text(
                   "Welcome to GameyCon!",
                   style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 40,
+                      fontFamily: 'ThaleahFat',
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary),
                 ),
@@ -69,7 +69,8 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
                 const Text(
                   'Select a character',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 40,
+                    fontFamily: 'ThaleahFat',
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -116,25 +117,31 @@ class _LoadingGameyConPageState extends State<LoadingGameyConPage> {
                       textStyle: const TextStyle(fontSize: 20),
                       backgroundColor:
                           Theme.of(context).colorScheme.primaryContainer,
-                      side: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 1,
-                      ),
                     ),
                     child: const Text('Start Game'),
                   ),
                 ),
-                const SizedBox(
-                  height: 225,
+                // const SizedBox(
+                //   height: 225,
+                // ),
+                const Spacer(),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text('Credits: Spellthorn (Youtube)'),
                 ),
-                const Text('Credits: Spellthorn (Youtube)'),
+
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 10,
             left: 20,
-            child: LeaveButton(),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 30),
+              onPressed: () {
+                Navigator.pop(context); 
+              },
+            ),
           ),
         ],
       ),
