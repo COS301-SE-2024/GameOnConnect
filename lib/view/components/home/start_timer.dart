@@ -55,37 +55,36 @@ class _GameTimer extends State<GameTimer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.all(10.pixelScale(context)),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(15.pixelScale(context))),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          title: Text(
-            _timerService.isRunning() ? 'Done playing?' : "Start playing",
-            style: TextStyle(
-              fontSize: 20.pixelScale(context),
-              fontWeight: FontWeight.bold,
+        padding: EdgeInsets.all(10.pixelScale(context)),
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(15.pixelScale(context))),
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            title: Text(
+              _timerService.isRunning() ? 'Done playing?' : "Start playing",
+              style: TextStyle(
+                fontSize: 20.pixelScale(context),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          leading: const Icon(Icons.videogame_asset),
-          children: <Widget>[
-            Padding(
-              padding:  EdgeInsets.all(10.pixelScale(context)),
-
-
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [ _timerService.isRunning()
-                        ? FittedBox( child: Row(
+            leading: const Icon(Icons.videogame_asset),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(10.pixelScale(context)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _timerService.isRunning()
+                        ? FittedBox(
+                            child: Row(
                             children: [
                               const Icon(
                                 Icons.radio_button_checked,
                                 color: Colors.red,
                               ),
-                               SizedBox(
-                                  width: 10.pixelScale(context)),
+                              SizedBox(width: 10.pixelScale(context)),
                               ValueListenableBuilder<String>(
                                 valueListenable: _timerService.elapsedTime,
                                 builder: (context, value, child) {
@@ -96,9 +95,8 @@ class _GameTimer extends State<GameTimer> {
                                 },
                               ),
                             ],
-                          )
-                    )
-                        :FutureBuilder<List<GameDetails>>(
+                          ))
+                        : FutureBuilder<List<GameDetails>>(
                             future: _userGames,
                             builder: (BuildContext context,
                                 AsyncSnapshot<List<GameDetails>> snapshot) {
@@ -114,22 +112,29 @@ class _GameTimer extends State<GameTimer> {
                                   snapshot.data!.isEmpty) {
                                 return const Text('No data found');
                               } else {
-                                return FittedBox( child:DropdownButton<String>(
-                                  isDense: true,
-                                  underline: const SizedBox(),
-                                  hint: Text(
-                                    _selectedGameName ??
-                                        'What are you playing?',
+                                return FittedBox(
+                                    child: DropdownMenu<String>(
+                                  width: 200,
+                                  inputDecorationTheme: InputDecorationTheme(
+                                    border: InputBorder.none,
+                                      outlineBorder: BorderSide(
+                                        width: 0,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .surface),
                                   ),
-                                  items: snapshot.data!.map((GameDetails game) {
-                                    return DropdownMenuItem<String>(
+                                  hintText: _selectedGameName ??
+                                      'What are you playing?',
+                                  textStyle: TextStyle(
+                                      fontSize: 16.pixelScale(context)),
+                                  dropdownMenuEntries:
+                                      snapshot.data!.map((GameDetails game) {
+                                    return DropdownMenuEntry<String>(
                                       value: game.id.toString(),
-                                      child: Text(game.name,
-
-                                          ),
+                                      label: game.name,
                                     );
                                   }).toList(),
-                                  onChanged: (String? newValue) {
+                                  onSelected: (String? newValue) {
                                     setState(() {
                                       final selectedGame = snapshot.data!
                                           .firstWhere((game) =>
@@ -138,8 +143,7 @@ class _GameTimer extends State<GameTimer> {
                                       _timerService.setGame(newValue);
                                     });
                                   },
-                                )
-                                );
+                                ));
                               }
                             }),
                     IconButton.filled(
@@ -154,8 +158,10 @@ class _GameTimer extends State<GameTimer> {
                               Icons.stop,
                               color: Colors.white,
                             )
-                          : const Icon(Icons.play_arrow,
-                              color: Colors.white,),
+                          : const Icon(
+                              Icons.play_arrow,
+                              color: Colors.white,
+                            ),
                       onPressed: !_timerService.isGameSelected()
                           ? null
                           : () {
@@ -168,18 +174,20 @@ class _GameTimer extends State<GameTimer> {
                                     builder: (BuildContext context) {
                                       int? selectedRating = 1;
                                       return AlertDialog(
-                                        title:  Text(
+                                        title: Text(
                                             'How was your experience playing this game?',
                                             style: TextStyle(
-                                                fontSize: 20.pixelScale(context),
+                                                fontSize:
+                                                    20.pixelScale(context),
                                                 fontWeight: FontWeight.bold)),
-                                        insetPadding:  EdgeInsets.all(10.pixelScale(context)),
+                                        insetPadding: EdgeInsets.all(
+                                            10.pixelScale(context)),
                                         content: StatefulBuilder(builder:
                                             (context,
                                                 StateSetter setDialogState) {
                                           return SizedBox(
                                             width: double.maxFinite,
-                                              child:Column(
+                                            child: Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 EmojiFeedback(
@@ -269,13 +277,11 @@ class _GameTimer extends State<GameTimer> {
                               });
                             },
                     ),
-
-],
-              ),
-
-    )
-        ],
-    ),
-    ));
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }

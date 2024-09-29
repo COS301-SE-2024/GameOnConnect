@@ -596,9 +596,8 @@ class _ProfileState extends State<ProfilePage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 24),
                           profileData.bio.isEmpty
-                              ? const SizedBox.shrink()
+                              ? const SizedBox()
                               : Bio(
                                   bio: profileData.bio,
                                   isOwnProfile: widget.isOwnProfile,

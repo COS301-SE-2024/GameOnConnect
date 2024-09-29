@@ -41,7 +41,7 @@ class _EventInvitationState extends State<EventInvitation> {
   Widget build(BuildContext context) {
     if (_isWidgetVisible) {
       return Padding(
-          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          padding: const EdgeInsets.all(12),
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class _EventInvitationState extends State<EventInvitation> {
                         color: Theme.of(context).colorScheme.primary,
                         size: 24,
                       ),
-                      const SizedBox(width: 15),
+                      SizedBox(width: 15.pixelScale(context)),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,40 +86,38 @@ class _EventInvitationState extends State<EventInvitation> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          widget.event.description.isNotEmpty ?
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Description',
+                              Text('Description',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12)),
+                                      fontSize: 12.pixelScale(context))),
                               Text(widget.event.description,
-                                  style: const TextStyle(fontSize: 12))
+                                  style: TextStyle(fontSize: 12.pixelScale(context)))
                             ],
-                          ),
-                          const SizedBox(height: 10),
-
+                          ) : const SizedBox(),
+                          SizedBox(height: 10.pixelScale(context)),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('Date and time',
+                              Text('Date and time',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12)),
-                              Text(DateFormat('EEEE, d MMM yyyy  kk:mm').format(widget.event.startDate),
+                                      fontSize: 12.pixelScale(context))),
+                              Text(DateFormat('yyyy-MM-dd - kk:mm').format(widget.event.startDate),
                                   style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.pixelScale(context),
                                       fontWeight: FontWeight.bold,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .primary))
                             ],
-
                           ),
-                          const SizedBox(height: 15),
+                          SizedBox(height: 15.pixelScale(context)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               InkWell(
                                 //accept
@@ -131,85 +129,74 @@ class _EventInvitationState extends State<EventInvitation> {
                                     _isWidgetVisible = false;
                                   });
                                 },
-                                child: FittedBox(
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    height: 30.pixelScale(context),
+                                    width: 100.pixelScale(context),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Colors.green,
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: Text('Accept',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.pixelScale(context),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface))),
+                              ),
+                              InkWell(
+                                  //decline
+                                  onTap: () {
+                                    _eventsService
+                                        .declineEventInvitation(widget.event);
+                                    setState(() {
+                                      _isWidgetVisible = false;
+                                    });
+                                  },
                                   child: Container(
                                       alignment: Alignment.center,
                                       height: 30.pixelScale(context),
                                       width: 100.pixelScale(context),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        borderRadius: BorderRadius.circular(7.pixelScale(context)),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(7),
                                       ),
-                                      child: Text('Yes',
+                                      child: Text('Decline',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12.pixelScale(context),
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .surface))),
-                                ),
-                              ),
-                              FittedBox(
-                                child: InkWell(
-                                    //decline
-                                    onTap: () {
-                                      _eventsService
-                                          .declineEventInvitation(widget.event);
-                                      setState(() {
-                                        _isWidgetVisible = false;
-                                      });
-                                    },
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 30.pixelScale(context),
-                                        width: 100.pixelScale(context),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          borderRadius:
-                                              BorderRadius.circular(7.pixelScale(context)),
-                                        ),
-                                        child: Text('No',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12.pixelScale(context),
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .surface)))),
-                              ),
-                              FittedBox(
-                                child: InkWell(
-                                    //stay notified
-                                    onTap: () {
-                                      _eventsService
-                                          .declineEventInvitation(widget.event);
-                                      _eventsService
-                                          .subscribeToEvent(widget.event);
-                                      setState(() {
-                                        _isWidgetVisible = false;
-                                      });
-                                    },
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 30.pixelScale(context),
-                                        width: 100.pixelScale(context),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          borderRadius:
-                                              BorderRadius.circular(7.pixelScale(context)),
-                                        ),
-                                        child:  Text('Maybe',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12.pixelScale(context),
-                                            )))),
-                              ),
+                                                  .surface)))),
+                              InkWell(
+                                  //stay notified
+                                  onTap: () {
+                                    _eventsService
+                                        .declineEventInvitation(widget.event);
+                                    _eventsService
+                                        .subscribeToEvent(widget.event);
+                                    setState(() {
+                                      _isWidgetVisible = false;
+                                    });
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      height: 30.pixelScale(context),
+                                      width: 100.pixelScale(context),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
+                                        borderRadius: BorderRadius.circular(7),
+                                      ),
+                                      child: Text('Maybe',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.pixelScale(context),
+                                          )))),
                             ],
                           )
                         ],

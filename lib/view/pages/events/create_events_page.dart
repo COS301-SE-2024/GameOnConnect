@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:gameonconnect/view/components/appbars/backbutton_appbar_component.dart';
 import 'package:gameonconnect/view/components/settings/tooltip.dart';
 import 'package:gameonconnect/view/pages/events/invite_connections_page.dart';
 import 'package:image_picker/image_picker.dart';
@@ -80,13 +81,13 @@ class _CreateEventsState extends State<CreateEvents> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Create Event',
-                style: TextStyle(
-                    fontSize: 32.pixelScale(context),
-                    fontWeight: FontWeight.bold),
-              ),
+            appBar: BackButtonAppBar(
+              title: 'Create Event',
+              onBackButtonPressed: () {
+                Navigator.pop(context);
+              },
+              iconkey: const Key('Back_button_key'),
+              textkey: const Key('create_event__text'),
             ),
             key: scaffoldKey,
             backgroundColor: Theme.of(context).colorScheme.surface,
@@ -294,7 +295,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                             height: 10.pixelScale(context),
                                           ),
                                           const ToolTip(
-
                                               message:
                                                   "Tournaments are competitive, "
                                                   "whereas gaming sessions "
@@ -322,7 +322,6 @@ class _CreateEventsState extends State<CreateEvents> {
                                           const SizedBox(
                                             height: 20,
                                           ),
-
                                           InkWell(
                                             splashColor: Colors.transparent,
                                             focusColor: Colors.transparent,
@@ -935,7 +934,8 @@ class _CreateEventsState extends State<CreateEvents> {
                                         validEndDate &&
                                         validStartDate) {
                                       create();
-                                      _badgeService.unlockEventPlannerBadge(); //added unlocking the event_planner badge
+                                      _badgeService
+                                          .unlockEventPlannerBadge(); //added unlocking the event_planner badge
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                         content: const Text(

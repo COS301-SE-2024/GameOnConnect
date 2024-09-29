@@ -54,7 +54,6 @@ class EventCard extends State<EventCardWidget> {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 80.pixelScale(context),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                   ),
@@ -99,31 +98,27 @@ class EventCard extends State<EventCardWidget> {
                                 Text(
                                   e.name,
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
                                     color: Theme.of(context).brightness ==
                                             Brightness.light
                                         ? Colors.black
                                         : Colors.white,
                                     fontSize: 12.pixelScale(context),
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
+                                const SizedBox(height: 5),
                                 Text(
-                                  DateFormat('EEEE, d MMM yyyy  kk:mm').format(e.startDate),
+                                  DateFormat('EEEE, d MMM yyyy @ kk:mm').format(e.startDate),
                                   style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.black
-                                        : Colors.white,
+                                    color: Colors.grey,
                                     fontSize: 12.pixelScale(context),
                                     letterSpacing: 0,
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                                const SizedBox(height: 5),
                                 Icon(
                                   e.eventType == "Gaming Session"
                                       ? CupertinoIcons.game_controller

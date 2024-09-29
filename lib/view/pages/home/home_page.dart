@@ -2,20 +2,21 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
-import 'package:gameonconnect/view/components/home/connection_updates.dart';
-import 'package:gameonconnect/view/components/home/event_invite_list.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
 import 'package:gameonconnect/view/components/home/start_timer.dart';
 import 'package:gameonconnect/view/pages/game_library/game_library_page.dart';
+import 'package:gameonconnect/view/pages/games_page/games_page.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+// import 'package:gameonconnect/view/pages/events/events_page.dart';
+// import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:gameonconnect/view/pages/events/view_events_page.dart';
-import 'package:gameonconnect/view/pages/games_page/games_page.dart';
-import 'package:gameonconnect/services/badges_S/badge_service.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   ProfileService profileService = ProfileService();
   late TextEditingController usernamecontroller;
+
   final BadgeService _badgeService = BadgeService();
 
   late String currentUserId; // Declare currentUserId here
@@ -56,12 +58,7 @@ class _HomePageState extends State<HomePage> {
       const GameLibrary(),
       const GamesPageWidget(),
       const ViewEvents(),
-      ProfilePage(
-        uid: currentUserId,
-        isOwnProfile: true,
-        isConnection: true,
-        loggedInUser: currentUserId,
-      ),
+      ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
     ];
 
     _badgeService.unlockLoyaltyBadge();
@@ -71,6 +68,9 @@ class _HomePageState extends State<HomePage> {
   String getCurrentUserId() {
     final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return currentUserId;
+
+    //WidgetsBinding.instance
+    //.addPostFrameCallback((_) => _checkProfileAndShowDialog());
   }
 
   @override
@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBottomNavigationBar() {
     return Container(
       margin: const EdgeInsets.only(bottom: 10.0),
-      height: 60,
+      height: 60.pixelScale(context),
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> {
       onTap: () => _onItemTapped(index),
       child: Container(
         width: 40,
-        height: 40,
+        height: 40.pixelScale(context),
         alignment: Alignment.center,
         decoration: isSelected
             ? BoxDecoration(
@@ -315,14 +315,13 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
   }
 
   Widget _homeBody() {
-    return
-      Padding(
-        padding: EdgeInsets.all(15),
-        child: ListView(children: [
-           Text("Ready to game,",
-              style: TextStyle(
-                  fontSize: 32.pixelScale(context),
-                      fontWeight: FontWeight.bold)),
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Ready to game,",
+              style: TextStyle(fontSize: 32.pixelScale(context), fontWeight: FontWeight.bold)),
           Text("$currentUserName?",
               style: TextStyle(
                   fontSize: 32.pixelScale(context),
@@ -335,28 +334,88 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             thickness: 1,
             color: Theme.of(context).colorScheme.primaryContainer,
           ),
-          SizedBox(height:19.pixelScale(context)),
-          Text("Connections currently online",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.pixelScale(context))),
-          SizedBox(height:15.pixelScale(context)),
-          CurrentlyOnlineBar(),
-          SizedBox(height: 30.pixelScale(context)),
-          Text("Connection updates",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize:20.pixelScale(context))),
-          SizedBox(height: 15.pixelScale(context)),
-          ConnectionUpdates(),
-          SizedBox(height: 30.pixelScale(context)),
-          Text("Event invites",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.pixelScale(context))),
-          SizedBox(height:15.pixelScale(context)),
-          EventInvitesList()
-        ]),
+
+          Expanded(
+            child: ListView(children: [
+              SizedBox(height: 19.pixelScale(context)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GameLibrary()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(50),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Explore,",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.onPrimary,
+                                      fontSize: 25.pixelScale(context),
+                                      fontWeight: FontWeight.bold)),
+                              Text("Game,",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      fontSize: 25.pixelScale(context),
+                                      fontWeight: FontWeight.bold)),
+                              Text("Connect",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      fontSize: 25.pixelScale(context),
+                                      fontWeight: FontWeight.bold))
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/start_hearts.svg',
+                                width: 110,
+                                fit: BoxFit.contain,
+                              ),
+                              SizedBox(width: 10),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color:
+                                    Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.black
+                                        : Colors.white,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.pixelScale(context)),
+              Text("Friends currently online",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.pixelScale(context))),
+              SizedBox(height: 15.pixelScale(context)),
+              CurrentlyOnlineBar(),
+              SizedBox(height: 30.pixelScale(context)),            ]),
+          ),
+        ],
+      ),
+
     );
   }
 
@@ -367,12 +426,11 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           automaticallyImplyLeading: false,
           title: Padding(
-            padding:
-                EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: 16.0),
             child: Text(
               'Home',
               style: TextStyle(
-                fontSize:32,
+                fontSize: 32.pixelScale(context),
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
@@ -397,7 +455,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
               ),
             ),
             // Padding(
-            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   padding: const EdgeInsets.only(right: 20.0, top: 16.0),
             //   child: IconButton(
             //     onPressed: () {
             //       Navigator.push(
@@ -414,15 +472,14 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //   ),
             // ),
             // Padding(
-
-            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
-
+            //   padding: const EdgeInsets.only(right: 20.0, top: 16.0),
             //   child: IconButton(
             //     onPressed: () {
             //       Navigator.push(
             //         context,
             //         MaterialPageRoute(
-            //           builder: (context) => GamePage(),   //GameWidget(game: SpaceShooterGame())
+            //           builder: (context) =>
+            //               GamePage(), //GameWidget(game: SpaceShooterGame())
             //         ),
             //       );
             //     },
@@ -433,14 +490,12 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //   ),
             // ),
             // Padding(
-            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   padding: const EdgeInsets.only(right: 20.0, top: 16.0),
             //   child: IconButton(
             //     onPressed: () {
             //       Navigator.push(
             //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => GameScreen()
-            //         ),
+            //         MaterialPageRoute(builder: (context) => GameScreen()),
             //       );
             //     },
             //     icon: Icon(
@@ -450,7 +505,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //   ),
             // ),
             // Padding(
-            //   padding: const EdgeInsets.only(right: 20.0,top: 16.0),
+            //   padding: const EdgeInsets.only(right: 20.0, top: 16.0),
             //   child: IconButton(
             //     onPressed: () async {
             //       await Flame.device.fullScreen();
@@ -463,14 +518,11 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             //       );
             //     },
             //     icon: Icon(
-
             //       Icons.games_outlined,
-
             //       color: Theme.of(context).colorScheme.primary,
             //     ),
             //   ),
             // ),
-
           ],
           centerTitle: false,
           elevation: 0,
