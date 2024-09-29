@@ -1,11 +1,10 @@
 name: Build and Upload Release APK to Github
 
-# This will only trigger on pushes to main and Develop branches.
+# This will only trigger on pushes to main.
 on:
   push:
     branches:
-      - main
-      - Develop
+      - main    
 
 jobs:
   build:
@@ -74,40 +73,31 @@ jobs:
         echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/release.keystore
       shell: bash
 
-    # Step 8: Set up environment variables for signing
-    - name: Set up environment variables
+    # Step 8: Create key.properties file
+    - name: Create key.properties file
       run: |
-        echo "KEYSTORE_FILE=android/app/release.keystore" >> $GITHUB_ENV
-        echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-        echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
-        echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
-      shell: bash
-
-    # Step 9: Create build.gradle file
-    - name: Create build.gradle file
-      run: |
-        cat <<EOF > android/app/build.gradle
-        ${{ secrets.BUILD_GRADLE_ANDROID }}
+        cat <<EOF > android/key.properties
+        ${{ secrets.KEY_PROPERTIES }}
         EOF
       shell: bash
 
-    # Step 10: Install all the dependencies
+    # Step 9: Install all the dependencies
     - name: Install dependencies
       run: flutter pub get
 
-    # Step 11: Upgrade dependencies to newer versions
+    # Step 10: Upgrade dependencies to newer versions
     - name: Upgrade dependencies
       run: flutter pub upgrade
 
-    # Step 12: Make sure dependencies are up to date
+    # Step 11: Make sure dependencies are up to date
     - name: Check outdated dependencies
       run: flutter pub outdated
       
-    # Step 13: Build the release APK
+    # Step 12: Build the release APK
     - name: Build release APK
       run: flutter build apk --release
 
-    # Step 14: Upload the build artifacts
+    # Step 13: Upload the build artifacts
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -119,32 +109,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 15: Checkout the repository again to get the artifact build that was created
+    # Step 14: Checkout the repository again to get the artifact build that was created
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 16: Download the build artifacts from the previous job
+    # Step 15: Download the build artifacts from the previous job
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
         name: app-release-apk
         path: build/app/outputs/flutter-apk/
 
-    # Step 17: Create a new release
+    # Step 16: Create a new release
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       with:
         tag_name: Version_${{ github.run_number }}
         release_name: Release ${{ github.run_number }}
         draft: false
         prerelease: false
 
-    # Step 18: Upload the APK to the release on GitHub
+    # Step 17: Upload the APK to the release on GitHub
     - name: Upload APK
       uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: build/app/outputs/flutter-apk/app-release.apk

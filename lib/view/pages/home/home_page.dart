@@ -328,6 +328,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
             thickness: 1,
             color: Theme.of(context).colorScheme.primaryContainer,
           ),
+
           Expanded(
             child: ListView(children: [
               SizedBox(height: 19.pixelScale(context)),
@@ -408,6 +409,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
           ),
         ],
       ),
+
     );
   }
 

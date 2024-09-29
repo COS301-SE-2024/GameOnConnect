@@ -33,7 +33,10 @@ class _GamesPageWidgetState extends State<GamesPageWidget> {
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+      SnackBar(content: 
+        Text(message), 
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
     );
   }
 
