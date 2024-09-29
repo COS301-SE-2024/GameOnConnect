@@ -84,7 +84,7 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                   child: Padding(
                     padding:  EdgeInsetsDirectional.fromSTEB(
                         11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context), 11.61.pixelScale(context)),
-                    child: Expanded(
+                    child: Flex(direction: Axis.horizontal,children: [Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,6 +153,8 @@ class _UpcomingEventCardWidgetState extends State<UpcomingEventCardWidget> {
                           ),
                         ],
                       ),
+                    ),
+                  ],
                     ),
                   ),
                 ),
