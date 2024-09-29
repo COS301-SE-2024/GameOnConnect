@@ -26,7 +26,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
   final BadgeService _badgeService = BadgeService();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   EventsService events = EventsService();
-  List<Event>? allEvents;
+  List<Event> allEvents =[] ;
   List<Event>? publicAllEvents;
   List<Event>? subscribedEvents;
   List<Event>? myEvents;
@@ -45,7 +45,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
   }
 
   void getAllEvents() async {
-    publicAllEvents = events.getPublicEvents(allEvents!);
+    publicAllEvents = events.getPublicEvents(allEvents);
     subscribedEvents = events.getSubscribedEvents(allEvents);
     myEvents = events.getMyEvents(allEvents);
     joinedEvents = events.getJoinedEvents(allEvents);
@@ -96,7 +96,7 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         .orderBy('start_date', descending: false)
                         .snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting ) {
                         return Center(
                           child: LoadingAnimationWidget.halfTriangleDot(
                             color: Theme.of(context).colorScheme.primary,
@@ -105,12 +105,12 @@ class _HomePageWidgetState extends State<ViewEvents> {
                         );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.hasData) {
+                      } else if (snapshot.hasData  ) {
                         allEvents = [];
                         for (var x in snapshot.data!.docs) {
                           var data = x.data() as Map<String, dynamic>;
                           Event event = Event.fromMap(data, x.id);
-                          allEvents?.add(event);
+                          allEvents.add(event);
                         }
                         getAllEvents();
                         return DefaultTabController(
