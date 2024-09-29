@@ -163,9 +163,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               ),
               TagContainer(
                 // Show the number of selected ESRB ratings
-                tagType: 'ESRB rating (${_selectedAge.length} selected)',
+                tagType: 'ESRB Rating (${_selectedAge.length} selected)',
                 onPressed: () => _showSelectableDialog(
-                  'Select ESRB rating',
+                  'Select ESRB Rating',
                   ['PEGI 3', 'PEGI 7', 'PEGI 12', 'PEGI 16', 'PEGI 18'],
                   (results) {
                     _selectedAge = results;
@@ -176,9 +176,9 @@ class CustomizeProfilePageObject extends State<CustomizeProfilePage> {
               ),
               TagContainer(
                 // Show the number of selected social interests
-                tagType: 'Social interests (${_selectedInterests.length} selected)',
+                tagType: 'Social Interests (${_selectedInterests.length} selected)',
                 onPressed: () => _showSelectableDialog(
-                  'Select Social interest',
+                  'Select Social Interest',
                   _interests,
                   (results) {
                     _selectedInterests = results;

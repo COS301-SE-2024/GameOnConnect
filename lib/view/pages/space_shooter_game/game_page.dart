@@ -27,11 +27,11 @@ class _GamePageState extends State<GamePage> {
         'quitButton': (BuildContext context, SpaceShooterGame game) {
           return Positioned(
             top: 20,
-            right: 20,
+            left: 20,
             child: IconButton(
-              icon: const Icon(Icons.exit_to_app, color: Colors.grey, size: 30),
+              icon: const Icon(Icons.arrow_back, color: Colors.grey, size: 30),
               onPressed: () {
-                Navigator.pop(context); // This will exit the game and return to the previous screen
+                Navigator.pop(context); 
               },
             ),
           );
@@ -47,42 +47,96 @@ class _GamePageState extends State<GamePage> {
                     'Game Over',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 48,
+                      fontSize: 60,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,
+                      fontFamily: 'ThaleahFat',
                     ),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // Navigate back to the home page
+                    Navigator.pop(context); 
                   },
-                  child: const Text('Go to Home'),
+                  child: const Text('Quit Game'),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    game.overlays.remove('gameOver'); // Remove the game over overlay
-                    game.reset(); // Restart the game by resetting its state
+                    game.overlays.remove('gameOver'); 
+                    game.reset(); 
                   },
                   child: const Text('Restart Game'),
                 ),
                 const SizedBox(height: 20),
-                // const ScoreOverlay(isGameOver: true),
               ],
             )
           );
         },
         'scoreOverlay': (BuildContext context, SpaceShooterGame game) {
-          // Show score during the game
-          return const Positioned(
-            top: 20, // Initial position at the top when the game is not over
-            left: 20,
+          return const Align(
+            alignment: Alignment.topLeft,
             child: ScoreOverlay(isGameOver: false),
           );
         },
+        'startOverlay': (BuildContext context, SpaceShooterGame game) {
+          return Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/stars_2.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center, 
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Welcome to',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'ThaleahFat',
+                            ),
+                          ),
+                          Text(
+                            'Space Shooter!',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'ThaleahFat',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        game.overlays.remove('startOverlay'); 
+                        game.startGame(); 
+                      },
+                      child: const Text('Start Game'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       },
-      initialActiveOverlays: const ['quitButton', 'scoreOverlay'], // Display the quit button when the game starts
+      initialActiveOverlays: const ['startOverlay', 'quitButton'],
     );
   }
 }
@@ -101,20 +155,21 @@ class ScoreOverlay extends StatelessWidget {
       stream: Stream.periodic(const Duration(milliseconds: 100))
           .asyncMap((_) => game?.score ?? 0),
       builder: (context, snapshot) {
-        return Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            decoration: BoxDecoration(
-              border: Border.all(color: primaryColor, width: 3), // Border color
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              'Score: ${snapshot.data ?? 0}',
-              style: TextStyle(
-                color: primaryColor,  // Text color
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.none,
+        return Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(
+                'Score: ${snapshot.data ?? 0}',
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'ThaleahFat',
+                ),
               ),
             ),
           ),

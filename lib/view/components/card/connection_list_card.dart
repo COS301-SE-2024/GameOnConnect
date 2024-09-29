@@ -6,7 +6,6 @@ import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/connection_S/connection_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/messaging/chat_page.dart';
-import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/pages/profile/profile_page.dart';
 import 'package:gameonconnect/services/messaging_S/messaging_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -262,52 +261,24 @@ class _ConnectionCardWidgetState extends State<ConnectionCardWidget> {
                 },
               )
             else if (page == 'requests')
-              PopupMenuButton<String>(
-                itemBuilder: (context) => [
-                  const PopupMenuItem<String>(
-                    value: 'accept',
-                    child: Row(
-                      children: [
-                        Text('Accept'),
-                        Icon(
-                          Icons.check,
-                          color: Colors.green,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'reject',
-                    child: Row(
-                      children: [
-                        Text('Reject'),
-                        Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'message',
-                    child: Text('Message'),
-                  ),
-                ],
-                onSelected: (value) {
-                  if (value == 'accept') {
+            Row(
+              children: [
+                IconButton(
+                  color: Colors.green,
+                  icon: const Icon(Icons.check),
+                  onPressed: () {
                     _accept(uid);
-                  } else if (value == 'reject') {
+                  },
+                ),
+                IconButton(
+                  color: Colors.red,
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
                     _reject(uid);
-                  } else if (value == 'message') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Messaging(),
-                      ),
-                    );
-                  }
-                },
-              ),
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),

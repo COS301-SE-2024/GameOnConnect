@@ -51,7 +51,7 @@ class StartScreen extends StatelessWidget {
             child: IconButton(
               icon: const Icon(
                 Icons.arrow_back, 
-                color: Colors.orange),
+                color: Colors.black38),
               onPressed: () {
                 Navigator.of(context).pop();
               },
