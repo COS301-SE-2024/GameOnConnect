@@ -32,15 +32,12 @@ class _ActivityCardState extends State<ActivityCard> {
   String formatTimeRange(String lastPlayed, int timePlayed) {
     // Parse the lastPlayed string into a DateTime object
     DateTime startTime = DateTime.parse(lastPlayed);
-
     // Subtract the timePlayed duration from the endTime
-    DateTime endTime = startTime.add(Duration(milliseconds: timePlayed));
-
+    DateTime endTime = startTime.add(Duration(seconds: timePlayed));
     // Format the start and end times into the desired string format
-    DateFormat timeFormat = DateFormat('HH:mm');
-    String formattedStartTime = timeFormat.format(startTime);
-    String formattedEndTime = timeFormat.format(endTime);
-
+    //DateFormat timeFormat = DateFormat('HH:mm');
+    String formattedStartTime = DateFormat('HH:mm').format(startTime);
+    String formattedEndTime = DateFormat('HH:mm').format(endTime);
     // Return the formatted time range
     return '$formattedStartTime - $formattedEndTime';
   }
