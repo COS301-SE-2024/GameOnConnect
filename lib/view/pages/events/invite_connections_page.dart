@@ -47,8 +47,8 @@ class _ConnectionsListWidgetState extends State<ConnectionsListWidget> {
       appBar: BackButtonAppBar(
           title: 'Select users to invite',
           onBackButtonPressed: Navigator.of(context).pop,
-          iconkey: Key('invite_connections_back_key'),
-          textkey: Key('invite_connections_key')),
+          iconkey: const Key('invite_connections_back_key'),
+          textkey: const Key('invite_connections_key')),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
           top: true,
