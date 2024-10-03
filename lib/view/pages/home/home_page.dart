@@ -241,17 +241,17 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.home_filled, 0),
-          _buildNavItem(Icons.search, 1),
-          _buildNavItem(Icons.gamepad_rounded, 2),
-          _buildNavItem(Icons.calendar_today, 3),
-          _buildNavItem(Icons.person, 4),
+          _buildNavItem(Icons.home_filled, 0,key: const Key('nav_home')),
+          _buildNavItem(Icons.search, 1,key: const Key('nav_search')),
+          _buildNavItem(Icons.gamepad_rounded, 2,key: const Key('nav_gamepad')),
+          _buildNavItem(Icons.calendar_today, 3, key: const Key('nav_calendar')),
+          _buildNavItem(Icons.person, 4,key: const Key('nav_person')),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, int index) {
+  Widget _buildNavItem(IconData icon, int index, {Key? key}) {
     bool isSelected = _selectedIndex == index;
     Color selectedColor = Theme.of(context).brightness == Brightness.light
         ? Colors.black
@@ -264,6 +264,7 @@ class _HomePageState extends State<HomePage> {
         : const Color.fromARGB(255, 43, 43, 43);
 
     return GestureDetector(
+      key: key,
       onTap: () => _onItemTapped(index),
       child: Container(
         width: 40,
