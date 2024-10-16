@@ -110,7 +110,7 @@ class _GameTimer extends State<GameTimer> {
                                 return Text('Error: ${snapshot.error}');
                               } else if (!snapshot.hasData ||
                                   snapshot.data!.isEmpty) {
-                                return const Text('No data found');
+                                return const Text('Add a game to \'My Games\' to start');
                               } else {
                                 return FittedBox(
                                     child: DropdownMenu<String>(
