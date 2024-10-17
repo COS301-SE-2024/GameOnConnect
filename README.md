@@ -1,14 +1,33 @@
-# Byte Squad - GameOnConnect - A social media platform for gamers!
+<div align="center">
+  <img src="https://your-image-url-here" alt="GameOnConnect Logo" width="300">
+</div>
+<br><br>
+
+<div align="center">
+
+
+
+# GameOnConnect - A social media platform for gamers!
 Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
 <br><br>
+
+# 🎮Badges: #
+[![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
+[![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
+![issues - GameOnConnect](https://img.shields.io/github/issues-closed/COS301-SE-2024/GameOnConnect?color=brightgreen)
+[![Flutter](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml)
+![GitHub pull requests](https://img.shields.io/github/repo-size/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/last-commit/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/COS301-SE-2024/GameOnConnect)
+![GitHub pull requests](https://img.shields.io/github/languages/count/COS301-SE-2024/GameOnConnect)
 
 # Demos
 | Demo | Demo Slides | Demo Video |
 |------|--------|------|
-| Demo 1 | [Demo 1](https://www.canva.com/design/DAGGtptGMhc/opvx0fEJTxBaW690gcEeLw/view?utm_content=DAGGtptGMhc&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 1](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
-| Demo 2 | [Demo 2](https://www.canva.com/design/DAGIgpN2HEM/KrfXoBmqN84AEYWFxiCoJw/view?utm_content=DAGIgpN2HEM&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 2](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing) |
-| Demo 3 | [Demo 3](https://www.canva.com/design/DAGM_5j1XcY/lJ9VW1D5_X13_dlZZb9DTw/view?utm_content=DAGM_5j1XcY&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 3](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
-| Demo 4 | [Demo 4](https://www.canva.com/design/DAGR2ZqN7x8/N92XF6FsotQ-uuZIfdpS2Q/view?utm_content=DAGR2ZqN7x8&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 4](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
+| Demo 1 | [Slides 1](https://www.canva.com/design/DAGGtptGMhc/opvx0fEJTxBaW690gcEeLw/view?utm_content=DAGGtptGMhc&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 1](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
+| Demo 2 | [Slides 2](https://www.canva.com/design/DAGIgpN2HEM/KrfXoBmqN84AEYWFxiCoJw/view?utm_content=DAGIgpN2HEM&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 2](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing) |
+| Demo 3 | [Slides 3](https://www.canva.com/design/DAGM_5j1XcY/lJ9VW1D5_X13_dlZZb9DTw/view?utm_content=DAGM_5j1XcY&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 3](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
+| Demo 4 | [Slides 4](https://www.canva.com/design/DAGR2ZqN7x8/N92XF6FsotQ-uuZIfdpS2Q/view?utm_content=DAGR2ZqN7x8&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 4](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
 <br>
 
 # Documentation Links
@@ -22,17 +41,6 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 | [Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) | Policies and procedures for testing | 
 | [Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) | Guidelines for coding practices | 
 <br>
-
-# 🎮Badges: #
-[![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
-[![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
-![issues - GameOnConnect](https://img.shields.io/github/issues-closed/COS301-SE-2024/GameOnConnect?color=brightgreen)
-[![Flutter](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml/badge.svg?branch=main)](https://github.com/COS301-SE-2024/GameOnConnect/actions/workflows/flutter.yml)
-![GitHub pull requests](https://img.shields.io/github/repo-size/COS301-SE-2024/GameOnConnect)
-![GitHub pull requests](https://img.shields.io/github/last-commit/COS301-SE-2024/GameOnConnect)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/COS301-SE-2024/GameOnConnect)
-![GitHub pull requests](https://img.shields.io/github/languages/count/COS301-SE-2024/GameOnConnect)
-
 
 # 🎮Team members description #
 <div align="center" > <strong>Franco Dreyer </strong> </div><br>
