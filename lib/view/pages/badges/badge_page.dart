@@ -104,7 +104,7 @@ class _BadgePageState extends State<BadgePage> {
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text('No users with the unlocked badge');
+                return const Text('No connections with the unlocked badge');
               } else {
                 List<String> profilePictures = snapshot.data!;
 
