@@ -69,11 +69,22 @@
 <div align="center"> <strong>Piery van der Linde:</strong> </div><br>
 
 
-|<img style="float: right;" src ="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width = "500">|Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.|
-|-------------------------------------|-------------------------------------|
-|Social:| <a href="https://www.linkedin.com/in/piery-van-der-linde-6687121b8/" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+<table>
+  <tr>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="200" height="auto">
+    </td>
+    <td>
+      <h2><b>Piery van der Linde</b></h2>
+      <b>Experience in Java, C++, Cybersecurity, and Database Design</b><br>
+      Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.
+      <br>
+      <a href="https://www.linkedin.com/in/piery-van-der-linde-6687121b8/">
         <img src="https://skillicons.dev/icons?i=linkedin">
-      </a>|
+      </a>
+    </td>
+  </tr>
+</table>
 
 <br>
 <div align="center"> <strong>Lerato Kgomoeswana:</strong> </div><br>
