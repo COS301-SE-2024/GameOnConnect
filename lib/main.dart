@@ -102,13 +102,13 @@ void _loadRandomApiKey() {
     dotenv.env['RAWG_API_KEY3'],
     dotenv.env['RAWG_API_KEY4'],
     dotenv.env['RAWG_API_KEY5'],
+    dotenv.env['RAWG_API_KEY6'],
   ];
 
   final random = Random(DateTime.now().millisecondsSinceEpoch);
   final selectedApiKey = apiKeys[random.nextInt(apiKeys.length)];
 
   globals.apiKey = selectedApiKey;
-  print('Selected API key: $selectedApiKey');
 }
 
 class MyApp extends StatelessWidget {
