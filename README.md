@@ -18,7 +18,7 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/COS301-SE-2024/GameOnConnect)
 ![GitHub pull requests](https://img.shields.io/github/languages/count/COS301-SE-2024/GameOnConnect)
 
-# Demos
+# 🎮Demos:
 | Demo | Demo Slides | Demo Video |
 |------|--------|------|
 | Demo 1 | [Slides 1](https://www.canva.com/design/DAGGtptGMhc/opvx0fEJTxBaW690gcEeLw/view?utm_content=DAGGtptGMhc&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 1](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
@@ -26,7 +26,7 @@
 | Demo 3 | [Slides 3](https://www.canva.com/design/DAGM_5j1XcY/lJ9VW1D5_X13_dlZZb9DTw/view?utm_content=DAGM_5j1XcY&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 3](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
 | Demo 4 | [Slides 4](https://www.canva.com/design/DAGR2ZqN7x8/N92XF6FsotQ-uuZIfdpS2Q/view?utm_content=DAGR2ZqN7x8&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Video 4](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
 
-# Documentation Links
+# 🎮Documentation Links:
 | Document | Description | 
 |----------|-------------|
 | [SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki) | Software Requirements Specification | 
@@ -35,13 +35,20 @@
 | [Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) | Policies and procedures for testing | 
 | [Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) | Guidelines for coding practices | 
 
-# Project Management
+# 🎮Project Management:
 | Project board |  
 |----------|
 | [Github Project Board](https://github.com/orgs/COS301-SE-2024/projects/54) | 
 
-# 🎮Team members #
-<div align="center" > <strong>Franco Dreyer </strong> </div>
+# Technologies #
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=flutter,firebase,androidstudio,dart,figma,git,github,vscode,notion" />
+  </a>
+</p>
+
+# 🎮Team members: #
+<div align="center" > <strong>Franco Dreyer: </strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
@@ -148,7 +155,7 @@
       <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/a19724a9-8f86-442f-adbb-ac76f4b3257f" width="600" height="auto">
     </td>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
-      <b>Meet Lerato , experienced in front-end development, database architecture, and a range of programming languages. With familiarity in Angular and Ionic, they create user-friendly interfaces that blend creativity and functionality seamlessly. Exploring further, they find joy in the details of database design, using languages like MySQL to construct efficient data structures. Beyond front-end development and databases, their skill set extends to Python, Java,C++, and JavaScript, enabling them to tackle various challenges with ease. Committed to lifelong learning, they  continually seeks new opportunities to expand their knowledge and contribute meaningfully to projects.</b>
+      <b>Meet Lerato, experienced in front-end development, database architecture, and a range of programming languages. With familiarity in Angular and Ionic, they create user-friendly interfaces that blend creativity and functionality seamlessly. Exploring further, they find joy in the details of database design, using languages like MySQL to construct efficient data structures. Beyond front-end development and databases, their skill set extends to Python, Java,C++, and JavaScript, enabling them to tackle various challenges with ease. Committed to lifelong learning, they  continually seeks new opportunities to expand their knowledge and contribute meaningfully to projects.</b>
     </td>
   </tr>
   <tr>
@@ -170,9 +177,3 @@
   <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
 </div>
 
-# Technologies #
-<p align="center">
-  <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=flutter,firebase,androidstudio,dart,figma,git,github,vscode,notion" />
-  </a>
-</p>
