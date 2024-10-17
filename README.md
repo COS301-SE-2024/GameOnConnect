@@ -2,18 +2,27 @@
 Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
 <br><br>
 
-**Link to Demo 1 video: [here](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing)** <br>
-**Link to Demo 2 video: [here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing)** <br>
-**Link to Demo 3 video: [here](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing)** <br>
-**Link to Demo 4 video: [here](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing)** <br><br>
-# Documentation Links: #
-**[SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki)** <br>
-**[Github project board](https://github.com/orgs/COS301-SE-2024/projects/54)** <br>
-**[User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual)** <br>
-**[Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual)**<br>
-**[Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E)**<br>
-**[Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards)**
+# Demo Videos
+| Demo | Link |
+|------|------|
+| Demo 1 | [Watch here](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
+| Demo 2 | [Watch here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing) |
+| Demo 3 | [Watch here](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
+| Demo 4 | [Watch here](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
+<br><br>
+
+# Documentation Links
+
+| Document | Description | Link |
+|----------|-------------|------|
+| SRS Documents | Software Requirements Specification | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki) |
+| Github Project Board | Project management and tracking | [View here](https://github.com/orgs/COS301-SE-2024/projects/54) |
+| User Manual | Guide for users on how to use the application | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual) |
+| Technical Installation Manual | Instructions for setting up the application | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) |
+| Testing Policy | Policies and procedures for testing | [View here](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) |
+| Coding Standards | Guidelines for coding practices | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) |
 <br>
+
 # 🎮Badges: #
 [![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
 [![issues - GameOnConnect](https://img.shields.io/github/issues/COS301-SE-2024/GameOnConnect)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
@@ -23,10 +32,6 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 ![GitHub pull requests](https://img.shields.io/github/last-commit/COS301-SE-2024/GameOnConnect)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/COS301-SE-2024/GameOnConnect)
 ![GitHub pull requests](https://img.shields.io/github/languages/count/COS301-SE-2024/GameOnConnect)
-
-
-
-
 
 
 # 🎮Team members description #
