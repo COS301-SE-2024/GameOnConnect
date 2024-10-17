@@ -1,18 +1,10 @@
 <div align="center">
-  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
-</div>
-<br>
-
-<div align="center">
-
-<div align="center">
-  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/Frame%20158.png" alt="GameOnConnect Logo" width="300">
+  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/Frame%20158.png" alt="GameOnConnect Logo" width="600">
 </div>
 
 <div align="center">
-  Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
+  GameOnConnect is an exciting new social media platform for gamers. Here you will unlock the ability to discover new games and connect with friends on a whole new level! GameOnConnect also enables you to schedule gaming sessions and tournaments and record your gaming activity to build up your personalized gaming stats.  As a bonus feature, GameOnConnect keeps you entertained during long loading screens with fun minigames!
 </div>
-<br>
 
 # 🎮Badges: #
 [![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
@@ -44,28 +36,80 @@
 
 # 🎮Team members #
 <div align="center" > <strong>Franco Dreyer </strong> </div><br>
-
-|<img style="float: right;" src = "https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/bb461015-65c5-4386-900c-47219d64d9e0" width="800">|Franco is a student pursuing a BSc in Information and Knowledge Systems, with substantial experience in front-end development. Currently, he is undertaking an online course focused on interaction design, user research, and user experience design. With a deep interest in design and interaction design, Franco spends his free time working on individual projects that allow him to explore and learn more about the technologies that interest him most. Possessing knowledge of several programming languages, such as Java, HTML/CSS/JS, and front-end libraries like Angular and Vue, among others, his primary interest lies in user experience and interface design. Nevertheless, Franco is keen to learn more about back-end technology, and he enjoys taking on new challenges as opportunities to broaden his skillset. He is highly adaptable and can quickly acclimate to any new situation.|
-|-------------------------------------|-------------------------------------|
-|LinedIn profile:| https://www.linkedin.com/in/franco-dreyer-2186b4258|
-
-<br>
+<table>
+  <tr>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/bb461015-65c5-4386-900c-47219d64d9e0" width="600" height="auto">
+    </td>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <b>Franco is a student pursuing a BSc in Information and Knowledge Systems, with substantial experience in front-end development. Currently, he is undertaking an online course focused on interaction design, user research, and user experience design. With a deep interest in design and interaction design, Franco spends his free time working on individual projects that allow him to explore and learn more about the technologies that interest him most. Possessing knowledge of several programming languages, such as Java, HTML/CSS/JS, and front-end libraries like Angular and Vue, among others, his primary interest lies in user experience and interface design. Nevertheless, Franco is keen to learn more about back-end technology, and he enjoys taking on new challenges as opportunities to broaden his skillset. He is highly adaptable and can quickly acclimate to any new situation.</b>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <b>Socials</b>
+    </td>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <a href="https://www.linkedin.com/in/franco-dreyer-2186b4258" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=linkedin">
+      </a>
+      <a href="https://github.com/u22520016" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=github"/>
+      </a>
+    </td>
+  </tr>
+</table>
 
 <div align="center"> <strong>Monika Theiss:</strong> </div><br>
+<table>
+  <tr>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/0afa9ef1-1879-4222-823a-35db7a93e1de" width="600" height="auto">
+    </td>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <b>In previous projects Monika has focussed on back-end developing and project management. On the back-end she has worked in SQL and PostgreSQL to design and maintain databases. She has also written her own API in PHP.As project manager she got a lot of experience in ensuring that due dates are met. She believes that every team member's opinion needs to be heard and that communication is vital to the group being a success. Monika has also worked on a church's website to keep it up to date on upcoming events, which, though not yet perfect, has given her a bit of experience in front-end developing. Throughout her degree she has also gotten a lot of experience in C++ and Java.</b>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <b>Socials</b>
+    </td>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <a href="https://www.linkedin.com/in/monika-theiss-b3723a286" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=linkedin">
+      </a>
+      <a href="https://github.com/MonikaTheiss" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=github"/>
+      </a>
+    </td>
+  </tr>
+</table>
 
-|<img style="float: right;" src = "https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/0afa9ef1-1879-4222-823a-35db7a93e1de" width="600">|In previous projects Monika has focussed on back-end developing and project management. On the back-end she has worked in SQL and PostgreSQL to design and maintain databases. She has also written her own API in PHP.As project manager she got a lot of experience in ensuring that due dates are met. She believes that every team member's opinion needs to be heard and that communication is vital to the group being a success. Monika has also worked on a church's website to keep it up to date on upcoming events, which, though not yet perfect, has given her a bit of experience in front-end developing. Throughout her degree she has also gotten a lot of experience in C++ and Java.|
-|-------------------------------------|-------------------------------------|
-|LinkedIn profile:|  https://www.linkedin.com/in/monika-theiss-b3723a286 |
-
-<br>
 <div align="center"> <strong>Shannon Venter:</strong> </div><br>
+<table>
+  <tr>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522" width="600" height="auto">
+    </td>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <b>Shannon has experience in programming languages such as Java and C++. She enjoys working in a team environment and has experience in project management. Shannon takes a keen interest in game development and studies computer science. Shannon has also had an internship working with app development.</b>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <b>Socials</b>
+    </td>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <a href="https://www.linkedin.com/in/shannon-venter-508113279/" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=linkedin">
+      </a>
+      <a href="https://github.com/shan-226" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=github"/>
+      </a>
+    </td>
+  </tr>
+</table>
 
-
-|<img style="flaot: right;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522" width="300">|Shannon has experience in programming languages such as Java and C++. She enjoys working in a team environment and has experience in project management. Shannon takes a keen interest in game development and studies computer science. Shannon has also had an internship working with app development.|
-|-------------------------------------|-------------------------------------|
-|LinkedIn profile:| https://www.linkedin.com/in/shannon-venter-508113279/|
-
-<br>
 <div align="center"> <strong>Piery van der Linde:</strong> </div><br>
 <table>
   <tr>
@@ -91,7 +135,6 @@
   </tr>
 </table>
 
-<br>
 <div align="center"> <strong>Lerato Kgomoeswana:</strong> </div><br>
 <table>
   <tr>
@@ -116,6 +159,11 @@
     </td>
   </tr>
 </table>
+
+<div align="center">
+  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
+</div>
+<br>
 
 # Technologies #
 <p align="center">
