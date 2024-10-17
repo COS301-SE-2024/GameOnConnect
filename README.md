@@ -5,7 +5,7 @@
 <div align="center">
 
 <div align="center">
-  GameOnConnect is an exciting new social media platform for gamers. Here you will unlock the ability to discover new games and connect with friends on a whole new level! GameOnConnect also enables you to schedule gaming sessions and tournaments and record your gaming activity to build up your personalized gaming stats.  As a bonus feature, GameOnConnect keeps you entertained during long loading screens with fun minigames!
+  <b>GameOnConnect is an exciting new social media platform for gamers. Here you will unlock the ability to discover new games and connect with friends on a whole new level! GameOnConnect also enables you to schedule gaming sessions and tournaments and record your gaming activity to build up your personalized gaming stats.  As a bonus feature, GameOnConnect keeps you entertained during long loading screens with fun minigames!</b>
 </div>
 
 # 🎮Badges: #
@@ -177,3 +177,4 @@
   <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
 </div>
 
+For more information regarding installation and usage, please see the [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) and [User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual).
