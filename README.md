@@ -1,19 +1,18 @@
 <div align="center">
-  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="300">
+  <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
 </div>
 <br>
 
 <div align="center">
-
-# GameOnConnect 
-Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
-<br>
 
 <div align="center">
   <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/Frame%20158.png" alt="GameOnConnect Logo" width="300">
 </div>
 
 <div align="center">
+  Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
+</div>
+<br>
 
 # 🎮Badges: #
 [![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-blue)](https://github.com/COS301-SE-2024/GameOnConnect/issues)
@@ -50,7 +49,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 |-------------------------------------|-------------------------------------|
 |LinedIn profile:| https://www.linkedin.com/in/franco-dreyer-2186b4258|
 
-<br><br>
+<br>
 
 <div align="center"> <strong>Monika Theiss:</strong> </div><br>
 
@@ -58,7 +57,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 |-------------------------------------|-------------------------------------|
 |LinkedIn profile:|  https://www.linkedin.com/in/monika-theiss-b3723a286 |
 
-<br><br>
+<br>
 <div align="center"> <strong>Shannon Venter:</strong> </div><br>
 
 
@@ -66,15 +65,21 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 |-------------------------------------|-------------------------------------|
 |LinkedIn profile:| https://www.linkedin.com/in/shannon-venter-508113279/|
 
-<br><br>
+<br>
 <div align="center"> <strong>Piery van der Linde:</strong> </div><br>
 
 
-|<img style="float: right;" src ="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width = "500">|Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.|
+|<div align="center">
+  <img style="float: right;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="500">
+  <br>
+  <a href="https://www.linkedin.com/in/piery-van-der-linde-6687121b8/" style="text-decoration: none; margin-top: 10px; display: inline-block; vertical-align: middle;">
+    <img src="https://skillicons.dev/icons?i=linkedin">
+  </a>
+</div>
+|Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.|
 |-------------------------------------|-------------------------------------|
-|LinkedIn profile:| https://www.linkedin.com/in/piery-van-der-linde-6687121b8/|
 
-<br><br>
+<br>
 <div align="center"> <strong>Lerato Kgomoeswana:</strong> </div><br>
 
 
@@ -82,7 +87,7 @@ Up until now, gamers never really had a platform for themselves. GameOnConnect s
 |-------------------------------------|-------------------------------------|
 |LinkedIn profile:| https://www.linkedin.com/in/lerato-kgomoeswana-694500256/|
 
-<br><br>
+<br>
 
 # Technologies #
 <p align="center">
