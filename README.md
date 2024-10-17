@@ -2,25 +2,25 @@
 Up until now, gamers never really had a platform for themselves. GameOnConnect solves this problem! Gamers will now be able to connect with other gamers and will be able to share their gaming adventures with their GameOnConnect friends.
 <br><br>
 
-# Demo Videos
-| Demo | Link |
-|------|------|
-| Demo 1 | [Watch here](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
-| Demo 2 | [Watch here](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing) |
-| Demo 3 | [Watch here](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
-| Demo 4 | [Watch here](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
-<br><br>
+# Demos
+| Demo | Demo Slides | Demo Video |
+|------|--------|------|
+| Demo 1 | [Demo 1](https://www.canva.com/design/DAGGtptGMhc/opvx0fEJTxBaW690gcEeLw/view?utm_content=DAGGtptGMhc&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 1](https://drive.google.com/file/d/1whQs6Kx2UuDGEKiUvoNlYNBY0Hbh9hmQ/view?usp=sharing) |
+| Demo 2 | [Demo 2](https://www.canva.com/design/DAGIgpN2HEM/KrfXoBmqN84AEYWFxiCoJw/view?utm_content=DAGIgpN2HEM&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 2](https://drive.google.com/file/d/1JRtQugU-ON1kP8CeSCID6KgyyPMjlJUA/view?usp=sharing) |
+| Demo 3 | [Demo 3](https://www.canva.com/design/DAGM_5j1XcY/lJ9VW1D5_X13_dlZZb9DTw/view?utm_content=DAGM_5j1XcY&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 3](https://drive.google.com/file/d/1-KsOKCFhXqeEjshtNliyp3Kam7eaeQtH/view?usp=sharing) |
+| Demo 4 | [Demo 4](https://www.canva.com/design/DAGR2ZqN7x8/N92XF6FsotQ-uuZIfdpS2Q/view?utm_content=DAGR2ZqN7x8&utm_campaign=designshare&utm_medium=link&utm_source=editor) | [Demo 4](https://drive.google.com/file/d/1ZP6sayu-9IS_WDN0ru2rhSn9RI-h-QIj/view?usp=sharing) |
+<br>
 
 # Documentation Links
 
-| Document | Description | Link |
-|----------|-------------|------|
-| SRS Documents | Software Requirements Specification | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki) |
-| Github Project Board | Project management and tracking | [View here](https://github.com/orgs/COS301-SE-2024/projects/54) |
-| User Manual | Guide for users on how to use the application | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual) |
-| Technical Installation Manual | Instructions for setting up the application | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) |
-| Testing Policy | Policies and procedures for testing | [View here](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) |
-| Coding Standards | Guidelines for coding practices | [View here](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) |
+| Document | Description | 
+|----------|-------------|
+| [SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki) | Software Requirements Specification | 
+| [Github Project Board](https://github.com/orgs/COS301-SE-2024/projects/54) | Project management and tracking | 
+| [User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual) | Guide for users on how to use the application |
+| [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) | Instructions for setting up the application | 
+| [Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) | Policies and procedures for testing | 
+| [Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) | Guidelines for coding practices | 
 <br>
 
 # 🎮Badges: #
