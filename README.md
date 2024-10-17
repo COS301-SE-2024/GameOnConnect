@@ -3,6 +3,8 @@
 </div>
 
 <div align="center">
+
+<div align="center">
   GameOnConnect is an exciting new social media platform for gamers. Here you will unlock the ability to discover new games and connect with friends on a whole new level! GameOnConnect also enables you to schedule gaming sessions and tournaments and record your gaming activity to build up your personalized gaming stats.  As a bonus feature, GameOnConnect keeps you entertained during long loading screens with fun minigames!
 </div>
 
@@ -28,14 +30,18 @@
 | Document | Description | 
 |----------|-------------|
 | [SRS Documents](https://github.com/COS301-SE-2024/GameOnConnect/wiki) | Software Requirements Specification | 
-| [Github Project Board](https://github.com/orgs/COS301-SE-2024/projects/54) | Project management and tracking | 
 | [User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual) | Guide for users on how to use the application |
 | [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) | Instructions for setting up the application | 
 | [Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) | Policies and procedures for testing | 
 | [Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) | Guidelines for coding practices | 
 
+# Project Management
+| Project board |  
+|----------|
+| [Github Project Board](https://github.com/orgs/COS301-SE-2024/projects/54) | 
+
 # 🎮Team members #
-<div align="center" > <strong>Franco Dreyer </strong> </div><br>
+<div align="center" > <strong>Franco Dreyer </strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
@@ -60,7 +66,7 @@
   </tr>
 </table>
 
-<div align="center"> <strong>Monika Theiss:</strong> </div><br>
+<div align="center"> <strong>Monika Theiss:</strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
@@ -85,11 +91,11 @@
   </tr>
 </table>
 
-<div align="center"> <strong>Shannon Venter:</strong> </div><br>
+<div align="center"> <strong>Shannon Venter:</strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
-      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522" width="600" height="auto">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/f54da459-b0b3-4542-9c1a-02387d45a522" width="300" height="auto">
     </td>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
       <b>Shannon has experience in programming languages such as Java and C++. She enjoys working in a team environment and has experience in project management. Shannon takes a keen interest in game development and studies computer science. Shannon has also had an internship working with app development.</b>
@@ -110,11 +116,11 @@
   </tr>
 </table>
 
-<div align="center"> <strong>Piery van der Linde:</strong> </div><br>
+<div align="center"> <strong>Piery van der Linde:</strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
-      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="600" height="auto">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="500" height="auto">
     </td>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
       <b>Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.</b>
@@ -135,7 +141,7 @@
   </tr>
 </table>
 
-<div align="center"> <strong>Lerato Kgomoeswana:</strong> </div><br>
+<div align="center"> <strong>Lerato Kgomoeswana:</strong> </div>
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
@@ -163,7 +169,6 @@
 <div align="center">
   <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
 </div>
-<br>
 
 # Technologies #
 <p align="center">
