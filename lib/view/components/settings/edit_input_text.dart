@@ -4,16 +4,18 @@ class EditInputText extends StatefulWidget {
   final String label;
   final void Function(String value) onChanged;
   final String input;
-  final int maxLines;
+  final int maxLength;
   final Key inputKey;
+  final bool validate;
   
   const EditInputText(
       {super.key,
-      required this.maxLines,
+      required this.maxLength,
       required this.label,
       required this.onChanged,
       required this.input,
-      required this.inputKey});
+      required this.inputKey,
+      required this.validate});
   
   @override
   State<EditInputText> createState() => _EditInputText();
@@ -56,7 +58,18 @@ class _EditInputText extends State<EditInputText> {
             ),
             initialValue: widget.input,
             style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontSize: 12),
-            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            validator: widget.validate?(value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a username';
+              }
+              if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+                return 'Only alphabetical letters are permitted';
+              }
+              return null;
+            }: (value){
+              return null;
+            },
           ),
         ],
       ),
