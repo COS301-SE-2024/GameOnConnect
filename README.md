@@ -70,7 +70,7 @@
 <table>
   <tr>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
-      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="800" height="auto">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/b8caf364-10bb-4566-9505-51b460c4ad7a" width="600" height="auto">
     </td>
     <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
       <b>Piery has experience in programming languages such as Java and C++. He enjoys working in a team environment and believes that team cohesion is vital for success. He is currently taking additional online courses to learn Flutter. Piery takes a keen interest in cybersecurity and studies law in addition to computer science. He takes pride in database designing and excels in manipulating data. Piery has also worked part-time managing a local school network, which includes managing tickets, setting up new nodes to the live environment and ensuring network stability.</b>
@@ -93,13 +93,29 @@
 
 <br>
 <div align="center"> <strong>Lerato Kgomoeswana:</strong> </div><br>
-
-
-|<img style="float: right;" src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/a19724a9-8f86-442f-adbb-ac76f4b3257f" width="600">|Meet Lerato , experienced in front-end development, database architecture, and a range of programming languages. With familiarity in Angular and Ionic, they create user-friendly interfaces that blend creativity and functionality seamlessly. Exploring further, they find joy in the details of database design, using languages like MySQL to construct efficient data structures. Beyond front-end development and databases, their skill set extends to Python, Java,C++, and JavaScript, enabling them to tackle various challenges with ease. Committed to lifelong learning, they  continually seeks new opportunities to expand their knowledge and contribute meaningfully to projects.|
-|-------------------------------------|-------------------------------------|
-|LinkedIn profile:| https://www.linkedin.com/in/lerato-kgomoeswana-694500256/|
-
-<br>
+<table>
+  <tr>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <img src="https://github.com/COS301-SE-2024/GameOnConnect/assets/131775579/a19724a9-8f86-442f-adbb-ac76f4b3257f" width="600" height="auto">
+    </td>
+    <td style="vertical-align: top; width: auto; border: 0; padding: 10px;">
+      <b>Meet Lerato , experienced in front-end development, database architecture, and a range of programming languages. With familiarity in Angular and Ionic, they create user-friendly interfaces that blend creativity and functionality seamlessly. Exploring further, they find joy in the details of database design, using languages like MySQL to construct efficient data structures. Beyond front-end development and databases, their skill set extends to Python, Java,C++, and JavaScript, enabling them to tackle various challenges with ease. Committed to lifelong learning, they  continually seeks new opportunities to expand their knowledge and contribute meaningfully to projects.</b>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <b>Socials</b>
+    </td>
+    <td style="text-align: center; border: 0; padding: 10px;">
+      <a href="https://www.linkedin.com/in/lerato-kgomoeswana-694500256/" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=linkedin">
+      </a>
+      <a href="https://github.com/LeratoKgomo" style="text-decoration: none; margin-right: 10px; display: inline-block; vertical-align: middle;">
+        <img src="https://skillicons.dev/icons?i=github"/>
+      </a>
+    </td>
+  </tr>
+</table>
 
 # Technologies #
 <p align="center">
