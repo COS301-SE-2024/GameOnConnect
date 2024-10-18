@@ -177,4 +177,5 @@
   <img src="https://github.com/COS301-SE-2024/GameOnConnect/blob/5280eae55446fb073c5d05ea984a75560c9ec93b/assets/default_images/byte_squad_logo%202.png" alt="ByteSquad Logo" width="150">
 </div>
 
-For more information regarding installation and usage, please see the [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) and [User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual).
+- For more information regarding installation and usage, please see the [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) and [User Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/User-Manual).
+- For any and all enquiries, please send us an email at [bytesquad.capstone@gmail.com](mailto:bytesquad.capstone@gmail.com).
