@@ -34,6 +34,7 @@
 | [Technical Installation Manual](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Technical-Installation-Manual) | Instructions for setting up the application | 
 | [Testing Policy](https://docs.google.com/document/d/10SZXMNlQi8xhokbqxjlvTRlBppCDD6TswzttYGKr07E) | Policies and procedures for testing | 
 | [Coding Standards](https://github.com/COS301-SE-2024/GameOnConnect/wiki/Coding-Standards) | Guidelines for coding practices | 
+| [Advertisement Video](https://drive.google.com/file/d/1av4EnpRoArwFMXro9eVO9yYm3Ihpf6wF/view?usp=sharing) | Advertisement for GameOnConnect | 
 
 # 🎮Project Management:
 | Project board |  

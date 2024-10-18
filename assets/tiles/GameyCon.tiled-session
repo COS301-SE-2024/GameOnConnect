@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-5.tmx",
+    "activeFile": "Level-6.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -18,63 +18,67 @@
                 2
             ],
             "scale": 1.3240625,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 184.658956809063,
-                "y": 221.2886476280387
+                "y": 318.71607269294316
             }
         },
         "Level-2.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 183.90370545197072,
-                "y": 319.84894972858154
+                "y": 319.47132405003543
             }
         },
         "Level-3.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 183.90370545197072,
-                "y": 319.84894972858154
+                "y": 319.47132405003543
             }
         },
         "Level-4.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 183.90370545197072,
-                "y": 319.84894972858154
+                "y": 319.47132405003543
             }
         },
         "Level-5.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3240625,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 175.5959405239556,
-                "y": 529.4312013216899
+                "y": 334.57635119188103
             }
         },
         "Level-6.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
             "scale": 1.3240625,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 183.90370545197072,
                 "y": 320.2265754071277
@@ -92,7 +96,8 @@
         "Level-2.tmx",
         "Level-3.tmx",
         "Level-4.tmx",
-        "Level-5.tmx"
+        "Level-5.tmx",
+        "Level-6.tmx"
     ],
     "project": "GameyCon.tiled-project",
     "property.type": "string",
@@ -102,8 +107,8 @@
         "Level-3.tmx",
         "Level-4.tmx",
         "Level-5.tmx",
-        "GameyCon.tsx",
         "Level-6.tmx",
+        "GameyCon.tsx",
         "level-1.tmx",
         "level-2.tmx"
     ],
