@@ -134,6 +134,7 @@ class _HomePageState extends State<HomePage> {
           content: Form(
             key: _formKey,
             child: TextFormField(
+              maxLength: 16,
               key: Key('usernameInput'),
               autofocus: true,
               controller: usernamecontroller,

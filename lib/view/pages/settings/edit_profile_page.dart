@@ -359,10 +359,11 @@ class _EditProfilePage extends State<EditProfilePage> {
                           children: [
                             EditInputText(
                               inputKey: const Key('usernameField'),
-                              maxLines: 1,
+                              maxLength: 16,
                               label: 'Username',
                               onChanged: (value) => _username = value,
                               input: _username,
+                              validate: true,
                             ),
                             Row(
                                 mainAxisAlignment:
@@ -371,28 +372,31 @@ class _EditProfilePage extends State<EditProfilePage> {
                                   Flexible(
                                     child: EditInputText(
                                       inputKey: const Key('firstNameField'),
-                                      maxLines: 1,
+                                      maxLength: 16,
                                       label: 'First name',
                                       onChanged: (value) => _firstName = value,
                                       input: _firstName,
+                                      validate: true,
                                     ),
                                   ),
                                   Flexible(
                                     child: EditInputText(
                                       inputKey: const Key('lastNameField'),
-                                      maxLines: 1,
+                                      maxLength: 16,
                                       label: 'Last Name',
                                       onChanged: (value) => _lastName = value,
                                       input: _lastName,
+                                      validate: true,
                                     ),
                                   ),
                                 ]),
                             EditInputText(
                               inputKey: const Key('bioField'),
-                              maxLines: 5,
+                              maxLength: 100,
                               label: 'Bio',
                               onChanged: (value) => _bio = value,
                               input: _bio,
+                              validate: false,
                             ),
                             EditDateInput(
                               currentDate: _birthday!,

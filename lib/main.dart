@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,7 +34,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await dotenv.load();
-  globals.apiKey = dotenv.env['RAWG_API_KEY'];
+  _loadRandomApiKey();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -93,12 +95,30 @@ void main() async {
       ChangeNotifierProvider.value(value: themeProvider, child: const MyApp()));
 }
 
+void _loadRandomApiKey() {
+  final apiKeys = [
+    dotenv.env['RAWG_API_KEY'],
+    dotenv.env['RAWG_API_KEY2'],
+    dotenv.env['RAWG_API_KEY3'],
+    dotenv.env['RAWG_API_KEY4'],
+    dotenv.env['RAWG_API_KEY5'],
+    dotenv.env['RAWG_API_KEY6'],
+  ];
+
+  final random = Random(DateTime.now().millisecondsSinceEpoch);
+  final selectedApiKey = apiKeys[random.nextInt(apiKeys.length)];
+
+  globals.apiKey = selectedApiKey;
+}
+
 class MyApp extends StatelessWidget {
   // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'GameOnConnect',
       theme: Provider.of<ThemeProvider>(context).themeData,

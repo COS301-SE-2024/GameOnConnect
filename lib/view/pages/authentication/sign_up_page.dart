@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/home/welcome_splash.dart';
 import '../../../services/authentication_S/auth_service.dart';
 import 'login_page.dart';
@@ -24,12 +26,22 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   UserCredential? _userG;
   String? _username;
+  bool isVerified = false;
 
   Future signUp() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: _emailController.text.trim(),
       password: _passwordController.text.trim(),
     );
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && !user.emailVerified){
+      user.sendEmailVerification();
+      CustomSnackbar().show(context, "Please check your email for a verification code and log in again");
+
+    }
+
+
     await AuthService().getNextNumber();
     await AuthService().createDefaultProfile(_username);
 
@@ -243,12 +255,24 @@ class _SignUpState extends State<SignUp> {
                       if (_formKey.currentState!.validate()) {
                         _username = _usernameController.text;
                         signUp();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Signed Up successfully!")));
-                        Navigator.pushAndRemoveUntil(context,  MaterialPageRoute(
-                            builder: (BuildContext context) => SplashScreen()),
-                              (Route<dynamic> route) => false,
+                        CustomSnackbar().show(context, "Please check your email for a verification code and log in again");
+                        Navigator.pushAndRemoveUntil(
+                          context, MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                Login()),(Route<dynamic> route) => false,
+
                         );
+                        if (FirebaseAuth.instance.currentUser!.emailVerified) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(
+                                  "Signed Up successfully!")));
+                          Navigator.pushAndRemoveUntil(
+                            context, MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  SplashScreen()),
+                                (Route<dynamic> route) => false,
+                          );
+                        }
                       }
 
                   },

@@ -23,7 +23,7 @@ class GameyCon extends FlameGame
   bool showControls = true;
   bool playSounds = true;
   double soundVolume = 1.0;
-  List<String> levelNames = ['Level-1', 'Level-2', 'Level-3', 'Level-4', 'Level-5'];
+  List<String> levelNames = ['Level-1', 'Level-2', 'Level-3', 'Level-4', 'Level-5', 'Level-6'];
   int currentLevelIndex = 0;
 
   GameyCon({required String selectedCharacter}) {

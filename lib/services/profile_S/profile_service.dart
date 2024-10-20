@@ -101,21 +101,31 @@ class ProfileService {
 
   Future<String> getProfileName(String userId) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
+    const int maxRetries = 5;
+    const Duration retryDelay = Duration(milliseconds: 500);
 
-    DocumentSnapshot profileSnapshot = await db
-        .collection("profile_data")
-        .doc(userId)
-        .get(); //get the document
-    Map<String, dynamic> data =
-        profileSnapshot.data() as Map<String, dynamic>; //map the overall data
-    Map<String, dynamic> userInfo =
-        data['username'] as Map<String, dynamic>; //map the username data
-    // Return profile name if exists otherwise give an empty string
-    if (profileSnapshot.exists) {
-      return userInfo['profile_name'];
-    } else {
-      return '';
+    for (int attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        DocumentSnapshot profileSnapshot = await db
+            .collection("profile_data")
+            .doc(userId)
+            .get(); //get the document
+        Map<String, dynamic> data = profileSnapshot.data()
+            as Map<String, dynamic>; //map the overall data
+        Map<String, dynamic> userInfo =
+            data['username'] as Map<String, dynamic>; //map the username data
+        // Return profile name if exists otherwise give an empty string
+        if (profileSnapshot.exists) {
+          return userInfo['profile_name'];
+        }
+      } catch (e) {
+        //print('Attempt $attempt failed: $e');
+      }
+      // Wait before retrying
+      await Future.delayed(retryDelay);
     }
+    //return empty string if the profile name is not found
+    return '';
   }
 
   Future<void> setCurrentlyPlaying(String gameId) async {

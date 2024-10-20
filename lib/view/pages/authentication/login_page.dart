@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
+import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/pages/home/welcome_splash.dart';
 import 'sign_up_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,10 +30,24 @@ class _LoginState extends State<Login> {
 
   Future<void> signIn() async {
     try {
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
+      User? user = FirebaseAuth.instance.currentUser;
+      if (!user!.emailVerified){
+        setState(() {
+          validUser = false;
+        });
+        CustomSnackbar().show(context, "Email has not been verified, please check your emails");
+        user.sendEmailVerification();
+      }else
+        {
+          setState(() {
+            validUser = true;
+          });
+        }
     } catch (e) {
       passwordController.clear();
       emailController.clear();
@@ -252,7 +268,8 @@ class _LoginState extends State<Login> {
                           FirebaseAuth.instance
                               .userChanges()
                               .listen((User? user) {
-                            if (user != null) {
+                            if (user != null && validUser) {
+                              //print(validUser);
                               if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -271,16 +288,8 @@ class _LoginState extends State<Login> {
                             }
                           });
 
-                          if (validUser) {
+                          if (!validUser) {
                             if (!context.mounted) return;
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      SplashScreen()),
-                              (Route<dynamic> route) => false,
-                            );
-                          } else {
                             passwordController.clear();
                             emailController.clear();
                           }
