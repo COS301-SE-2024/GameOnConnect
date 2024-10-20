@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,9 +37,8 @@ class _SignUpState extends State<SignUp> {
 
     if (user != null && !user.emailVerified){
       user.sendEmailVerification();
-      CustomSnackbar().show(context, "Please check your email for a verification code");
-      await user.emailVerified;
-      user.reload();
+      CustomSnackbar().show(context, "Please check your email for a verification code and log in again");
+
     }
 
 
@@ -255,6 +255,13 @@ class _SignUpState extends State<SignUp> {
                       if (_formKey.currentState!.validate()) {
                         _username = _usernameController.text;
                         signUp();
+                        CustomSnackbar().show(context, "Please check your email for a verification code and log in again");
+                        Navigator.pushAndRemoveUntil(
+                          context, MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                Login()),(Route<dynamic> route) => false,
+
+                        );
                         if (FirebaseAuth.instance.currentUser!.emailVerified) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(
