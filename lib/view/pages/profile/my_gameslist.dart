@@ -92,7 +92,7 @@ class _MyGameListState extends State<MyGameList> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const GameLibrary(),
+                                  builder: (context) => GameLibrary(gameService: GameService(),),
                                 ),
                               );
                             },

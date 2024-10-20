@@ -4,6 +4,7 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/view/pages/messaging/messaging_page.dart';
 import 'package:gameonconnect/view/components/settings/appearance.dart';
 import 'package:gameonconnect/view/pages/settings/customize_page.dart';
@@ -122,7 +123,7 @@ class MyApp extends StatelessWidget {
         '/customize': (context) => CustomizeProfilePage(),
         '/sign_up': (context) => SignUp(),
         //'/profile': (context) => Profilenew(),
-        '/game_library': (context) => GameLibrary(),
+        '/game_library': (context) => GameLibrary(gameService: GameService(),),
         '/create_events': (context) => CreateEvents(),
         '/events': (context) => ViewEvents(),
         '/login': (context) => Login(),

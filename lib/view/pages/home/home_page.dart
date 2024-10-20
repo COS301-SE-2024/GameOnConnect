@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gameonconnect/services/badges_S/badge_service.dart';
 import 'package:gameonconnect/services/events_S/dynamic_scaling.dart';
+import 'package:gameonconnect/services/game_library_S/game_service.dart';
 import 'package:gameonconnect/services/profile_S/profile_service.dart';
 import 'package:gameonconnect/view/components/card/custom_snackbar.dart';
 import 'package:gameonconnect/view/components/home/online_friends_list.dart';
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       Center(
         child: _HomePageDisplay(),
       ),
-      const GameLibrary(),
+      GameLibrary(gameService: GameService(),),
       const GamesPageWidget(),
       const ViewEvents(),
       ProfilePage(uid: currentUserId, isOwnProfile: true, isConnection: true, loggedInUser: currentUserId,),
@@ -342,7 +343,7 @@ class _HomePageDisplayState extends State<_HomePageDisplay> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GameLibrary()),
+                    MaterialPageRoute(builder: (context) => GameLibrary(gameService: GameService(),)),
                   );
                 },
                 child: Container(

@@ -13,7 +13,8 @@ import 'package:gameonconnect/view/pages/connections/connections_search_page.dar
 import 'package:gameonconnect/view/components/search/search_field.dart';
 
 class GameLibrary extends StatefulWidget {
-  const GameLibrary({super.key});
+  final GameService gameService;
+  const GameLibrary({super.key, required this.gameService});
 
   @override
   State<GameLibrary> createState() => _GameLibraryState();
@@ -69,7 +70,7 @@ class _GameLibraryState extends State<GameLibrary> {
     });
 
     try {
-      final games = await GameService.fetchGames(_currentPage,
+      final games = await widget.gameService.fetchGames(_currentPage,
           sortValue: _sortValue, searchQuery: _searchQuery, filterString: _filterString);
 
       setState(() {

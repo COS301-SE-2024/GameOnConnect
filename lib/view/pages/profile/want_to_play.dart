@@ -92,7 +92,7 @@ class _WantToPlayListState extends State<WantToPlayList> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const GameLibrary(),
+                                  builder: (context) => GameLibrary(gameService: GameService(),),
                                 ),
                               );
                             },

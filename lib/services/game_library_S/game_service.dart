@@ -7,7 +7,7 @@ import '../../model/game_library_M/game_details_model.dart';
 import 'package:http/http.dart' as http;
 
 class GameService {
-  static Future<List<Game>> fetchGames(int page,
+  Future<List<Game>> fetchGames(int page,
       {String? sortValue, String? searchQuery, String? filterString}) async {
     String request = '&page_size=20&page=$page';
 
