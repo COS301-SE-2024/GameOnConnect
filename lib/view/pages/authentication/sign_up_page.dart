@@ -25,6 +25,7 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   UserCredential? _userG;
   String? _username;
+  bool isVerified = false;
 
   Future signUp() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -36,6 +37,8 @@ class _SignUpState extends State<SignUp> {
     if (user != null && !user.emailVerified){
       user.sendEmailVerification();
       CustomSnackbar().show(context, "Please check your email for a verification code");
+      await user.emailVerified;
+      user.reload();
     }
 
 
